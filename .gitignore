@@ -34,3 +34,6 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+# Editor/IDE Stuff
+.idea/
+
