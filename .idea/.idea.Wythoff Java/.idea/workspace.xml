@@ -1,0 +1,871 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="680e8ebd-da3a-4840-a642-d1a1eb1474ff" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>faces</find>
+      <find>F</find>
+      <find>Debug.Log</find>
+      <find>normals</find>
+      <find>triangles</find>
+      <find>faceEdges</find>
+      <find>meshNormals</find>
+      <find>Normal</find>
+      <find>sprintfrac</find>
+      <find>gamma</find>
+      <find>f[</find>
+      <find>--</find>
+      <find>meshVertices</find>
+      <find>anti</find>
+      <find>incid</find>
+      <find>tetra</find>
+      <find>sum</find>
+      <find>index</find>
+      <find>pallette</find>
+      <find>color</find>
+      <find>Color</find>
+      <find>GizmoRadius</find>
+      <find>kaleido</find>
+      <find>truncated</find>
+      <find>.Message</find>
+      <find>catch (</find>
+      <find>e =</find>
+      <find>currentType</find>
+      <find>blacklist</find>
+      <find>blackli</find>
+    </findStrings>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A202DEEE-E37A-4AAD-B0E7-BBE523679E5D/46/b8569ff7/Vector3.cs" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/Assets/Polyhedron.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A202DEEE-E37A-4AAD-B0E7-BBE523679E5D/e3/aabb19eb/Mathf.cs" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/Assets/WorldSpaceNormals.shader" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4FDC5ED6-1A07-4CAF-B49F-A42DEB20D521/16/a5a751d3/Array.cs" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/Assets/Vector.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/VertexColor.shader" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A202DEEE-E37A-4AAD-B0E7-BBE523679E5D/09/ceeef10b/ExecuteInEditMode.cs" root0="SKIP_INSPECTION" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A202DEEE-E37A-4AAD-B0E7-BBE523679E5D/1e/c12af292/RequireComponent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4FDC5ED6-1A07-4CAF-B49F-A42DEB20D521/42/c62f6053/String.cs" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/Assets/Fraction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/DoubleSided.shader" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Assets/Fraction.cs" />
+        <option value="$PROJECT_DIR$/Assets/Uniform.cs" />
+        <option value="$PROJECT_DIR$/Assets/PolyhedronEditor.cs" />
+        <option value="$PROJECT_DIR$/Assets/DoubleSided.shader" />
+        <option value="$PROJECT_DIR$/Assets/WorldSpaceNormals.shader" />
+        <option value="$PROJECT_DIR$/Assets/Vector.cs" />
+        <option value="$PROJECT_DIR$/Assets/VertexColor.shader" />
+        <option value="$PROJECT_DIR$/Assets/Polyhedron.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="22" />
+    <option name="width" value="1440" />
+    <option name="height" value="874" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="SolutionExplorer" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="SolutionExplorer">
+        <subPane>
+          <expand>
+            <path>
+              <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="Wythoff Java (2 projects)" type="977d5f41:SolutionExplorerNodeRider" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <option name="show-file-system" value="false" />
+        <option name="show-all-items" value="false" />
+      </pane>
+      <pane id="Scratches" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" />
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="680e8ebd-da3a-4840-a642-d1a1eb1474ff" name="Default" comment="" />
+      <created>1515844753823</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1515844753823</updated>
+      <workItem from="1515844758133" duration="26703000" />
+      <workItem from="1515924883323" duration="15812000" />
+      <workItem from="1516131013574" duration="1993000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="44508000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="22" width="1440" height="874" extended-state="0" />
+    <layout>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Errors In Solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Unit Tests" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="LuaJ" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Assets/Polyhedron.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1516176598000" expanded="false" signature="6:219" ph="..." />
+            <marker date="1516176598000" expanded="true" signature="344:44576" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="473:592" ph="/* NOTE: some of the int's can be replaced by short's, char's, ... */" />
+            <marker date="1516176598000" expanded="true" signature="2464:2716" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="2732:2972" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="2817:2916" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="2989:3647" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3027:3644" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3446:3540" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3540:3597" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3667:3839" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3675:3747" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3770:3836" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3859:8976" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3961:5479" ph="/* Debug.Log(&quot;index: &quot; + index);  // index to the standard list, the array uniform[] ... */" />
+            <marker date="1516176598000" expanded="true" signature="5616:5694" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="5749:6043" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="5783:6039" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="5916:6034" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="5981:6028" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="6228:7399" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="6324:7395" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="6408:6456" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="6554:6617" ph="/* meshVertices.Add(f[i].getVector3()); ... */" />
+            <marker date="1516176598000" expanded="true" signature="7585:8972" ph="/* Debug.Log(&quot;dual_e: &quot; + dual_e);  // dual edges (matrix 2 x E of 0..F-1) ... */" />
+            <marker date="1516176598000" expanded="true" signature="9078:9874" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9147:9333" ph="/* if (f != null) { ... */" />
+            <marker date="1516176598000" expanded="true" signature="9351:9475" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9380:9471" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9493:9871" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9526:9867" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9546:9706" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9878:11180" ph="/* List of Uniform Polyhedra and Their Kaleidoscopic Formulae ... */" />
+            <marker date="1516176598000" expanded="true" signature="11209:11500" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="11378:11495" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="11534:21943" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="11582:11643" ph="/* Dihedral Schwarz Triangles (D5 only) ... */" />
+            <marker date="1516176598000" expanded="true" signature="12254:12307" ph="/* Tetrahedral Schwarz Triangles ... */" />
+            <marker date="1516176598000" expanded="true" signature="12757:12809" ph="/* Octahedral Schwarz Triangles ... */" />
+            <marker date="1516176598000" expanded="true" signature="14789:14842" ph="/* Icosahedral Schwarz Triangles ... */" />
+            <marker date="1516176598000" expanded="true" signature="22129:23326" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22195:22238" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22274:23323" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22332:22371" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22410:22443" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22498:23232" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22553:22682" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22607:22675" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22725:22768" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22828:23204" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22881:23115" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22914:23021" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22961:23012" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23115:23197" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23204:23226" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23232:23314" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23329:23548" ph="/* Unpack input symbol: Wythoff symbol or an index to uniform[]. The symbol is ... */" />
+            <marker date="1516176598000" expanded="true" signature="23587:24146" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23655:23967" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23688:23960" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23735:23792" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23826:23915" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="24185:24415" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="24348:24397" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="24419:25121" ph="/* Using Wythoff symbol (p|qr, pq|r, pqr| or |pqr), find the Moebius triangle ... */" />
+            <marker date="1516176598000" expanded="true" signature="25148:26843" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25180:25522" ph="/* Arrange Wythoff symbol in a presentable form. In the same time check the ... */" />
+            <marker date="1516176598000" expanded="true" signature="25632:26016" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25651:25987" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25721:25760" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25805:25967" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25869:25923" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26020:26185" ph="/* Find the symmetry group P-&gt;K (where 2, 3, 4, 5 represent the dihedral, ... */" />
+            <marker date="1516176598000" expanded="true" signature="26206:26251" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26373:26508" ph="/* Compute the nominal density P-&gt;D and Euler characteristic P-&gt;chi. ... */" />
+            <marker date="1516176598000" expanded="true" signature="26533:26840" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26589:26727" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26609:26722" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26847:27579" ph="/* Decompose Schwarz triangle into N right triangles and compute the vertex ... */" />
+            <marker date="1516176598000" expanded="true" signature="27608:31617" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="27654:27971" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="27836:27884" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="27916:27964" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="27992:28665" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28182:28269" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28330:28658" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28333:28498" ph="/* p = q' ... */" />
+            <marker date="1516176598000" expanded="true" signature="28596:28653" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28686:29444" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28834:29437" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28886:29370" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28988:29165" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="29179:29324" ph="/* for p = q we get a double 2 2r|p ... */" />
+            <marker date="1516176598000" expanded="true" signature="29727:29856" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="29869:30015" ph="/* Sort the fundamental triangles (using bubble sort) according to decreasing ... */" />
+            <marker date="1516176598000" expanded="true" signature="30054:30598" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30122:30591" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30180:30586" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30357:30454" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30476:30565" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30675:31087" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30735:30762" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30796:31080" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30829:30883" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30930:31040" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31002:31031" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31182:31449" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31231:31442" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31257:31437" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31292:31418" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31368:31411" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31677:31829" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31833:32105" ph="/* Get the polyhedron name, using standard list or guesswork. Ideally, we ... */" />
+            <marker date="1516176598000" expanded="true" signature="32134:33395" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32158:32254" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32272:32999" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32318:32598" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32339:32407" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32515:32584" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32645:32816" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32666:32734" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32850:32918" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33236:33272" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33475:34535" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33696:33814" ph="/* Next, iteratively find closer approximations for gamma[0] and compute ... */" />
+            <marker date="1516176598000" expanded="true" signature="33832:34532" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33896:33935" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33992:34119" ph="/* On a RS/6000, fabs(delta)/DBL_EPSILON may occilate between 8 and 10 ... */" />
+            <marker date="1516176598000" expanded="true" signature="34150:34202" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34297:34372" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34457:34525" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34538:34680" ph="/* Postprocess pqr| where r has an even denominator (cf. Coxeter &amp;al. Sec.9) ... */" />
+            <marker date="1516176598000" expanded="true" signature="34710:35939" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34748:35166" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34912:34970" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="35170:35392" ph="/* Postprocess the last polyhedron |3/2 5/3 3 5/2 by taking a |5/3 3 5/2, ... */" />
+            <marker date="1516176598000" expanded="true" signature="35418:35936" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="35635:35710" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="35943:36522" ph="/* Compute edge and face counts, and update D and chi.  Update D in the few ... */" />
+            <marker date="1516176598000" expanded="true" signature="36547:36872" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="36618:36732" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="36786:36815" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="36838:36869" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="36960:37231" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="37003:37124" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="37020:37047" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="37198:37228" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="37235:37985" ph="/* Compute polyhedron vertices and vertex adjecency lists. ... */" />
+            <marker date="1516176598000" expanded="true" signature="38012:39734" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="38490:38582" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="38691:39731" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="38762:38810" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="38922:39724" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39167:39193" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39285:39719" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39430:39589" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39480:39539" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39737:40015" ph="/* Compute the polar reciprocal of the plane containing a, b and c: ... */" />
+            <marker date="1516176598000" expanded="true" signature="40079:40314" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="40204:40269" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="40396:40437" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="40440:40956" ph="/* Compute polyhedron faces (dual vertices) and incidence matrices. ... */" />
+            <marker date="1516176598000" expanded="true" signature="40981:42237" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41190:41251" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41281:42234" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41314:42227" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41404:42222" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41765:42203" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42033:42110" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42240:42667" ph="/* Compute edge list and graph polyhedron and dual. ... */" />
+            <marker date="1516176598000" expanded="true" signature="42695:43689" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42860:42987" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42889:42980" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42917:42975" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43166:43686" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43195:43679" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43223:43674" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43248:43337" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43383:43480" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43726:44573" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/VertexColor.shader">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="19" lean-forward="false" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Polyhedron.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1516176598000" expanded="false" signature="6:219" ph="..." />
+            <marker date="1516176598000" expanded="true" signature="344:44576" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="473:592" ph="/* NOTE: some of the int's can be replaced by short's, char's, ... */" />
+            <marker date="1516176598000" expanded="true" signature="2464:2716" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="2732:2972" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="2817:2916" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="2989:3647" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3027:3644" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3446:3540" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3540:3597" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3667:3839" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3675:3747" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3770:3836" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3859:8976" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3961:5479" ph="/* Debug.Log(&quot;index: &quot; + index);  // index to the standard list, the array uniform[] ... */" />
+            <marker date="1516176598000" expanded="true" signature="5616:5694" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="5749:6043" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="5783:6039" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="5916:6034" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="5981:6028" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="6228:7399" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="6324:7395" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="6408:6456" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="6554:6617" ph="/* meshVertices.Add(f[i].getVector3()); ... */" />
+            <marker date="1516176598000" expanded="true" signature="7585:8972" ph="/* Debug.Log(&quot;dual_e: &quot; + dual_e);  // dual edges (matrix 2 x E of 0..F-1) ... */" />
+            <marker date="1516176598000" expanded="true" signature="9078:9874" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9147:9333" ph="/* if (f != null) { ... */" />
+            <marker date="1516176598000" expanded="true" signature="9351:9475" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9380:9471" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9493:9871" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9526:9867" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9546:9706" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9878:11180" ph="/* List of Uniform Polyhedra and Their Kaleidoscopic Formulae ... */" />
+            <marker date="1516176598000" expanded="true" signature="11209:11500" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="11378:11495" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="11534:21943" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="11582:11643" ph="/* Dihedral Schwarz Triangles (D5 only) ... */" />
+            <marker date="1516176598000" expanded="true" signature="12254:12307" ph="/* Tetrahedral Schwarz Triangles ... */" />
+            <marker date="1516176598000" expanded="true" signature="12757:12809" ph="/* Octahedral Schwarz Triangles ... */" />
+            <marker date="1516176598000" expanded="true" signature="14789:14842" ph="/* Icosahedral Schwarz Triangles ... */" />
+            <marker date="1516176598000" expanded="true" signature="22129:23326" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22195:22238" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22274:23323" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22332:22371" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22410:22443" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22498:23232" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22553:22682" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22607:22675" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22725:22768" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22828:23204" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22881:23115" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22914:23021" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22961:23012" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23115:23197" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23204:23226" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23232:23314" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23329:23548" ph="/* Unpack input symbol: Wythoff symbol or an index to uniform[]. The symbol is ... */" />
+            <marker date="1516176598000" expanded="true" signature="23587:24146" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23655:23967" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23688:23960" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23735:23792" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23826:23915" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="24185:24415" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="24348:24397" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="24419:25121" ph="/* Using Wythoff symbol (p|qr, pq|r, pqr| or |pqr), find the Moebius triangle ... */" />
+            <marker date="1516176598000" expanded="true" signature="25148:26843" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25180:25522" ph="/* Arrange Wythoff symbol in a presentable form. In the same time check the ... */" />
+            <marker date="1516176598000" expanded="true" signature="25632:26016" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25651:25987" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25721:25760" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25805:25967" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25869:25923" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26020:26185" ph="/* Find the symmetry group P-&gt;K (where 2, 3, 4, 5 represent the dihedral, ... */" />
+            <marker date="1516176598000" expanded="true" signature="26206:26251" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26373:26508" ph="/* Compute the nominal density P-&gt;D and Euler characteristic P-&gt;chi. ... */" />
+            <marker date="1516176598000" expanded="true" signature="26533:26840" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26589:26727" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26609:26722" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26847:27579" ph="/* Decompose Schwarz triangle into N right triangles and compute the vertex ... */" />
+            <marker date="1516176598000" expanded="true" signature="27608:31617" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="27654:27971" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="27836:27884" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="27916:27964" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="27992:28665" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28182:28269" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28330:28658" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28333:28498" ph="/* p = q' ... */" />
+            <marker date="1516176598000" expanded="true" signature="28596:28653" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28686:29444" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28834:29437" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28886:29370" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28988:29165" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="29179:29324" ph="/* for p = q we get a double 2 2r|p ... */" />
+            <marker date="1516176598000" expanded="true" signature="29727:29856" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="29869:30015" ph="/* Sort the fundamental triangles (using bubble sort) according to decreasing ... */" />
+            <marker date="1516176598000" expanded="true" signature="30054:30598" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30122:30591" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30180:30586" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30357:30454" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30476:30565" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30675:31087" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30735:30762" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30796:31080" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30829:30883" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30930:31040" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31002:31031" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31182:31449" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31231:31442" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31257:31437" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31292:31418" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31368:31411" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31677:31829" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31833:32105" ph="/* Get the polyhedron name, using standard list or guesswork. Ideally, we ... */" />
+            <marker date="1516176598000" expanded="true" signature="32134:33395" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32158:32254" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32272:32999" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32318:32598" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32339:32407" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32515:32584" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32645:32816" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32666:32734" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32850:32918" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33236:33272" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33475:34535" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33696:33814" ph="/* Next, iteratively find closer approximations for gamma[0] and compute ... */" />
+            <marker date="1516176598000" expanded="true" signature="33832:34532" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33896:33935" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33992:34119" ph="/* On a RS/6000, fabs(delta)/DBL_EPSILON may occilate between 8 and 10 ... */" />
+            <marker date="1516176598000" expanded="true" signature="34150:34202" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34297:34372" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34457:34525" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34538:34680" ph="/* Postprocess pqr| where r has an even denominator (cf. Coxeter &amp;al. Sec.9) ... */" />
+            <marker date="1516176598000" expanded="true" signature="34710:35939" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34748:35166" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34912:34970" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="35170:35392" ph="/* Postprocess the last polyhedron |3/2 5/3 3 5/2 by taking a |5/3 3 5/2, ... */" />
+            <marker date="1516176598000" expanded="true" signature="35418:35936" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="35635:35710" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="35943:36522" ph="/* Compute edge and face counts, and update D and chi.  Update D in the few ... */" />
+            <marker date="1516176598000" expanded="true" signature="36547:36872" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="36618:36732" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="36786:36815" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="36838:36869" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="36960:37231" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="37003:37124" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="37020:37047" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="37198:37228" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="37235:37985" ph="/* Compute polyhedron vertices and vertex adjecency lists. ... */" />
+            <marker date="1516176598000" expanded="true" signature="38012:39734" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="38490:38582" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="38691:39731" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="38762:38810" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="38922:39724" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39167:39193" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39285:39719" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39430:39589" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39480:39539" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39737:40015" ph="/* Compute the polar reciprocal of the plane containing a, b and c: ... */" />
+            <marker date="1516176598000" expanded="true" signature="40079:40314" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="40204:40269" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="40396:40437" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="40440:40956" ph="/* Compute polyhedron faces (dual vertices) and incidence matrices. ... */" />
+            <marker date="1516176598000" expanded="true" signature="40981:42237" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41190:41251" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41281:42234" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41314:42227" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41404:42222" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41765:42203" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42033:42110" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42240:42667" ph="/* Compute edge list and graph polyhedron and dual. ... */" />
+            <marker date="1516176598000" expanded="true" signature="42695:43689" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42860:42987" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42889:42980" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42917:42975" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43166:43686" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43195:43679" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43223:43674" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43248:43337" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43383:43480" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43726:44573" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A202DEEE-E37A-4AAD-B0E7-BBE523679E5D/1e/c12af292/RequireComponent.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="18" lean-forward="false" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4FDC5ED6-1A07-4CAF-B49F-A42DEB20D521/42/c62f6053/String.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="777" column="18" lean-forward="false" selection-start-line="777" selection-start-column="18" selection-end-line="777" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A202DEEE-E37A-4AAD-B0E7-BBE523679E5D/46/b8569ff7/Vector3.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="31" column="49" lean-forward="true" selection-start-line="31" selection-start-column="49" selection-end-line="31" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A202DEEE-E37A-4AAD-B0E7-BBE523679E5D/e3/aabb19eb/Mathf.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="26" lean-forward="true" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Uniform.cs" />
+    <entry file="file://$PROJECT_DIR$/Assets/PolyhedronEditor.cs" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4FDC5ED6-1A07-4CAF-B49F-A42DEB20D521/16/a5a751d3/Array.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="1101" column="16" lean-forward="false" selection-start-line="1101" selection-start-column="6" selection-end-line="1101" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A202DEEE-E37A-4AAD-B0E7-BBE523679E5D/09/ceeef10b/ExecuteInEditMode.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="30" lean-forward="true" selection-start-line="13" selection-start-column="30" selection-end-line="13" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/WorldSpaceNormals.shader">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="42" column="1" lean-forward="false" selection-start-line="42" selection-start-column="1" selection-end-line="42" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/DoubleSided.shader">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="684">
+          <caret line="48" column="1" lean-forward="false" selection-start-line="48" selection-start-column="1" selection-end-line="48" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Fraction.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="16" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="80" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A202DEEE-E37A-4AAD-B0E7-BBE523679E5D/1e/c12af292/RequireComponent.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="18" lean-forward="false" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Vector.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="548">
+          <caret line="48" column="33" lean-forward="false" selection-start-line="48" selection-start-column="33" selection-end-line="48" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/VertexColor.shader">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="19" lean-forward="false" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Polyhedron.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="651">
+          <caret line="140" column="33" lean-forward="false" selection-start-line="140" selection-start-column="33" selection-end-line="140" selection-end-column="33" />
+          <folding>
+            <marker date="1516176598000" expanded="false" signature="6:219" ph="..." />
+            <marker date="1516176598000" expanded="true" signature="344:44576" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="473:592" ph="/* NOTE: some of the int's can be replaced by short's, char's, ... */" />
+            <marker date="1516176598000" expanded="true" signature="2464:2716" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="2732:2972" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="2817:2916" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="2989:3647" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3027:3644" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3446:3540" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3540:3597" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3667:3839" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3675:3747" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3770:3836" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3859:8976" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="3961:5479" ph="/* Debug.Log(&quot;index: &quot; + index);  // index to the standard list, the array uniform[] ... */" />
+            <marker date="1516176598000" expanded="true" signature="5616:5694" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="5749:6043" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="5783:6039" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="5916:6034" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="5981:6028" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="6228:7399" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="6324:7395" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="6408:6456" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="6554:6617" ph="/* meshVertices.Add(f[i].getVector3()); ... */" />
+            <marker date="1516176598000" expanded="true" signature="7585:8972" ph="/* Debug.Log(&quot;dual_e: &quot; + dual_e);  // dual edges (matrix 2 x E of 0..F-1) ... */" />
+            <marker date="1516176598000" expanded="true" signature="9078:9874" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9147:9333" ph="/* if (f != null) { ... */" />
+            <marker date="1516176598000" expanded="true" signature="9351:9475" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9380:9471" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9493:9871" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9526:9867" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9546:9706" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="9878:11180" ph="/* List of Uniform Polyhedra and Their Kaleidoscopic Formulae ... */" />
+            <marker date="1516176598000" expanded="true" signature="11209:11500" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="11378:11495" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="11534:21943" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="11582:11643" ph="/* Dihedral Schwarz Triangles (D5 only) ... */" />
+            <marker date="1516176598000" expanded="true" signature="12254:12307" ph="/* Tetrahedral Schwarz Triangles ... */" />
+            <marker date="1516176598000" expanded="true" signature="12757:12809" ph="/* Octahedral Schwarz Triangles ... */" />
+            <marker date="1516176598000" expanded="true" signature="14789:14842" ph="/* Icosahedral Schwarz Triangles ... */" />
+            <marker date="1516176598000" expanded="true" signature="22129:23326" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22195:22238" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22274:23323" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22332:22371" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22410:22443" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22498:23232" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22553:22682" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22607:22675" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22725:22768" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22828:23204" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22881:23115" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22914:23021" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="22961:23012" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23115:23197" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23204:23226" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23232:23314" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23329:23548" ph="/* Unpack input symbol: Wythoff symbol or an index to uniform[]. The symbol is ... */" />
+            <marker date="1516176598000" expanded="true" signature="23587:24146" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23655:23967" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23688:23960" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23735:23792" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="23826:23915" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="24185:24415" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="24348:24397" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="24419:25121" ph="/* Using Wythoff symbol (p|qr, pq|r, pqr| or |pqr), find the Moebius triangle ... */" />
+            <marker date="1516176598000" expanded="true" signature="25148:26843" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25180:25522" ph="/* Arrange Wythoff symbol in a presentable form. In the same time check the ... */" />
+            <marker date="1516176598000" expanded="true" signature="25632:26016" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25651:25987" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25721:25760" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25805:25967" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="25869:25923" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26020:26185" ph="/* Find the symmetry group P-&gt;K (where 2, 3, 4, 5 represent the dihedral, ... */" />
+            <marker date="1516176598000" expanded="true" signature="26206:26251" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26373:26508" ph="/* Compute the nominal density P-&gt;D and Euler characteristic P-&gt;chi. ... */" />
+            <marker date="1516176598000" expanded="true" signature="26533:26840" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26589:26727" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26609:26722" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="26847:27579" ph="/* Decompose Schwarz triangle into N right triangles and compute the vertex ... */" />
+            <marker date="1516176598000" expanded="true" signature="27608:31617" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="27654:27971" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="27836:27884" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="27916:27964" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="27992:28665" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28182:28269" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28330:28658" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28333:28498" ph="/* p = q' ... */" />
+            <marker date="1516176598000" expanded="true" signature="28596:28653" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28686:29444" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28834:29437" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28886:29370" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="28988:29165" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="29179:29324" ph="/* for p = q we get a double 2 2r|p ... */" />
+            <marker date="1516176598000" expanded="true" signature="29727:29856" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="29869:30015" ph="/* Sort the fundamental triangles (using bubble sort) according to decreasing ... */" />
+            <marker date="1516176598000" expanded="true" signature="30054:30598" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30122:30591" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30180:30586" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30357:30454" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30476:30565" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30675:31087" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30735:30762" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30796:31080" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30829:30883" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="30930:31040" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31002:31031" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31182:31449" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31231:31442" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31257:31437" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31292:31418" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31368:31411" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31677:31829" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="31833:32105" ph="/* Get the polyhedron name, using standard list or guesswork. Ideally, we ... */" />
+            <marker date="1516176598000" expanded="true" signature="32134:33395" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32158:32254" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32272:32999" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32318:32598" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32339:32407" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32515:32584" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32645:32816" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32666:32734" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="32850:32918" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33236:33272" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33475:34535" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33696:33814" ph="/* Next, iteratively find closer approximations for gamma[0] and compute ... */" />
+            <marker date="1516176598000" expanded="true" signature="33832:34532" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33896:33935" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="33992:34119" ph="/* On a RS/6000, fabs(delta)/DBL_EPSILON may occilate between 8 and 10 ... */" />
+            <marker date="1516176598000" expanded="true" signature="34150:34202" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34297:34372" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34457:34525" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34538:34680" ph="/* Postprocess pqr| where r has an even denominator (cf. Coxeter &amp;al. Sec.9) ... */" />
+            <marker date="1516176598000" expanded="true" signature="34710:35939" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34748:35166" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="34912:34970" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="35170:35392" ph="/* Postprocess the last polyhedron |3/2 5/3 3 5/2 by taking a |5/3 3 5/2, ... */" />
+            <marker date="1516176598000" expanded="true" signature="35418:35936" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="35635:35710" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="35943:36522" ph="/* Compute edge and face counts, and update D and chi.  Update D in the few ... */" />
+            <marker date="1516176598000" expanded="true" signature="36547:36872" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="36618:36732" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="36786:36815" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="36838:36869" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="36960:37231" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="37003:37124" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="37020:37047" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="37198:37228" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="37235:37985" ph="/* Compute polyhedron vertices and vertex adjecency lists. ... */" />
+            <marker date="1516176598000" expanded="true" signature="38012:39734" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="38490:38582" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="38691:39731" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="38762:38810" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="38922:39724" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39167:39193" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39285:39719" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39430:39589" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39480:39539" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="39737:40015" ph="/* Compute the polar reciprocal of the plane containing a, b and c: ... */" />
+            <marker date="1516176598000" expanded="true" signature="40079:40314" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="40204:40269" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="40396:40437" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="40440:40956" ph="/* Compute polyhedron faces (dual vertices) and incidence matrices. ... */" />
+            <marker date="1516176598000" expanded="true" signature="40981:42237" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41190:41251" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41281:42234" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41314:42227" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41404:42222" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="41765:42203" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42033:42110" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42240:42667" ph="/* Compute edge list and graph polyhedron and dual. ... */" />
+            <marker date="1516176598000" expanded="true" signature="42695:43689" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42860:42987" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42889:42980" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="42917:42975" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43166:43686" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43195:43679" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43223:43674" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43248:43337" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43383:43480" ph="{...}" />
+            <marker date="1516176598000" expanded="true" signature="43726:44573" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
