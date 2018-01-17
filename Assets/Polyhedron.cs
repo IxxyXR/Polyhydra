@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using UnityEditor.Graphs;
 using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
 
 //[ExecuteInEditMode]
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
