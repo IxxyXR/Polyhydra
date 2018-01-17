@@ -17,7 +17,7 @@ public class Poly : MonoBehaviour {
 
 	void Start() {
 
-		blacklist = new int[] {13, 14, 17, 20, 23, 27, 28};
+		blacklist = new int[] {/* 13, 14, 17, 20, 23, 27, 28 */};
 		currentType = 1;
 		MakePoly();
 	}
@@ -29,7 +29,7 @@ public class Poly : MonoBehaviour {
 			currentType++;
 			currentType = currentType % 81;
 
-			Debug.Log("-------------------------");
+			Debug.Log("=========================");
 			if (!blacklist.Contains(currentType)) {
 				Debug.Log(currentType);
 				Debug.Log("-------------------------");
@@ -63,6 +63,10 @@ public class Poly : MonoBehaviour {
 		
 		Gizmos.color = GizmoColor;
 		var transform = this.transform;
+
+		if (_kaleido == null) {
+			return;
+		}
 		
 		if (_kaleido.v != null) {
 			foreach (var vert in _kaleido.v) {
