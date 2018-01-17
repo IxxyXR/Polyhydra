@@ -58,6 +58,9 @@ public class Poly : MonoBehaviour {
 
 	void OnDrawGizmos () {
 		
+		// I had to make too many fields on Kaleido public to do this
+		// Need some sensible public methods to give me sensible access
+		
 		Gizmos.color = GizmoColor;
 		var transform = this.transform;
 		
