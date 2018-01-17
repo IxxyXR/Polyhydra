@@ -1,19 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-//[ExecuteInEditMode]
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-public class Polyhedron : MonoBehaviour {
 
-	[Range(1,80)]
-	public int polyType = 1;
-	public bool showDual = false; 
-	
-	private Mesh mesh;
-	private int[] meshFaces;
-	
+public class Kaleido {
 	
 	// NOTE: some of the int's can be replaced by short's, char's,
 	// or even bit fields, at the expense of readability!!!
@@ -23,7 +13,7 @@ public class Polyhedron : MonoBehaviour {
 	int N;  // number of faces types (atmost 5)
 	int M;  // vertex valency  (may be big for dihedral polyhedra) 
 	int V;  // vertex count 
-	int E;  // edge count 
+	public int E;  // edge count 
 	int F;  // face count 
 	int D;  // density 
 	int chi;  // Euler characteristic 
@@ -42,9 +32,9 @@ public class Polyhedron : MonoBehaviour {
 	int[] firstrot;  // temporary for vertex generation (array V)
 	int[] anti;  // temporary for direction of ideal vertices (array E)
 	int[] ftype;  // face types (array F)
-	
-	int[,] e;  // edges (matrix 2 x E of 0..V-1)
-	int[,] dual_e;  // dual edges (matrix 2 x E of 0..F-1)
+
+	public int[,] e;  // edges (matrix 2 x E of 0..V-1)
+	public int[,] dual_e;  // dual edges (matrix 2 x E of 0..F-1)
 	int[,] incid;  // vertex-face incidence (matrix M x V of 0..F-1)
 	int[,] adj;  // vertex-vertex adjacency (matrix M x V of 0..V-1)
 	
@@ -58,26 +48,24 @@ public class Polyhedron : MonoBehaviour {
 	string config;  // printable vertex configuration 
 	string polyname;  // name, standard or manifuctured 
 	string dual_name;  // dual name, standard or manifuctured 
-	
-	Vector[] v;  // vertex coordinates (array V) 
-	Vector[] f;  // face coordinates (array F)
+
+	public Vector[] v;  // vertex coordinates (array V) 
+	public Vector[] f;  // face coordinates (array F)
 
 	Color[] pallette;
-	int currentType;
-	int[] blacklist;
 	
 	Vector3 FindCenterPoint(Vector3[] points) {
+		
 		if (points.Length == 0) {return Vector3.zero;}
 		if (points.Length == 1) {return points[0];}
 		var bounds = new Bounds(points[0], Vector3.zero);
 		for (var i = 1; i < points.Length; i++)
 			bounds.Encapsulate(points[i]); 
 		return bounds.center;
+		
 	}
-
-	void Start() {
-
-		blacklist = new int[] {13, 14, 17, 20, 23, 27, 28};
+	
+	public Kaleido(int polyType) {
 		
 		pallette = new Color[] {
 			Color.red,
@@ -88,98 +76,36 @@ public class Polyhedron : MonoBehaviour {
 			Color.magenta
 		};
 		
-		index = 1;
-		currentType = 1;
+		Debug.Log("unpacksym");
+		unpacksym("#" + polyType);
+		Debug.Log("moebius");
+		moebius();  // Find Mebius triangle, its density and Euler characteristic
+		Debug.Log("decompose");
+		decompose();  // Decompose Schwarz triangle
+		Debug.Log("guessname");
+		guessname();  // Find the names of the polyhedron and its dual
+		Debug.Log("newton");
+		newton();  // Solve Fundamental triangles, optionally printing approximations
+		Debug.Log("exceptions");
+		exceptions();  // Deal with exceptional polyhedra
+		Debug.Log("count");
+		count();  // Count edges and faces, update density and characteristic if needed.
+		Debug.Log("configuration");
+		configuration();  // Generate printable vertex configuration
 		
-		MakePoly();
-	}
-
-	void Update() {
+		// Compute coordinates
+		Debug.Log("vertices");
+		vertices();		
+		Debug.Log("faces");
+		faces();
+		Debug.Log("edgelist");
+		edgelist();  // Compute edgelist
 		
-		if (Input.GetKeyDown("space")) {
-			
-			currentType++;
-			currentType = currentType % 81;
-			index = -1;
-			
-			K = 2;
-			even = -1;
-			Fi = null;
-			rot = null;
-			snub = null; 
-			firstrot = null;
-			anti = null;
-			ftype = null;
-			e = null;
-			dual_e = null;
-			incid = null;
-			adj = null;
-			n = null;
-			m = null;
-			gamma = null; 
-			v = null; 
-			f = null;
-			Debug.Log("-------------------------");
-			if (!blacklist.Contains(currentType)) {
-				Debug.Log(currentType);
-				Debug.Log("-------------------------");
-				MakePoly();
-			}
-			else {
-				Debug.Log("Skipping " + currentType);
-			}
-			Debug.Log("-------------------------");
-		}
 	}
 	
-	void MakePoly() {
-		try {
-			kaleido(currentType);
-			BuildMesh();
-			//Debug.Log(polyname);
-		}
-		catch (Exception e) {
-			Debug.Log("Error on " + currentType + " : " + e.Message);
-		}
-	}
-
-	void BuildMesh() {
+	public Mesh BuildMesh() {
 		
-		//kaleido(uniform[type].Wythoff);
-		
-		GetComponent<MeshFilter>().mesh = mesh = new Mesh();
-		
-//		Debug.Log("index: " + index);  // index to the standard list, the array uniform[] 
-//	
-//		Debug.Log("N: " + N);  // number of faces types (atmost 5)
-//		Debug.Log("M: " + M);  // vertex valency  (may be big for dihedral polyhedra) 
-//		Debug.Log("V: " + V);  // vertex count 
-//		Debug.Log("E: " + E);  // edge count 
-//		Debug.Log("F: " + F);  // face count 
-//		Debug.Log("D: " + D);  // density 
-//		Debug.Log("chi: " + chi);  // Euler characteristic 
-//		Debug.Log("g: " + g);  // order of symmetry group 
-//		Debug.Log("K: " + K);  // symmetry type: D=2, T=3, O=4, I=5 
-//		Debug.Log("hemi: " + hemi); // flag hemi polyhedron 
-//		Debug.Log("onesided: " + onesided); // flag onesided polyhedron
-//		Debug.Log("even: " + even);  // removed face in pqr|
-//		Debug.Log("Fi: " + Fi);  // face counts by type (array N)
-//		Debug.Log("rot: " + rot);  // vertex configuration (array M of 0..N-1) 
-//		Debug.Log("snub: " + snub);  // snub triangle configuration (array M of 0..1) 
-//		Debug.Log("firstrot: " + firstrot);  // temporary for vertex generation (array V) 
-//		Debug.Log("anti: " + anti);  // temporary for direction of ideal vertices (array E) 
-//		Debug.Log("ftype: " + ftype);  // face types (array F)
-
-//		Debug.Log("e: " + e);  // edges (matrix 2 x E of 0..V-1)
-
-//		var meshVertices = new Vector3[V + F];
-//		
-//		for (int j = 0; j < V; j++) {meshVertices[j] = v[j].getVector3();}
-//		for (int j = 0; j < F; j++) {
-//			if (f[j] != null) {
-//				meshVertices[V + j] = f[j].getVector3();
-//			}
-//		}
+		Mesh mesh = new Mesh();
 		
 		var faceVertices = new List<List<int>>();
 		var faceEdges = new List<List<int>>();
@@ -252,76 +178,10 @@ public class Polyhedron : MonoBehaviour {
 		mesh.triangles = meshTriangles.ToArray();
 		mesh.colors = meshColors.ToArray();
 		mesh.RecalculateNormals();
-		mesh.name = polyname;		
-		
-//		Debug.Log("dual_e: " + dual_e);  // dual edges (matrix 2 x E of 0..F-1)
-//		Debug.Log("incid: " + incid);  // vertex-face incidence (matrix M x V of 0..F-1)
-//		for (int i = 0; i < V; i++) {
-//			string row = "incid" + i + ": ";
-//			for (int j = 0; j < M; j++) {
-//				row += "" + incid[j, i] + ",";
-//			}
-//			Debug.Log(row);
-//		}
-		
-//		Debug.Log("adj: " + adj);  // vertex-vertex adjacency (matrix M x V of 0..V-1)
-//		for (int i = 0; i < V; i++) {
-//			string row = "adj " + i + ": ";
-//			for (int j = 0; j < M; j++) {
-//				row += "" + adj[j, i] + ",";
-//			}
-//			Debug.Log(row);
-//		}
-		
-//		Debug.Log("minr: " + minr);  // smallest nonzero inradius 
-//		Debug.Log("gon: " + gon);  // basis type for dihedral polyhedra 
-//		Debug.Log("n: " + n);  // number of side of a face of each type (array N) 
-//		Debug.Log("m: " + m);  // number of faces at a vertex of each type (array N)
-//		Debug.Log("gamma: " + gamma);  // fundamental angles in radians (array N)
-//		Debug.Log("polyform: " + polyform);  // printable Wythoff symbol
-//		Debug.Log("config: " + config);  // printable vertex configuration 
-//		Debug.Log("polyname: " + polyname);  // name, standard or manifuctured 
-//		Debug.Log("dual_name: " + dual_name);  // dual name, standard or manifuctured
-//		Debug.Log("v: " + v);  // vertex coordinates (array V)
-//		Debug.Log("f: " + f);  // face coordinates (array F)
+		mesh.name = polyname;
 
-	}
-	
-	private Color GizmoColor = Color.white;
-	private float GizmoRadius = .03f;
+		return mesh;
 
-	void OnDrawGizmos () {
-		
-		Gizmos.color = GizmoColor;
-		var transform = this.transform;
-
-//		if (f != null) {
-//			foreach (var face in f) {
-//				if (face != null) {
-//					Gizmos.DrawWireSphere(transform.TransformPoint(face.getVector3()), GizmoRadius);
-//				}
-//			}
-//		}
-		if (v != null) {
-			foreach (var vert in v) {
-				Gizmos.DrawWireSphere(transform.TransformPoint(vert.getVector3()), GizmoRadius);
-			}
-		}
-		if (e != null) {
-			for (int i = 0; i < E; i++) {
-				if (showDual) {
-					Gizmos.DrawLine(
-						transform.TransformPoint(f[dual_e[0, i]].getVector3()),
-						transform.TransformPoint(f[dual_e[1, i]].getVector3())
-					);
-				} else {
-					Gizmos.DrawLine(
-						transform.TransformPoint(v[e[0, i]].getVector3()),
-						transform.TransformPoint(v[e[1, i]].getVector3())
-					);
-				}
-			}
-		}
 	}
 	
 	/*
@@ -994,7 +854,7 @@ public class Polyhedron : MonoBehaviour {
 							++index;
 							c = sym[index];
 						}
-					} catch (System.IndexOutOfRangeException e) {
+					} catch (System.IndexOutOfRangeException) {
 						return Double.Parse(number);
 					}
 					a = Double.Parse(number);
@@ -1007,7 +867,7 @@ public class Polyhedron : MonoBehaviour {
 									number += c;
 									++index;
 								}
-							} catch (System.IndexOutOfRangeException e) { }
+							} catch (System.IndexOutOfRangeException) { }
 							return a / Double.Parse(number);
 						}
 						else {throw new System.ApplicationException("No digit after \"/\": " + c);}
@@ -1714,34 +1574,4 @@ public class Polyhedron : MonoBehaviour {
 			}
 	    }
 	}
-
-	public void kaleido(int polyType) {
-		
-		unpacksym("#" + polyType);
-		
-		Debug.Log("moebius");
-		moebius();  // Find Mebius triangle, its density and Euler characteristic
-		Debug.Log("decompose");
-		decompose();  // Decompose Schwarz triangle
-		Debug.Log("guessname");
-		guessname();  // Find the names of the polyhedron and its dual
-		Debug.Log("newton");
-		newton();  // Solve Fundamental triangles, optionally printing approximations
-		Debug.Log("exceptions");
-		exceptions();  // Deal with exceptional polyhedra
-		Debug.Log("count");
-		count();  // Count edges and faces, update density and characteristic if needed.
-		Debug.Log("configuration");
-		configuration();  // Generate printable vertex configuration
-		
-		// Compute coordinates
-		Debug.Log("vertices");
-		vertices();		
-		Debug.Log("faces");
-		faces();
-		Debug.Log("edgelist");
-		edgelist();  // Compute edgelist
-		
-	}
-
 }
