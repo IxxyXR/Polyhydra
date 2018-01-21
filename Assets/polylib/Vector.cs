@@ -12,9 +12,9 @@ public class Vector {
     }
 
     public Vector(Vector a) {
-        this.x = a.x;
-        this.y = a.y;
-        this.z = a.z;
+        x = a.x;
+        y = a.y;
+        z = a.z;
     }
 
     public double dot(Vector b) {

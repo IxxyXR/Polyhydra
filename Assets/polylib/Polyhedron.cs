@@ -1,187 +1,73 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Kaleido {
+public class Polyhedron {
 	
-	// NOTE: some of the int's can be replaced by short's, char's,
-	// or even bit fields, at the expense of readability!!!
-	
-	int index;  // index to the standard list, the array uniform[] 
-	
-	int N;  // number of faces types (atmost 5)
-	int M;  // vertex valency  (may be big for dihedral polyhedra) 
-	int V;  // vertex count 
-	public int E;  // edge count 
-	int F;  // face count 
-	int D;  // density 
-	int chi;  // Euler characteristic 
-	int g;  // order of symmetry group
-	
-	private int K = 2;  // symmetry type: D=2, T=3, O=4, I=5
-	
-	private int even = -1;  // removed face in pqr|
-	
-	int hemi; // flag hemi polyhedron 
-	int onesided; // flag onesided polyhedron 
-	
-	int[] Fi;  // face counts by type (array N)
-	int[] rot;  // vertex configuration (array M of 0..N-1)
-	int[] snub;  // snub triangle configuration (array M of 0..1) 
-	int[] firstrot;  // temporary for vertex generation (array V)
-	int[] anti;  // temporary for direction of ideal vertices (array E)
-	int[] ftype;  // face types (array F)
+	public int PolyTypeIndex;  // index to the standard list, the array uniform[] 
 
-	public int[,] e;  // edges (matrix 2 x E of 0..V-1)
-	public int[,] dual_e;  // dual edges (matrix 2 x E of 0..F-1)
-	int[,] incid;  // vertex-face incidence (matrix M x V of 0..F-1)
-	int[,] adj;  // vertex-vertex adjacency (matrix M x V of 0..V-1)
+	public int FaceTypeCount;  // number of faces types (at most 5)
+	public int Valency;  // vertex valency (may be big for dihedral polyhedra) 
+	public int VertexCount;  // vertex count 
+	public int EdgeCount;  // edge count 
+	public int FaceCount;  // face count
 	
-	double[] p = new double[4];  // p, q and r; |=0 
-	double minr;  // smallest nonzero inradius 
-	double gon;  // basis type for dihedral polyhedra 
-	double[] n;  // number of side of a face of each type (array N)
-	double[] m;  // number of faces at a vertex of each type (array N)
-	double[] gamma;  // fundamental angles in radians (array N)
-	public string polyform;  // printable Wythoff symbol
-	string config;  // printable vertex configuration 
-	string polyname;  // name, standard or manifuctured 
-	string dual_name;  // dual name, standard or manifuctured 
+	public int Density;  // density 
+	public int Chi;  // Euler characteristic 
+	public int SymmetryGroupOrder;  // order of symmetry group
+	public int SymmetryType = 2;  // symmetry type: D=2, T=3, O=4, I=5
+	
+	private int _even = -1;  // removed face in pqr|
+	
+	public int IsHemi; // flag hemi polyhedron 
+	public int IsOneSided; // flag onesided polyhedron 
+	
+	public int[] FaceCountsByType;  // array of length FaceTypeCount
+	public int[] VertexConfig;  // array of size Valency of 0..FaceTypeCount-1
+	public int[] SnubConfig;  // array of length Valency of 0..1
+	
+	private int[] _firstrot;  // temporary for vertex generation (array of length VertexCount)
+	private int[] _anti;  // temporary for direction of ideal vertices (array EdgeCount)
+	
+	public int[] FaceTypes;  // array of length FaceTypeCount
 
-	public Vector[] v;  // vertex coordinates (array V) 
-	public Vector[] f;  // face coordinates (array F)
+	public int[,] Edges;  // matrix 2 x EdgeCount of 0..VertexCount-1
+	public int[,] DualEdges;  // matrix 2 x EdgeCount of 0..FaceCount-1
+	public int[,] VertexFaceIncidence;  // matrix of size Valency x VertexCount of 0..FaceCount-1
+	public int[,] VertexAdjacency;  // matrix of size Valency x VertexCount of 0..VertexCount-1
+	
+	public double[] WythoffParams = new double[4];  // p, q and r; |=0 
+	public double MinInRadius;  // smallest nonzero inradius 
+	public double DihedralBasisType;  // basis type for dihedral polyhedra 
+	
+	public double[] FaceSidesByType;  // number of side of a face of each type (array of length FaceTypeCount)
+	public double[] FaceCountAtVertexType;  // number of faces at a vertex of each type (array of length FaceTypeCount)
+	public double[] FundementalAngles;  // in radians (array of length FaceTypeCount)
+	
+	public string WythoffSymbol;  // printable Wythoff symbol
+	public string VertexConfigString;  // printable vertex configuration 
+	public string PolyName;  // name, standard or manifuctured
+	public string DualName;  // dual name, standard or manifuctured 
 
-	Color[] pallette;
+	public Vector[] Vertices;  // vertex coordinates (array VertexCount) 
+	public Vector[] Faces;  // face coordinates (array FaceCount)
 	
-	Vector3 FindCenterPoint(Vector3[] points) {
+	public Polyhedron(int polyType) {
 		
-		if (points.Length == 0) {return Vector3.zero;}
-		if (points.Length == 1) {return points[0];}
-		var bounds = new Bounds(points[0], Vector3.zero);
-		for (var i = 1; i < points.Length; i++)
-			bounds.Encapsulate(points[i]); 
-		return bounds.center;
-		
-	}
-	
-	public Kaleido(int polyType) {
-		
-		pallette = new Color[] {
-			Color.red,
-			Color.yellow,
-			Color.green,
-			Color.cyan,
-			Color.blue,
-			Color.magenta
-		};
-		
-		Debug.Log("unpacksym");
-		unpacksym("#" + polyType);
-		Debug.Log("moebius");
-		moebius();  // Find Mebius triangle, its density and Euler characteristic
-		Debug.Log("decompose");
-		decompose();  // Decompose Schwarz triangle
-		Debug.Log("guessname");
-		guessname();  // Find the names of the polyhedron and its dual
-		Debug.Log("newton");
-		newton();  // Solve Fundamental triangles, optionally printing approximations
-		Debug.Log("exceptions");
-		exceptions();  // Deal with exceptional polyhedra
-		Debug.Log("count");
-		count();  // Count edges and faces, update density and characteristic if needed.
-		Debug.Log("configuration");
-		configuration();  // Generate printable vertex configuration
+		UnpackSym("#" + polyType);
+		FindMoebiusTri();  // Find Mebius triangle, its density and Euler characteristic
+		DecomposeSchwarzTri();  // Decompose Schwarz triangle
+		GuessNames();  // Find the names of the polyhedron and its dual
+		SolveFundementalTris();  // Solve Fundamental triangles
+		HandlePolyExceptions();  // Deal with exceptional polyhedra
+		CalcCounts();  // Count edges and faces, update density and characteristic if needed
+		GenerateConfiguration();  // Generate printable vertex configuration
 		
 		// Compute coordinates
-		Debug.Log("vertices");
-		vertices();		
-		Debug.Log("faces");
-		faces();
-		Debug.Log("edgelist");
-		edgelist();  // Compute edgelist
+		CalcVertices();
+		CalcFaces();
+		CalcEdgeList();
 		
-	}
-	
-	public Mesh BuildMesh() {
-		
-		Mesh mesh = new Mesh();
-		
-		var faceVertices = new List<List<int>>();
-		var faceEdges = new List<List<int>>();
-		for (int faceNum = 0; faceNum < F; faceNum++) {
-			faceVertices.Add(new List<int>());
-			faceEdges.Add(new List<int>());
-		}
-		for (int vertexNum = 0; vertexNum < V; vertexNum++) { 
-			for (int i = 0; i < M; i++) {
-				int faceNum = incid[i, vertexNum];
-				faceVertices[faceNum].Add(vertexNum);
-				for (int edgeNum = 0; edgeNum < E; edgeNum++) {
-					if (vertexNum==e[0, edgeNum] || vertexNum==e[1, edgeNum]) {
-						faceEdges[faceNum].Add(edgeNum);
-					}
-				}
-			}
-		}
-		
-		var meshVertices = new List<Vector3>();
-		var meshTriangles = new List<int>();
-		var meshColors = new List<Color>();
-		int vIndex = 0;
-		for (int i = 0; i < faceEdges.Count; i++) {
-
-			Color faceColor = pallette[ftype[i]];
-			
-			for (int j = 0; j < faceEdges[i].Count; j++) {
-				var points = new List<Vector3>();
-				foreach (var vertex in faceVertices[i]) {
-					points.Add(v[vertex].getVector3());
-				}
-				var centrePoint = FindCenterPoint(points.ToArray());
-				int edgeNum = faceEdges[i][j];
-
-				//meshVertices.Add(f[i].getVector3());
-
-				// Normal direction
-				meshVertices.Add(centrePoint);
-				meshColors.Add(faceColor);
-				meshTriangles.Add(vIndex);
-				vIndex++;
-				meshVertices.Add(v[e[0, edgeNum]].getVector3());
-				meshColors.Add(faceColor);
-				meshTriangles.Add(vIndex);
-				vIndex++;
-				meshVertices.Add(v[e[1, edgeNum]].getVector3());
-				meshColors.Add(faceColor);
-				meshTriangles.Add(vIndex);
-				vIndex++;
-				
-				// Reverse direction
-				meshVertices.Add(centrePoint);
-				meshColors.Add(faceColor);
-				meshTriangles.Add(vIndex);
-				vIndex++;
-				meshVertices.Add(v[e[1, edgeNum]].getVector3());
-				meshColors.Add(faceColor);
-				meshTriangles.Add(vIndex);
-				vIndex++;
-				meshVertices.Add(v[e[0, edgeNum]].getVector3());
-				meshColors.Add(faceColor);
-				meshTriangles.Add(vIndex);
-				vIndex++;
-				
-			}
-		}
-		
-		mesh.vertices = meshVertices.ToArray();
-		mesh.triangles = meshTriangles.ToArray();
-		mesh.colors = meshColors.ToArray();
-		mesh.RecalculateNormals();
-		mesh.name = polyname;
-
-		return mesh;
-
 	}
 	
 	/*
@@ -236,7 +122,7 @@ public class Kaleido {
 		}		
 	}
 
-	public UniformImpl[] uniform = {
+	public static UniformImpl[] uniform = {
 			
 		new UniformImpl("", "", "", 0, 0),
 		
@@ -824,57 +710,57 @@ public class Kaleido {
 	private class SymParser {
 		
 		string sym;
-		int index;
+		int _index;
 		
 		public SymParser(string sym) {
 			this.sym = sym;
-			this.index = 0;
+			_index = 0;
 		}
 
-		public double getNextFraction() {
+		public double GetNextFraction() {
 
-			char c = sym[index];
+			char c = sym[_index];
 			while (c.ToString() == " ") {
-				++index;
-				c = sym[index];
+				++_index;
+				c = sym[_index];
 			}
 
-			if (sym[index].ToString() == "|") {
-				index++;
+			if (sym[_index].ToString() == "|") {
+				_index++;
 				return 0;
 			} else {
-				c = sym[index++];
+				c = sym[_index++];
 				if (Char.IsDigit(c)) {
 					string number = "" + c;
 					double a;
 					try {
-						c = sym[index];
+						c = sym[_index];
 						while (Char.IsDigit(c)) {
 							number += c;
-							++index;
-							c = sym[index];
+							++_index;
+							c = sym[_index];
 						}
-					} catch (System.IndexOutOfRangeException) {
+					} catch (IndexOutOfRangeException) {
 						return Double.Parse(number);
 					}
 					a = Double.Parse(number);
-					if (sym[index] == '/') {
-						c = sym[++index];
+					if (sym[_index] == '/') {
+						c = sym[++_index];
 						if (Char.IsDigit(c)) {
 							number = "";
 							try {
-								while (Char.IsDigit(c = sym[index])) {
+								while (Char.IsDigit(c = sym[_index])) {
 									number += c;
-									++index;
+									++_index;
 								}
-							} catch (System.IndexOutOfRangeException) { }
+							} catch (IndexOutOfRangeException) { }
 							return a / Double.Parse(number);
 						}
-						else {throw new System.ApplicationException("No digit after \"/\": " + c);}
+						else {throw new ApplicationException("No digit after \"/\": " + c);}
 					}
 					else {return a;}
 				}
-				else {throw new System.ApplicationException("\"" + c + "\" is not a digit");}
+				else {throw new ApplicationException("\"" + c + "\" is not a digit");}
 			}
 		}
 	}
@@ -883,33 +769,33 @@ public class Kaleido {
 	// a # followed by a number, or a three fractions and a bar in some order. We
 	// allow no bars only if it result from the input symbol #80
 	
-	private void unpacksym(string sym) {
+	private void UnpackSym(string sym) {
 		
 	    sym = sym.Trim();
 		
 	    if (!String.IsNullOrEmpty(sym)) {
 	    	if (sym.StartsWith("#")) {  // take the number of polyhedron
 	    		try {
-	    			index = Int32.Parse(sym.Substring(1));
-	    		} catch (System.FormatException e) {
-	    			throw new System.ApplicationException("Illegal number: " + e.Message);
+	    			PolyTypeIndex = Int32.Parse(sym.Substring(1));
+	    		} catch (FormatException e) {
+	    			throw new ApplicationException("Illegal number: " + e.Message);
 	    		}
-	    		sym = uniform[index].Wythoff;
+	    		sym = uniform[PolyTypeIndex].Wythoff;
 	    	}
 	    }
 	    SymParser sp = new SymParser(sym);
-	    p[0] = sp.getNextFraction();
-	    p[1] = sp.getNextFraction();
-	    p[2] = sp.getNextFraction();
-	    p[3] = sp.getNextFraction();
+	    WythoffParams[0] = sp.GetNextFraction();
+	    WythoffParams[1] = sp.GetNextFraction();
+	    WythoffParams[2] = sp.GetNextFraction();
+	    WythoffParams[3] = sp.GetNextFraction();
 	}
 
-	private string sprintfrac(double x) {
+	private string SprintFrac(double x) {
 	    string s = "";
 	    Fraction frax = new Fraction().frac(x);
-	    if (frax.getD() == 0) {s += "infinity";}
-	    else if (frax.getD() == 1) {s+= frax.getN();}
-	    else {s+= frax.getN() + "/" + frax.getD();}
+	    if (frax.d == 0) {s += "infinity";}
+	    else if (frax.d == 1) {s+= frax.n;}
+	    else {s+= frax.n + "/" + frax.d;}
 	    return s;
 	}
 	
@@ -928,7 +814,7 @@ public class Kaleido {
 	// number of triangle edges, and V = Vp+ Vq+ Vr, with Vp = g/(2*np) being the
 	// number of vertices with angle pi/p (np is the numerator of p)
 	
-	private void moebius() {
+	private void FindMoebiusTri() {
 		
 	    int twos = 0, j;
 		
@@ -938,51 +824,51 @@ public class Kaleido {
 		// 2 in `two', and save the largest numerator in `P->K', since they reflect on
 		// the symmetry group
 		
-	    K = 2;
-	    if (index == 80) {polyform = "|";} else {polyform = "";}
+	    SymmetryType = 2;
+	    if (PolyTypeIndex == 80) {WythoffSymbol = "|";} else {WythoffSymbol = "";}
 		
 	    for (j = 0; j < 4; j++) {
-			if (p[j] > 0) {
-			    string s = sprintfrac(p[j]);
-			    if (j > 0 && p[j-1] > 0) {
-			    	polyform += " " + s;
-			    } else {polyform += s;}
-			    if (p[j] != 2) {
+			if (WythoffParams[j] > 0) {
+			    string s = SprintFrac(WythoffParams[j]);
+			    if (j > 0 && WythoffParams[j-1] > 0) {
+			    	WythoffSymbol += " " + s;
+			    } else {WythoffSymbol += s;}
+			    if (WythoffParams[j] != 2) {
 					int k;
-					if ((k = (int)Fraction.numerator(p[j])) > K) {
-					    if (K == 4) {break;}
-					    K = k;
-					} else if (k < K && k == 4) {break;}
+					if ((k = (int)Fraction.numerator(WythoffParams[j])) > SymmetryType) {
+					    if (SymmetryType == 4) {break;}
+					    SymmetryType = k;
+					} else if (k < SymmetryType && k == 4) {break;}
 			    } else {twos++;}
-			} else  {polyform += "|";}
+			} else  {WythoffSymbol += "|";}
 		}
 
 		// Find the symmetry group P->K (where 2, 3, 4, 5 represent the dihedral,
 		// tetrahedral, octahedral and icosahedral groups, respectively), and its order
 		// P->g
 	    if (twos >= 2) {  // dihedral
-			g = 4 * K;
-			K = 2;
+			SymmetryGroupOrder = 4 * SymmetryType;
+			SymmetryType = 2;
 	    } else {
-			if (K > 5) {throw new System.ApplicationException("numerator too large");}
-			g = 24 * K / (6 - K);
+			if (SymmetryType > 5) {throw new ApplicationException("numerator too large");}
+			SymmetryGroupOrder = 24 * SymmetryType / (6 - SymmetryType);
 	    }
 	
 		// Compute the nominal density P->D and Euler characteristic P->chi.
 		// In few exceptional cases, these values will be modified later
 	
-	    if (index != 80) {
+	    if (PolyTypeIndex != 80) {
 			int i;
-			D = chi = -g;
+			Density = Chi = -SymmetryGroupOrder;
 			for (j = 0; j < 4; j++) {
-				if (p[j] > 0) {
-				    chi += i = (int)(g / Fraction.numerator(p[j]));
-				    D += i * (int)Fraction.denominator(p[j]);
+				if (WythoffParams[j] > 0) {
+				    Chi += i = (int)(SymmetryGroupOrder / Fraction.numerator(WythoffParams[j]));
+				    Density += i * (int)Fraction.denominator(WythoffParams[j]);
 				}
 			}
-			chi /= 2;
-			D /= 4;
-		    if (D <= 0) {throw new System.ApplicationException("nonpositive density");}
+			Chi /= 2;
+			Density /= 4;
+		    if (Density <= 0) {throw new ApplicationException("nonpositive density");}
 	    }
 	}
 	
@@ -997,184 +883,186 @@ public class Kaleido {
 	// with one even denominator have a crossed parallelogram as a vertex figure,
 	// and thus are one-sided as well
 	
-	private void decompose() {
+	private void DecomposeSchwarzTri() {
 		
 	    int j, J, s, t;
-	    if (p[1] == 0) { /* p|q r */
-			N = 2;
-			M = 2 * (int)Fraction.numerator(p[0]);
-			V = g / M;
-			n = new double[N];
-			m = new double[N];
-			rot = new int[M];
+		
+	    if (WythoffParams[1] == 0) {  // p|q r
+		    
+			FaceTypeCount = 2;
+			Valency = 2 * (int)Fraction.numerator(WythoffParams[0]);
+			VertexCount = SymmetryGroupOrder / Valency;
+			FaceSidesByType = new double[FaceTypeCount];
+			FaceCountAtVertexType = new double[FaceTypeCount];
+			VertexConfig = new int[Valency];
 			s = 0;
 			for (j = 0; j < 2; j++) {
-			    n[j] = p[j+2];
-			    m[j] = p[0];
+			    FaceSidesByType[j] = WythoffParams[j+2];
+			    FaceCountAtVertexType[j] = WythoffParams[0];
 			}
-			for (j = M / 2; j > 0; j--) {
-			    rot[s++] = 0;
-			    rot[s++] = 1;
+			for (j = Valency / 2; j > 0; j--) {
+			    VertexConfig[s++] = 0;
+			    VertexConfig[s++] = 1;
 			}
-	    } else if (p[2] == 0) {  // p q|r
-			N = 3;
-			M = 4;
-			V = g / 2;
-			n = new double[N];
-			m = new double[N];
-			rot = new int[M];
+	    } else if (WythoffParams[2] == 0) {  // p q|r
+			FaceTypeCount = 3;
+			Valency = 4;
+			VertexCount = SymmetryGroupOrder / 2;
+			FaceSidesByType = new double[FaceTypeCount];
+			FaceCountAtVertexType = new double[FaceTypeCount];
+			VertexConfig = new int[Valency];
 			s = 0;  // rot;
-			n[0] = 2 * p[3];
-			m[0] = 2;
+			FaceSidesByType[0] = 2 * WythoffParams[3];
+			FaceCountAtVertexType[0] = 2;
 			for (j = 1; j < 3; j++) {
-			    n[j] = p[j-1];
-			    m[j] = 1;
-			    rot[s++] = 0;
-			    rot[s++] = j;
+			    FaceSidesByType[j] = WythoffParams[j-1];
+			    FaceCountAtVertexType[j] = 1;
+			    VertexConfig[s++] = 0;
+			    VertexConfig[s++] = j;
 			}
-			if (Math.Abs(p[0] - Fraction.compl(p[1])) < DBL_EPSILON) {  // p = q'
+			if (Math.Abs(WythoffParams[0] - Fraction.compl(WythoffParams[1])) < DBL_EPSILON) {  // p = q'
 				// P->p[0]==compl(P->p[1]) should work.  However, MSDOS
 				// yeilds a 7e-17 difference! Reported by Jim Buddenhagen
 				// <jb1556@daditz.sbc.com> */
-			    hemi = 1;
-			    D = 0;
-			    if (p[0] != 2 && !(p[3] == 3 && (p[0] == 3 || p[1] == 3))) {
-					onesided = 1;
-					V /= 2;
-					chi /= 2;
+			    IsHemi = 1;
+			    Density = 0;
+			    if (WythoffParams[0] != 2 && !(WythoffParams[3] == 3 && (WythoffParams[0] == 3 || WythoffParams[1] == 3))) {
+					IsOneSided = 1;
+					VertexCount /= 2;
+					Chi /= 2;
 			    }
 			}
-	    } else if (p[3] == 0) {  // p q r|
-			M = N = 3;
-			V = g;
-			n = new double[N];
-			m = new double[N];
-			rot = new int[M];
+	    } else if (WythoffParams[3] == 0) {  // p q r|
+			Valency = FaceTypeCount = 3;
+			VertexCount = SymmetryGroupOrder;
+			FaceSidesByType = new double[FaceTypeCount];
+			FaceCountAtVertexType = new double[FaceTypeCount];
+			VertexConfig = new int[Valency];
 			s = 0;  // rot;
 			for (j = 0; j < 3; j++) {
-			    if ((Fraction.denominator(p[j]) % 2) == 0) {
+			    if ((Fraction.denominator(WythoffParams[j]) % 2) == 0) {
 					// what happens if there is more then one even denominator?
-					if (p[(j+1)%3] != p[(j+2)%3]) {  // needs postprocessing
-					    even = j;/* memorize the removed face */
-					    chi -= g / (int)Fraction.numerator(p[j]) / 2;
-					    onesided = 1;
-					    D = 0;
+					if (WythoffParams[(j+1)%3] != WythoffParams[(j+2)%3]) {  // needs postprocessing
+					    _even = j;/* memorize the removed face */
+					    Chi -= SymmetryGroupOrder / (int)Fraction.numerator(WythoffParams[j]) / 2;
+					    IsOneSided = 1;
+					    Density = 0;
 					} else {
 						// for p = q we get a double 2 2r|p
 						// noted by Roman Maeder <maeder@inf.ethz.ch> for 4 4 3/2|
 						// Euler characteristic is still wrong
-					    D /= 2;
+					    Density /= 2;
 					}
-					V /= 2;
+					VertexCount /= 2;
 			    }
-			    n[j] = 2 * p[j];
-			    m[j] = 1;
-			    rot[s++] = j;
+			    FaceSidesByType[j] = 2 * WythoffParams[j];
+			    FaceCountAtVertexType[j] = 1;
+			    VertexConfig[s++] = j;
 			}
 	    } else {  // |p q r - snub polyhedron
-			N = 4;
-			M = 6;
-			V = g / 2;/* Only "white" triangles carry a vertex */
-			n = new double[N];
-			m = new double[N];
-			rot = new int[M];
-			snub = new int[M];
+			FaceTypeCount = 4;
+			Valency = 6;
+			VertexCount = SymmetryGroupOrder / 2;/* Only "white" triangles carry a vertex */
+			FaceSidesByType = new double[FaceTypeCount];
+			FaceCountAtVertexType = new double[FaceTypeCount];
+			VertexConfig = new int[Valency];
+			SnubConfig = new int[Valency];
 			s = 0; //rot;
 			t = 0; //snub;
-			m[0] = n[0] = 3;
+			FaceCountAtVertexType[0] = FaceSidesByType[0] = 3;
 			for (j = 1; j < 4; j++) {
-			    n[j] = p[j];
-			    m[j] = 1;
-			    rot[s++] = 0;
-			    rot[s++] = j;
-			    snub[t++] = 1;
-			    snub[t++] = 0;
+			    FaceSidesByType[j] = WythoffParams[j];
+			    FaceCountAtVertexType[j] = 1;
+			    VertexConfig[s++] = 0;
+			    VertexConfig[s++] = j;
+			    SnubConfig[t++] = 1;
+			    SnubConfig[t++] = 0;
 			}
 	    }
 		
 		// Sort the fundamental triangles (using bubble sort) according to decreasing
 		// n[i], while pushing the trivial triangles (n[i] = 2) to the end
 	
-	    J = N - 1;
+	    J = FaceTypeCount - 1;
 	    while (J != 0) {
 			int last;
 			last = J;
 			J = 0;
 			for (j = 0; j < last; j++) {
-			    if ((n[j] < n[j+1] || n[j] == 2) && n[j+1] != 2) {
+			    if ((FaceSidesByType[j] < FaceSidesByType[j+1] || FaceSidesByType[j] == 2) && FaceSidesByType[j+1] != 2) {
 					int i;
 					double temp;
-					temp = n[j];
-					n[j] = n[j+1];
-					n[j+1] = temp;
-					temp = m[j];
-					m[j] = m[j+1];
-					m[j+1] = temp;
-					for (i = 0; i < M; i++) {
-					    if (rot[i] == j) {rot[i] = j+1;}
-					    else if (rot[i] == j+1) {rot[i] = j;}
+					temp = FaceSidesByType[j];
+					FaceSidesByType[j] = FaceSidesByType[j+1];
+					FaceSidesByType[j+1] = temp;
+					temp = FaceCountAtVertexType[j];
+					FaceCountAtVertexType[j] = FaceCountAtVertexType[j+1];
+					FaceCountAtVertexType[j+1] = temp;
+					for (i = 0; i < Valency; i++) {
+					    if (VertexConfig[i] == j) {VertexConfig[i] = j+1;}
+					    else if (VertexConfig[i] == j+1) {VertexConfig[i] = j;}
 					}
-					if (even != -1) {
-					    if (even == j) {even = j+1;}
-					    else if (even == j+1) {even = j;}
+					if (_even != -1) {
+					    if (_even == j) {_even = j+1;}
+					    else if (_even == j+1) {_even = j;}
 					}
 					J = j;
 			    }
 			}
 	    }
 		// Get rid of repeated triangles
-	    for (J = 0; J < N && n[J] != 2;J++) {
+	    for (J = 0; J < FaceTypeCount && FaceSidesByType[J] != 2; J++) {
 			int k, i;
-			for (j = J+1; j < N && n[j] == n[J]; j++) {
-			    m[J] += m[j];
+			for (j = J+1; j < FaceTypeCount && FaceSidesByType[j] == FaceSidesByType[J]; j++) {
+			    FaceCountAtVertexType[J] += FaceCountAtVertexType[j];
 			}
 			k = j - J - 1;
 			if (k != 0) {
-			    for (i = j; i < N; i++) {
-					n[i - k] = n[i];
-					m[i - k] = m[i];
+			    for (i = j; i < FaceTypeCount; i++) {
+					FaceSidesByType[i - k] = FaceSidesByType[i];
+					FaceCountAtVertexType[i - k] = FaceCountAtVertexType[i];
 			    }
-			    N -= k;
-			    for (i = 0; i < M; i++) {
-					if (rot[i] >= j)
-					    rot[i] -= k;
-					else if (rot[i] > J) {
-					    rot[i] = J;
+			    FaceTypeCount -= k;
+			    for (i = 0; i < Valency; i++) {
+					if (VertexConfig[i] >= j)
+					    VertexConfig[i] -= k;
+					else if (VertexConfig[i] > J) {
+					    VertexConfig[i] = J;
 					}
 			    }
-			    if (even >= j) {even -= k;}
+			    if (_even >= j) {_even -= k;}
 			}
 	    }
 		
 		// Get rid of trivial triangles
 	    if (J == 0) {J = 1;}  // hosohedron
-	    if (J < N) {
+	    if (J < FaceTypeCount) {
 			int i;
-			N = J;
-			for (i = 0; i < M; i++) {
-			    if (rot[i] >= N) {
-					for (j = i + 1; j < M; j++) {
-					    rot[j-1] = rot[j];
-					    if (snub != null && snub.Length > j) {
-					    	snub[j-1] = snub[j];
+			FaceTypeCount = J;
+			for (i = 0; i < Valency; i++) {
+			    if (VertexConfig[i] >= FaceTypeCount) {
+					for (j = i + 1; j < Valency; j++) {
+					    VertexConfig[j-1] = VertexConfig[j];
+					    if (SnubConfig != null && SnubConfig.Length > j) {
+					    	SnubConfig[j-1] = SnubConfig[j];
 					    }
 					}
-					M--;
+					Valency--;
 			    }
 			}
 	    }
 		// Truncate arrays
-	    Array.Resize(ref n, N);
-	    Array.Resize(ref m, N);
-	    Array.Resize(ref rot, M);
-	    if (snub != null) {Array.Resize(ref snub, M);}
+	    Array.Resize(ref FaceSidesByType, FaceTypeCount);
+	    Array.Resize(ref FaceCountAtVertexType, FaceTypeCount);
+	    Array.Resize(ref VertexConfig, Valency);
+	    if (SnubConfig != null) {Array.Resize(ref SnubConfig, Valency);}
 		
 	}
 
-	private void dihedral(string polyname, string dual_name) {
-	    string s = sprintfrac(gon < 2 ? Fraction.compl(gon) : gon);
-		polyname = s + "-gonal " + polyname;
-	    dual_name = s + "-gonal " + dual_name;
+	private void Dihedral() {
+	    string s = SprintFrac(DihedralBasisType < 2 ? Fraction.compl(DihedralBasisType) : DihedralBasisType);
+		PolyName = s + "-gonal " + PolyName;
+		DualName = s + "-gonal " + DualName;
 	}
 	
 	// Get the polyhedron name, using standard list or guesswork. Ideally, we
@@ -1182,82 +1070,82 @@ public class Kaleido {
 	// course, it is dihedral), after doing few normalizations, such as sorting
 	// angles and splitting isoceles triangles.
 	
-	private void guessname() {
-	    if (index != -1) {  // tabulated
-		    polyname = uniform[index].name;
-			dual_name = uniform[index].dual;
-	    } else if (K == 2) {  // dihedral nontabulated
-			if (p[0] == 0) {
-			    if (N == 1) {
-				    polyname = "octahedron";
-					dual_name = "cube";
+	private void GuessNames() {
+	    if (PolyTypeIndex != -1) {  // tabulated
+		    PolyName = uniform[PolyTypeIndex].name;
+			DualName = uniform[PolyTypeIndex].dual;
+	    } else if (SymmetryType == 2) {  // dihedral nontabulated
+			if (WythoffParams[0] == 0) {
+			    if (FaceTypeCount == 1) {
+				    PolyName = "octahedron";
+					DualName = "cube";
 			    } else {
-				    gon = n[0] == 3 ? n[1] : n[0];
-				    if (gon >= 2) {dihedral("antiprism", "deltohedron");}
-				    else {dihedral("crossed antiprism", "concave deltohedron");}
+				    DihedralBasisType = FaceSidesByType[0] == 3 ? FaceSidesByType[1] : FaceSidesByType[0];
+				    if (DihedralBasisType >= 2) {Dihedral();}
+				    else {Dihedral();}
 			    }
-			} else if (p[3] == 0 || p[2] == 0 && p[3] == 2) {
-			    if (N == 1) {
-				    polyname = "cube";
-					dual_name = "octahedron";
+			} else if (WythoffParams[3] == 0 || WythoffParams[2] == 0 && WythoffParams[3] == 2) {
+			    if (FaceTypeCount == 1) {
+				    PolyName = "cube";
+					DualName = "octahedron";
 			    }
-			    gon = n[0] == 4 ? n[1] : n[0];
-			    dihedral("prism", "dipyramid");
-			} else if (p[1] == 0 && p[0] != 2) {
-			    gon = m[0];
-			    dihedral("hosohedron", "dihedron");
+			    DihedralBasisType = FaceSidesByType[0] == 4 ? FaceSidesByType[1] : FaceSidesByType[0];
+			    Dihedral();
+			} else if (WythoffParams[1] == 0 && WythoffParams[0] != 2) {
+			    DihedralBasisType = FaceCountAtVertexType[0];
+			    Dihedral();
 			} else {
-			    gon = n[0];
-			    dihedral("dihedron", "hosohedron");
+			    DihedralBasisType = FaceSidesByType[0];
+			    Dihedral();
 			}
 	    } else {  // other nontabulated
 		    
 			string[] pre = new string[] {"tetr", "oct", "icos"};
-		    polyname = pre[K - 3] + "ahedral ";
+		    PolyName = pre[SymmetryType - 3] + "ahedral ";
 		    
-			if (onesided != 0) {polyname += "one-sided ";}
-			else if (D == 1) {polyname += "convex ";}
-			else {polyname += "nonconvex ";}
+			if (IsOneSided != 0) {PolyName += "one-sided ";}
+			else if (Density == 1) {PolyName += "convex ";}
+			else {PolyName += "nonconvex ";}
 		    
-			dual_name = polyname;
-		    polyname += "isogonal polyhedron";
-			dual_name += "isohedral polyhedron";
+			DualName = PolyName;
+		    PolyName += "isogonal polyhedron";
+			DualName += "isohedral polyhedron";
 	    }
 	}
 	
 	// Solve the fundamental right spherical triangles
 	
-	private void newton() {
+	private void SolveFundementalTris() {
 		
 		// First, we find initial approximations.
 	    int j;
 	    double cosa;
-	    gamma = new double[N];
-	    if (N == 1) {gamma[0] = M_PI / m[0];}
-	    for (j = 0; j < N; j++)
-		gamma[j] = M_PI / 2 - M_PI / n[j];
+	    FundementalAngles = new double[FaceTypeCount];
+	    if (FaceTypeCount == 1) {FundementalAngles[0] = M_PI / FaceCountAtVertexType[0];}
+	    for (j = 0; j < FaceTypeCount; j++)
+		FundementalAngles[j] = M_PI / 2 - M_PI / FaceSidesByType[j];
 		
 		// Next, iteratively find closer approximations for gamma[0] and compute
 		// other gamma[j]'s from Napier's equations
 		
 	    for (;;) {
 			double delta = M_PI, sigma = 0;
-			for (j = 0; j < N; j++) {
-			    delta -= m[j] * gamma[j];
+			for (j = 0; j < FaceTypeCount; j++) {
+			    delta -= FaceCountAtVertexType[j] * FundementalAngles[j];
 			}
 			if (Math.Abs(delta) < 11 * DBL_EPSILON) {return;}
 			// On a RS/6000, fabs(delta)/DBL_EPSILON may occilate between 8 and 10
 			// Reported by David W. Sanderson <dws@ssec.wisc.edu>
-		    for (j = 0; j < N; j++) {
-			    sigma += m[j] * Math.Tan(gamma[j]);
+		    for (j = 0; j < FaceTypeCount; j++) {
+			    sigma += FaceCountAtVertexType[j] * Math.Tan(FundementalAngles[j]);
 		    }
-		    gamma[0] += delta * Math.Tan(gamma[0]) / sigma;
-			if (gamma[0] < 0 || gamma[0] > M_PI) {
-			    throw new System.ApplicationException("gamma out of bounds");
+		    FundementalAngles[0] += delta * Math.Tan(FundementalAngles[0]) / sigma;
+			if (FundementalAngles[0] < 0 || FundementalAngles[0] > M_PI) {
+			    throw new ApplicationException("gamma out of bounds");
 			}
-			cosa = Math.Cos(M_PI / n[0]) / Math.Sin(gamma[0]);
-		    for (j = 1; j < N; j++) {
-			    gamma[j] = Math.Asin(Math.Cos(M_PI / n[j]) / cosa);
+			cosa = Math.Cos(M_PI / FaceSidesByType[0]) / Math.Sin(FundementalAngles[0]);
+		    for (j = 1; j < FaceTypeCount; j++) {
+			    FundementalAngles[j] = Math.Asin(Math.Cos(M_PI / FaceSidesByType[j]) / cosa);
 		    }
 	    }
 	}
@@ -1265,59 +1153,59 @@ public class Kaleido {
 	// Postprocess pqr| where r has an even denominator (cf. Coxeter &al. Sec.9)
 	// Remove the {2r} and add a retrograde {2p} and retrograde {2q}
 	
-	private void exceptions() {
+	private void HandlePolyExceptions() {
 		
 	    int j;
-	    if (even != -1) {
-			M = N = 4;
-			Array.Resize(ref n, N);
-			Array.Resize(ref m, N);
-			Array.Resize(ref gamma, N);
-			Array.Resize(ref rot, M);
-			for (j = even + 1; j < 3; j++) {
-			    n[j-1] = n[j];
-			    gamma[j-1] = gamma[j];
+	    if (_even != -1) {
+			Valency = FaceTypeCount = 4;
+			Array.Resize(ref FaceSidesByType, FaceTypeCount);
+			Array.Resize(ref FaceCountAtVertexType, FaceTypeCount);
+			Array.Resize(ref FundementalAngles, FaceTypeCount);
+			Array.Resize(ref VertexConfig, Valency);
+			for (j = _even + 1; j < 3; j++) {
+			    FaceSidesByType[j-1] = FaceSidesByType[j];
+			    FundementalAngles[j-1] = FundementalAngles[j];
 			}
-			n[2] = Fraction.compl(n[1]);
-			gamma[2] = - gamma[1];
-			n[3] = Fraction.compl(n[0]);
-			m[3] = 1;
-			gamma[3] = - gamma[0];
-			rot[0] = 0;
-			rot[1] = 1;
-			rot[2] = 3;
-			rot[3] = 2;
+			FaceSidesByType[2] = Fraction.compl(FaceSidesByType[1]);
+			FundementalAngles[2] = - FundementalAngles[1];
+			FaceSidesByType[3] = Fraction.compl(FaceSidesByType[0]);
+			FaceCountAtVertexType[3] = 1;
+			FundementalAngles[3] = - FundementalAngles[0];
+			VertexConfig[0] = 0;
+			VertexConfig[1] = 1;
+			VertexConfig[2] = 3;
+			VertexConfig[3] = 2;
 	    }
 
 		// Postprocess the last polyhedron |3/2 5/3 3 5/2 by taking a |5/3 3 5/2,
 		// replacing the three snub triangles by four equatorial squares and adding
 		// the missing {3/2} (retrograde triangle, cf. Coxeter &al. Sec. 11)
 		
-	    if (index == 80) {
-			N = 5;
-			M = 8;
-			Array.Resize(ref n, N);
-			Array.Resize(ref m, N);
-			Array.Resize(ref gamma, N);
-			Array.Resize(ref rot, M);
-			Array.Resize(ref snub, M);
-			hemi = 1;
-			D = 0;
+	    if (PolyTypeIndex == 80) {
+			FaceTypeCount = 5;
+			Valency = 8;
+			Array.Resize(ref FaceSidesByType, FaceTypeCount);
+			Array.Resize(ref FaceCountAtVertexType, FaceTypeCount);
+			Array.Resize(ref FundementalAngles, FaceTypeCount);
+			Array.Resize(ref VertexConfig, Valency);
+			Array.Resize(ref SnubConfig, Valency);
+			IsHemi = 1;
+			Density = 0;
 			for (j = 3; j != 0; j--) {
-			    m[j] = 1;
-			    n[j] = n[j-1];
-			    gamma[j] = gamma[j-1];
+			    FaceCountAtVertexType[j] = 1;
+			    FaceSidesByType[j] = FaceSidesByType[j-1];
+			    FundementalAngles[j] = FundementalAngles[j-1];
 			}
-			m[0] = n[0] = 4;
-			gamma[0] = M_PI / 2;
-			m[4] = 1;
-			n[4] = Fraction.compl(n[1]);
-			gamma[4] = - gamma[1];
-			for (j = 1; j < 6; j += 2) {rot[j]++;}
-			rot[6] = 0;
-			rot[7] = 4;
-			snub[6] = 1;
-			snub[7] = 0;
+			FaceCountAtVertexType[0] = FaceSidesByType[0] = 4;
+			FundementalAngles[0] = M_PI / 2;
+			FaceCountAtVertexType[4] = 1;
+			FaceSidesByType[4] = Fraction.compl(FaceSidesByType[1]);
+			FundementalAngles[4] = - FundementalAngles[1];
+			for (j = 1; j < 6; j += 2) {VertexConfig[j]++;}
+			VertexConfig[6] = 0;
+			VertexConfig[7] = 4;
+			SnubConfig[6] = 1;
+			SnubConfig[7] = 0;
 	    }
 	}
 	
@@ -1331,37 +1219,37 @@ public class Kaleido {
 	// implies gamma[j] cannot be obtuse.  Also, compute chi for the only
 	// non-Wythoffian polyhedron
 	
-	private void count() {
+	private void CalcCounts() {
 	    int j, temp;
-	    Fi = new int[N];
-	    for (j = 0; j < N; j++) {
-			E += temp = V * (int)Fraction.numerator(m[j]);
-			F += Fi[j] = (int)(temp / Fraction.numerator(n[j]));
+	    FaceCountsByType = new int[FaceTypeCount];
+	    for (j = 0; j < FaceTypeCount; j++) {
+			EdgeCount += temp = VertexCount * (int)Fraction.numerator(FaceCountAtVertexType[j]);
+			FaceCount += FaceCountsByType[j] = (int)(temp / Fraction.numerator(FaceSidesByType[j]));
 	    }
-	    E /= 2;
-	    if (D != 0 && gamma[0] > M_PI / 2) {
-	    	D = Fi[0] - D;
+	    EdgeCount /= 2;
+	    if (Density != 0 && FundementalAngles[0] > M_PI / 2) {
+	    	Density = FaceCountsByType[0] - Density;
 	    }
-	    if (index == 80) {
-	    	chi = V - E + F;
+	    if (PolyTypeIndex == 80) {
+	    	Chi = VertexCount - EdgeCount + FaceCount;
 	    }
 	}
 	
 	// Generate a printable vertex configuration symbol
 	
-	private void configuration() {
+	private void GenerateConfiguration() {
 	    int j;
-	    for (j = 0; j < M; j++) {
+	    for (j = 0; j < Valency; j++) {
 			if (j == 0) {
-			    config = "(";
+			    VertexConfigString = "(";
 			} else {
-			    config += ".";
+			    VertexConfigString += ".";
 			}
-			config += sprintfrac(n[rot[j]]);
+			VertexConfigString += SprintFrac(FaceSidesByType[VertexConfig[j]]);
 	    }
-	    config += ")";
-	    if ((j = (int)Fraction.denominator(m[0])) != 1) {
-			config += "/" + j;
+	    VertexConfigString += ")";
+	    if ((j = (int)Fraction.denominator(FaceCountAtVertexType[0])) != 1) {
+			VertexConfigString += "/" + j;
 	    }
 	}
 	
@@ -1376,67 +1264,67 @@ public class Kaleido {
 	// end to signify clockwise rotations. The firstrot[] array is not needed for
 	// display thus it is freed after being used for face computations below.
 
-	private void vertices() {
+	private void CalcVertices() {
 		
 	    int i, newV = 2;
 	    double cosa;
-	    v = new Vector[V];
-	    adj = new int[M, V];
-	    firstrot = new int[V];  // temporary , put in Polyhedron structure so that may be freed on error
-	    cosa = Math.Cos(M_PI / n[0]) / Math.Sin(gamma[0]);
-	    v[0] = new Vector(0, 0, 1);
-	    firstrot[0] = 0;
-	    adj[0, 0] = 1;
-	    v[1] = new Vector(
+	    Vertices = new Vector[VertexCount];
+	    VertexAdjacency = new int[Valency, VertexCount];
+	    _firstrot = new int[VertexCount];  // temporary , put in Polyhedron structure so that may be freed on error
+	    cosa = Math.Cos(M_PI / FaceSidesByType[0]) / Math.Sin(FundementalAngles[0]);
+	    Vertices[0] = new Vector(0, 0, 1);
+	    _firstrot[0] = 0;
+	    VertexAdjacency[0, 0] = 1;
+	    Vertices[1] = new Vector(
 		    (float)(2 * cosa * Math.Sqrt(1 - cosa * cosa)),
 		    0,
 		    (float)(2 * cosa * cosa - 1)
 		);
-	    if (snub == null) {
-			firstrot[1] = 0;
-			adj[0, 1] = -1;  // start the other side
-			adj[M-1, 1] = 0;
+	    if (SnubConfig == null) {
+			_firstrot[1] = 0;
+			VertexAdjacency[0, 1] = -1;  // start the other side
+			VertexAdjacency[Valency-1, 1] = 0;
 	    } else {
-			firstrot[1] = snub[M-1] != 0 ? 0 : M-1 ;
-			adj[0, 1] = 0;
+			_firstrot[1] = SnubConfig[Valency-1] != 0 ? 0 : Valency-1 ;
+			VertexAdjacency[0, 1] = 0;
 	    }
 	    for (i = 0; i < newV; i++) {
 			int j, k;
 			int last, one, start, limit;
-			if (adj[0, i] == -1) {
-			    one = -1; start = M-2; limit = -1;
+			if (VertexAdjacency[0, i] == -1) {
+			    one = -1; start = Valency-2; limit = -1;
 			} else {
-			    one = 1; start = 1; limit = M;
+			    one = 1; start = 1; limit = Valency;
 			}
-			k = firstrot[i];
+			k = _firstrot[i];
 			for (j = start; j != limit; j += one) {
 				Vector temp;
 				int J;
-				Vector vertex = v[adj[j - one, i]];
-				Vector axis = v[i];
-				double angle = one * 2 * gamma[rot[k]];
+				Vector vertex = Vertices[VertexAdjacency[j - one, i]];
+				Vector axis = Vertices[i];
+				double angle = one * 2 * FundementalAngles[VertexConfig[k]];
 				temp = Vector.rotate(vertex, axis, angle);
-				for (J=0; J<newV && !temp.same(v[J], BIG_EPSILON); J++) {
+				for (J=0; J<newV && !temp.same(Vertices[J], BIG_EPSILON); J++) {
 			    	// noop
 			    }
-			    adj[j, i] = J;
+			    VertexAdjacency[j, i] = J;
 			    last = k;
-			    if (++k == M) {k = 0;}
+			    if (++k == Valency) {k = 0;}
 			    if (J == newV) {  // new vertex
-					if (newV == V) {throw new System.ApplicationException("too many vertices");}
-					v[newV++] = temp;
-					if (snub == null) {
-					    firstrot[J] = k;
+					if (newV == VertexCount) {throw new ApplicationException("too many vertices");}
+					Vertices[newV++] = temp;
+					if (SnubConfig == null) {
+					    _firstrot[J] = k;
 					    if (one > 0) {
-							adj[0, J] = -1;
-							adj[M-1, J] = i;
+							VertexAdjacency[0, J] = -1;
+							VertexAdjacency[Valency-1, J] = i;
 					    } else {
-					    	adj[0, J] = i;
+					    	VertexAdjacency[0, J] = i;
 					    }
 					} else {
-					    firstrot[J] = snub[last] == 0 ? last :
-						snub[k] == 0 ? (k+1)%M : k ;
-					    adj[0, J] = i;
+					    _firstrot[J] = SnubConfig[last] == 0 ? last :
+						SnubConfig[k] == 0 ? (k+1)%Valency : k ;
+					    VertexAdjacency[0, J] = i;
 					}
 			    }
 			}
@@ -1453,7 +1341,7 @@ public class Kaleido {
 	// and
 	// dot(p,p) = 1
 	
-	private Vector pole(double r, Vector a, Vector b, Vector c)	{
+	private Vector CalcPolarReciprocal(double r, Vector a, Vector b, Vector c)	{
 	    Vector p;
 	    double k;
 	    p = b.diff(a).cross(c.diff(a));
@@ -1479,42 +1367,42 @@ public class Kaleido {
 	// and the two faces meeting at an edge can be identified as the side face
 	// (n[1] or n[2]) and the diagonal face (n[0] or n[3])
 	
-	private void faces() {
+	private void CalcFaces() {
 		
 	    int i, newF = 0;
-	    f = new Vector[F];
-	    ftype = new int[F];
-	    incid = new int[M, V];
-	    minr = 1 / Math.Abs (Math.Tan (M_PI / n[hemi]) * Math.Tan (gamma[hemi]));
-	    for (i = M; --i>=0;) {
-		    for (int j = V; --j >= 0;) {incid[i, j] = -1;}
+	    Faces = new Vector[FaceCount];
+	    FaceTypes = new int[FaceCount];
+	    VertexFaceIncidence = new int[Valency, VertexCount];
+	    MinInRadius = 1 / Math.Abs (Math.Tan (M_PI / FaceSidesByType[IsHemi]) * Math.Tan (FundementalAngles[IsHemi]));
+	    for (i = Valency; --i>=0;) {
+		    for (int j = VertexCount; --j >= 0;) {VertexFaceIncidence[i, j] = -1;}
 	    }
-	    for (i = 0; i < V; i++) {
-			for (int j = 0; j < M; j++) {
+	    for (i = 0; i < VertexCount; i++) {
+			for (int j = 0; j < Valency; j++) {
 			    int i0, J;
 			    int pap = 0;  // papillon edge type
-				if (incid[j, i] == -1) {
-					incid[j, i] = newF;
-					if (newF == F) {throw new System.ApplicationException("too many faces");}
-					f[newF] = pole(minr, v[i], v[adj[j, i]], v[adj[mod(j + 1, M), i]]);
-					ftype[newF] = rot[mod(firstrot[i] + (adj[0, i] < adj[M - 1, i] ? j : -j - 2), M)];
-					if (onesided != 0) {pap = (firstrot[i] + j) % 2;}
+				if (VertexFaceIncidence[j, i] == -1) {
+					VertexFaceIncidence[j, i] = newF;
+					if (newF == FaceCount) {throw new ApplicationException("too many faces");}
+					Faces[newF] = CalcPolarReciprocal(MinInRadius, Vertices[i], Vertices[VertexAdjacency[j, i]], Vertices[VertexAdjacency[mod(j + 1, Valency), i]]);
+					FaceTypes[newF] = VertexConfig[mod(_firstrot[i] + (VertexAdjacency[0, i] < VertexAdjacency[Valency - 1, i] ? j : -j - 2), Valency)];
+					if (IsOneSided != 0) {pap = (_firstrot[i] + j) % 2;}
 					i0 = i;
 					J = j;
 					for (;;) {
 						int k;
 						k = i0;
-						if ((i0 = adj[J, k]) == i) {break;}
-						for (J = 0; J < M && adj[J, i0] != k; J++) {/* noop */}
-						if (J == M) {throw new System.ApplicationException("too many faces");}
-						if (onesided != 0 && (J + firstrot[i0]) % 2 == pap) {
-							incid[J, i0] = newF;
+						if ((i0 = VertexAdjacency[J, k]) == i) {break;}
+						for (J = 0; J < Valency && VertexAdjacency[J, i0] != k; J++) {/* noop */}
+						if (J == Valency) {throw new ApplicationException("too many faces");}
+						if (IsOneSided != 0 && (J + _firstrot[i0]) % 2 == pap) {
+							VertexFaceIncidence[J, i0] = newF;
 							J++;
-							if (J >= M) {J = 0;}
+							if (J >= Valency) {J = 0;}
 						} else {
 							J--;
-							if (J < 0) {J = M - 1;}
-							incid[J, i0] = newF;
+							if (J < 0) {J = Valency - 1;}
+							VertexFaceIncidence[J, i0] = newF;
 						}
 					}
 					newF++;
@@ -1530,19 +1418,19 @@ public class Kaleido {
 	// unit Vector, and the direction of the ray is either parallel or
 	// anti-parallel this Vector. We flag this in the array P->anti[E]
 	
-	private void edgelist() {
+	private void CalcEdgeList() {
 		
 	    int i, j, s, t, u;
-	    e = new int[2, E];
-	    int[,] dual_e = new int[2, E];
+	    Edges = new int[2, EdgeCount];
+	    DualEdges = new int[2, EdgeCount];
 	    s = 0;  // e[0];
 	    t = 0;  // e[1];
 		
-	    for (i = 0; i < V; i++) {
-			for (j = 0; j < M; j++) {
-			    if (i < adj[j, i]) {
-					e[0, s++] = i;
-					e[1, t++] = adj[j, i];
+	    for (i = 0; i < VertexCount; i++) {
+			for (j = 0; j < Valency; j++) {
+			    if (i < VertexAdjacency[j, i]) {
+					Edges[0, s++] = i;
+					Edges[1, t++] = VertexAdjacency[j, i];
 			    }
 			}
 	    }
@@ -1550,25 +1438,25 @@ public class Kaleido {
 	    s = 0;  // dual_e[0];
 	    t = 0;  // dual_e[1];
 		
-	    if (hemi != 0) {anti = null;} else {anti = new int[E];}
+	    if (IsHemi != 0) {_anti = null;} else {_anti = new int[EdgeCount];}
 		
 	    u = 0;  // anti;
 		
-	    for (i = 0; i < V; i++) {
-			for (j = 0; j < M; j++) {
-			    if (i < adj[j, i]) {
-					if (anti == null) {
-						dual_e[0, s++] = incid[mod(j-1,M), i];
-						dual_e[1, t++] = incid[j, i];
+	    for (i = 0; i < VertexCount; i++) {
+			for (j = 0; j < Valency; j++) {
+			    if (i < VertexAdjacency[j, i]) {
+					if (_anti == null) {
+						DualEdges[0, s++] = VertexFaceIncidence[mod(j-1,Valency), i];
+						DualEdges[1, t++] = VertexFaceIncidence[j, i];
 					} else {
-					    if (ftype[incid[j, i]] != 0) {
-					    	dual_e[0, s] = incid[j, i];
-					    	dual_e[1, t] = incid[mod(j-1,M), i];
+					    if (FaceTypes[VertexFaceIncidence[j, i]] != 0) {
+					    	DualEdges[0, s] = VertexFaceIncidence[j, i];
+					    	DualEdges[1, t] = VertexFaceIncidence[mod(j-1,Valency), i];
 					    } else {
-					    	dual_e[0, s] = incid[mod(j-1,M), i];
-					    	dual_e[1, t] = incid[j, i];
+					    	DualEdges[0, s] = VertexFaceIncidence[mod(j-1,Valency), i];
+					    	DualEdges[1, t] = VertexFaceIncidence[j, i];
 					    }
-					    anti[u++] = f[dual_e[0, s++]].dot(f[dual_e[1, t++]]) > 0 ? 1 : 0;
+					    _anti[u++] = Faces[DualEdges[0, s++]].dot(Faces[DualEdges[1, t++]]) > 0 ? 1 : 0;
 					}
 			    }
 			}
