@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -52,6 +54,13 @@ public class Polyhedron {
 	public Vector[] Vertices;  // vertex coordinates (array VertexCount) 
 	public Vector[] Faces;  // face coordinates (array FaceCount)
 	
+	public List<Vector3> vertices;
+	public List<int> triangles;
+	public List<Color> colors;
+	
+	public Mesh mesh;
+	public Color[] vertexPallette;
+	
 	public Polyhedron(int polyType) {
 		
 		UnpackSym("#" + polyType);
@@ -68,75 +77,168 @@ public class Polyhedron {
 		CalcFaces();
 		CalcEdgeList();
 		
+		// TODO generate mesh for duals
+		
+		vertices = new List<Vector3>();
+		triangles = new List<int>();
+		colors = new List<Color>();
+		mesh = new Mesh();
+		
+		vertexPallette = new Color[] {
+			Color.red,
+			Color.yellow,
+			Color.green,
+			Color.cyan,
+			Color.blue,
+			Color.magenta
+		};
+
+		// TODO Fix duals
+		
+		List<Face> faces = new List<Face>();
+		
+		for (int faceIndex = 0; faceIndex < FaceCount; faceIndex++) {
+		
+			int v1 = SeekVertex(faceIndex);
+			
+			Face face = new Face(
+				Faces[faceIndex],
+				Vertices[v1],
+				FaceSidesByType[FaceTypes[faceIndex]]
+			);
+			
+			face.SetPoint(v1);
+			
+			bool end = false;
+			
+			while (!end) {
+				int v2;
+				for (int ii = 0; ii < Valency; ii++) {
+					v2 = VertexAdjacency[ii, v1];
+					bool found = false;
+					for (int j = 0; j < Valency; j++) {
+						if (VertexFaceIncidence[j, v2] == faceIndex) {
+							if (!face.VertexExists(v2)) {
+								v1 = v2;
+								found = true;
+								break;
+							}
+						}
+					}
+					if (found) {
+						face.SetPoint(v2);
+					}
+					if (face.GetCorners() == face.points.Count) {
+						end = true;
+					}
+				}
+			}
+			faces.Add(face);
+		}
+		
+		bool auxiliaryNeeded = false;
+		
+		foreach (double c in FaceSidesByType) {
+			Fraction frax = new Fraction(c);
+			if (frax.d > 1 && frax.d != frax.n - 1) {
+				auxiliaryNeeded = true;
+			}
+		}
+		
+		if (auxiliaryNeeded) { // TODO this is awful
+			var tempVerts = new List<Vector>();
+			tempVerts = Vertices.ToList();
+			foreach (Face f in faces) {
+				if (f.frax.d > 1 && f.frax.d != f.frax.n - 1) {
+					tempVerts.Add(f.center);
+					f.SetPoint(tempVerts.Count - 1);
+					f.centerPoint = tempVerts.Count - 1;
+				}
+			}
+			Vertices = tempVerts.ToArray();
+		}
+		
+		// Build Faces
+
+		int meshVertexIndex = 0;
+		
+		for (int faceType = 0; faceType < FaceTypeCount; faceType++) {
+			foreach (Face face in faces) {
+				if (face.configuration == FaceSidesByType[faceType]) {
+					var faceTriangles = face.CalcTriangles();
+					Color faceColor = vertexPallette[(int) (face.configuration % vertexPallette.Length)];
+					// Vertices
+					for (int i = 0; i < faceTriangles.Count; i++) {
+						Vector v = Vertices[faceTriangles[i]];
+						vertices.Add(v.getVector3());
+						colors.Add(faceColor);
+						triangles.Add(meshVertexIndex);
+						meshVertexIndex++;
+					}	
+				}
+			}
+		}
+
+		
+		mesh.vertices = vertices.ToArray();
+		mesh.triangles = triangles.ToArray();
+		mesh.colors = colors.ToArray();
+		mesh.RecalculateNormals();
+		mesh.RecalculateTangents();
+		mesh.RecalculateBounds();
+		
 	}
 	
-	/*
-	 *****************************************************************************
-	 *	List of Uniform Polyhedra and Their Kaleidoscopic Formulae
-	 *	==========================================================
-	 *
-	 *	Each entry contains the following items:
-	 *
-	 *	1)	Wythoff symbol.
-	 *	2)	Polyhedron name.
-	 *	3)	Dual name.
-	 *	4)	Coxeter &al. reference figure.
-	 *	5)	Wenninger reference figure.
-	 *
-	 *	Notes:
-	 *
-	 *	(1)	Cundy&Roulette's trapezohedron has been renamed to
-	 *		deltohedron, as its faces are deltoids, not trapezoids.
-	 *	(2)	The names of the non-dihedral polyhedra are those
-	 *		which appear in Wenninger (1984). Some of them are
-	 *		slightly modified versions of those in Wenninger (1971).
-	 *
-	 *	References:
-	 *
-	 *	Coxeter, H.S.M., Longuet-Higgins, M.S. & Miller, J.C.P.,
-	 *		Uniform polyhedra, Phil. Trans. Royal Soc. London, Ser. A,
-	 *		246 (1953), 401-409.
-	 *	Cundy, H.M. & Rollett, A.P.,
-	 *		"Mathematical Models", 3rd Ed., Tarquin, 1981.
-	 *	Har'El, Z.
-	 *		Unifom solution for uniform polyhedra, Geometriae Dedicata,
-	 *		47 (1993), 57-110.
-	 *	Wenninger, M.J.,
-	 *		"Polyhedron Models", Cambridge University Press, 1971.
-	 *		"Dual Models", Cambridge University Press, 1984.
-	 *
-	 *****************************************************************************
-	 */
+	private int SeekVertex(int face) {
+		for (int vc = 0; vc < VertexCount; vc++) {
+			for (int vv = 0; vv < Valency; vv++) {
+				int incid = VertexFaceIncidence[vv, vc];
+				if (incid == face) {
+					return vc;
+				}
+			}
+		}
+		throw new SystemException("SeekVertex failed on face: " + face);
+	}
 	
-	public class UniformImpl {
-		
-		public string Wythoff, name, dual;
-		public int Coxeter, Wenninger;
-		
-		public UniformImpl(string wythoff, string name, string dual, int coxeter, int wenninger) {
-			Wythoff = wythoff;
-			this.name = name;
-			this.dual = dual;
-			Coxeter = coxeter;
-			Wenninger = wenninger;
-		}		
+	private int SeekFace(int vertex) {
+		return VertexFaceIncidence[0, vertex];
 	}
 
-	public static UniformImpl[] uniform = {
+	public Mesh Explode() {
+		
+		var newMesh = new Mesh();
+		var newVerts = new Vector3[mesh.vertexCount];
+		
+		foreach (var t in mesh.triangles) {
+			var direction = mesh.normals[t];
+			newVerts[t] = mesh.vertices[t] + direction.normalized * 1.1f;
+		}
+		
+		newMesh.vertices = newVerts.ToArray();
+		newMesh.triangles = mesh.triangles;
+		newMesh.colors = mesh.colors;
+		newMesh.RecalculateNormals();
+		newMesh.RecalculateTangents();
+		newMesh.RecalculateBounds();
+		return newMesh;
+	}
+	
+	public static Uniforms[] uniform = {
 			
-		new UniformImpl("", "", "", 0, 0),
+		new Uniforms("", "", "", 0, 0),
 		
 		// Dihedral Schwarz Triangles (D5 only)
-
+	
 		// (2 2 5) (D1/5) 
 	
-		new UniformImpl(  // 1
+		new Uniforms(  // 1
 			"2 5|2",
 			"pentagonal prism",
 			"pentagonal dipyramid",
 			0,0
 		),
-		new UniformImpl(  // 2
+		new Uniforms(  // 2
 			"|2 2 5",
 			"pentagonal antiprism",
 			"pentagonal deltohedron",
@@ -145,13 +247,13 @@ public class Polyhedron {
 	
 		// (2 2 5/2) (D2/5) 
 	
-		new UniformImpl(  // 3
+		new Uniforms(  // 3
 			"2 5/2|2",
 			"pentagrammic prism",
 			"pentagrammic dipyramid",
 			0,0
 		),
-		new UniformImpl(  // 4
+		new Uniforms(  // 4
 			"|2 2 5/2",
 			"pentagrammic antiprism",
 			"pentagrammic deltohedron",
@@ -160,7 +262,7 @@ public class Polyhedron {
 	
 		// (5/3 2 2) (D3/5) 
 	
-		new UniformImpl(  // 5
+		new Uniforms(  // 5
 			"|2 2 5/3",
 			"pentagrammic crossed antiprism",
 			"pentagrammic concave deltohedron",
@@ -171,13 +273,13 @@ public class Polyhedron {
 	
 		// (2 3 3) (T1) 
 	
-		new UniformImpl(  // 6
+		new Uniforms(  // 6
 			"3|2 3",
 			"tetrahedron",
 			"tetrahedron",
 			15,1
 		),
-		new UniformImpl(  // 7
+		new Uniforms(  // 7
 			"2 3|3",
 			"truncated tetrahedron",
 			"triakistetrahedron",
@@ -186,7 +288,7 @@ public class Polyhedron {
 	
 		// (3/2 3 3) (T2) 
 	
-		new UniformImpl(  // 8
+		new Uniforms(  // 8
 			"3/2 3|3",
 			"octahemioctahedron",
 			"octahemioctacron",
@@ -195,7 +297,7 @@ public class Polyhedron {
 	
 		// (3/2 2 3) (T3) 
 	
-		new UniformImpl(  // 9
+		new Uniforms(  // 9
 			"3/2 3|2",
 			"tetrahemihexahedron",
 			"tetrahemihexacron",
@@ -206,49 +308,49 @@ public class Polyhedron {
 	
 		// (2 3 4) (O1) 
 	
-		new UniformImpl(  // 10
+		new Uniforms(  // 10
 			"4|2 3",
 			"octahedron",
 			"cube",
 			17,2
 		),
-		new UniformImpl(  // 11
+		new Uniforms(  // 11
 			"3|2 4",
 			"cube",
 			"octahedron",
 			18,3
 		),
-		new UniformImpl(  // 12
+		new Uniforms(  // 12
 			"2|3 4",
 			"cuboctahedron",
 			"rhombic dodecahedron",
 			19,11
 		),
-		new UniformImpl(  // 13
+		new Uniforms(  // 13
 			"2 4|3",
 			"truncated octahedron",
 			"tetrakishexahedron",
 			20,7
 		),
-		new UniformImpl(  // 14
+		new Uniforms(  // 14
 			"2 3|4",
 			"truncated cube",
 			"triakisoctahedron",
 			21,8
 		),
-		new UniformImpl(  // 15
+		new Uniforms(  // 15
 			"3 4|2",
 			"rhombicuboctahedron",
 			"deltoidal icositetrahedron",
 			22,13
 		),
-		new UniformImpl(  // 16
+		new Uniforms(  // 16
 			"2 3 4|",
 			"truncated cuboctahedron",
 			"disdyakisdodecahedron",
 			23,15
 		),
-		new UniformImpl(  // 17
+		new Uniforms(  // 17
 			"|2 3 4",
 			"snub cube",
 			"pentagonal icositetrahedron",
@@ -257,7 +359,7 @@ public class Polyhedron {
 	
 		// (3/2 4 4) (O2b) 
 	
-		new UniformImpl(  // 18
+		new Uniforms(  // 18
 			"3/2 4|4",
 			"small cubicuboctahedron",
 			"small hexacronic icositetrahedron",
@@ -266,19 +368,19 @@ public class Polyhedron {
 	
 		// (4/3 3 4) (O4) 
 	
-		new UniformImpl(  // 19
+		new Uniforms(  // 19
 			"3 4|4/3",
 			"great cubicuboctahedron",
 			"great hexacronic icositetrahedron",
 			50,77
 		),
-		new UniformImpl(  // 20
+		new Uniforms(  // 20
 			"4/3 4|3",
 			"cubohemioctahedron",
 			"hexahemioctacron",
 			51,78
 		),
-		new UniformImpl(  // 21
+		new Uniforms(  // 21
 			"4/3 3 4|",
 			"cubitruncated cuboctahedron",
 			"tetradyakishexahedron",
@@ -287,13 +389,13 @@ public class Polyhedron {
 	
 		// (3/2 2 4) (O5) 
 	
-		new UniformImpl(  // 22
+		new Uniforms(  // 22
 			"3/2 4|2",
 			"great rhombicuboctahedron",
 			"great deltoidal icositetrahedron",
 			59,85
 		),
-		new UniformImpl(  // 23
+		new Uniforms(  // 23
 			"3/2 2 4|",
 			"small rhombihexahedron",
 			"small rhombihexacron",
@@ -302,13 +404,13 @@ public class Polyhedron {
 	
 		// (4/3 2 3) (O7) 
 	
-		new UniformImpl(  // 24
+		new Uniforms(  // 24
 			"2 3|4/3",
 			"stellated truncated hexahedron",
 			"great triakisoctahedron",
 			66,92
 		),
-		new UniformImpl(  // 25
+		new Uniforms(  // 25
 			"4/3 2 3|",
 			"great truncated cuboctahedron",
 			"great disdyakisdodecahedron",
@@ -317,7 +419,7 @@ public class Polyhedron {
 	
 		// (4/3 3/2 2) (O11) 
 	
-		new UniformImpl(  // 26
+		new Uniforms(  // 26
 			"4/3 3/2 2|",
 			"great rhombihexahedron",
 			"great rhombihexacron",
@@ -328,49 +430,49 @@ public class Polyhedron {
 	
 		// (2 3 5) (I1) 
 	
-		new UniformImpl(  // 27
+		new Uniforms(  // 27
 			"5|2 3",
 			"icosahedron",
 			"dodecahedron",
 			25,4
 		),
-		new UniformImpl(  // 28
+		new Uniforms(  // 28
 			"3|2 5",
 			"dodecahedron",
 			"icosahedron",
 			26,5
 		),
-		new UniformImpl(  // 29
+		new Uniforms(  // 29
 			"2|3 5",
 			"icosidodecahedron",
 			"rhombic triacontahedron",
 			28,12
 		),
-		new UniformImpl(  // 30
+		new Uniforms(  // 30
 			"2 5|3",
 			"truncated icosahedron",
 			"pentakisdodecahedron",
 			27,9
 		),
-		new UniformImpl(  // 31
+		new Uniforms(  // 31
 			"2 3|5",
 			"truncated dodecahedron",
 			"triakisicosahedron",
 			29,10
 		),
-		new UniformImpl(  // 32
+		new Uniforms(  // 32
 			"3 5|2",
 			"rhombicosidodecahedron",
 			"deltoidal hexecontahedron",
 			30,14
 		),
-		new UniformImpl(  // 33
+		new Uniforms(  // 33
 			"2 3 5|",
 			"truncated icosidodechedon",
 			"disdyakistriacontahedron",
 			31,16
 		),
-		new UniformImpl(  // 34
+		new Uniforms(  // 34
 			"|2 3 5",
 			"snub dodecahedron",
 			"pentagonal hexecontahedron",
@@ -379,19 +481,19 @@ public class Polyhedron {
 	
 		// (5/2 3 3) (I2a) 
 	
-		new UniformImpl(  // 35
+		new Uniforms(  // 35
 			"3|5/2 3",
 			"small ditrigonal icosidodecahedron",
 			"small triambic icosahedron",
 			39,70
 		),
-		new UniformImpl(  // 36
+		new Uniforms(  // 36
 			"5/2 3|3",
 			"small icosicosidodecahedron",
 			"small icosacronic hexecontahedron",
 			40,71
 		),
-		new UniformImpl(  // 37
+		new Uniforms(  // 37
 			"|5/2 3 3",
 			"small snub icosicosidodecahedron",
 			"small hexagonal hexecontahedron",
@@ -400,7 +502,7 @@ public class Polyhedron {
 	
 		// (3/2 5 5) (I2b) 
 	
-		new UniformImpl(  // 38
+		new Uniforms(  // 38
 			"3/2 5|5",
 			"small dodecicosidodecahedron",
 			"small dodecacronic hexecontahedron",
@@ -409,43 +511,43 @@ public class Polyhedron {
 	
 		// (2 5/2 5) (I3) 
 	
-		new UniformImpl(  // 39
+		new Uniforms(  // 39
 			"5|2 5/2",
 			"small stellated dodecahedron",
 			"great dodecahedron",
 			43,20
 		),
-		new UniformImpl(  // 40
+		new Uniforms(  // 40
 			"5/2|2 5",
 			"great dodecahedron",
 			"small stellated dodecahedron",
 			44,21
 		),
-		new UniformImpl(  // 41
+		new Uniforms(  // 41
 			"2|5/2 5",
 			"great dodecadodecahedron",
 			"medial rhombic triacontahedron",
 			45,73
 		),
-		new UniformImpl(  // 42
+		new Uniforms(  // 42
 			"2 5/2|5",
 			"truncated great dodecahedron",
 			"small stellapentakisdodecahedron",
 			47,75
 		),
-		new UniformImpl(  // 43
+		new Uniforms(  // 43
 			"5/2 5|2",
 			"rhombidodecadodecahedron",
 			"medial deltoidal hexecontahedron",
 			48,76
 		),
-		new UniformImpl(  // 44
+		new Uniforms(  // 44
 			"2 5/2 5|",
 			"small rhombidodecahedron",
 			"small rhombidodecacron",
 			46,74
 		),
-		new UniformImpl(  // 45
+		new Uniforms(  // 45
 			"|2 5/2 5",
 			"snub dodecadodecahedron",
 			"medial pentagonal hexecontahedron",
@@ -454,37 +556,37 @@ public class Polyhedron {
 	
 		// (5/3 3 5) (I4) 
 	
-		new UniformImpl(  // 46
+		new Uniforms(  // 46
 			"3|5/3 5",
 			"ditrigonal dodecadodecahedron",
 			"medial triambic icosahedron",
 			53,80
 		),
-		new UniformImpl(  // 47
+		new Uniforms(  // 47
 			"3 5|5/3",
 			"great ditrigonal dodecicosidodecahedron",
 			"great ditrigonal dodecacronic hexecontahedron",
 			54,81
 		),
-		new UniformImpl(  // 48
+		new Uniforms(  // 48
 			"5/3 3|5",
 			"small ditrigonal dodecicosidodecahedron",
 			"small ditrigonal dodecacronic hexecontahedron",
 			55,82
 		),
-		new UniformImpl(  // 49
+		new Uniforms(  // 49
 			"5/3 5|3",
 			"icosidodecadodecahedron",
 			"medial icosacronic hexecontahedron",
 			56,83
 		),
-		new UniformImpl(  // 50
+		new Uniforms(  // 50
 			"5/3 3 5|",
 			"icositruncated dodecadodecahedron",
 			"tridyakisicosahedron",
 			57,84
 		),
-		new UniformImpl(  // 51
+		new Uniforms(  // 51
 			"|5/3 3 5",
 			"snub icosidodecadodecahedron",
 			"medial hexagonal hexecontahedron",
@@ -493,25 +595,25 @@ public class Polyhedron {
 	
 		// (3/2 3 5) (I6b) 
 	
-		new UniformImpl(  // 52
+		new Uniforms(  // 52
 			"3/2|3 5",
 			"great ditrigonal icosidodecahedron",
 			"great triambic icosahedron",
 			61,87
 		),
-		new UniformImpl(  // 53
+		new Uniforms(  // 53
 			"3/2 5|3",
 			"great icosicosidodecahedron",
 			"great icosacronic hexecontahedron",
 			62,88
 		),
-		new UniformImpl(  // 54
+		new Uniforms(  // 54
 			"3/2 3|5",
 			"small icosihemidodecahedron",
 			"small icosihemidodecacron",
 			63,89
 		),
-		new UniformImpl(  // 55
+		new Uniforms(  // 55
 			"3/2 3 5|",
 			"small dodecicosahedron",
 			"small dodecicosacron",
@@ -520,7 +622,7 @@ public class Polyhedron {
 	
 		// (5/4 5 5) (I6c) 
 	
-		new UniformImpl(  // 56
+		new Uniforms(  // 56
 			"5/4 5|5",
 			"small dodecahemidodecahedron",
 			"small dodecahemidodecacron",
@@ -529,37 +631,37 @@ public class Polyhedron {
 	
 		// (2 5/2 3) (I7) 
 	
-		new UniformImpl(  // 57
+		new Uniforms(  // 57
 			"3|2 5/2",
 			"great stellated dodecahedron",
 			"great icosahedron",
 			68,22
 		),
-		new UniformImpl(  // 58
+		new Uniforms(  // 58
 			"5/2|2 3",
 			"great icosahedron",
 			"great stellated dodecahedron",
 			69,41
 		),
-		new UniformImpl(  // 59
+		new Uniforms(  // 59
 			"2|5/2 3",
 			"great icosidodecahedron",
 			"great rhombic triacontahedron",
 			70,94
 		),
-		new UniformImpl(  // 60
+		new Uniforms(  // 60
 			"2 5/2|3",
 			"great truncated icosahedron",
 			"great stellapentakisdodecahedron",
 			71,95
 		),
-		new UniformImpl(  // 61
+		new Uniforms(  // 61
 			"2 5/2 3|",
 			"rhombicosahedron",
 			"rhombicosacron",
 			72,96
 		),
-		new UniformImpl(  // 62
+		new Uniforms(  // 62
 			"|2 5/2 3",
 			"great snub icosidodecahedron",
 			"great pentagonal hexecontahedron",
@@ -568,19 +670,19 @@ public class Polyhedron {
 	
 		// (5/3 2 5) (I9) 
 	
-		new UniformImpl(  // 63
+		new Uniforms(  // 63
 			"2 5|5/3",
 			"small stellated truncated dodecahedron",
 			"great pentakisdodekahedron",
 			74,97
 		),
-		new UniformImpl(  // 64
+		new Uniforms(  // 64
 			"5/3 2 5|",
 			"truncated dodecadodecahedron",
 			"medial disdyakistriacontahedron",
 			75,98
 		),
-		new UniformImpl(  // 65
+		new Uniforms(  // 65
 			"|5/3 2 5",
 			"inverted snub dodecadodecahedron",
 			"medial inverted pentagonal hexecontahedron",
@@ -589,25 +691,25 @@ public class Polyhedron {
 	
 		// (5/3 5/2 3) (I10a) 
 	
-		new UniformImpl(  // 66
+		new Uniforms(  // 66
 			"5/2 3|5/3",
 			"great dodecicosidodecahedron",
 			"great dodecacronic hexecontahedron",
 			77,99
 		),
-		new UniformImpl(  // 67
+		new Uniforms(  // 67
 			"5/3 5/2|3",
 			"small dodecahemicosahedron",
 			"small dodecahemicosacron",
 			78,100
 		),
-		new UniformImpl(  // 68
+		new Uniforms(  // 68
 			"5/3 5/2 3|",
 			"great dodecicosahedron",
 			"great dodecicosacron",
 			79,101
 		),
-		new UniformImpl(  // 69
+		new Uniforms(  // 69
 			"|5/3 5/2 3",
 			"great snub dodecicosidodecahedron",
 			"great hexagonal hexecontahedron",
@@ -616,7 +718,7 @@ public class Polyhedron {
 	
 		// (5/4 3 5) (I10b) 
 	
-		new UniformImpl(  // 70
+		new Uniforms(  // 70
 			"5/4 5|3",
 			"great dodecahemicosahedron",
 			"great dodecahemicosacron",
@@ -625,25 +727,25 @@ public class Polyhedron {
 	
 		// (5/3 2 3) (I13) 
 	
-		new UniformImpl(  // 71
+		new Uniforms(  // 71
 			"2 3|5/3",
 			"great stellated truncated dodecahedron",
 			"great triakisicosahedron",
 			83,104
 		),
-		new UniformImpl(  // 72
+		new Uniforms(  // 72
 			"5/3 3|2",
 			"great rhombicosidodecahedron",
 			"great deltoidal hexecontahedron",
 			84,105
 		),
-		new UniformImpl(  // 73
+		new Uniforms(  // 73
 			"5/3 2 3|",
 			"great truncated icosidodecahedron",
 			"great disdyakistriacontahedron",
 			87,108
 		),
-		new UniformImpl(  // 74
+		new Uniforms(  // 74
 			"|5/3 2 3",
 			"great inverted snub icosidodecahedron",
 			"great inverted pentagonal hexecontahedron",
@@ -652,7 +754,7 @@ public class Polyhedron {
 	
 		// (5/3 5/3 5/2) (I18a) 
 	
-		new UniformImpl(  // 75
+		new Uniforms(  // 75
 			"5/3 5/2|5/3",
 			"great dodecahemidodecahedron",
 			"great dodecahemidodecacron",
@@ -661,7 +763,7 @@ public class Polyhedron {
 	
 		// (3/2 5/3 3) (I18b) 
 	
-		new UniformImpl(  // 76
+		new Uniforms(  // 76
 			"3/2 3|5/3",
 			"great icosihemidodecahedron",
 			"great icosihemidodecacron",
@@ -670,7 +772,7 @@ public class Polyhedron {
 	
 		// (3/2 3/2 5/3) (I22) 
 	
-		new UniformImpl(  // 77
+		new Uniforms(  // 77
 			"|3/2 3/2 5/2",
 			"small retrosnub icosicosidodecahedron",
 			"small hexagrammic hexecontahedron",
@@ -679,13 +781,13 @@ public class Polyhedron {
 	
 		// (3/2 5/3 2) (I23) 
 	
-		new UniformImpl(  // 78
+		new Uniforms(  // 78
 			"3/2 5/3 2|",
 			"great rhombidodecahedron",
 			"great rhombidodecacron",
 			89,109
 		),
-		new UniformImpl(  // 79
+		new Uniforms(  // 79
 			"|3/2 5/3 2",
 			"great retrosnub icosidodecahedron",
 			"great pentagrammic hexecontahedron",
@@ -695,7 +797,7 @@ public class Polyhedron {
 		// Last But Not Least
 		
 	
-		new UniformImpl(  // 80
+		new Uniforms(  // 80
 			"3/2 5/3 3 5/2",
 			"great dirhombicosidodecahedron",
 			"great dirhombicosidodecacron"

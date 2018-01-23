@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [ExecuteInEditMode]
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
+[RequireComponent(typeof(SkinnedMeshRenderer))]
 public class PolyComponent : MonoBehaviour {
 
 	
@@ -15,22 +15,25 @@ public class PolyComponent : MonoBehaviour {
 	public bool dualGizmo;
 	
 	private int[] meshFaces;
-	private PolyMesh _polymesh;
+	private Polyhedron _polyhedron;
 	private bool ShowDuals = false;
 
-	private MeshFilter meshFilter;
+	private SkinnedMeshRenderer meshFilter;
 
 	void Start() {
 		
-		meshFilter = gameObject.GetComponent<MeshFilter>();
+		meshFilter = gameObject.GetComponent<SkinnedMeshRenderer>();
 		currentType = 1;
 		dual = false;
-		MakePolyMesh(currentType, dual);
+		MakePolyhedron(currentType, dual);
 		
 	}
 
 	private void OnValidate() {
-		MakePolyMesh(currentType, dual);
+		MakePolyhedron(currentType, dual);
+		meshFilter.sharedMesh.RecalculateNormals();
+		meshFilter.sharedMesh.RecalculateTangents();
+		meshFilter.sharedMesh.RecalculateBounds();
 	}
 
 	void Update() {
@@ -45,23 +48,34 @@ public class PolyComponent : MonoBehaviour {
 				gameObject.GetComponent<RotateObject>().Randomize();
 			}
 			
-			MakePolyMesh(currentType, dual);
-			Debug.Log(currentType + ": " + _polymesh.polyhedron.PolyName + (dual ? " (dual)" : ""));
+			MakePolyhedron(currentType, dual);
+			Debug.Log(currentType + ": " + _polyhedron.PolyName + (dual ? " (dual)" : ""));
 
 		} else if (Input.GetKeyDown("p")) {
 			gameObject.GetComponent<RotateObject>().Pause();
 		} else if (Input.GetKeyDown("r")) {
 			gameObject.GetComponent<RotateObject>().Randomize();
 		} else if (Input.GetKeyDown("1")) {
-			meshFilter.sharedMesh = _polymesh.Explode();
+			meshFilter.sharedMesh = _polyhedron.Explode();
 		}
 		
 	}
 	
-	void MakePolyMesh(int currentType, bool dual) {
+	void MakePolyhedron(int currentType, bool dual) {
 		
-		_polymesh = new PolyMesh(currentType, dual);
-		meshFilter.sharedMesh = _polymesh.mesh;
+		_polyhedron = new Polyhedron(currentType);
+
+		int vCount = _polyhedron.mesh.vertexCount;
+		var deltaVertices = new Vector3[vCount];
+		var deltaNormals = new Vector3[vCount];
+		int swapFactor = _polyhedron.FaceCount;
+		for (int i = 0; i < vCount; i++) {
+			deltaVertices[i] = _polyhedron.mesh.vertices[(i+swapFactor) % vCount] - _polyhedron.mesh.vertices[i];
+			deltaNormals[i] = _polyhedron.mesh.normals[(i+swapFactor) % vCount] - _polyhedron.mesh.normals[i];
+		}
+		_polyhedron.mesh.AddBlendShapeFrame("foo", 1, deltaVertices, null, null);
+		
+		meshFilter.sharedMesh = _polyhedron.mesh;
 	}
 
 	void OnDrawGizmos () {
@@ -74,37 +88,37 @@ public class PolyComponent : MonoBehaviour {
 		Gizmos.color = Color.white;
 		var transform = this.transform;
 
-		if (_polymesh == null) {
+		if (_polyhedron == null) {
 			return;
 		}
 
 		if (vertexGizmos) {
-			if (_polymesh.polyhedron.Vertices != null) {
-				foreach (var vert in _polymesh.polyhedron.Vertices) {
+			if (_polyhedron.Vertices != null) {
+				foreach (var vert in _polyhedron.Vertices) {
 					Gizmos.DrawWireSphere(transform.TransformPoint(vert.getVector3()), GizmoRadius);
 				}
 			}
 		}
 		
-//		if (_polymesh.polyhedron.f != null) {
-//			foreach (var faceVert in _polymesh.polyhedron.f) {
+//		if (_polymesh.f != null) {
+//			foreach (var faceVert in _polymesh.f) {
 //				Gizmos.DrawWireSphere(transform.TransformPoint(faceVert.getVector3()), GizmoRadius);
 //			}
 //		}
 		
-//		for (int i = 0; i < _polymesh.polyhedron.E; i++) {
-//			var edgeStart = _polymesh.polyhedron.e[0, i];
-//			var edgeEnd = _polymesh.polyhedron.e[1, i];
+//		for (int i = 0; i < _polymesh.E; i++) {
+//			var edgeStart = _polymesh.e[0, i];
+//			var edgeEnd = _polymesh.e[1, i];
 //			Gizmos.DrawLine(
-//				transform.TransformPoint(_polymesh.polyhedron.v[edgeStart].getVector3()),
-//				transform.TransformPoint(_polymesh.polyhedron.v[edgeEnd].getVector3())
+//				transform.TransformPoint(_polymesh.v[edgeStart].getVector3()),
+//				transform.TransformPoint(_polymesh.v[edgeEnd].getVector3())
 //			);
 //		}
 
-//		foreach (var fv in _polymesh.polyhedron.faceVertices) {
+//		foreach (var fv in _polymesh.faceVertices) {
 //			foreach (int vnum in fv) {
 //				Gizmos.DrawWireSphere(
-//					transform.TransformPoint(_polymesh.polyhedron.v[vnum].getVector3()),
+//					transform.TransformPoint(_polymesh.v[vnum].getVector3()),
 //					GizmoRadius
 //				);
 //			}
@@ -123,13 +137,13 @@ public class PolyComponent : MonoBehaviour {
 //			break;
 //		}
 		if (dualGizmo) {
-			for (int i = 0; i < _polymesh.polyhedron.EdgeCount; i++)
+			for (int i = 0; i < _polyhedron.EdgeCount; i++)
 			{
-				var edgeStart = _polymesh.polyhedron.DualEdges[0, i];
-				var edgeEnd = _polymesh.polyhedron.DualEdges[1, i];
+				var edgeStart = _polyhedron.DualEdges[0, i];
+				var edgeEnd = _polyhedron.DualEdges[1, i];
 				Gizmos.DrawLine(
-					transform.TransformPoint(_polymesh.polyhedron.Faces[edgeStart].getVector3()),
-					transform.TransformPoint(_polymesh.polyhedron.Faces[edgeEnd].getVector3())
+					transform.TransformPoint(_polyhedron.Faces[edgeStart].getVector3()),
+					transform.TransformPoint(_polyhedron.Faces[edgeEnd].getVector3())
 				);
 			}
 		}
