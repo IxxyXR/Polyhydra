@@ -53,7 +53,8 @@ public class Polyhedron {
 
 	public Vector[] Vertices;  // vertex coordinates (array VertexCount) 
 	public Vector[] FaceCenters;  // face coordinates (array FaceCount)
-	
+
+	public List<Face> faces;
 	public List<Vector3> vertices;
 	public List<int> triangles;
 	public List<Color> colors;
@@ -95,7 +96,7 @@ public class Polyhedron {
 
 		// TODO Fix duals
 		
-		List<Face> faces = new List<Face>();
+		faces = new List<Face>();
 		
 		for (int faceIndex = 0; faceIndex < FaceCount; faceIndex++) {
 		
