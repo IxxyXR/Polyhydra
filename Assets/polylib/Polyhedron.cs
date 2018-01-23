@@ -204,10 +204,6 @@ public class Polyhedron {
 		}
 		throw new SystemException("SeekVertex failed on face: " + face);
 	}
-	
-	private int SeekFace(int vertex) {
-		return VertexFaceIncidence[0, vertex];
-	}
 
 	public void CreateBlendShapes() {
 		int vCount = mesh.vertexCount;
