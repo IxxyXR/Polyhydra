@@ -52,7 +52,7 @@ public class Polyhedron {
 	public string DualName;  // dual name, standard or manifuctured 
 
 	public Vector[] Vertices;  // vertex coordinates (array VertexCount) 
-	public Vector[] Faces;  // face coordinates (array FaceCount)
+	public Vector[] FaceCenters;  // face coordinates (array FaceCount)
 	
 	public List<Vector3> vertices;
 	public List<int> triangles;
@@ -102,7 +102,7 @@ public class Polyhedron {
 			int v1 = SeekVertex(faceIndex);
 			
 			Face face = new Face(
-				Faces[faceIndex],
+				FaceCenters[faceIndex],
 				Vertices[v1],
 				FaceSidesByType[FaceTypes[faceIndex]]
 			);
@@ -181,7 +181,6 @@ public class Polyhedron {
 				}
 			}
 		}
-
 		
 		mesh.vertices = vertices.ToArray();
 		mesh.triangles = triangles.ToArray();
@@ -1475,7 +1474,7 @@ public class Polyhedron {
 	private void CalcFaces() {
 		
 	    int i, newF = 0;
-	    Faces = new Vector[FaceCount];
+	    FaceCenters = new Vector[FaceCount];
 	    FaceTypes = new int[FaceCount];
 	    VertexFaceIncidence = new int[Valency, VertexCount];
 	    MinInRadius = 1 / Math.Abs (Math.Tan (M_PI / FaceSidesByType[IsHemi]) * Math.Tan (FundementalAngles[IsHemi]));
@@ -1489,7 +1488,7 @@ public class Polyhedron {
 				if (VertexFaceIncidence[j, i] == -1) {
 					VertexFaceIncidence[j, i] = newF;
 					if (newF == FaceCount) {throw new ApplicationException("too many faces");}
-					Faces[newF] = CalcPolarReciprocal(MinInRadius, Vertices[i], Vertices[VertexAdjacency[j, i]], Vertices[VertexAdjacency[mod(j + 1, Valency), i]]);
+					FaceCenters[newF] = CalcPolarReciprocal(MinInRadius, Vertices[i], Vertices[VertexAdjacency[j, i]], Vertices[VertexAdjacency[mod(j + 1, Valency), i]]);
 					FaceTypes[newF] = VertexConfig[mod(_firstrot[i] + (VertexAdjacency[0, i] < VertexAdjacency[Valency - 1, i] ? j : -j - 2), Valency)];
 					if (IsOneSided != 0) {pap = (_firstrot[i] + j) % 2;}
 					i0 = i;
@@ -1561,7 +1560,7 @@ public class Polyhedron {
 					    	DualEdges[0, s] = VertexFaceIncidence[mod(j-1,Valency), i];
 					    	DualEdges[1, t] = VertexFaceIncidence[j, i];
 					    }
-					    _anti[u++] = Faces[DualEdges[0, s++]].dot(Faces[DualEdges[1, t++]]) > 0 ? 1 : 0;
+					    _anti[u++] = FaceCenters[DualEdges[0, s++]].dot(FaceCenters[DualEdges[1, t++]]) > 0 ? 1 : 0;
 					}
 			    }
 			}

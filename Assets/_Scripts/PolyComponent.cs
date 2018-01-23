@@ -142,8 +142,8 @@ public class PolyComponent : MonoBehaviour {
 				var edgeStart = _polyhedron.DualEdges[0, i];
 				var edgeEnd = _polyhedron.DualEdges[1, i];
 				Gizmos.DrawLine(
-					transform.TransformPoint(_polyhedron.Faces[edgeStart].getVector3()),
-					transform.TransformPoint(_polyhedron.Faces[edgeEnd].getVector3())
+					transform.TransformPoint(_polyhedron.FaceCenters[edgeStart].getVector3()),
+					transform.TransformPoint(_polyhedron.FaceCenters[edgeEnd].getVector3())
 				);
 			}
 		}
