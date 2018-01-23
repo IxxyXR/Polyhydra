@@ -5,7 +5,7 @@
 public class PolyComponent : MonoBehaviour {
 
 	
-	[Range(0,79)]
+	[Range(1,80)]
 	public int currentType;
 	public bool dual;
 	
@@ -31,6 +31,9 @@ public class PolyComponent : MonoBehaviour {
 
 	private void OnValidate() {
 		MakePolyhedron(currentType, dual);
+		meshFilter.sharedMesh.RecalculateNormals();
+		meshFilter.sharedMesh.RecalculateTangents();
+		meshFilter.sharedMesh.RecalculateBounds();
 	}
 
 	void Update() {

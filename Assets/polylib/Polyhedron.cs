@@ -206,19 +206,29 @@ public class Polyhedron {
 	}
 
 	public void CreateBlendShapes() {
+		
 		int vCount = mesh.vertexCount;
 		var deltaVertices = new Vector3[vCount];
 		var deltaNormals = new Vector3[vCount];
-		int swapFactor = FaceCount;
-		for (int faceIndex = 0; faceIndex < FaceCount; faceIndex++) {
-			Face face = faces[faceIndex];
-			for (int i = 0; i < face.points.Count; i++) {
-				// Currently a no-op
-				deltaVertices[faceIndex + i] = new Vector3();
-				deltaNormals[faceIndex + i] = new Vector3();
+		
+		int meshVertexIndex = 0;
+		
+		for (int faceType = 0; faceType < FaceTypeCount; faceType++) {
+			for (int faceIndex = 0; faceIndex<FaceCount; faceIndex++) {
+				Face face = faces[faceIndex];
+				if (face.configuration == FaceSidesByType[faceType]) {
+					for (int i = 0; i < face.triangles.Length; i++) {
+						int ii = (i + 3) % face.triangles.Length;
+						Vector v1 = Vertices[face.triangles[i]];
+						Vector v2 = Vertices[face.triangles[ii]];
+						deltaVertices[meshVertexIndex] = v2.getVector3() - v1.getVector3();
+						meshVertexIndex++;
+					}	
+				}
 			}
 		}
-		mesh.AddBlendShapeFrame("example blendshape", 0, deltaVertices, null, null);
+		
+		mesh.AddBlendShapeFrame("example blendshape", 1, deltaVertices, deltaNormals, null);
 	}
 
 	public Mesh Explode() {
@@ -836,7 +846,6 @@ public class Polyhedron {
 		}
 
 		public double GetNextFraction() {
-
 			char c = sym[_index];
 			while (c.ToString() == " ") {
 				++_index;
