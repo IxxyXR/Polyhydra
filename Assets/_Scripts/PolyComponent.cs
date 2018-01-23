@@ -73,7 +73,7 @@ public class PolyComponent : MonoBehaviour {
 			deltaVertices[i] = _polyhedron.mesh.vertices[(i+swapFactor) % vCount] - _polyhedron.mesh.vertices[i];
 			deltaNormals[i] = _polyhedron.mesh.normals[(i+swapFactor) % vCount] - _polyhedron.mesh.normals[i];
 		}
-		_polyhedron.mesh.AddBlendShapeFrame("foo", 1, deltaVertices, null, null);
+		_polyhedron.mesh.AddBlendShapeFrame("example blendshape", 0, deltaVertices, null, null);
 		
 		meshFilter.sharedMesh = _polyhedron.mesh;
 	}
