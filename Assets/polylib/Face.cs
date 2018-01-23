@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Face {
     
-    public List<int> points;
+    public List<int> points;  // Indexes into the Vertices array of the polyhedra
     public Fraction frax;
     public double configuration;
     public Vector center;
     public int centerPoint;
-	public int[] triangles;
+	public int[] triangles;  // Indexes into the points array
 
     public Face(Vector face, Vector vertex, double configuration)  {
 
