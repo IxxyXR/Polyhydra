@@ -31,9 +31,6 @@ public class PolyComponent : MonoBehaviour {
 
 	private void OnValidate() {
 		MakePolyhedron(currentType, dual);
-		meshFilter.sharedMesh.RecalculateNormals();
-		meshFilter.sharedMesh.RecalculateTangents();
-		meshFilter.sharedMesh.RecalculateBounds();
 	}
 
 	void Update() {
@@ -64,17 +61,7 @@ public class PolyComponent : MonoBehaviour {
 	void MakePolyhedron(int currentType, bool dual) {
 		
 		_polyhedron = new Polyhedron(currentType);
-
-		int vCount = _polyhedron.mesh.vertexCount;
-		var deltaVertices = new Vector3[vCount];
-		var deltaNormals = new Vector3[vCount];
-		int swapFactor = _polyhedron.FaceCount;
-		for (int i = 0; i < vCount; i++) {
-			deltaVertices[i] = _polyhedron.mesh.vertices[(i+swapFactor) % vCount] - _polyhedron.mesh.vertices[i];
-			deltaNormals[i] = _polyhedron.mesh.normals[(i+swapFactor) % vCount] - _polyhedron.mesh.normals[i];
-		}
-		_polyhedron.mesh.AddBlendShapeFrame("example blendshape", 0, deltaVertices, null, null);
-		
+		_polyhedron.CreateBlendShapes();
 		meshFilter.sharedMesh = _polyhedron.mesh;
 	}
 
@@ -100,37 +87,37 @@ public class PolyComponent : MonoBehaviour {
 			}
 		}
 		
-//		if (_polymesh.f != null) {
-//			foreach (var faceVert in _polymesh.f) {
+//		if (_polyhedron.f != null) {
+//			foreach (var faceVert in _polyhedron.f) {
 //				Gizmos.DrawWireSphere(transform.TransformPoint(faceVert.getVector3()), GizmoRadius);
 //			}
 //		}
-		
-//		for (int i = 0; i < _polymesh.E; i++) {
-//			var edgeStart = _polymesh.e[0, i];
-//			var edgeEnd = _polymesh.e[1, i];
+//		
+//		for (int i = 0; i < _polyhedron.E; i++) {
+//			var edgeStart = _polyhedron.e[0, i];
+//			var edgeEnd = _polyhedron.e[1, i];
 //			Gizmos.DrawLine(
-//				transform.TransformPoint(_polymesh.v[edgeStart].getVector3()),
-//				transform.TransformPoint(_polymesh.v[edgeEnd].getVector3())
+//				transform.TransformPoint(_polyhedron.v[edgeStart].getVector3()),
+//				transform.TransformPoint(_polyhedron.v[edgeEnd].getVector3())
 //			);
 //		}
-
-//		foreach (var fv in _polymesh.faceVertices) {
+//
+//		foreach (var fv in _polyhedron.faceVertices) {
 //			foreach (int vnum in fv) {
 //				Gizmos.DrawWireSphere(
-//					transform.TransformPoint(_polymesh.v[vnum].getVector3()),
+//					transform.TransformPoint(_polyhedron.v[vnum].getVector3()),
 //					GizmoRadius
 //				);
 //			}
 //
 //			break;
 //		}
-		
-//		foreach (var fe in _polymesh.faceEdges) {
+//		
+//		foreach (var fe in _polyhedron.faceEdges) {
 //			foreach (int edgenum in fe) {
 //				Gizmos.DrawLine(
-//					transform.TransformPoint(_polymesh.P.v[_polymesh.P.e[0, edgenum]].getVector3()),
-//					transform.TransformPoint(_polymesh.P.v[_polymesh.P.e[1, edgenum]].getVector3())
+//					transform.TransformPoint(_polyhedron.P.v[_polyhedron.P.e[0, edgenum]].getVector3()),
+//					transform.TransformPoint(_polyhedron.P.v[_polyhedron.P.e[1, edgenum]].getVector3())
 //				);
 //			}
 //

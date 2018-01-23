@@ -209,6 +209,22 @@ public class Polyhedron {
 		return VertexFaceIncidence[0, vertex];
 	}
 
+	public void CreateBlendShapes() {
+		int vCount = mesh.vertexCount;
+		var deltaVertices = new Vector3[vCount];
+		var deltaNormals = new Vector3[vCount];
+		int swapFactor = FaceCount;
+		for (int faceIndex = 0; faceIndex < FaceCount; faceIndex++) {
+			Face face = faces[faceIndex];
+			for (int i = 0; i < face.points.Count; i++) {
+				// Currently a no-op
+				deltaVertices[faceIndex + i] = new Vector3();
+				deltaNormals[faceIndex + i] = new Vector3();
+			}
+		}
+		mesh.AddBlendShapeFrame("example blendshape", 0, deltaVertices, null, null);
+	}
+
 	public Mesh Explode() {
 		
 		var newMesh = new Mesh();
