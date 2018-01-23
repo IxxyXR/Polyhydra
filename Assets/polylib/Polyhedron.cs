@@ -54,10 +54,11 @@ public class Polyhedron {
 	public Vector[] Vertices;  // vertex coordinates (array VertexCount) 
 	public Vector[] FaceCenters;  // face coordinates (array FaceCount)
 
-	public List<Face> faces;
-	public List<Vector3> vertices;
-	public List<int> triangles;
-	public List<Color> colors;
+	public List<Face> faces;  // Array of Face instances
+	
+	public List<Vector3> meshVertices;
+	public List<int> meshTriangles;
+	public List<Color> meshColors;
 	
 	public Mesh mesh;
 	public Color[] vertexPallette;
@@ -80,9 +81,9 @@ public class Polyhedron {
 		
 		// TODO generate mesh for duals
 		
-		vertices = new List<Vector3>();
-		triangles = new List<int>();
-		colors = new List<Color>();
+		meshVertices = new List<Vector3>();
+		meshTriangles = new List<int>();
+		meshColors = new List<Color>();
 		mesh = new Mesh();
 		
 		vertexPallette = new Color[] {
@@ -174,18 +175,18 @@ public class Polyhedron {
 					// Vertices
 					for (int i = 0; i < face.triangles.Length; i++) {
 						Vector v = Vertices[face.triangles[i]];
-						vertices.Add(v.getVector3());
-						colors.Add(faceColor);
-						triangles.Add(meshVertexIndex);
+						meshVertices.Add(v.getVector3());
+						meshColors.Add(faceColor);
+						meshTriangles.Add(meshVertexIndex);
 						meshVertexIndex++;
 					}	
 				}
 			}
 		}
 		
-		mesh.vertices = vertices.ToArray();
-		mesh.triangles = triangles.ToArray();
-		mesh.colors = colors.ToArray();
+		mesh.vertices = meshVertices.ToArray();
+		mesh.triangles = meshTriangles.ToArray();
+		mesh.colors = meshColors.ToArray();
 		mesh.RecalculateNormals();
 		mesh.RecalculateTangents();
 		mesh.RecalculateBounds();
