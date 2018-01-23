@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Face {
     
@@ -8,6 +9,7 @@ public class Face {
     public double configuration;
     public Vector center;
     public int centerPoint;
+	public int[] triangles;
 
     public Face(Vector face, Vector vertex, double configuration)  {
 
@@ -45,15 +47,18 @@ public class Face {
         points.Add(p);
     }
 	
-    public List<int> CalcTriangles() {
+    public void CalcTriangles() {
 		
         var ret = new List<int>();
+	    
+	    Debug.Log("Points:");
+	    Debug.Log(points);
 		
         if (frax.d == 1 || frax.d == frax.n - 1) {
             if (frax.n == 3) {
 				
                 // Simple Triangle
-				
+	            
                 ret.Add(points[0]);
                 ret.Add(points[1]);
                 ret.Add(points[2]);
@@ -132,7 +137,7 @@ public class Face {
             }
 			
         }
-        return ret;
+        triangles = ret.ToArray();
     }
 	
     public bool VertexExists(int vertex) {

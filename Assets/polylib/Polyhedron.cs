@@ -161,15 +161,18 @@ public class Polyhedron {
 		// Build Faces
 
 		int meshVertexIndex = 0;
-		
+
+		foreach (Face face in faces) {
+			face.CalcTriangles();
+		}
+
 		for (int faceType = 0; faceType < FaceTypeCount; faceType++) {
 			foreach (Face face in faces) {
 				if (face.configuration == FaceSidesByType[faceType]) {
-					var faceTriangles = face.CalcTriangles();
 					Color faceColor = vertexPallette[(int) (face.configuration % vertexPallette.Length)];
 					// Vertices
-					for (int i = 0; i < faceTriangles.Count; i++) {
-						Vector v = Vertices[faceTriangles[i]];
+					for (int i = 0; i < face.triangles.Length; i++) {
+						Vector v = Vertices[face.triangles[i]];
 						vertices.Add(v.getVector3());
 						colors.Add(faceColor);
 						triangles.Add(meshVertexIndex);
