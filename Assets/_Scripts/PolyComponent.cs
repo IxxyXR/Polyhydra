@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(SkinnedMeshRenderer))]
@@ -11,7 +13,10 @@ public class PolyComponent : MonoBehaviour {
 	
 	[Header("Gizmos")]
 	public bool vertexGizmos;
+	public bool faceCenterGizmos;
 	public bool edgeGizmos;
+	public bool faceGizmos;
+	public int[] faceGizmosList;
 	public bool dualGizmo;
 	
 	private int[] meshFaces;
@@ -19,6 +24,15 @@ public class PolyComponent : MonoBehaviour {
 	private bool ShowDuals = false;
 
 	private SkinnedMeshRenderer meshFilter;
+	
+	public Color[] gizmoPallette = {
+		Color.red,
+		Color.yellow,
+		Color.green,
+		Color.cyan,
+		Color.blue,
+		Color.magenta
+	};
 
 	void Start() {
 		
@@ -75,7 +89,6 @@ public class PolyComponent : MonoBehaviour {
 		// I had to make too many fields on Kaleido public to do this
 		// Need some sensible public methods to give me sensible access
 		
-		Gizmos.color = Color.white;
 		var transform = this.transform;
 
 		if (_polyhedron == null) {
@@ -83,49 +96,60 @@ public class PolyComponent : MonoBehaviour {
 		}
 
 		if (vertexGizmos) {
+			Gizmos.color = Color.white;
 			if (_polyhedron.Vertices != null) {
-				foreach (var vert in _polyhedron.Vertices) {
-					Gizmos.DrawWireSphere(transform.TransformPoint(vert.getVector3()), GizmoRadius);
+				for (int i = 0; i < _polyhedron.Vertices.Length; i++) {
+					Vector3 vert = _polyhedron.Vertices[i].getVector3();
+					Vector3 pos = transform.TransformPoint(vert);
+					Gizmos.DrawWireSphere(pos, GizmoRadius);
+					Handles.Label(pos + new Vector3(0, .15f, 0), i.ToString());
+				}
+			}
+		}
+
+		if (faceCenterGizmos) {
+			Gizmos.color = Color.blue;
+			if (_polyhedron.FaceCenters != null) {
+				foreach (var f in _polyhedron.FaceCenters) {
+					Gizmos.DrawWireSphere(transform.TransformPoint(f.getVector3()), GizmoRadius);
+				}
+			}
+			
+		}
+
+
+		if (edgeGizmos) {
+			for (int i = 0; i < _polyhedron.EdgeCount; i++) {
+				Gizmos.color = Color.yellow;
+				var edgeStart = _polyhedron.Edges[0, i];
+				var edgeEnd = _polyhedron.Edges[1, i];
+				Gizmos.DrawLine(
+					transform.TransformPoint(_polyhedron.Vertices[edgeStart].getVector3()),
+					transform.TransformPoint(_polyhedron.Vertices[edgeEnd].getVector3())
+				);
+			}
+		}
+
+		if (faceGizmos) {
+			int gizmoColor = 0;
+			for (int f = 0; f < _polyhedron.faces.Count; f++) {
+				if (faceGizmosList.Contains(f) || faceGizmosList.Length==0)
+				{
+					Gizmos.color = gizmoPallette[gizmoColor++ % gizmoPallette.Length];
+					Face face = _polyhedron.faces[f];
+					for (int i = 0; i < face.points.Count; i++)
+					{
+						var edgeStart = face.points[i];
+						var edgeEnd = face.points[(i + 1) % face.points.Count];
+						Gizmos.DrawLine(
+							transform.TransformPoint(_polyhedron.Vertices[edgeStart].getVector3()),
+							transform.TransformPoint(_polyhedron.Vertices[edgeEnd].getVector3())
+						);
+					}
 				}
 			}
 		}
 		
-//		if (_polyhedron.f != null) {
-//			foreach (var faceVert in _polyhedron.f) {
-//				Gizmos.DrawWireSphere(transform.TransformPoint(faceVert.getVector3()), GizmoRadius);
-//			}
-//		}
-//		
-//		for (int i = 0; i < _polyhedron.E; i++) {
-//			var edgeStart = _polyhedron.e[0, i];
-//			var edgeEnd = _polyhedron.e[1, i];
-//			Gizmos.DrawLine(
-//				transform.TransformPoint(_polyhedron.v[edgeStart].getVector3()),
-//				transform.TransformPoint(_polyhedron.v[edgeEnd].getVector3())
-//			);
-//		}
-//
-//		foreach (var fv in _polyhedron.faceVertices) {
-//			foreach (int vnum in fv) {
-//				Gizmos.DrawWireSphere(
-//					transform.TransformPoint(_polyhedron.v[vnum].getVector3()),
-//					GizmoRadius
-//				);
-//			}
-//
-//			break;
-//		}
-//		
-//		foreach (var fe in _polyhedron.faceEdges) {
-//			foreach (int edgenum in fe) {
-//				Gizmos.DrawLine(
-//					transform.TransformPoint(_polyhedron.P.v[_polyhedron.P.e[0, edgenum]].getVector3()),
-//					transform.TransformPoint(_polyhedron.P.v[_polyhedron.P.e[1, edgenum]].getVector3())
-//				);
-//			}
-//
-//			break;
-//		}
 		if (dualGizmo) {
 			for (int i = 0; i < _polyhedron.EdgeCount; i++)
 			{

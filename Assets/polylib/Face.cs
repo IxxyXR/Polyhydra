@@ -50,9 +50,6 @@ public class Face {
     public void CalcTriangles() {
 		
         var ret = new List<int>();
-	    
-	    Debug.Log("Points:");
-	    Debug.Log(points);
 		
         if (frax.d == 1 || frax.d == frax.n - 1) {
             if (frax.n == 3) {
