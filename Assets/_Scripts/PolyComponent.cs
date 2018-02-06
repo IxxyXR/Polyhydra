@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Buckminster.Types;
+using Polylib;
 using UnityEditor;
 using UnityEngine;
+using Face = Polylib.Face;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(SkinnedMeshRenderer))]
@@ -8,9 +12,23 @@ public class PolyComponent : MonoBehaviour {
 
 	
 	[Range(1,80)]
+	[Tooltip("Tetrahedron: 6, Oct: 10, Cube: 11, Dodec: 28, Icos: 27")]
 	public int currentType;
-	public bool dual;
-	
+	public bool BypassConway;
+	public bool TwoSided;
+	[Tooltip("i/k/d/a/z/e/b/j/n/o/p/t")]
+	public string ConwayOperators;
+
+	public double OffsetAmount;
+	public float RibbonAmount;
+	public double ExtrudeAmount;
+	public float KisOffset = 1.0f;
+	public float ZipOffset = 1.0f;
+	public float NeedleOffset = 1.0f;
+	public float PropellerOffset = 1.0f;
+	public float BevelOffset = 1.0f;
+	public float TruncateOffset = 1.0f;
+		
 	[Header("Gizmos")]
 	public bool vertexGizmos;
 	public bool faceCenterGizmos;
@@ -38,32 +56,24 @@ public class PolyComponent : MonoBehaviour {
 		
 		meshFilter = gameObject.GetComponent<SkinnedMeshRenderer>();
 		currentType = 1;
-		dual = false;
-		MakePolyhedron(currentType, dual);
+		MakePolyhedron(currentType);
 		
 	}
 
 	private void OnValidate() {
-		MakePolyhedron(currentType, dual);
-		meshFilter.sharedMesh.RecalculateNormals();
-		meshFilter.sharedMesh.RecalculateTangents();
-		meshFilter.sharedMesh.RecalculateBounds();
+		MakePolyhedron(currentType);
 	}
 
 	void Update() {
 		
 		if (Input.GetKeyDown("space")) {
-			
-			if (ShowDuals) {dual = !dual;}
 
-			if (!dual || !ShowDuals) {  // TODO Fix duals
-				currentType++;
-				currentType = currentType % Polyhedron.uniform.Length;
-				gameObject.GetComponent<RotateObject>().Randomize();
-			}
+			currentType++;
+			currentType = currentType % Polyhedron.uniform.Length;
+			gameObject.GetComponent<RotateObject>().Randomize();
 			
-			MakePolyhedron(currentType, dual);
-			Debug.Log(currentType + ": " + _polyhedron.PolyName + (dual ? " (dual)" : ""));
+			MakePolyhedron(currentType);
+			Debug.Log(currentType + ": " + _polyhedron.PolyName);
 
 		} else if (Input.GetKeyDown("p")) {
 			gameObject.GetComponent<RotateObject>().Pause();
@@ -75,11 +85,100 @@ public class PolyComponent : MonoBehaviour {
 		
 	}
 	
-	void MakePolyhedron(int currentType, bool dual) {
+	void MakePolyhedron(int currentType) {
+
+		var mesh = new Mesh();
 		
-		_polyhedron = new Polyhedron(currentType);
-		_polyhedron.CreateBlendShapes();
-		meshFilter.sharedMesh = _polyhedron.mesh;
+		if (!BypassConway) {
+
+			_polyhedron = new Polyhedron(currentType);
+			_polyhedron.BuildFaces();
+			var conway = new ConwayPoly(_polyhedron);
+
+			foreach (char c in ConwayOperators.ToLower().Reverse()) {
+				switch (c) {
+					case 'i':
+						// Identity
+						break;
+					case 'k':
+						conway = conway.Kis(KisOffset);
+						break;
+					case 'd':
+						conway = conway.Dual();
+						break;
+					case 'a':
+						conway = conway.Ambo();
+						break;
+					case 'z':
+						conway = conway.Kis(ZipOffset);
+						conway = conway.Dual();
+						break;
+					case 'e':
+						conway = conway.Ambo();
+						conway = conway.Ambo();
+						break;
+					case 'b':
+						conway = conway.Ambo();
+						conway = conway.Dual();
+						conway = conway.Kis(BevelOffset);
+						conway = conway.Dual();
+						break;
+					case 'j':
+						conway = conway.Ambo();
+						conway = conway.Dual();
+						break;
+					case 'n':
+						conway = conway.Dual();
+						conway = conway.Kis(NeedleOffset);
+						break;
+					case 'o':
+						conway = conway.Ambo();
+						conway = conway.Ambo();
+						conway = conway.Dual();
+						break;
+					case 'p':
+						conway = conway.Ambo();
+						conway = conway.Dual();
+						conway = conway.Kis(PropellerOffset);
+						break;
+					case 't':
+						conway = conway.Dual();
+						conway = conway.Kis(TruncateOffset);
+						conway = conway.Dual();
+						break;
+					default:
+						Debug.Log("Unknown Conway operator: " + c);
+						break;
+				}	
+			}
+			
+			// TODO these either break or don't do anything especially useful at the moment
+			if (OffsetAmount > 0) {conway = conway.Offset(OffsetAmount);}
+			if (RibbonAmount > 0) {conway = conway.Ribbon(RibbonAmount, false, 0.1f);}
+			if (ExtrudeAmount > 0) {conway = conway.Extrude(ExtrudeAmount, false);}
+			
+			conway.ScaleToUnitSphere();
+		
+			// If we Kis we don't need fan triangulation (which breaks on non-convex faces)
+			conway = conway.Kis(0, true);
+			mesh = conway.ToUnityMesh(forceTwosided:TwoSided);
+			
+		} else {
+			// Fallback if the geometry is invalid
+			Debug.Log("Failed. Falling back to simple meshing");
+			_polyhedron = new Polyhedron(currentType);
+			_polyhedron.BuildFaces(true);  // Build the aux faces
+			_polyhedron.BuildMesh();
+			mesh = _polyhedron.mesh;
+			mesh.RecalculateNormals();
+		}
+
+		//_polyhedron.CreateBlendShapes();
+		
+		mesh.RecalculateTangents();
+		mesh.RecalculateBounds();
+
+		meshFilter.sharedMesh = mesh;
 	}
 
 	void OnDrawGizmos () {

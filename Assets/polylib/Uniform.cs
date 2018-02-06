@@ -36,16 +36,18 @@
  *****************************************************************************
  */
 
-public class Uniforms {
+namespace Polylib {
+	public class Uniforms {
 	
-	public string Wythoff, name, dual;
-	public int Coxeter, Wenninger;
+		public string Wythoff, name, dual;
+		public int Coxeter, Wenninger;
 	
-	public Uniforms(string wythoff, string name, string dual, int coxeter, int wenninger) {
-		Wythoff = wythoff;
-		this.name = name;
-		this.dual = dual;
-		Coxeter = coxeter;
-		Wenninger = wenninger;
-	}		
+		public Uniforms(string wythoff, string name, string dual, int coxeter, int wenninger) {
+			Wythoff = wythoff;
+			this.name = name;
+			this.dual = dual;
+			Coxeter = coxeter;
+			Wenninger = wenninger;
+		}		
+	}
 }

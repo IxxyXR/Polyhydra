@@ -1,148 +1,149 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class Face {
+namespace Polylib {
+	public class Face {
     
-    public List<int> points;  // Indexes into the Vertices array of the polyhedra
-    public Fraction frax;
-    public double configuration;
-    public Vector center;
-    public int centerPoint;
-	public int[] triangles;  // Indexes into the points array
+		public List<int> points;  // Indexes into the Vertices array of the polyhedra
+		public Fraction frax;
+		public double configuration;
+		public Vector center;
+		public int centerPoint;
+		public int[] triangles;  // Indexes into the points array
 
-    public Face(Vector face, Vector vertex, double configuration)  {
+		public Face(Vector face, Vector vertex, double configuration)  {
 
-        Vector center;
+			Vector center;
         
-        double angle = Vector.angle(face, vertex);
-        double r = Math.Sqrt(face.x * face.x + face.y * face.y + face.z * face.z);
-        double r0 = Math.Sqrt(vertex.x * vertex.x + vertex.y * vertex.y + vertex.z * vertex.z);
+			double angle = Vector.angle(face, vertex);
+			double r = Math.Sqrt(face.x * face.x + face.y * face.y + face.z * face.z);
+			double r0 = Math.Sqrt(vertex.x * vertex.x + vertex.y * vertex.y + vertex.z * vertex.z);
         
-        if (Math.Abs(r - r0) < Polyhedron.DBL_EPSILON) {
-            center = new Vector(
-                face.x * Math.Cos(angle),
-                face.y * Math.Cos(angle),
-                face.z * Math.Cos(angle)
-            );
-        } else {
-            center = new Vector(
-                face.x * (r0 / r) * Math.Cos(angle),
-                face.y * (r0 / r) * Math.Cos(angle),
-                face.z * (r0 / r) * Math.Cos(angle)
-            );
-        }
-        this.configuration = configuration;
-        this.center = center;
-        centerPoint = -1;
-        frax = new Fraction(configuration);
-        points = new List<int>();
-    }
+			if (Math.Abs(r - r0) < Polyhedron.DBL_EPSILON) {
+				center = new Vector(
+					face.x * Math.Cos(angle),
+					face.y * Math.Cos(angle),
+					face.z * Math.Cos(angle)
+				);
+			} else {
+				center = new Vector(
+					face.x * (r0 / r) * Math.Cos(angle),
+					face.y * (r0 / r) * Math.Cos(angle),
+					face.z * (r0 / r) * Math.Cos(angle)
+				);
+			}
+			this.configuration = configuration;
+			this.center = center;
+			centerPoint = -1;
+			frax = new Fraction(configuration);
+			points = new List<int>();
+		}
 
-    public int GetCorners() {
-        return (int)frax.n;
-    }
+		public int GetCorners() {
+			return (int)frax.n;
+		}
     
-    public void SetPoint(int p) {
-        points.Add(p);
-    }
+		public void SetPoint(int p) {
+			points.Add(p);
+		}
 	
-    public void CalcTriangles() {
+		public void CalcTriangles() {  // Only used if we aren't triangulating via the ConwayPoly
 		
-        var ret = new List<int>();
+			var ret = new List<int>();
 		
-        if (frax.d == 1 || frax.d == frax.n - 1) {
-            if (frax.n == 3) {
+			if (frax.d == 1 || frax.d == frax.n - 1) {
+				if (frax.n == 3) {
 				
-                // Simple Triangle
+					// Simple Triangle
 	            
-                ret.Add(points[0]);
-                ret.Add(points[1]);
-                ret.Add(points[2]);
+					ret.Add(points[0]);
+					ret.Add(points[1]);
+					ret.Add(points[2]);
 				
-				ret.Add(points[0]);
-				ret.Add(points[2]);
-				ret.Add(points[1]);
+					ret.Add(points[0]);
+					ret.Add(points[2]);
+					ret.Add(points[1]);
 				
-            } else {
+				} else {
 				
-                // Convex Poly
+					// Convex Poly
 				
-                // TODO If we don't have a valid centerPoint then use the first point
-                int _centerPoint = centerPoint == -1 ? points[0] : centerPoint;
+					// TODO If we don't have a valid centerPoint then use the first point
+					int _centerPoint = centerPoint == -1 ? points[0] : centerPoint;
 				
-                int previous = -1;
-                foreach (int p in points) {
+					int previous = -1;
+					foreach (int p in points) {
 					
-                    if (previous < 0) {
-                        previous = p;
-                    } else {
+						if (previous < 0) {
+							previous = p;
+						} else {
 						
-                        ret.Add(previous);
-                        ret.Add(_centerPoint);
-                        ret.Add(p);
+							ret.Add(previous);
+							ret.Add(_centerPoint);
+							ret.Add(p);
 						
+							ret.Add(previous);
+							ret.Add(p);
+							ret.Add(_centerPoint);
+						
+							previous = p;
+						}
+					}
+				
+					ret.Add(previous);
+					ret.Add(_centerPoint);
+					ret.Add(points[0]);
+				
+					ret.Add(previous);
+					ret.Add(points[0]);
+					ret.Add(_centerPoint);
+				
+				}
+			} else {
+			
+				// Concave Poly
+			
+				int previous = -1;
+			
+				foreach (int p in points) {
+				
+					if (previous < 0) {
+					
+						ret.Add(centerPoint);
+						ret.Add(points[points.Count - 2]);
+						ret.Add(p);
+			
+						ret.Add(centerPoint);
+						ret.Add(p);
+						ret.Add(points[points.Count - 2]);
+					
+						previous = p;
+					
+					} else {
+						
+						ret.Add(centerPoint);
 						ret.Add(previous);
 						ret.Add(p);
-						ret.Add(_centerPoint);
-						
-                        previous = p;
-                    }
-                }
-				
-                ret.Add(previous);
-                ret.Add(_centerPoint);
-                ret.Add(points[0]);
-				
-				ret.Add(previous);
-				ret.Add(points[0]);
-				ret.Add(_centerPoint);
-				
-            }
-        } else {
-			
-            // Concave Poly
-			
-            int previous = -1;
-			
-            foreach (int p in points) {
-				
-                if (previous < 0) {
 					
-                    ret.Add(centerPoint);
-                    ret.Add(points[points.Count - 2]);
-                    ret.Add(p);
-			
-                    ret.Add(centerPoint);
-                    ret.Add(p);
-                    ret.Add(points[points.Count - 2]);
-					
-                    previous = p;
-					
-                } else {
-						
-                    ret.Add(centerPoint);
-                    ret.Add(previous);
-                    ret.Add(p);
-					
-                    ret.Add(centerPoint);
-                    ret.Add(p);
-                    ret.Add(previous);
+						ret.Add(centerPoint);
+						ret.Add(p);
+						ret.Add(previous);
 
-                    previous = p;
-                }
-            }
+						previous = p;
+					}
+				}
 			
-        }
-        triangles = ret.ToArray();
-    }
+			}
+			triangles = ret.ToArray();
+		}
 	
-    public bool VertexExists(int vertex) {
-        foreach (int i in points) {
-            if (i == vertex) {
-                return true;
-            }
-        }
-        return false;
-    }
+		public bool VertexExists(int vertex) {
+			foreach (int i in points) {
+				if (i == vertex) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
 }
