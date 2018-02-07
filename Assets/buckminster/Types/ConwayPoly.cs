@@ -739,7 +739,7 @@ namespace Buckminster.Types {
                 target.vertices = meshVertices.ToArray();
                 target.normals = meshNormals.ToArray();
                 target.triangles = meshTriangles.ToArray();
-
+                
                 if (hasNaked || forceTwosided) {
                     target.RecalculateNormals();
                 }

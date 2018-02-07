@@ -9,25 +9,119 @@ using Face = Polylib.Face;
 [ExecuteInEditMode]
 [RequireComponent(typeof(SkinnedMeshRenderer))]
 public class PolyComponent : MonoBehaviour {
-
 	
-	[Range(1,80)]
-	[Tooltip("Tetrahedron: 6, Oct: 10, Cube: 11, Dodec: 28, Icos: 27")]
-	public int currentType;
+	[Serializable]
+	public enum PolyTypes {
+		Pentagonal_Prism,
+		Pentagonal_Antiprism,
+		Pentagrammic_Prism,
+		Pentagrammic_Antiprism,
+		Pentagrammic_Crossed_Antiprism,
+		Tetrahedron,
+		Truncated_Tetrahedron,
+		Octahemioctahedron,
+		Tetrahemihexahedron,
+		Octahedron,
+		Cube,
+		Cuboctahedron,
+		Truncated_Octahedron,
+		Truncated_Cube,
+		Rhombicuboctahedron,
+		Truncated_Cuboctahedron,
+		Snub_Cube,
+		Small_Cubicuboctahedron,
+		Great_Cubicuboctahedron,
+		Cubohemioctahedron,
+		Cubitruncated_Cuboctahedron,
+		Great_Rhombicuboctahedron,
+		Small_Rhombihexahedron,
+		Stellated_Truncated_Hexahedron,
+		Great_Truncated_Cuboctahedron,
+		Great_Rhombihexahedron,
+		Icosahedron,
+		Dodecahedron,
+		Icosidodecahedron,
+		Truncated_Icosahedron,
+		Truncated_Dodecahedron,
+		Rhombicosidodecahedron,
+		Truncated_Icosidodechedon,
+		Snub_Dodecahedron,
+		Small_Ditrigonal_Icosidodecahedron,
+		Small_Icosicosidodecahedron,
+		Small_Snub_Icosicosidodecahedron,
+		Small_Dodecicosidodecahedron,
+		Small_Stellated_Dodecahedron,
+		Great_Dodecahedron,
+		Great_Dodecadodecahedron,
+		Truncated_Great_Dodecahedron,
+		Rhombidodecadodecahedron,
+		Small_Rhombidodecahedron,
+		Snub_Dodecadodecahedron,
+		Ditrigonal_Dodecadodecahedron,
+		Great_Ditrigonal_Dodecicosidodecahedron,
+		Small_Ditrigonal_Dodecicosidodecahedron,
+		Icosidodecadodecahedron,
+		Icositruncated_Dodecadodecahedron,
+		Snub_Icosidodecadodecahedron,
+		Great_Ditrigonal_Icosidodecahedron,
+		Great_Icosicosidodecahedron,
+		Small_Icosihemidodecahedron,
+		Small_Dodecicosahedron,
+		Small_Dodecahemidodecahedron,
+		Great_Stellated_Dodecahedron,
+		Great_Icosahedron,
+		Great_Icosidodecahedron,
+		Great_Truncated_Icosahedron,
+		Rhombicosahedron,
+		Great_Snub_Icosidodecahedron,
+		Small_Stellated_Truncated_Dodecahedron,
+		Truncated_Dodecadodecahedron,
+		Inverted_Snub_Dodecadodecahedron,
+		Great_Dodecicosidodecahedron,
+		Small_Dodecahemicosahedron,
+		Great_Dodecicosahedron,
+		Great_Snub_Dodecicosidodecahedron,
+		Great_Dodecahemicosahedron,
+		Great_Stellated_Truncated_Dodecahedron,
+		Great_Rhombicosidodecahedron,
+		Great_Truncated_Icosidodecahedron,
+		Great_Inverted_Snub_Icosidodecahedron,
+		Great_Dodecahemidodecahedron,
+		Great_Icosihemidodecahedron,
+		Small_Retrosnub_Icosicosidodecahedron,
+		Great_Rhombidodecahedron,
+		Great_Retrosnub_Icosidodecahedron,
+		Great_Dirhombicosidodecahedron
+	}
+
+	public PolyTypes PolyType;
 	public bool BypassConway;
 	public bool TwoSided;
-	[Tooltip("i/k/d/a/z/e/b/j/n/o/p/t")]
-	public string ConwayOperators;
-
+	[Serializable]
+	public enum Ops {
+		Identity,
+		Kis,
+		Dual,
+		Ambo,
+		Zip,
+		Expand,
+		Bevel,
+		Join,
+		Needle,
+		Ortho,
+		Meta,
+		Truncate
+	}
+	[Serializable]
+	public struct ConwayOperator {  
+		public Ops op;
+		public float amount;
+		public bool disabled;
+	}
+	public ConwayOperator[] ConwayOperators;
 	public double OffsetAmount;
 	public float RibbonAmount;
 	public double ExtrudeAmount;
-	public float KisOffset = 1.0f;
-	public float ZipOffset = 1.0f;
-	public float NeedleOffset = 1.0f;
-	public float PropellerOffset = 1.0f;
-	public float BevelOffset = 1.0f;
-	public float TruncateOffset = 1.0f;
 		
 	[Header("Gizmos")]
 	public bool vertexGizmos;
@@ -53,27 +147,28 @@ public class PolyComponent : MonoBehaviour {
 	};
 
 	void Start() {
-		
 		meshFilter = gameObject.GetComponent<SkinnedMeshRenderer>();
-		currentType = 1;
-		MakePolyhedron(currentType);
-		
+		MakePolyhedron((int)PolyType);
+		Debug.Log((int)PolyType);
+		Debug.Log(PolyType);
 	}
 
 	private void OnValidate() {
-		MakePolyhedron(currentType);
+		MakePolyhedron((int)PolyType);
+		Debug.Log((int)PolyType);
+		Debug.Log(PolyType);
 	}
 
 	void Update() {
 		
 		if (Input.GetKeyDown("space")) {
-
-			currentType++;
-			currentType = currentType % Polyhedron.uniform.Length;
+			int num = (int)PolyType;
+			num = (num + 1) % Polyhedron.uniform.Length;
+			PolyType = (PolyTypes)num;
 			gameObject.GetComponent<RotateObject>().Randomize();
 			
-			MakePolyhedron(currentType);
-			Debug.Log(currentType + ": " + _polyhedron.PolyName);
+			MakePolyhedron((int)PolyType);
+			Debug.Log(_polyhedron.PolyName);
 
 		} else if (Input.GetKeyDown("p")) {
 			gameObject.GetComponent<RotateObject>().Pause();
@@ -87,6 +182,8 @@ public class PolyComponent : MonoBehaviour {
 	
 	void MakePolyhedron(int currentType) {
 
+		currentType++;  // We're 1-indexed not 0-indexed
+
 		var mesh = new Mesh();
 		
 		if (!BypassConway) {
@@ -94,64 +191,76 @@ public class PolyComponent : MonoBehaviour {
 			_polyhedron = new Polyhedron(currentType);
 			_polyhedron.BuildFaces();
 			var conway = new ConwayPoly(_polyhedron);
-
-			foreach (char c in ConwayOperators.ToLower().Reverse()) {
-				switch (c) {
-					case 'i':
-						// Identity
-						break;
-					case 'k':
-						conway = conway.Kis(KisOffset);
-						break;
-					case 'd':
-						conway = conway.Dual();
-						break;
-					case 'a':
-						conway = conway.Ambo();
-						break;
-					case 'z':
-						conway = conway.Kis(ZipOffset);
-						conway = conway.Dual();
-						break;
-					case 'e':
-						conway = conway.Ambo();
-						conway = conway.Ambo();
-						break;
-					case 'b':
-						conway = conway.Ambo();
-						conway = conway.Dual();
-						conway = conway.Kis(BevelOffset);
-						conway = conway.Dual();
-						break;
-					case 'j':
-						conway = conway.Ambo();
-						conway = conway.Dual();
-						break;
-					case 'n':
-						conway = conway.Dual();
-						conway = conway.Kis(NeedleOffset);
-						break;
-					case 'o':
-						conway = conway.Ambo();
-						conway = conway.Ambo();
-						conway = conway.Dual();
-						break;
-					case 'p':
-						conway = conway.Ambo();
-						conway = conway.Dual();
-						conway = conway.Kis(PropellerOffset);
-						break;
-					case 't':
-						conway = conway.Dual();
-						conway = conway.Kis(TruncateOffset);
-						conway = conway.Dual();
-						break;
-					default:
-						Debug.Log("Unknown Conway operator: " + c);
-						break;
-				}	
-			}
 			
+			if (ConwayOperators != null) {
+				foreach (var c in ConwayOperators) {
+					switch (c.op) {
+						case Ops.Identity:
+							break;
+						case Ops.Kis:
+							if (c.disabled) {break;}
+							conway = conway.Kis(c.amount);
+							break;
+						case Ops.Dual:
+							if (c.disabled) {break;}
+							conway = conway.Dual();
+							break;
+						case Ops.Ambo:
+							if (c.disabled) {break;}
+							conway = conway.Ambo();
+							break;
+						case Ops.Zip:
+							if (c.disabled) {break;}
+							conway = conway.Kis(c.amount);
+							conway = conway.Dual();
+							break;
+						case Ops.Expand:
+							if (c.disabled) {break;}
+							conway = conway.Ambo();
+							conway = conway.Ambo();
+							break;
+						case Ops.Bevel:
+							if (c.disabled) {break;}
+							conway = conway.Ambo();
+							conway = conway.Dual();
+							conway = conway.Kis(c.amount);
+							conway = conway.Dual();
+							break;
+						case Ops.Join:
+							if (c.disabled) {break;}
+							conway = conway.Ambo();
+							conway = conway.Dual();
+							break;
+						case Ops.Needle:
+							if (c.disabled) {break;}
+							conway = conway.Dual();
+							conway = conway.Kis(c.amount);
+							break;
+						case Ops.Ortho:
+							if (c.disabled) {break;}
+							conway = conway.Ambo();
+							conway = conway.Ambo();
+							conway = conway.Dual();
+							break;
+						case Ops.Meta:
+							if (c.disabled) {break;}
+							conway = conway.Ambo();
+							conway = conway.Dual();
+							conway = conway.Kis(c.amount);
+							break;
+						case Ops.Truncate:
+							if (c.disabled) {break;}
+							conway = conway.Dual();
+							conway = conway.Kis(c.amount);
+							conway = conway.Dual();
+							break;
+						default:
+							Debug.Log("Unknown Conway operator: " + c);
+							break;
+					}
+				}
+			}
+
 			// TODO these either break or don't do anything especially useful at the moment
 			if (OffsetAmount > 0) {conway = conway.Offset(OffsetAmount);}
 			if (RibbonAmount > 0) {conway = conway.Ribbon(RibbonAmount, false, 0.1f);}
