@@ -93,7 +93,7 @@ public class PolyComponent : MonoBehaviour {
 		Great_Retrosnub_Icosidodecahedron,
 		Great_Dirhombicosidodecahedron
 	}
-
+	
 	public PolyTypes PolyType;
 	public bool BypassConway;
 	public bool TwoSided;
@@ -148,15 +148,13 @@ public class PolyComponent : MonoBehaviour {
 
 	void Start() {
 		meshFilter = gameObject.GetComponent<SkinnedMeshRenderer>();
-		MakePolyhedron((int)PolyType);
-		Debug.Log((int)PolyType);
-		Debug.Log(PolyType);
+		MakePolyhedron();
 	}
 
 	private void OnValidate() {
-		MakePolyhedron((int)PolyType);
-		Debug.Log((int)PolyType);
-		Debug.Log(PolyType);
+		if (meshFilter != null) {
+			MakePolyhedron();
+		}
 	}
 
 	void Update() {
@@ -167,8 +165,7 @@ public class PolyComponent : MonoBehaviour {
 			PolyType = (PolyTypes)num;
 			gameObject.GetComponent<RotateObject>().Randomize();
 			
-			MakePolyhedron((int)PolyType);
-			Debug.Log(_polyhedron.PolyName);
+			MakePolyhedron();
 
 		} else if (Input.GetKeyDown("p")) {
 			gameObject.GetComponent<RotateObject>().Pause();
@@ -179,8 +176,12 @@ public class PolyComponent : MonoBehaviour {
 		}
 		
 	}
-	
-	void MakePolyhedron(int currentType) {
+
+	public void MakePolyhedron() {
+		MakePolyhedron((int)PolyType);
+	}
+
+	public void MakePolyhedron(int currentType) {
 
 		currentType++;  // We're 1-indexed not 0-indexed
 
@@ -254,9 +255,6 @@ public class PolyComponent : MonoBehaviour {
 							conway = conway.Kis(c.amount);
 							conway = conway.Dual();
 							break;
-						default:
-							Debug.Log("Unknown Conway operator: " + c);
-							break;
 					}
 				}
 			}
@@ -273,8 +271,6 @@ public class PolyComponent : MonoBehaviour {
 			mesh = conway.ToUnityMesh(forceTwosided:TwoSided);
 			
 		} else {
-			// Fallback if the geometry is invalid
-			Debug.Log("Failed. Falling back to simple meshing");
 			_polyhedron = new Polyhedron(currentType);
 			_polyhedron.BuildFaces(true);  // Build the aux faces
 			_polyhedron.BuildMesh();
@@ -286,7 +282,6 @@ public class PolyComponent : MonoBehaviour {
 		
 		mesh.RecalculateTangents();
 		mesh.RecalculateBounds();
-
 		meshFilter.sharedMesh = mesh;
 	}
 

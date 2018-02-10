@@ -716,8 +716,6 @@ namespace Buckminster.Types {
 
                         if (hasNaked || forceTwosided) {
                             
-                            Debug.Log("Drawing both sides");
-                            
                             meshNormals.Add(-faceNormal);
                             meshNormals.Add(-faceNormal);
                             meshNormals.Add(-faceNormal);

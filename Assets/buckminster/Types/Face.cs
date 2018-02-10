@@ -20,6 +20,7 @@ namespace Buckminster.Types {
 
             public Halfedge Halfedge { get; set; }
             public String Name { get; private set; }
+            public int ColorIndex;
     
             public Vector3 Centroid {
                 get {
