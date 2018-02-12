@@ -38,3 +38,6 @@ sysinfo.txt
 .idea/
 Assets/Plugins/Editor/JetBrains/*
 Assets/Plugins/ConsoleE*
+
+# Stuff that needs to be a git submodule
+Assets/PostProcessing*
