@@ -163,6 +163,57 @@ namespace Buckminster.Types {
 
         #region conway methods
 
+
+        public ConwayPoly Foo(float offset) {
+            
+            var vertexPoints = new List<Vector3>();
+            var faceIndices = new List<IEnumerable<int>>();
+            
+            for (int i = 0; i < Faces.Count; i++) {
+                int c = vertexPoints.Count;
+                var face = Faces[i];
+                vertexPoints.AddRange(face.GetVertices().Select(v => face.Centroid + v.Position * offset));
+                var faceIndex = new List<int>();
+                for (int ii = 0; ii < face.GetVertices().Count; ii++) {
+                    faceIndex.Add(c+ii);
+                }
+                faceIndices.Add(faceIndex);
+            }
+                
+            return new ConwayPoly(vertexPoints, faceIndices);
+        }
+        
+        public ConwayPoly KisN(float offset, int sides) {
+
+            // vertices and faces to vertices
+            var newVerts = Faces.Select(f => f.Centroid + f.Normal * offset);
+            var vertexPoints = Enumerable.Concat(Vertices.Select(v => v.Position), newVerts);
+                
+            // vertex lookup
+            Dictionary<string, int> vlookup = new Dictionary<string, int>();
+            int n = Vertices.Count;
+            for (int i = 0; i < n; i++) {
+                vlookup.Add(Vertices[i].Name, i);
+            }
+    
+            // create new tri-faces (like a fan)
+            var faceIndices = new List<IEnumerable<int>>(); // faces as vertex indices
+            for (int i = 0; i < Faces.Count; i++) {
+                if (Faces[i].Sides != sides) {
+                    faceIndices.Add(ListFacesByVertexIndices()[i]);
+                } else {
+                    foreach (var edge in Faces[i].GetHalfedges()) {
+                        // create new face from edge start, edge end and centroid
+                        faceIndices.Add(
+                            new[] {vlookup[edge.Prev.Vertex.Name], vlookup[edge.Vertex.Name], i + n}
+                        );
+                    }
+                }
+            }
+                
+            return new ConwayPoly(vertexPoints, faceIndices);
+        }
+
         // TODO
         // See http://elfnor.com/conway-polyhedron-operators-in-sverchok.html
         // and https://en.wikipedia.org/wiki/Conway_polyhedron_notation

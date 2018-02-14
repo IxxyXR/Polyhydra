@@ -100,6 +100,7 @@ public class PolyComponent : MonoBehaviour {
 	[Serializable]
 	public enum Ops {
 		Identity,
+		Foo,
 		Kis,
 		Dual,
 		Ambo,
@@ -197,6 +198,10 @@ public class PolyComponent : MonoBehaviour {
 				foreach (var c in ConwayOperators) {
 					switch (c.op) {
 						case Ops.Identity:
+							break;
+						case Ops.Foo:
+							if (c.disabled) {break;}
+							conway = conway.Foo(c.amount);
 							break;
 						case Ops.Kis:
 							if (c.disabled) {break;}
