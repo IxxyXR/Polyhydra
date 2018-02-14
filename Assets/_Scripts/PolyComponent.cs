@@ -102,6 +102,11 @@ public class PolyComponent : MonoBehaviour {
 		Identity,
 		Foo,
 		Kis,
+		Kis3,
+		Kis4,
+		Kis5,
+		Kis6,
+		Kis8,
 		Dual,
 		Ambo,
 		Zip,
@@ -135,6 +140,7 @@ public class PolyComponent : MonoBehaviour {
 	private int[] meshFaces;
 	private Polyhedron _polyhedron;
 	private bool ShowDuals = false;
+	private ConwayPoly conway;
 
 	private SkinnedMeshRenderer meshFilter;
 	
@@ -190,11 +196,15 @@ public class PolyComponent : MonoBehaviour {
 		
 		if (!BypassConway) {
 
-			_polyhedron = new Polyhedron(currentType);
-			_polyhedron.BuildFaces();
-			var conway = new ConwayPoly(_polyhedron);
+			// Bypass the Wytoff construction if the type hasn't changed
+			if (_polyhedron==null || _polyhedron==null || _polyhedron.PolyTypeIndex!=currentType) {
+				_polyhedron = new Polyhedron(currentType);
+				_polyhedron.BuildFaces();
+			}
+			
 			
 			if (ConwayOperators != null) {
+				conway = new ConwayPoly(_polyhedron);
 				foreach (var c in ConwayOperators) {
 					switch (c.op) {
 						case Ops.Identity:
@@ -206,6 +216,26 @@ public class PolyComponent : MonoBehaviour {
 						case Ops.Kis:
 							if (c.disabled) {break;}
 							conway = conway.Kis(c.amount);
+							break;
+						case Ops.Kis3:
+							if (c.disabled) {break;}
+							conway = conway.KisN(c.amount, 3);
+							break;
+						case Ops.Kis4:
+							if (c.disabled) {break;}
+							conway = conway.KisN(c.amount, 4);
+							break;
+						case Ops.Kis5:
+							if (c.disabled) {break;}
+							conway = conway.KisN(c.amount, 5);
+							break;
+						case Ops.Kis6:
+							if (c.disabled) {break;}
+							conway = conway.KisN(c.amount, 6);
+							break;
+						case Ops.Kis8:
+							if (c.disabled) {break;}
+							conway = conway.KisN(c.amount, 8);
 							break;
 						case Ops.Dual:
 							if (c.disabled) {break;}

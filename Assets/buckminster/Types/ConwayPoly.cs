@@ -170,14 +170,25 @@ namespace Buckminster.Types {
             var faceIndices = new List<IEnumerable<int>>();
             
             for (int i = 0; i < Faces.Count; i++) {
-                int c = vertexPoints.Count;
+                
                 var face = Faces[i];
-                vertexPoints.AddRange(face.GetVertices().Select(v => face.Centroid + v.Position * offset));
+                
+                int c = vertexPoints.Count;
+                //vertexPoints.AddRange(face.GetVertices().Select(v => v.Position));
                 var faceIndex = new List<int>();
+                for (int ii = 0; ii < face.GetVertices().Count; ii++) {
+                //    faceIndex.Add(c+ii);
+                }
+                //faceIndices.Add(faceIndex);
+                
+                c = vertexPoints.Count;
+                vertexPoints.AddRange(face.GetVertices().Select(v => v.Position +  face.Centroid - ( face.Centroid * offset)));
+                faceIndex = new List<int>();
                 for (int ii = 0; ii < face.GetVertices().Count; ii++) {
                     faceIndex.Add(c+ii);
                 }
                 faceIndices.Add(faceIndex);
+                
             }
                 
             return new ConwayPoly(vertexPoints, faceIndices);
