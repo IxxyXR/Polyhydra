@@ -2,14 +2,14 @@
 using UnityEngine;
 
 
-[CustomEditor(typeof(PolyPresetManager))]
+[CustomEditor(typeof(PolyPresets))]
 public class PolyPresetEditor : CustomEditorBase {
     
-    PolyPresetManager _presetManager;
+    PolyPresets _presets;
     PolyComponent _poly;
 
     protected override void OnEnable() {
-        _presetManager = (PolyPresetManager) target;
+        _presets = (PolyPresets) target;
         _poly = GameObject.Find("Polyhedron").GetComponent<PolyComponent>();
         base.OnEnable();
     }
@@ -18,7 +18,7 @@ public class PolyPresetEditor : CustomEditorBase {
         base.OnInspectorGUI();
         //DrawDefaultInspector();
         if(GUILayout.Button("Save")) {
-            _presetManager.AddPreset("test" + _presetManager.PolyPresets.Count, _poly);
+            _presets.AddPreset("test" + _presets.Items.Count);
         }
     }
     

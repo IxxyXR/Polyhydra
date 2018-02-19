@@ -1,0 +1,54 @@
+{
+  "Name": "Preset 2",
+  "PolyType": 16,
+  "BypassConway": true,
+  "TwoSided": true,
+  "ConwayOperators": [],
+  "OffsetAmount": 0.0,
+  "RibbonAmount": 0.0,
+  "ExtrudeAmount": 0.0,
+  "vertexGizmos": false,
+  "faceCenterGizmos": false,
+  "edgeGizmos": false,
+  "faceGizmos": false,
+  "faceGizmosList": [],
+  "dualGizmo": false,
+  "gizmoPallette": [
+    {
+      "r": 1.0,
+      "g": 0.0,
+      "b": 0.0,
+      "a": 1.0
+    },
+    {
+      "r": 1.0,
+      "g": 0.9215686321258545,
+      "b": 0.01568627543747425,
+      "a": 1.0
+    },
+    {
+      "r": 0.0,
+      "g": 1.0,
+      "b": 0.0,
+      "a": 1.0
+    },
+    {
+      "r": 0.0,
+      "g": 1.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    {
+      "r": 0.0,
+      "g": 0.0,
+      "b": 1.0,
+      "a": 1.0
+    },
+    {
+      "r": 1.0,
+      "g": 0.0,
+      "b": 1.0,
+      "a": 1.0
+    }
+  ]
+}

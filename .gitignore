@@ -41,3 +41,4 @@ Assets/Plugins/ConsoleE*
 
 # Stuff that needs to be a git submodule
 Assets/PostProcessing*
+Assets/ProCore*

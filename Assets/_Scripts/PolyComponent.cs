@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Buckminster.Types;
 using Polylib;
 using UnityEditor;
@@ -10,132 +9,7 @@ using Face = Polylib.Face;
 [RequireComponent(typeof(SkinnedMeshRenderer))]
 public class PolyComponent : MonoBehaviour {
 	
-	[Serializable]
-	public enum PolyTypes {
-		Pentagonal_Prism,
-		Pentagonal_Antiprism,
-		Pentagrammic_Prism,
-		Pentagrammic_Antiprism,
-		Pentagrammic_Crossed_Antiprism,
-		Tetrahedron,
-		Truncated_Tetrahedron,
-		Octahemioctahedron,
-		Tetrahemihexahedron,
-		Octahedron,
-		Cube,
-		Cuboctahedron,
-		Truncated_Octahedron,
-		Truncated_Cube,
-		Rhombicuboctahedron,
-		Truncated_Cuboctahedron,
-		Snub_Cube,
-		Small_Cubicuboctahedron,
-		Great_Cubicuboctahedron,
-		Cubohemioctahedron,
-		Cubitruncated_Cuboctahedron,
-		Great_Rhombicuboctahedron,
-		Small_Rhombihexahedron,
-		Stellated_Truncated_Hexahedron,
-		Great_Truncated_Cuboctahedron,
-		Great_Rhombihexahedron,
-		Icosahedron,
-		Dodecahedron,
-		Icosidodecahedron,
-		Truncated_Icosahedron,
-		Truncated_Dodecahedron,
-		Rhombicosidodecahedron,
-		Truncated_Icosidodechedon,
-		Snub_Dodecahedron,
-		Small_Ditrigonal_Icosidodecahedron,
-		Small_Icosicosidodecahedron,
-		Small_Snub_Icosicosidodecahedron,
-		Small_Dodecicosidodecahedron,
-		Small_Stellated_Dodecahedron,
-		Great_Dodecahedron,
-		Great_Dodecadodecahedron,
-		Truncated_Great_Dodecahedron,
-		Rhombidodecadodecahedron,
-		Small_Rhombidodecahedron,
-		Snub_Dodecadodecahedron,
-		Ditrigonal_Dodecadodecahedron,
-		Great_Ditrigonal_Dodecicosidodecahedron,
-		Small_Ditrigonal_Dodecicosidodecahedron,
-		Icosidodecadodecahedron,
-		Icositruncated_Dodecadodecahedron,
-		Snub_Icosidodecadodecahedron,
-		Great_Ditrigonal_Icosidodecahedron,
-		Great_Icosicosidodecahedron,
-		Small_Icosihemidodecahedron,
-		Small_Dodecicosahedron,
-		Small_Dodecahemidodecahedron,
-		Great_Stellated_Dodecahedron,
-		Great_Icosahedron,
-		Great_Icosidodecahedron,
-		Great_Truncated_Icosahedron,
-		Rhombicosahedron,
-		Great_Snub_Icosidodecahedron,
-		Small_Stellated_Truncated_Dodecahedron,
-		Truncated_Dodecadodecahedron,
-		Inverted_Snub_Dodecadodecahedron,
-		Great_Dodecicosidodecahedron,
-		Small_Dodecahemicosahedron,
-		Great_Dodecicosahedron,
-		Great_Snub_Dodecicosidodecahedron,
-		Great_Dodecahemicosahedron,
-		Great_Stellated_Truncated_Dodecahedron,
-		Great_Rhombicosidodecahedron,
-		Great_Truncated_Icosidodecahedron,
-		Great_Inverted_Snub_Icosidodecahedron,
-		Great_Dodecahemidodecahedron,
-		Great_Icosihemidodecahedron,
-		Small_Retrosnub_Icosicosidodecahedron,
-		Great_Rhombidodecahedron,
-		Great_Retrosnub_Icosidodecahedron,
-		Great_Dirhombicosidodecahedron
-	}
-	
-	public PolyTypes PolyType;
-	public bool BypassConway;
-	public bool TwoSided;
-	[Serializable]
-	public enum Ops {
-		Identity,
-		Foo,
-		Kis,
-		Kis3,
-		Kis4,
-		Kis5,
-		Kis6,
-		Kis8,
-		Dual,
-		Ambo,
-		Zip,
-		Expand,
-		Bevel,
-		Join,
-		Needle,
-		Ortho,
-		Meta,
-		Truncate
-	}
-	[Serializable]
-	public struct ConwayOperator {  
-		public Ops op;
-		public float amount;
-		public bool disabled;
-	}
-	public ConwayOperator[] ConwayOperators;
-	public double OffsetAmount;
-	public float RibbonAmount;
-	public double ExtrudeAmount;
-		
-	[Header("Gizmos")]
-	public bool vertexGizmos;
-	public bool faceCenterGizmos;
-	public bool edgeGizmos;
-	public bool faceGizmos;
-	public int[] faceGizmosList;
-	public bool dualGizmo;
+	public PolyPreset preset;
 	
 	private int[] meshFaces;
 	private Polyhedron _polyhedron;
@@ -143,19 +17,11 @@ public class PolyComponent : MonoBehaviour {
 	private ConwayPoly conway;
 
 	private SkinnedMeshRenderer meshFilter;
-	
-	public Color[] gizmoPallette = {
-		Color.red,
-		Color.yellow,
-		Color.green,
-		Color.cyan,
-		Color.blue,
-		Color.magenta
-	};
 
 	void Start() {
 		meshFilter = gameObject.GetComponent<SkinnedMeshRenderer>();
 		MakePolyhedron();
+		preset = new PolyPreset();
 	}
 
 	private void OnValidate() {
@@ -167,9 +33,9 @@ public class PolyComponent : MonoBehaviour {
 	void Update() {
 		
 		if (Input.GetKeyDown("space")) {
-			int num = (int)PolyType;
+			int num = (int)preset.PolyType;
 			num = (num + 1) % Polyhedron.uniform.Length;
-			PolyType = (PolyTypes)num;
+			preset.PolyType = (PolyPreset.PolyTypes)num;
 			gameObject.GetComponent<RotateObject>().Randomize();
 			
 			MakePolyhedron();
@@ -185,7 +51,7 @@ public class PolyComponent : MonoBehaviour {
 	}
 
 	public void MakePolyhedron() {
-		MakePolyhedron((int)PolyType);
+		MakePolyhedron((int)preset.PolyType);
 	}
 
 	public void MakePolyhedron(int currentType) {
@@ -194,7 +60,7 @@ public class PolyComponent : MonoBehaviour {
 
 		var mesh = new Mesh();
 		
-		if (!BypassConway) {
+		if (!preset.BypassConway) {
 
 			// Bypass the Wytoff construction if the type hasn't changed
 			if (_polyhedron==null || _polyhedron==null || _polyhedron.PolyTypeIndex!=currentType) {
@@ -202,89 +68,88 @@ public class PolyComponent : MonoBehaviour {
 				_polyhedron.BuildFaces();
 			}
 			
-			
-			if (ConwayOperators != null) {
+			if (preset.ConwayOperators != null) {
 				conway = new ConwayPoly(_polyhedron);
-				foreach (var c in ConwayOperators) {
+				foreach (var c in preset.ConwayOperators) {
 					switch (c.op) {
-						case Ops.Identity:
+						case PolyPreset.Ops.Identity:
 							break;
-						case Ops.Foo:
+						case PolyPreset.Ops.Foo:
 							if (c.disabled) {break;}
 							conway = conway.Foo(c.amount);
 							break;
-						case Ops.Kis:
+						case PolyPreset.Ops.Kis:
 							if (c.disabled) {break;}
 							conway = conway.Kis(c.amount);
 							break;
-						case Ops.Kis3:
+						case PolyPreset.Ops.Kis3:
 							if (c.disabled) {break;}
 							conway = conway.KisN(c.amount, 3);
 							break;
-						case Ops.Kis4:
+						case PolyPreset.Ops.Kis4:
 							if (c.disabled) {break;}
 							conway = conway.KisN(c.amount, 4);
 							break;
-						case Ops.Kis5:
+						case PolyPreset.Ops.Kis5:
 							if (c.disabled) {break;}
 							conway = conway.KisN(c.amount, 5);
 							break;
-						case Ops.Kis6:
+						case PolyPreset.Ops.Kis6:
 							if (c.disabled) {break;}
 							conway = conway.KisN(c.amount, 6);
 							break;
-						case Ops.Kis8:
+						case PolyPreset.Ops.Kis8:
 							if (c.disabled) {break;}
 							conway = conway.KisN(c.amount, 8);
 							break;
-						case Ops.Dual:
+						case PolyPreset.Ops.Dual:
 							if (c.disabled) {break;}
 							conway = conway.Dual();
 							break;
-						case Ops.Ambo:
+						case PolyPreset.Ops.Ambo:
 							if (c.disabled) {break;}
 							conway = conway.Ambo();
 							break;
-						case Ops.Zip:
+						case PolyPreset.Ops.Zip:
 							if (c.disabled) {break;}
 							conway = conway.Kis(c.amount);
 							conway = conway.Dual();
 							break;
-						case Ops.Expand:
+						case PolyPreset.Ops.Expand:
 							if (c.disabled) {break;}
 							conway = conway.Ambo();
 							conway = conway.Ambo();
 							break;
-						case Ops.Bevel:
-							if (c.disabled) {break;}
-							conway = conway.Ambo();
-							conway = conway.Dual();
-							conway = conway.Kis(c.amount);
-							conway = conway.Dual();
-							break;
-						case Ops.Join:
-							if (c.disabled) {break;}
-							conway = conway.Ambo();
-							conway = conway.Dual();
-							break;
-						case Ops.Needle:
-							if (c.disabled) {break;}
-							conway = conway.Dual();
-							conway = conway.Kis(c.amount);
-							break;
-						case Ops.Ortho:
-							if (c.disabled) {break;}
-							conway = conway.Ambo();
-							conway = conway.Ambo();
-							conway = conway.Dual();
-							break;
-						case Ops.Meta:
+						case PolyPreset.Ops.Bevel:
 							if (c.disabled) {break;}
 							conway = conway.Ambo();
 							conway = conway.Dual();
 							conway = conway.Kis(c.amount);
+							conway = conway.Dual();
 							break;
-						case Ops.Truncate:
+						case PolyPreset.Ops.Join:
+							if (c.disabled) {break;}
+							conway = conway.Ambo();
+							conway = conway.Dual();
+							break;
+						case PolyPreset.Ops.Needle:
+							if (c.disabled) {break;}
+							conway = conway.Dual();
+							conway = conway.Kis(c.amount);
+							break;
+						case PolyPreset.Ops.Ortho:
+							if (c.disabled) {break;}
+							conway = conway.Ambo();
+							conway = conway.Ambo();
+							conway = conway.Dual();
+							break;
+						case PolyPreset.Ops.Meta:
+							if (c.disabled) {break;}
+							conway = conway.Ambo();
+							conway = conway.Dual();
+							conway = conway.Kis(c.amount);
+							break;
+						case PolyPreset.Ops.Truncate:
 							if (c.disabled) {break;}
 							conway = conway.Dual();
 							conway = conway.Kis(c.amount);
@@ -295,15 +160,15 @@ public class PolyComponent : MonoBehaviour {
 			}
 
 			// TODO these either break or don't do anything especially useful at the moment
-			if (OffsetAmount > 0) {conway = conway.Offset(OffsetAmount);}
-			if (RibbonAmount > 0) {conway = conway.Ribbon(RibbonAmount, false, 0.1f);}
-			if (ExtrudeAmount > 0) {conway = conway.Extrude(ExtrudeAmount, false);}
+			if (preset.OffsetAmount > 0) {conway = conway.Offset(preset.OffsetAmount);}
+			if (preset.RibbonAmount > 0) {conway = conway.Ribbon(preset.RibbonAmount, false, 0.1f);}
+			if (preset.ExtrudeAmount > 0) {conway = conway.Extrude(preset.ExtrudeAmount, false);}
 			
 			conway.ScaleToUnitSphere();
 		
 			// If we Kis we don't need fan triangulation (which breaks on non-convex faces)
 			conway = conway.Kis(0, true);
-			mesh = conway.ToUnityMesh(forceTwosided:TwoSided);
+			mesh = conway.ToUnityMesh(forceTwosided:preset.TwoSided);
 			
 		} else {
 			_polyhedron = new Polyhedron(currentType);
@@ -333,7 +198,7 @@ public class PolyComponent : MonoBehaviour {
 			return;
 		}
 
-		if (vertexGizmos) {
+		if (preset.vertexGizmos) {
 			Gizmos.color = Color.white;
 			if (_polyhedron.Vertices != null) {
 				for (int i = 0; i < _polyhedron.Vertices.Length; i++) {
@@ -345,7 +210,7 @@ public class PolyComponent : MonoBehaviour {
 			}
 		}
 
-		if (faceCenterGizmos) {
+		if (preset.faceCenterGizmos) {
 			Gizmos.color = Color.blue;
 			if (_polyhedron.FaceCenters != null) {
 				foreach (var f in _polyhedron.FaceCenters) {
@@ -356,7 +221,7 @@ public class PolyComponent : MonoBehaviour {
 		}
 
 
-		if (edgeGizmos) {
+		if (preset.edgeGizmos) {
 			for (int i = 0; i < _polyhedron.EdgeCount; i++) {
 				Gizmos.color = Color.yellow;
 				var edgeStart = _polyhedron.Edges[0, i];
@@ -368,12 +233,12 @@ public class PolyComponent : MonoBehaviour {
 			}
 		}
 
-		if (faceGizmos) {
+		if (preset.faceGizmos) {
 			int gizmoColor = 0;
 			for (int f = 0; f < _polyhedron.faces.Count; f++) {
-				if (faceGizmosList.Contains(f) || faceGizmosList.Length==0)
+				if (preset.faceGizmosList.Contains(f) || preset.faceGizmosList.Length==0)
 				{
-					Gizmos.color = gizmoPallette[gizmoColor++ % gizmoPallette.Length];
+					Gizmos.color = preset.gizmoPallette[gizmoColor++ % preset.gizmoPallette.Length];
 					Face face = _polyhedron.faces[f];
 					for (int i = 0; i < face.points.Count; i++)
 					{
@@ -388,7 +253,7 @@ public class PolyComponent : MonoBehaviour {
 			}
 		}
 		
-		if (dualGizmo) {
+		if (preset.dualGizmo) {
 			for (int i = 0; i < _polyhedron.EdgeCount; i++)
 			{
 				var edgeStart = _polyhedron.DualEdges[0, i];
