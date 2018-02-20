@@ -11,6 +11,23 @@ public class PolyComponent : MonoBehaviour {
 	
 	public PolyPreset preset;
 	
+	[Header("Gizmos")]
+	public bool vertexGizmos;
+	public bool faceCenterGizmos;
+	public bool edgeGizmos;
+	public bool faceGizmos;
+	public int[] faceGizmosList;
+	public bool dualGizmo;
+		
+	public Color[] gizmoPallette = {
+		Color.red,
+		Color.yellow,
+		Color.green,
+		Color.cyan,
+		Color.blue,
+		Color.magenta
+	};
+	
 	private int[] meshFaces;
 	private Polyhedron _polyhedron;
 	private bool ShowDuals = false;
@@ -198,7 +215,7 @@ public class PolyComponent : MonoBehaviour {
 			return;
 		}
 
-		if (preset.vertexGizmos) {
+		if (vertexGizmos) {
 			Gizmos.color = Color.white;
 			if (_polyhedron.Vertices != null) {
 				for (int i = 0; i < _polyhedron.Vertices.Length; i++) {
@@ -210,7 +227,7 @@ public class PolyComponent : MonoBehaviour {
 			}
 		}
 
-		if (preset.faceCenterGizmos) {
+		if (faceCenterGizmos) {
 			Gizmos.color = Color.blue;
 			if (_polyhedron.FaceCenters != null) {
 				foreach (var f in _polyhedron.FaceCenters) {
@@ -221,7 +238,7 @@ public class PolyComponent : MonoBehaviour {
 		}
 
 
-		if (preset.edgeGizmos) {
+		if (edgeGizmos) {
 			for (int i = 0; i < _polyhedron.EdgeCount; i++) {
 				Gizmos.color = Color.yellow;
 				var edgeStart = _polyhedron.Edges[0, i];
@@ -233,12 +250,12 @@ public class PolyComponent : MonoBehaviour {
 			}
 		}
 
-		if (preset.faceGizmos) {
+		if (faceGizmos) {
 			int gizmoColor = 0;
 			for (int f = 0; f < _polyhedron.faces.Count; f++) {
-				if (preset.faceGizmosList.Contains(f) || preset.faceGizmosList.Length==0)
+				if (faceGizmosList.Contains(f) || faceGizmosList.Length==0)
 				{
-					Gizmos.color = preset.gizmoPallette[gizmoColor++ % preset.gizmoPallette.Length];
+					Gizmos.color = gizmoPallette[gizmoColor++ % gizmoPallette.Length];
 					Face face = _polyhedron.faces[f];
 					for (int i = 0; i < face.points.Count; i++)
 					{
@@ -253,7 +270,7 @@ public class PolyComponent : MonoBehaviour {
 			}
 		}
 		
-		if (preset.dualGizmo) {
+		if (dualGizmo) {
 			for (int i = 0; i < _polyhedron.EdgeCount; i++)
 			{
 				var edgeStart = _polyhedron.DualEdges[0, i];

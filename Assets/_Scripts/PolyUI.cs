@@ -64,15 +64,35 @@ public class PolyUI : MonoBehaviour {
     }
 
     void UpdateUI() {
-        xRotateSlider.value = rotateObject.x; yRotateSlider.value = rotateObject.y; zRotateSlider.value = rotateObject.z; twoSidedToggle.isOn = poly.preset.TwoSided; bypassConwayToggle.isOn = poly.preset.BypassConway; BasePolyDropdown.value = (int)poly.preset.PolyType;
+        xRotateSlider.value = rotateObject.x;
+        yRotateSlider.value = rotateObject.y;
+        zRotateSlider.value = rotateObject.z;
+        twoSidedToggle.isOn = poly.preset.TwoSided;
+        bypassConwayToggle.isOn = poly.preset.BypassConway;
+        BasePolyDropdown.value = (int)poly.preset.PolyType;
     }
 
-    void xSliderChanged() {rotateObject.x = Mathf.Lerp(_rotateSliderMin, _rotateSliderMax, xRotateSlider.value);}
-    void ySliderChanged() {rotateObject.y = Mathf.Lerp(_rotateSliderMin, _rotateSliderMax, yRotateSlider.value);}
-    void zSliderChanged() {rotateObject.z = Mathf.Lerp(_rotateSliderMin, _rotateSliderMax, zRotateSlider.value);}
+    void xSliderChanged() {
+        rotateObject.x = Mathf.Lerp(_rotateSliderMin, _rotateSliderMax, xRotateSlider.value);
+    }
 
-    void twoSidedToggleChanged() {poly.preset.TwoSided = twoSidedToggle.isOn;}
-    void bypassConwayToggleChanged() {poly.preset.BypassConway = bypassConwayToggle.isOn;}
+    void ySliderChanged() {
+        rotateObject.y = Mathf.Lerp(_rotateSliderMin, _rotateSliderMax, yRotateSlider.value);
+    }
+
+    void zSliderChanged() {
+        rotateObject.z = Mathf.Lerp(_rotateSliderMin, _rotateSliderMax, zRotateSlider.value);
+    }
+
+    void twoSidedToggleChanged() {
+        poly.preset.TwoSided = twoSidedToggle.isOn;
+        Presets.RebuildPoly();
+    }
+
+    void bypassConwayToggleChanged() {
+        poly.preset.BypassConway = bypassConwayToggle.isOn;
+        Presets.RebuildPoly();
+    }
 
     void DestroyPresetButtons() {
         if (PresetButtons == null) {return;}

@@ -127,22 +127,6 @@ public class PolyPreset {
 	public double OffsetAmount;
 	public float RibbonAmount;
 	public double ExtrudeAmount;
-		
-	[Header("Gizmos")]
-	public bool vertexGizmos;
-	public bool faceCenterGizmos;
-	public bool edgeGizmos;
-	public bool faceGizmos;
-	public int[] faceGizmosList;
-	public bool dualGizmo;
-	
-	public Color[] gizmoPallette = {
-		Color.red,
-		Color.yellow,
-		Color.green,
-		Color.cyan,
-		Color.blue,
-		Color.magenta
-	};
+
     
 }

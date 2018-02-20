@@ -1,0 +1,31 @@
+{
+  "Name": "Preset 08",
+  "PolyType": 10,
+  "BypassConway": false,
+  "TwoSided": true,
+  "ConwayOperators": [
+    {
+      "op": 4,
+      "amount": -1.5099999904632569,
+      "disabled": false
+    },
+    {
+      "op": 1,
+      "amount": -1.0099999904632569,
+      "disabled": false
+    },
+    {
+      "op": 9,
+      "amount": 0.0,
+      "disabled": false
+    },
+    {
+      "op": 1,
+      "amount": 0.8100000023841858,
+      "disabled": true
+    }
+  ],
+  "OffsetAmount": 0.0,
+  "RibbonAmount": 0.0,
+  "ExtrudeAmount": 0.0
+}
