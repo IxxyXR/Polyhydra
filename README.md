@@ -4,7 +4,7 @@
 
 Procedural generation of uniform polyhedra in Unity.
 
-Partly based on https://github.com/kaonasi (which in turn is based on the work of Zvi Har’El: http://www.math.technion.ac.il/S/rl/kaleido/ )
+Partly based on https://github.com/kaonasi (which in turn is based on the work of Zvi Har’El: http://www.math.technion.ac.il/S/rl/kaleido/ ). Conway operator code by Will Pearson @mcneel from https://github.com/pearswj/buckminster
 
 My original inspiration was 3DS Max's Hedra plugin which kept me entertained for quite a while nearly 2 decades ago. :-)
 
