@@ -1,5 +1,7 @@
 # wythoff-polyhedra
 
+![Screenshot](https://github.com/Ixxy-Open-Source/wythoff-polyhedra/blob/master/wythoff.png)
+
 Procedural generation of uniform polyhedra in Unity.
 
 Partly based on https://github.com/kaonasi (which in turn is based on the work of Zvi Har’El: http://www.math.technion.ac.il/S/rl/kaleido/ )
