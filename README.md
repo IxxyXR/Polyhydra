@@ -18,7 +18,7 @@ Conway operator code by Will Pearson @mcneel from https://github.com/pearswj/buc
 
 My original inspiration was 3DS Max's Hedra plugin which kept me entertained for quite a while nearly 2 decades ago. :-)
 
-
+![Screenshot](https://github.com/Ixxy-Open-Source/wythoff-polyhedra/blob/master/0.png)
 
 # TODO
 
