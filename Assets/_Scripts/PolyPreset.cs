@@ -32,6 +32,10 @@ public class PolyPreset {
 		preset.TwoSided = _poly.TwoSided;
 		preset.OffsetAmount = _poly.OffsetAmount;
 		preset.ExtrudeAmount = _poly.ExtrudeAmount;
+		if (preset.Ops == null)
+		{
+			preset.Ops = new Op[_poly.ConwayOperators.Length];
+		}
 		foreach (var polyop in _poly.ConwayOperators)
 		{
 			var op = new Op();
