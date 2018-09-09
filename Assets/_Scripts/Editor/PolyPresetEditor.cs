@@ -18,7 +18,7 @@ public class PolyPresetEditor : CustomEditorBase {
         base.OnInspectorGUI();
         //DrawDefaultInspector();
         if(GUILayout.Button("Save")) {
-            _presets.AddPreset("test" + _presets.Items.Count);
+            _presets.AddPresetFromPoly("test" + _presets.Items.Count);
         }
     }
     

@@ -60,8 +60,13 @@ public class DrawNormals : MonoBehaviour {
     }
 
     private void OnDrawNormals(bool isSelected) {
-        mesh = GetComponent<SkinnedMeshRenderer>().sharedMesh;
-            // Draw Face Normals
+        #if UNITY_EDITOR
+            mesh = GetComponent<MeshFilter>().sharedMesh;
+        #else
+            mesh = GetComponent<MeshFilter>().mesh;
+       #endif
+        
+        // Draw Face Normals
         if (_faceNormals.CanDraw(isSelected)) {
             int[] triangles = mesh.triangles;
             Vector3[] vertices = mesh.vertices;

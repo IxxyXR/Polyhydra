@@ -168,34 +168,27 @@ namespace Buckminster.Types {
             
             var vertexPoints = new List<Vector3>();
             var faceIndices = new List<IEnumerable<int>>();
-            var faceStartIndex = new int[Faces.Count];
             
             for (int i = 0; i < Faces.Count; i++) {
                 
                 var face = Faces[i];
                 
-                // Store the starting index 
-                faceStartIndex[i] = vertexPoints.Count;
-
-                // The original face
-                vertexPoints.AddRange(face.GetVertices().Select(v => v.Position));
-                
-                // Extruded face
-                var c = vertexPoints.Count;
-                vertexPoints.AddRange(face.GetVertices().Select(v => v.Position + face.Centroid - face.Centroid * offset));
+                int c = vertexPoints.Count;
+                //vertexPoints.AddRange(face.GetVertices().Select(v => v.Position));
                 var faceIndex = new List<int>();
-                for (int j = 0; j < face.GetVertices().Count; j++) {
-                    faceIndex.Add(c+j);
+                for (int ii = 0; ii < face.GetVertices().Count; ii++) {
+                //    faceIndex.Add(c+ii);
+                }
+                //faceIndices.Add(faceIndex);
+                
+                c = vertexPoints.Count;
+                vertexPoints.AddRange(face.GetVertices().Select(v => v.Position +  face.Centroid - ( face.Centroid * offset)));
+                faceIndex = new List<int>();
+                for (int ii = 0; ii < face.GetVertices().Count; ii++) {
+                    faceIndex.Add(c+ii);
                 }
                 faceIndices.Add(faceIndex);
                 
-                // Side faces
-                faceIndices.Add(
-                    new int[] {
-                        
-                    }
-                );
-
             }
                 
             return new ConwayPoly(vertexPoints, faceIndices);

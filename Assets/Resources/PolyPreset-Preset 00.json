@@ -1,9 +1,9 @@
 {
   "Name": "Preset 00",
   "PolyType": 33,
-  "BypassConway": false,
+  "BypassOps": false,
   "TwoSided": true,
-  "ConwayOperators": [
+  "Ops": [
     {
       "op": 1,
       "amount": 1.3899999856948853,
