@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class PolyUI : MonoBehaviour {
     
-    private PolyComponent poly;
+    public PolyComponent poly;
     private RotateObject rotateObject;
 
     public InputField PresetNameInput;
@@ -31,12 +31,16 @@ public class PolyUI : MonoBehaviour {
     private List<Button> basePolyButtons;
     private List<Transform> opItems;
 
-    void Start() {
-        
+    void Start()
+    {
+        InitUI();
+    }
+
+    public void InitUI()
+    {
         opItems = new List<Transform>();
         presetButtons = new List<Button>();
         
-        poly = GameObject.Find("Polyhedron").GetComponent<PolyComponent>();
         rotateObject = poly.GetComponent<RotateObject>();
         PresetNameInput.onValueChanged.AddListener(delegate{PresetNameChanged();});
         SavePresetButton.onClick.AddListener(SavePresetButtonClicked);

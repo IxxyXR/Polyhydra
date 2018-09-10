@@ -147,8 +147,9 @@ public class PolyComponent : MonoBehaviour {
 	private ConwayPoly conway;
 
 	private MeshFilter meshFilter;
-
 	private PolyPreset previousState;
+
+	public PolyUI polyUI;
 	
 	public Color[] gizmoPallette = {
 		Color.red,
