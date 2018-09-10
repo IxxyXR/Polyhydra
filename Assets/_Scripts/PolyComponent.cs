@@ -99,7 +99,6 @@ public class PolyComponent : MonoBehaviour {
 	
 	public PolyTypes PolyType;
 	public string WythoffSymbol;
-	public Vector4 WythoffParams;
 	public bool BypassOps;
 	public bool TwoSided;
 	
@@ -201,10 +200,6 @@ public class PolyComponent : MonoBehaviour {
 		if (!String.IsNullOrEmpty(WythoffSymbol))
 		{
 			MakePolyhedron(WythoffSymbol);
-		}
-		else if (WythoffParams!=Vector4.zero)
-		{
-			MakePolyhedron(WythoffParams);
 		}
 		else
 		{
