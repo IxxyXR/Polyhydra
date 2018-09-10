@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -17,6 +18,7 @@ public class PolyUI : MonoBehaviour {
     public Slider ZRotateSlider;
     public Toggle TwoSidedToggle;
     public Toggle BypassOpsToggle;
+    public Button AddOpButton;
     public RectTransform OperatorContainer;
     public Transform OpTemplate;
     public Button ButtonTemplate;
@@ -33,14 +35,8 @@ public class PolyUI : MonoBehaviour {
 
     void Start()
     {
-        InitUI();
-    }
-
-    public void InitUI()
-    {
         opItems = new List<Transform>();
         presetButtons = new List<Button>();
-        
         rotateObject = poly.GetComponent<RotateObject>();
         PresetNameInput.onValueChanged.AddListener(delegate{PresetNameChanged();});
         SavePresetButton.onClick.AddListener(SavePresetButtonClicked);
@@ -49,28 +45,32 @@ public class PolyUI : MonoBehaviour {
         ZRotateSlider.onValueChanged.AddListener(delegate{ZSliderChanged();});
         TwoSidedToggle.onValueChanged.AddListener(delegate{TwoSidedToggleChanged();});
         BypassOpsToggle.onValueChanged.AddListener(delegate{BypassOpsToggleChanged();});
-        
+        AddOpButton.onClick.AddListener(AddOpButtonClicked);
         try {
             Presets.LoadAllPresets();
         } catch (FileNotFoundException e) {
             Presets.ResetInitialPresets();
             Presets.SaveAllPresets();
         }
+        InitUI();
+        ShowTab(TabButtons[0].gameObject);
+    }
 
+    public void InitUI()
+    {
         UpdatePolyUI();
         UpdateOpsUI();
         UpdateAnimUI();
         CreatePresetButtons();
-        
-        ShowTab(TabButtons[0].gameObject);
     }
 
-    void Update() {
+    void Update()
+    {
         if (Input.GetKeyDown("space")) {
             int num = (int)poly.PolyType;
             num = (num + 1) % Enum.GetValues(typeof(PolyComponent.PolyTypes)).Length;
             poly.PolyType = (PolyComponent.PolyTypes)num;
-            Presets.RebuildPoly();
+            poly.MakePolyhedron();
         } else if (Input.GetKeyDown("p")) {
             gameObject.GetComponent<RotateObject>().Pause();
             UpdateAnimUI();
@@ -83,13 +83,21 @@ public class PolyUI : MonoBehaviour {
         }
     }
 
+    void AddOpButtonClicked()
+    {
+        AddOpItem(new PolyComponent.ConwayOperator {disabled = true});  // No need to rebuild as it's disabled initially
+        Array.Resize(ref poly.ConwayOperators, poly.ConwayOperators.Length + 1);
+        poly.ConwayOperators[poly.ConwayOperators.Length - 1] = new PolyComponent.ConwayOperator {disabled = true};
+    }
+
     void UpdatePolyUI() {
         TwoSidedToggle.isOn = poly.TwoSided;
         CreateBasePolyDropdown();
         BasePolyDropdown.value = (int)poly.PolyType;
     }
 
-    void UpdateAnimUI() {
+    void UpdateAnimUI()
+    {
         XRotateSlider.value = rotateObject.x;
         YRotateSlider.value = rotateObject.y;
         ZRotateSlider.value = rotateObject.z;
@@ -101,7 +109,8 @@ public class PolyUI : MonoBehaviour {
         CreateOps();        
     }
 
-    void DestroyOps() {
+    void DestroyOps()
+    {
         if (opItems == null) {return;}
         foreach (var item in opItems) {
             Destroy(item.gameObject);
@@ -109,25 +118,46 @@ public class PolyUI : MonoBehaviour {
         opItems.Clear();
     }
     
-    void CreateOps() {
+    void CreateOps()
+    {
         DestroyOps();
         if (poly.ConwayOperators == null) {return;}
-        for (var index = 0; index < poly.ConwayOperators.Length; index++) {
-            var op = poly.ConwayOperators[index];
-            var opItem = Instantiate(OpTemplate);
-            opItem.name = "Operator " + index;
-            opItem.transform.SetParent(OperatorContainer);
-            foreach (var opType in Enum.GetValues(typeof(PolyComponent.Ops))) {
-                var opLabel = new Dropdown.OptionData(opType.ToString());
-                opItem.GetComponentInChildren<Dropdown>().options.Add(opLabel);
-            }
-            opItem.GetComponentInChildren<Toggle>().isOn = !op.disabled;
-            opItem.GetComponentInChildren<InputField>().text = op.amount.ToString();
-            opItem.GetComponentInChildren<Dropdown>().onValueChanged.AddListener(delegate{OpDropdownChanged();});
-            opItem.GetComponentInChildren<Toggle>().onValueChanged.AddListener(delegate{OpDisabledChanged();});
-            opItem.GetComponentInChildren<InputField>().onValueChanged.AddListener(delegate{OpInputChanged();});
-            opItems.Add(opItem);
+        for (var index = 0; index < poly.ConwayOperators.Length; index++)
+        {
+            var conwayOperator = poly.ConwayOperators[index];
+            AddOpItem(conwayOperator);
         }
+    }
+
+    void AddOpItem(PolyComponent.ConwayOperator opItem)
+    {
+        var opUIItem = Instantiate(OpTemplate);
+        opUIItem.transform.SetParent(OperatorContainer);
+        var opsDropdown = opUIItem.GetComponentInChildren<Dropdown>();
+        foreach (var opType in Enum.GetValues(typeof(PolyComponent.Ops))) {
+            var opLabel = new Dropdown.OptionData(opType.ToString());
+            opsDropdown.options.Add(opLabel);
+        }
+        opsDropdown.value = (int) opItem.op;
+        opUIItem.GetComponentInChildren<Toggle>().isOn = opItem.disabled;
+        opUIItem.GetComponentInChildren<Slider>().value = opItem.amount;
+        opUIItem.GetComponentInChildren<Dropdown>().onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opUIItem.GetComponentInChildren<Toggle>().onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opUIItem.GetComponentInChildren<Slider>().onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opItems.Add(opUIItem);
+    }
+
+    void OpsUIToPoly()
+    {
+        if (opItems == null) {return;}
+        for (var index = 0; index < opItems.Count; index++) {
+            var opUIItem = opItems[index];
+            var opsDropdown = opUIItem.GetComponentInChildren<Dropdown>();
+            poly.ConwayOperators[index].op = (PolyComponent.Ops)opsDropdown.value;
+            poly.ConwayOperators[index].disabled = opUIItem.GetComponentInChildren<Toggle>().isOn;
+            poly.ConwayOperators[index].amount = opUIItem.GetComponentInChildren<Slider>().value;
+        }
+        poly.MakePolyhedron();
     }
 
     void CreateBasePolyDropdown()
@@ -173,7 +203,7 @@ public class PolyUI : MonoBehaviour {
 
     void BasePolyDropdownChanged(Dropdown change) {
         poly.PolyType = (PolyComponent.PolyTypes)change.value;
-        Presets.RebuildPoly();
+        poly.MakePolyhedron();
     }
 
     void XSliderChanged() {
@@ -190,24 +220,12 @@ public class PolyUI : MonoBehaviour {
 
     void TwoSidedToggleChanged() {
         poly.TwoSided = TwoSidedToggle.isOn;
-        Presets.RebuildPoly();
+        poly.MakePolyhedron();
     }
 
     void BypassOpsToggleChanged() {
         poly.BypassOps = BypassOpsToggle.isOn;
-        Presets.RebuildPoly();
-    }
-
-    void OpDropdownChanged() {
-        Debug.Log(EventSystem.current.currentSelectedGameObject.name);
-    }
-    
-    void OpDisabledChanged() {
-        Debug.Log(EventSystem.current.currentSelectedGameObject.name);
-    }
-    
-    void OpInputChanged() {
-        Debug.Log(EventSystem.current.currentSelectedGameObject.name);
+        poly.MakePolyhedron();
     }
 
     void LoadPresetButtonClicked() {

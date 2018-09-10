@@ -24,14 +24,8 @@ public class PolyPresets : MonoBehaviour {
 	public void ApplyPresetToPoly(PolyPreset preset)
 	{
 		preset.ApplyToPoly(ref _poly);
-		RebuildPoly();
 	}
 
-	public void RebuildPoly()
-	{
-		_poly.MakePolyhedron();
-	}
-	
 	public void AddPresetFromPoly(string presetName)
 	{
 		var preset = new PolyPreset();

@@ -122,6 +122,7 @@ public class PolyComponent : MonoBehaviour {
 		Meta,
 		Truncate
 	}
+	
 	[Serializable]
 	public struct ConwayOperator {  
 		public Ops op;
@@ -195,8 +196,6 @@ public class PolyComponent : MonoBehaviour {
 	}
 
 	public void MakePolyhedron() {
-		
-		Debug.Log("Make");
 		
 		if (!String.IsNullOrEmpty(WythoffSymbol))
 		{
