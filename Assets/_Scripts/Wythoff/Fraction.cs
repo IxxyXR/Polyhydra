@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Polylib {
+namespace Wythoff {
     public class Fraction {
     
         public long n;

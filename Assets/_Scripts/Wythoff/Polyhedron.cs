@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Polylib {
+
+namespace Wythoff {
+    
     public class Polyhedron
     {
         

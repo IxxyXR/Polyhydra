@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Buckminster.Types;
-using Polylib;
+using Conway;
+using Wythoff;
 using UnityEditor;
 using UnityEngine;
-using Face = Polylib.Face;
+using Face = Wythoff.Face;
+
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable UnusedMember.Global
 
@@ -104,7 +105,6 @@ public class PolyComponent : MonoBehaviour {
 	
 	public enum Ops {
 		Identity,
-		Foo,
 		Kis,
 		Kis3,
 		Kis4,
@@ -124,7 +124,9 @@ public class PolyComponent : MonoBehaviour {
 		Gyro,
 		Offset,
 		Ribbon,
-		Extrude
+		Extrude,
+		Scale,
+		Test
 	}
 	
 	[Serializable]
@@ -249,7 +251,7 @@ public class PolyComponent : MonoBehaviour {
 					switch (c.op) {
 						case Ops.Identity:
 							break;
-						case Ops.Foo:
+						case Ops.Scale:
 							if (c.disabled) {break;}
 							conway = conway.Foo(c.amount);
 							break;
@@ -345,6 +347,11 @@ public class PolyComponent : MonoBehaviour {
 						case Ops.Ribbon:
 							if (c.disabled) {break;}
 							conway = conway.Ribbon(c.amount, false, 0.1f);
+							break;
+						
+						case Ops.Test:
+							if (c.disabled) {break;}
+							
 							break;
 					}
 				}

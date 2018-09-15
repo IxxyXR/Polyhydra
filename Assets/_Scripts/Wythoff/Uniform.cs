@@ -36,7 +36,7 @@
  *****************************************************************************
  */
 
-namespace Polylib {
+namespace Wythoff {
 	public class Uniform {
 	
 		public readonly string Wythoff;

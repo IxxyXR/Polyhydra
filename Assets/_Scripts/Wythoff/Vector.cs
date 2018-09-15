@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Polylib {
+namespace Wythoff {
     public class Vector {
     
         public double x, y, z;
