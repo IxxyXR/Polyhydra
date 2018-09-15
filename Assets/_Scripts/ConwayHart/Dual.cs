@@ -18,10 +18,10 @@ namespace Buckminster.Types
     {
       // compute dual of argument, matching V and F indices
       var result = new ConwayHart();
-      var faces = new List<List<dynamic>>(); // make table of face as fn of edge
-      for (var i = 0; i < poly.positions.Count; i++)
+      var faces = new Dictionary<dynamic, Dictionary<dynamic, dynamic>>(); // make table of face as fn of edge
+      for (var i = 0; i < poly.faces.Count; i++)
       {
-        faces[i] = new List<dynamic>(); // create empty associative table
+        faces[i] = new  Dictionary<dynamic, dynamic>(); // create empty associative table
       }
 
       for (var i = 0; i < poly.faces.Count; i++)
@@ -30,6 +30,7 @@ namespace Buckminster.Types
         for (int j = 0; j < poly.faces[i].Count; j++)
         {
           var v2 = poly.faces[i][j]; // this vertex
+          faces[v1]["v" + v2] = new List<dynamic>();
           faces[v1]["v" + v2] = i; // fill it.  2nd index is associative
           v1 = v2; // current becomes previous
         }

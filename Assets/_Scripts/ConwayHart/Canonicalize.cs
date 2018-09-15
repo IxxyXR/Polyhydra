@@ -48,7 +48,7 @@ namespace Buckminster.Types
     public Dictionary<dynamic, Vector3> reciprocalC(ConwayHart poly)
     {
       // return array of reciprocals of face centers
-      var center = faceCenters(poly);
+      var center = faceCenters();
       for (var i = 0; i < poly.faces.Count; i++)
       {
         var m2 = center[i][0] * center[i][0] + center[i][1] * center[i][1] + center[i][2] * center[i][2];
@@ -61,19 +61,19 @@ namespace Buckminster.Types
       return center;
     }
 
-    public Dictionary<dynamic, Vector3> faceCenters(ConwayHart poly)
+    public Dictionary<dynamic, Vector3> faceCenters()
     {
       // return array of "face centers"
       var ans = new Dictionary<dynamic, Vector3>();
-      for (var i = 0; i < poly.faces.Count; i++)
+      for (var i = 0; i < faces.Count; i++)
       {
         ans[i] = Vector3.zero; // running sum
-        for (var j = 0; j < poly.faces[i].Count; j++) // just average vertex coords:
+        for (var j = 0; j < faces[i].Count; j++) // just average vertex coords:
         {
-          ans[i] = ans[i] + poly.positions[poly.faces[i][j]]; // sum and...
+          ans[i] = ans[i] + positions[faces[i][j]]; // sum and...
         }
 
-        ans[i] = 1.0f / poly.faces[i].Count * ans[i]; // ...divide by n
+        ans[i] = 1.0f / faces[i].Count * ans[i]; // ...divide by n
       }
 
       return ans;
