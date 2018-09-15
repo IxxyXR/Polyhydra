@@ -39,4 +39,4 @@ sysinfo.txt
 .idea/
 Assets/Plugins/Editor/JetBrains*
 .DS_Store
-/Assets/_Scripts/Experimental*
+/Experimental/
