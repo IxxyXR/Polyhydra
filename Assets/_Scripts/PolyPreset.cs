@@ -19,10 +19,7 @@ public class PolyPreset {
 	}
 	
 	public Op[] Ops;
-	public double OffsetAmount;
-	public float RibbonAmount;
-	public double ExtrudeAmount;
-	
+		
 	public PolyPreset CreateFromPoly(string presetName, PolyComponent _poly)
 	{
 		var preset = new PolyPreset();
@@ -30,8 +27,6 @@ public class PolyPreset {
 		preset.PolyType = (int)_poly.PolyType;
 		preset.BypassOps = _poly.BypassOps;
 		preset.TwoSided = _poly.TwoSided;
-		preset.OffsetAmount = _poly.OffsetAmount;
-		preset.ExtrudeAmount = _poly.ExtrudeAmount;
 		if (preset.Ops == null)
 		{
 			preset.Ops = new Op[_poly.ConwayOperators.Length];
@@ -54,8 +49,6 @@ public class PolyPreset {
 		_poly.PolyType = (PolyComponent.PolyTypes)preset.PolyType;
 		_poly.BypassOps = preset.BypassOps;
 		_poly.TwoSided = preset.TwoSided;
-		_poly.OffsetAmount = preset.OffsetAmount;
-		_poly.ExtrudeAmount = preset.ExtrudeAmount;
 		foreach (var presetop in preset.Ops)
 		{
 			var op = new PolyComponent.ConwayOperator();

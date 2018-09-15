@@ -121,7 +121,10 @@ public class PolyComponent : MonoBehaviour {
 		Ortho,
 		Meta,
 		Truncate,
-		Gyro
+		Gyro,
+		Offset,
+		Ribbon,
+		Extrude
 	}
 	
 	[Serializable]
@@ -131,9 +134,6 @@ public class PolyComponent : MonoBehaviour {
 		public bool disabled;
 	}
 	public ConwayOperator[] ConwayOperators;
-	public double OffsetAmount;
-	public float RibbonAmount;
-	public double ExtrudeAmount;
 		
 	[Header("Gizmos")]
 	public bool vertexGizmos;
@@ -334,14 +334,21 @@ public class PolyComponent : MonoBehaviour {
 							if (c.disabled) {break;}
 							conway = conway.Gyro(0.3333333f, c.amount);
 							break;
+						case Ops.Offset:
+							if (c.disabled) {break;}
+							conway = conway.Offset(c.amount);
+							break;
+						case Ops.Extrude:
+							if (c.disabled) {break;}
+							conway = conway.Extrude(c.amount, false);
+							break;
+						case Ops.Ribbon:
+							if (c.disabled) {break;}
+							conway = conway.Ribbon(c.amount, false, 0.1f);
+							break;
 					}
 				}
 			}
-
-			// TODO these either break or don't do anything especially useful at the moment
-			if (OffsetAmount > 0) {conway = conway.Offset(OffsetAmount);}
-			if (RibbonAmount > 0) {conway = conway.Ribbon(RibbonAmount, false, 0.1f);}
-			if (ExtrudeAmount > 0) {conway = conway.Extrude(ExtrudeAmount, false);}
 			
 			conway.ScaleToUnitSphere();
 		
