@@ -49,7 +49,15 @@ namespace Buckminster.Types {
             public Vector3 Midpoint {
                 get { return Vertex.Position + -0.5f * (Vertex.Position - Prev.Vertex.Position); }
             }
+        
+            public Vector3 OneThirdPoint {
+                get { return Vertex.Position + -0.333333f * (Vertex.Position - Prev.Vertex.Position); }
+            }
     
+            public Vector3 TwoThirdsPoint {
+                get { return Vertex.Position + -0.6666666f * (Vertex.Position - Prev.Vertex.Position); }
+            }
+        
             public Vector3 Vector {
                 get { return Vertex.Position - Prev.Vertex.Position; }
             }

@@ -47,6 +47,33 @@ namespace Buckminster.Types {
             // Find and link halfedge pairs
             Halfedges.MatchPairs();
         }
+        
+        public ConwayPoly(List<Vector3> positions, List<List<int>> faces) {
+        
+
+            // Add vertices
+            Vertices.Capacity = positions.Count;
+            foreach (var p in positions) {
+                Vertices.Add(new Vertex(p));
+            }
+
+            // Add faces (and construct halfedges and store in hash table)
+            foreach (var face in faces) {
+                var v = new Vertex[face.Count];
+                for (int i = 0; i < face.Count; i++) {
+                    v[i] = Vertices[face[i]];
+                }
+
+                if (!Faces.Add(v)) {
+                    // Failed. Let's try flipping the face
+                    Array.Reverse(v);
+                    Faces.Add(v);
+                }
+            }
+
+            // Find and link halfedge pairs
+            Halfedges.MatchPairs();
+        }
 
         /// <summary>
         /// Constructor to build a custom mesh from Unity's mesh type
@@ -119,7 +146,7 @@ namespace Buckminster.Types {
         #region properties
 
         public MeshHalfedgeList Halfedges { get; private set; }
-        public MeshVertexList Vertices { get; private set; }
+        public MeshVertexList Vertices { get; set; }
         public MeshFaceList Faces { get; private set; }
 
         public bool IsValid {
@@ -163,7 +190,6 @@ namespace Buckminster.Types {
 
         #region conway methods
 
-
         public ConwayPoly Foo(float offset) {
             
             var vertexPoints = new List<Vector3>();
@@ -179,7 +205,6 @@ namespace Buckminster.Types {
                 for (int ii = 0; ii < face.GetVertices().Count; ii++) {
                 //    faceIndex.Add(c+ii);
                 }
-                //faceIndices.Add(faceIndex);
                 
                 c = vertexPoints.Count;
                 vertexPoints.AddRange(face.GetVertices().Select(v => v.Position +  face.Centroid - ( face.Centroid * offset)));
@@ -298,143 +323,191 @@ namespace Buckminster.Types {
             return new ConwayPoly(vertexPoints, faceIndices.ToArray());
         }
         
-        public ConwayPoly Gyro(float r=0.3333f, float h=0.2f) {
+        public ConwayPoly Kebab(float r = 0.3333f, float h = 0.2f)  // A kebab is a mixed up gyro... Geddit?
+        {
         
-//            // Create sublist of non-boundary vertices
-//            var naked = new Dictionary<string, bool>(Vertices.Count); // vertices (name, boundary?)
-//            var hlookup =
-//                new Dictionary<string, int>(Halfedges.Count); // boundary halfedges (name, index of point in new mesh)
-//            foreach (var he in Halfedges) {
-//                if (!naked.ContainsKey(he.Vertex.Name)) // if not in dict, add (boundary == true)
-//                    naked.Add(he.Vertex.Name, he.Pair == null);
-//                else if (he.Pair == null) // if in dict and belongs to boundary halfedge, set true
-//                    naked[he.Vertex.Name] = true;
-//                if (he.Pair == null) {
-//                    // if boundary halfedge, add mid-point to vertices and add to lookup
-//                    hlookup.Add(he.Name, vertexPoints.Count);
-//                    vertexPoints.Add(he.Midpoint);
-//                }
-//            }
-//
-//            // List new faces by their vertex indices
-//            // (i.e. old vertices by their face indices)
-//            Dictionary<string, int> flookup = new Dictionary<string, int>();
-//            for (int i = 0; i < Faces.Count; i++)
-//                flookup.Add(Faces[i].Name, i);
-//
-//            var faceIndices = new List<List<int>>(Vertices.Count);
-//            foreach (var v in Vertices) {
-//                List<int> fIndex = new List<int>();
-//                foreach (Face f in v.GetVertexFaces())
-//                    fIndex.Add(flookup[f.Name]);
-//                if (naked[v.Name]) // Handle boundary vertices...
-//                {
-//                    var h = v.Halfedges;
-//                    if (h.Count > 0) {
-//                        // Add points on naked edges and the naked vertex
-//                        fIndex.Add(hlookup[h.Last().Name]);
-//                        fIndex.Add(vertexPoints.Count);
-//                        fIndex.Add(hlookup[h.First().Next.Name]);
-//                        vertexPoints.Add(v.Position);
-//                    }
-//                }
-//
-//                faceIndices.Add(fIndex);
-//            }
-            
-            // Create vertices from faces
-            List<Vector3> vertexPoints = new List<Vector3>(Faces.Count);
-            foreach (Face f in Faces) {
-                vertexPoints.Add(f.Centroid);
-            }
-            
-            var faceIndices = new List<List<int>>(Vertices.Count);
-    
-
-            
-                return new ConwayPoly(vertexPoints, faceIndices.ToArray());
-            
-            }
-
-
-            /// <summary>
-            /// Conway's ambo operator
-            /// </summary>
-            /// <returns>the ambo as a new mesh</returns>
-            public ConwayPoly Ambo() {
+            var vertexPoints = new List<Vector3>();
+            var faceIndices = new List<IEnumerable<int>>();
                 
-                // Create points at midpoint of unique halfedges (edges to vertices) and create lookup table
-                List<Vector3> vertexPoints = new List<Vector3>();  // vertices as points
-                Dictionary<string, int> hlookup = new Dictionary<string, int>();
-                int count = 0;
+            // Loop through old faces
+            for (int i = 0; i < Faces.Count; i++)
+            {
+                var oldFace = Faces[i];                
+                var thisFaceIndices = new List<int>();
                 
-                foreach (var edge in Halfedges) {
-                    // if halfedge's pair is already in the table, give it the same index
-                    if (edge.Pair != null && hlookup.ContainsKey(edge.Pair.Name)) {
-                        hlookup.Add(edge.Name, hlookup[edge.Pair.Name]);
-                    } else {  // otherwise create a new vertex and increment the index
-                        hlookup.Add(edge.Name, count++);
-                        vertexPoints.Add(edge.Midpoint);
+                // Loop through each vertex on old face and create a new face for each
+                for (int j = 0; j < oldFace.GetHalfedges().Count; j++)
+                {
+
+                    var edges = oldFace.GetHalfedges();
+
+                    vertexPoints.Add(oldFace.Centroid);
+                    int centroidIndex = vertexPoints.Count - 1;
+
+                    var seedVertex = edges[j].Vertex;
+                    vertexPoints.Add(seedVertex.Position);
+                    var seedVertexIndex = vertexPoints.Count - 1;
+                    
+                    var OneThirdVertex = edges[j].Prev.OneThirdPoint;
+                    vertexPoints.Add(OneThirdVertex);
+                    int OneThirdIndex = vertexPoints.Count - 1;
+                    
+                    var PrevThirdVertex = edges[j].OneThirdPoint;
+                    vertexPoints.Add(PrevThirdVertex);
+                    int PrevThirdIndex = vertexPoints.Count - 1;
+                    
+                    var PrevTwoThirdVertex = edges[j].Prev.TwoThirdsPoint;
+                    vertexPoints.Add(PrevTwoThirdVertex);
+                    int PrevTwoThirdIndex = vertexPoints.Count - 1;
+                    
+                    thisFaceIndices.Add(centroidIndex);
+                    thisFaceIndices.Add(OneThirdIndex);
+                    thisFaceIndices.Add(seedVertexIndex);
+                    thisFaceIndices.Add(PrevTwoThirdIndex);
+                    thisFaceIndices.Add(PrevThirdIndex);
+                }
+            
+            faceIndices.Add(thisFaceIndices);
+
+            }
+            return new ConwayPoly(vertexPoints, faceIndices);
+        }
+
+        public ConwayPoly Gyro(float r = 0.3333f, float scale = 0.8f)
+        {
+            
+            // Happy accidents - skip n new faces - offset just the centroid?
+        
+            var vertexPoints = new List<Vector3>();
+            var faceIndices = new List<IEnumerable<int>>();
+                
+            // Loop through old faces
+            for (int i = 0; i < Faces.Count; i++)
+            {
+                var oldFace = Faces[i];                
+                
+                // Loop through each vertex on old face and create a new face for each
+                for (int j = 0; j < oldFace.GetHalfedges().Count; j++)
+                {
+
+                    var thisFaceIndices = new List<int>();
+
+                    var edges = oldFace.GetHalfedges();
+
+                    //vertexPoints.Add(oldFace.Centroid * (1 + scale));
+                    vertexPoints.Add(oldFace.Centroid);
+                    int centroidIndex = vertexPoints.Count - 1;
+
+                    var seedVertex = edges[j].Vertex;
+                    vertexPoints.Add(seedVertex.Position);
+                    var seedVertexIndex = vertexPoints.Count - 1;
+                    
+                    var OneThirdVertex = edges[j].OneThirdPoint;
+                    vertexPoints.Add(OneThirdVertex);
+                    int OneThirdIndex = vertexPoints.Count - 1;
+                    
+                    var PrevThirdVertex = edges[j].Next.TwoThirdsPoint;
+                    vertexPoints.Add(PrevThirdVertex);
+                    int PrevThirdIndex = vertexPoints.Count - 1;
+                    
+                    var PrevTwoThirdVertex = edges[j].Next.OneThirdPoint;
+                    vertexPoints.Add(PrevTwoThirdVertex);
+                    int PrevTwoThirdIndex = vertexPoints.Count - 1;
+                    
+                    thisFaceIndices.Add(centroidIndex);
+                    thisFaceIndices.Add(OneThirdIndex);
+                    thisFaceIndices.Add(seedVertexIndex);
+                    thisFaceIndices.Add(PrevThirdIndex);
+                    thisFaceIndices.Add(PrevTwoThirdIndex);
+                    
+                    faceIndices.Add(thisFaceIndices);
+                }
+            }
+
+            var poly = new ConwayPoly(vertexPoints, faceIndices);
+            //AdjustXYZ(3);
+            return poly;
+        }
+
+
+        /// <summary>
+        /// Conway's ambo operator
+        /// </summary>
+        /// <returns>the ambo as a new mesh</returns>
+        public ConwayPoly Ambo() {
+            
+            // Create points at midpoint of unique halfedges (edges to vertices) and create lookup table
+            List<Vector3> vertexPoints = new List<Vector3>();  // vertices as points
+            Dictionary<string, int> hlookup = new Dictionary<string, int>();
+            int count = 0;
+            
+            foreach (var edge in Halfedges) {
+                // if halfedge's pair is already in the table, give it the same index
+                if (edge.Pair != null && hlookup.ContainsKey(edge.Pair.Name)) {
+                    hlookup.Add(edge.Name, hlookup[edge.Pair.Name]);
+                } else {  // otherwise create a new vertex and increment the index
+                    hlookup.Add(edge.Name, count++);
+                    vertexPoints.Add(edge.Midpoint);
+                }
+            }
+
+            var faceIndices = new List<IEnumerable<int>>();  // faces as vertex indices
+            // faces to faces
+            foreach (var face in Faces) {
+                faceIndices.Add(face.GetHalfedges().Select(edge => hlookup[edge.Name]));
+            }
+
+            // vertices to faces
+            foreach (var vertex in Vertices) {
+                var he = vertex.Halfedges;
+                if (he.Count == 0) continue;  // no halfedges (naked vertex, ignore)
+                var list = he.Select(edge => hlookup[edge.Name]);  // halfedge indices for vertex-loop
+                if (he[0].Next.Pair == null) {
+                    // Handle boundary vertex, add itself and missing boundary halfedge
+                    list = list.Concat(new[] {vertexPoints.Count, hlookup[he[0].Next.Name]});
+                    vertexPoints.Add(vertex.Position);
+                }
+
+                faceIndices.Add(list);
+            }
+
+            return new ConwayPoly(vertexPoints, faceIndices);
+        }
+
+        /// <summary>
+        /// Conway's kis operator
+        /// </summary>
+        /// <returns>the kis as a new mesh</returns>
+        public ConwayPoly Kis(float offset=0, bool excludeTriangles=false) {
+            
+            // vertices and faces to vertices
+            var newVerts = Faces.Select(f => f.Centroid + f.Normal * offset);
+            var vertexPoints = Enumerable.Concat(Vertices.Select(v => v.Position), newVerts);
+            
+            // vertex lookup
+            Dictionary<string, int> vlookup = new Dictionary<string, int>();
+            int n = Vertices.Count;
+            for (int i = 0; i < n; i++) {
+                vlookup.Add(Vertices[i].Name, i);
+            }
+
+            // create new tri-faces (like a fan)
+            var faceIndices = new List<IEnumerable<int>>(); // faces as vertex indices
+            for (int i = 0; i < Faces.Count; i++) {
+                if (Faces[i].Sides <= 3 && excludeTriangles) {
+                    faceIndices.Add(ListFacesByVertexIndices()[i]);
+                } else {
+                    foreach (var edge in Faces[i].GetHalfedges()) {
+                        // create new face from edge start, edge end and centroid
+                        faceIndices.Add(
+                            new[] {vlookup[edge.Prev.Vertex.Name], vlookup[edge.Vertex.Name], i + n}
+                        );
                     }
                 }
-    
-                var faceIndices = new List<IEnumerable<int>>();  // faces as vertex indices
-                // faces to faces
-                foreach (var face in Faces) {
-                    faceIndices.Add(face.GetHalfedges().Select(edge => hlookup[edge.Name]));
-                }
-    
-                // vertices to faces
-                foreach (var vertex in Vertices) {
-                    var he = vertex.Halfedges;
-                    if (he.Count == 0) continue;  // no halfedges (naked vertex, ignore)
-                    var list = he.Select(edge => hlookup[edge.Name]);  // halfedge indices for vertex-loop
-                    if (he[0].Next.Pair == null) {
-                        // Handle boundary vertex, add itself and missing boundary halfedge
-                        list = list.Concat(new[] {vertexPoints.Count, hlookup[he[0].Next.Name]});
-                        vertexPoints.Add(vertex.Position);
-                    }
-    
-                    faceIndices.Add(list);
-                }
-    
-                return new ConwayPoly(vertexPoints, faceIndices);
             }
-    
-            /// <summary>
-            /// Conway's kis operator
-            /// </summary>
-            /// <returns>the kis as a new mesh</returns>
-            public ConwayPoly Kis(float offset=0, bool excludeTriangles=false) {
-                
-                // vertices and faces to vertices
-                var newVerts = Faces.Select(f => f.Centroid + f.Normal * offset);
-                var vertexPoints = Enumerable.Concat(Vertices.Select(v => v.Position), newVerts);
-                
-                // vertex lookup
-                Dictionary<string, int> vlookup = new Dictionary<string, int>();
-                int n = Vertices.Count;
-                for (int i = 0; i < n; i++) {
-                    vlookup.Add(Vertices[i].Name, i);
-                }
-    
-                // create new tri-faces (like a fan)
-                var faceIndices = new List<IEnumerable<int>>(); // faces as vertex indices
-                for (int i = 0; i < Faces.Count; i++) {
-                    if (Faces[i].Sides <= 3 && excludeTriangles) {
-                        faceIndices.Add(ListFacesByVertexIndices()[i]);
-                    } else {
-                        foreach (var edge in Faces[i].GetHalfedges()) {
-                            // create new face from edge start, edge end and centroid
-                            faceIndices.Add(
-                                new[] {vlookup[edge.Prev.Vertex.Name], vlookup[edge.Vertex.Name], i + n}
-                            );
-                        }
-                    }
-                }
-                
-                return new ConwayPoly(vertexPoints, faceIndices);
-            }
+            
+            return new ConwayPoly(vertexPoints, faceIndices);
+        }
 
         #endregion
 
@@ -460,7 +533,7 @@ namespace Buckminster.Types {
                 
                 return new ConwayPoly(points, ListFacesByVertexIndices());
             }
-    
+               
             /// <summary>
             /// Thickens each mesh edge in the plane of the mesh surface.
             /// </summary>
@@ -678,6 +751,55 @@ namespace Buckminster.Types {
     
                 return ext;
             }
+        
+        // Next 3 methods taken from http://www.georgehart.com/virtual-polyhedra/conway_notation.html
+        
+        public ConwayPoly AdjustXYZ(int iterations)
+        {
+            var poly = Duplicate();
+            var dpoly = Dual();   // v's of dual are in order or arg's f's
+            
+            for (var count=0; count<iterations; count++) {    // iteration:
+                dpoly.Vertices = ReciprocalC(poly);             // reciprocate face centers
+                poly.Vertices = ReciprocalC(dpoly);            // reciprocate face centers
+                Debug.Log(Vertices);
+            }
+            
+            return poly;
+        }
+        
+        // Returns array of reciprocals of face centers
+        public MeshVertexList ReciprocalC(ConwayPoly poly)
+        {
+            
+            MeshVertexList centers = FaceCenters(poly);
+            
+            for (int i=0; i<poly.Faces.Count; i++)
+            {
+                var m2 =
+                    centers[i].Position.x * centers[i].Position.x +
+                    centers[i].Position.y * centers[i].Position.y +
+                    centers[i].Position.z * centers[i].Position.z;
+                // Divide each coord by magnitude squared
+                centers[i] = new Vertex(new Vector3(
+                    centers[i].Position.x / m2,
+                    centers[i].Position.y / m2,
+                    centers[i].Position.z / m2
+                ));
+            }
+            return centers;
+        }
+        
+        // Returns array of Face centers
+        public MeshVertexList FaceCenters(ConwayPoly poly)
+        {
+            var ans = new MeshVertexList();
+            for (int i=0; i<poly.Faces.Count; i++)
+            {
+                ans.Add(new Vertex(poly.Faces[i].Centroid));
+            }
+            return ans;
+        }
 
         #endregion
 
@@ -836,23 +958,27 @@ namespace Buckminster.Types {
     //                .ToList();
     //        }
     
-            /// <summary>
-            /// Appends a copy of another mesh to this one.
-            /// </summary>
-            /// <param name="other">Mesh to append to this one.</param>
-            public void Append(ConwayPoly other) {
-                ConwayPoly dup = other.Duplicate();
-    
-                Vertices.AddRange(dup.Vertices);
-                foreach (Halfedge edge in dup.Halfedges) {
-                    Halfedges.Add(edge);
-                }
-    
-                foreach (Face face in dup.Faces) {
-                    Faces.Add(face);
-                }
+        /// <summary>
+        /// Appends a copy of another mesh to this one.
+        /// </summary>
+        /// <param name="other">Mesh to append to this one.</param>
+        public void Append(ConwayPoly other) {
+            ConwayPoly dup = other.Duplicate();
+
+            Vertices.AddRange(dup.Vertices);
+            foreach (Halfedge edge in dup.Halfedges) {
+                Halfedges.Add(edge);
             }
 
+            foreach (Face face in dup.Faces) {
+                Faces.Add(face);
+            }
+        }
+        
+        
+
+
         #endregion
+        
     }
 }

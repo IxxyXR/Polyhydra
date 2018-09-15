@@ -120,7 +120,8 @@ public class PolyComponent : MonoBehaviour {
 		Needle,
 		Ortho,
 		Meta,
-		Truncate
+		Truncate,
+		Gyro
 	}
 	
 	[Serializable]
@@ -328,6 +329,10 @@ public class PolyComponent : MonoBehaviour {
 							conway = conway.Dual();
 							conway = conway.Kis(c.amount);
 							conway = conway.Dual();
+							break;
+						case Ops.Gyro:
+							if (c.disabled) {break;}
+							conway = conway.Gyro(0.3333333f, c.amount);
 							break;
 					}
 				}
