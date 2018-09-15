@@ -1,6 +1,6 @@
 # wythoff-polyhedra
 
-![Screenshot](https://github.com/Ixxy-Open-Source/wythoff-polyhedra/blob/master/wythoff.png)
+![Screenshot](https://github.com/Ixxy-Open-Source/wythoff-polyhedra/blob/master/anim.gif)
 
 Procedural generation of geometric forms in Unity.
 
@@ -25,3 +25,5 @@ My original inspiration was 3DS Max's Hedra plugin which kept me entertained for
 1. Draw duals
 2. Animation: truncation and stellation? P/Q animation similar to 3DS Max's Hedra?
 3. VR controls, repetition, slow-motion generation, more shaders etc etc
+
+![Screenshot](https://github.com/Ixxy-Open-Source/wythoff-polyhedra/blob/master/wythoff.png)
