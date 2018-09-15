@@ -719,7 +719,7 @@ namespace Conway {
                     top = Offset(distance);
                 }
                 
-                //top.Halfedges.Flip();
+                ext.Halfedges.Flip();
     
                 // append top to ext (can't use Append() because copy would reverse face loops)
                 foreach (var v in top.Vertices) ext.Vertices.Add(v);
