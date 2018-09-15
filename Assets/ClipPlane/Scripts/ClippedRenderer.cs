@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.Rendering;
-using System;
-using Mesh = _Scripts.Experimental.Conway2.Mesh;
+
 
 [RequireComponent(typeof(Renderer))]
 [ExecuteInEditMode]
