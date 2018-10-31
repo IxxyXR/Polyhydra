@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public class PolyPresets : MonoBehaviour {
@@ -10,11 +9,6 @@ public class PolyPresets : MonoBehaviour {
 	private const string PresetFileNamePrefix = "PolyPreset-";
 	
 	public List<PolyPreset> Items;
-	
-	public void Start () {
-		Items = new List<PolyPreset>();
-		LoadAllPresets();
-	}
 
 	public void ApplyPresetToPoly(string presetName)
 	{
@@ -35,19 +29,28 @@ public class PolyPresets : MonoBehaviour {
 	
 	public void LoadAllPresets()
 	{
+		bool presetsExist = false;
 		Items.Clear();
 		var info = new DirectoryInfo(Application.persistentDataPath);
 		var fileInfo = info.GetFiles();
 		foreach (var file in fileInfo) {
-			if (file.Name.StartsWith(PresetFileNamePrefix)) {
+			if (file.Name.StartsWith(PresetFileNamePrefix))
+			{
+				presetsExist = true;
 				var preset = new PolyPreset();
-				JsonUtility.FromJsonOverwrite(File.ReadAllText(file.FullName), preset);
+				preset = JsonConvert.DeserializeObject<PolyPreset>(File.ReadAllText(file.FullName));
 				if (string.IsNullOrEmpty(preset.Name)) {
 					preset.Name = file.Name.Replace(PresetFileNamePrefix, "").Replace(".json", "");
 				}
 				Items.Add(preset);
-				Debug.Log(preset.Name);
 			}
+		}
+
+		if (!presetsExist)
+		{
+			// If we don't have any presets then create the default set.
+			ResetInitialPresets();
+			SaveAllPresets();
 		}
 	}
 	
@@ -55,7 +58,7 @@ public class PolyPresets : MonoBehaviour {
 	{
 		foreach (var preset in Items) {
 			var fileName = Path.Combine(Application.persistentDataPath, PresetFileNamePrefix + preset.Name + ".json");
-			var polyJson = JsonUtility.ToJson(preset);
+			var polyJson = JsonConvert.SerializeObject(preset);
 			File.WriteAllText(fileName, polyJson);
 		}
 	}
@@ -64,11 +67,10 @@ public class PolyPresets : MonoBehaviour {
 	{
 		Items.Clear();
 		var initialPresetFile = Resources.Load("initialPresets") as TextAsset;
-		if (initialPresetFile != null) {
-			var polys = JsonHelper.FromJson<string>(initialPresetFile.text);
-			for (var index = 0; index < polys.Length; index++) {
-				var preset = new PolyPreset();
-				JsonUtility.FromJsonOverwrite(polys[index], preset);
+		if (initialPresetFile != null)
+		{
+			var presets = JsonConvert.DeserializeObject<List<PolyPreset>>(initialPresetFile.text);
+			foreach (var preset in presets) {
 				Items.Add(preset);
 			}
 		} else {

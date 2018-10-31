@@ -4,6 +4,7 @@ using Conway;
 using Wythoff;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Face = Wythoff.Face;
 
 
@@ -131,7 +132,8 @@ public class PolyComponent : MonoBehaviour {
 	
 	[Serializable]
 	public struct ConwayOperator {  
-		public Ops op;
+		[FormerlySerializedAs("op")]
+		public Ops opType;
 		public float amount;
 		public bool disabled;
 	}
@@ -177,25 +179,6 @@ public class PolyComponent : MonoBehaviour {
 			MakePolyhedron();
 			previousState = currentState;
 		}
-	}
-
-	void Update() {
-		
-		if (Input.GetKeyDown("space")) {
-			int num = (int)PolyType;
-			num = (num + 1) % Uniform.Uniforms.Length;
-			PolyType = (PolyTypes)num;
-			gameObject.GetComponent<RotateObject>().Randomize();
-			
-			MakePolyhedron();
-
-		} else if (Input.GetKeyDown("p")) {
-			gameObject.GetComponent<RotateObject>().Pause();
-		} else if (Input.GetKeyDown("r")) {
-			gameObject.GetComponent<RotateObject>().Randomize();
-		} else if (Input.GetKeyDown("1")) {
-			meshFilter.sharedMesh = _polyhedron.Explode();
-		}	
 	}
 
 	public void MakePolyhedron() {
@@ -248,7 +231,7 @@ public class PolyComponent : MonoBehaviour {
 			if (ConwayOperators != null) {
 				conway = new ConwayPoly(_polyhedron);
 				foreach (var c in ConwayOperators) {
-					switch (c.op) {
+					switch (c.opType) {
 						case Ops.Identity:
 							break;
 						case Ops.Scale:
@@ -407,7 +390,6 @@ public class PolyComponent : MonoBehaviour {
 				foreach (var f in _polyhedron.FaceCenters) {
 					Gizmos.DrawWireSphere(transform.TransformPoint(f.getVector3()), GizmoRadius);
 				}
-				Debug.Log("Face centers = " + _polyhedron.FaceCenters.Length);
 			}
 			
 		}

@@ -14,11 +14,15 @@ public class PolyPresetEditor : CustomEditorBase {
         base.OnEnable();
     }
     
-    public override void  OnInspectorGUI () {
+    public override void  OnInspectorGUI ()
+    {
+        string newPresetName = "New Preset " + _presets.Items.Count;
+        
         base.OnInspectorGUI();
         //DrawDefaultInspector();
+        GUILayout.TextField(newPresetName);
         if(GUILayout.Button("Save")) {
-            _presets.AddPresetFromPoly("test" + _presets.Items.Count);
+            _presets.AddPresetFromPoly(newPresetName);
         }
     }
     

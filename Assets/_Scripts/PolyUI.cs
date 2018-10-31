@@ -46,13 +46,9 @@ public class PolyUI : MonoBehaviour {
         TwoSidedToggle.onValueChanged.AddListener(delegate{TwoSidedToggleChanged();});
         BypassOpsToggle.onValueChanged.AddListener(delegate{BypassOpsToggleChanged();});
         AddOpButton.onClick.AddListener(AddOpButtonClicked);
-        try {
-            Presets.LoadAllPresets();
-        } catch (FileNotFoundException e) {
-            Presets.ResetInitialPresets();
-            Presets.SaveAllPresets();
-        }
+        Presets.LoadAllPresets();
         InitUI();
+        CreatePresetButtons();
         ShowTab(TabButtons[0].gameObject);
     }
 
@@ -61,26 +57,6 @@ public class PolyUI : MonoBehaviour {
         UpdatePolyUI();
         UpdateOpsUI();
         UpdateAnimUI();
-        CreatePresetButtons();
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown("space")) {
-            int num = (int)poly.PolyType;
-            num = (num + 1) % Enum.GetValues(typeof(PolyComponent.PolyTypes)).Length;
-            poly.PolyType = (PolyComponent.PolyTypes)num;
-            poly.MakePolyhedron();
-        } else if (Input.GetKeyDown("p")) {
-            gameObject.GetComponent<RotateObject>().Pause();
-            UpdateAnimUI();
-        } else if (Input.GetKeyDown("r")) {
-            gameObject.GetComponent<RotateObject>().Randomize();
-            UpdateAnimUI();
-        } else if (Input.GetKeyDown("1")) {
-            // TODO something useful
-            //meshFilter.sharedMesh = _polyhedron.Explode();
-        }
     }
 
     void AddOpButtonClicked()
@@ -138,7 +114,7 @@ public class PolyUI : MonoBehaviour {
             var opLabel = new Dropdown.OptionData(opType.ToString());
             opsDropdown.options.Add(opLabel);
         }
-        opsDropdown.value = (int) opItem.op;
+        opsDropdown.value = (int) opItem.opType;
         opUIItem.GetComponentInChildren<Toggle>().isOn = opItem.disabled;
         opUIItem.GetComponentInChildren<Slider>().value = opItem.amount;
         opUIItem.GetComponentInChildren<Dropdown>().onValueChanged.AddListener(delegate{OpsUIToPoly();});
@@ -153,7 +129,7 @@ public class PolyUI : MonoBehaviour {
         for (var index = 0; index < opItems.Count; index++) {
             var opUIItem = opItems[index];
             var opsDropdown = opUIItem.GetComponentInChildren<Dropdown>();
-            poly.ConwayOperators[index].op = (PolyComponent.Ops)opsDropdown.value;
+            poly.ConwayOperators[index].opType = (PolyComponent.Ops)opsDropdown.value;
             poly.ConwayOperators[index].disabled = opUIItem.GetComponentInChildren<Toggle>().isOn;
             poly.ConwayOperators[index].amount = opUIItem.GetComponentInChildren<Slider>().value;
         }
@@ -231,11 +207,12 @@ public class PolyUI : MonoBehaviour {
     void LoadPresetButtonClicked() {
         string buttonName = EventSystem.current.currentSelectedGameObject.name;
         Presets.ApplyPresetToPoly(buttonName);
-        UpdatePolyUI();
+        InitUI();
     }
     
     void SavePresetButtonClicked() {
-        Presets.AddPresetFromPoly(poly.name);
+        Presets.AddPresetFromPoly(PresetNameInput.text);
+        Presets.SaveAllPresets();
         CreatePresetButtons();
     }
 

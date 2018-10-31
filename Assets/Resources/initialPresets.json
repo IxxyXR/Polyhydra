@@ -1,12 +1,34 @@
 [
-  {"Name": "Preset 0", "PolyType":40,"BypassConway":false,"TwoSided":true,"ConwayOperators":[{"op":1,"amount":-0.05000000074505806,"disabled":false},{"op":1,"amount":0.009999999776482582,"disabled":false},{"op":3,"amount":0.0,"disabled":true},{"op":9,"amount":0.0,"disabled":true}],"OffsetAmount":0.0,"RibbonAmount":0.0,"ExtrudeAmount":0.0},
-  {"Name": "Preset 1", "PolyType":13,"BypassConway":false,"TwoSided":true,"ConwayOperators":[{"op":1,"amount":-0.05000000074505806,"disabled":false},{"op":1,"amount":0.009999999776482582,"disabled":false},{"op":3,"amount":0.0,"disabled":true},{"op":9,"amount":0.0,"disabled":true}],"OffsetAmount":0.0,"RibbonAmount":0.0,"ExtrudeAmount":0.0},
-  {"Name": "Preset 2", "PolyType":45,"BypassConway":false,"TwoSided":true,"ConwayOperators":[{"op":1,"amount":-0.05000000074505806,"disabled":false},{"op":1,"amount":0.009999999776482582,"disabled":false},{"op":3,"amount":0.0,"disabled":true},{"op":9,"amount":0.0,"disabled":true}],"OffsetAmount":0.0,"RibbonAmount":0.0,"ExtrudeAmount":0.0},
-  {"Name": "Preset 3", "PolyType":2,"BypassConway":false,"TwoSided":true,"ConwayOperators":[{"op":2,"amount":0.18000000715255738,"disabled":false},{"op":1,"amount":-0.9399999976158142,"disabled":false},{"op":2,"amount":-0.23000000417232514,"disabled":false},{"op":9,"amount":0.0,"disabled":true}],"OffsetAmount":0.0,"RibbonAmount":0.0,"ExtrudeAmount":0.0},
-  {"Name": "Preset 4", "PolyType":10,"BypassConway":false,"TwoSided":true,"ConwayOperators":[{"op":4,"amount":-1.5099999904632569,"disabled":false},{"op":1,"amount":-1.0099999904632569,"disabled":false},{"op":9,"amount":0.0,"disabled":false},{"op":1,"amount":0.8100000023841858,"disabled":false}],"OffsetAmount":0.0,"RibbonAmount":0.0,"ExtrudeAmount":0.0},
-  {"Name": "Preset 5", "PolyType":56,"BypassConway":false,"TwoSided":false,"ConwayOperators":[{"op":1,"amount":-4.75,"disabled":false},{"op":2,"amount":0.10999999940395355,"disabled":false},{"op":6,"amount":0.0,"disabled":true}],"OffsetAmount":0.0,"RibbonAmount":0.0,"ExtrudeAmount":0.0},
-  {"Name": "Preset 6", "PolyType":16,"BypassConway":false,"TwoSided":true,"ConwayOperators":[{"op":2,"amount":-0.20999999344348908,"disabled":false},{"op":14,"amount":-3.25,"disabled":false},{"op":11,"amount":0.0,"disabled":false}],"OffsetAmount":0.0,"RibbonAmount":0.0,"ExtrudeAmount":0.0}
+  {"Name":  "Preset 0", "PolyType": 40, "BypassOps": false, "TwoSided": true, "Ops": [
+    {"OpType": 1, "Amount": -0.05000000074505806, "Disabled": false},
+    {"OpType": 1, "Amount": 0.009999999776482582, "Disabled": false}
+  ]},
+  {"Name":  "Preset 1", "PolyType": 13, "BypassOps": false, "TwoSided": true, "Ops": [
+    {"OpType": 1, "Amount": -0.05000000074505806, "Disabled": false},
+    {"OpType": 1, "Amount": 0.009999999776482582, "Disabled": false}]
+  },
+  {"Name":  "Preset 2", "PolyType": 45, "BypassOps": false, "TwoSided": true, "Ops": [
+    {"OpType": 1, "Amount": -0.05000000074505806, "Disabled": false},
+    {"OpType": 1, "Amount": 0.009999999776482582, "Disabled": false}]
+  },
+  {"Name":  "Preset 3", "PolyType": 2, "BypassOps": false, "TwoSided": true, "Ops": [
+    {"OpType": 2, "Amount": 0.18000000715255738, "Disabled": false},
+    {"OpType": 1, "Amount": -0.9399999976158142, "Disabled": false},
+    {"OpType": 2, "Amount": -0.23000000417232514, "Disabled": false}]
+  },
+  {"Name":  "Preset 4", "PolyType": 10, "BypassOps": false, "TwoSided": true, "Ops": [
+    {"OpType": 4, "Amount": -1.5099999904632569, "Disabled": false},
+    {"OpType": 1, "Amount": -1.0099999904632569, "Disabled": false},
+    {"OpType": 9, "Amount": 0.0, "Disabled": false},
+    {"OpType": 1, "Amount": 0.8100000023841858, "Disabled": false}]
+  },
+  {"Name":  "Preset 5", "PolyType": 56, "BypassOps": false, "TwoSided": false, "Ops": [
+    {"OpType": 1, "Amount": -4.75, "Disabled": false},
+    {"OpType": 2, "Amount": 0.10999999940395355, "Disabled": false}]
+  },
+  {"Name":  "Preset 6", "PolyType": 16, "BypassOps": false, "TwoSided": true, "Ops": [
+    {"OpType": 2, "Amount": -0.20999999344348908, "Disabled": false},
+    {"OpType": 14, "Amount": -3.25, "Disabled": false},
+    {"OpType": 11, "Amount": 0.0, "Disabled": false}
+  ]}
 ]
-
-
-
