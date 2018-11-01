@@ -358,7 +358,7 @@ public class PolyComponent : MonoBehaviour {
 		}
 
 	}
-
+#if UNITY_EDITOR
 	void OnDrawGizmos () {
 		
 		float GizmoRadius = .03f;
@@ -439,5 +439,5 @@ public class PolyComponent : MonoBehaviour {
 			}
 		}
 	}
-
+#endif
 }
