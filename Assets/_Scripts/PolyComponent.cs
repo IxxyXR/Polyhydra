@@ -168,21 +168,24 @@ public class PolyComponent : MonoBehaviour {
 
 	void Start() {
 		meshFilter = gameObject.GetComponent<MeshFilter>();
-		MakePolyhedron();
+		//MakePolyhedron();
 	}
 
 	private void OnValidate() {
-		var currentState = new PolyPreset();
-		currentState.CreateFromPoly("temp", this);
-		if (previousState != currentState)
+		if (!Application.isPlaying)
 		{
-			MakePolyhedron();
-			previousState = currentState;
+			var currentState = new PolyPreset();
+			currentState.CreateFromPoly("temp", this);
+			if (previousState != currentState)
+			{
+				MakePolyhedron();
+				previousState = currentState;
+			}			
 		}
 	}
 
 	public void MakePolyhedron() {
-		
+		Debug.Log("Making");
 		if (!String.IsNullOrEmpty(WythoffSymbol))
 		{
 			MakePolyhedron(WythoffSymbol);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEditor.Presets;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -32,6 +33,7 @@ public class PolyUI : MonoBehaviour {
     private List<Button> presetButtons;
     private List<Button> basePolyButtons;
     private List<Transform> opItems;
+    private bool _shouldReBuild = true;
 
     void Start()
     {
@@ -133,7 +135,7 @@ public class PolyUI : MonoBehaviour {
             poly.ConwayOperators[index].disabled = opUIItem.GetComponentInChildren<Toggle>().isOn;
             poly.ConwayOperators[index].amount = opUIItem.GetComponentInChildren<Slider>().value;
         }
-        poly.MakePolyhedron();
+        if (_shouldReBuild) poly.MakePolyhedron();
     }
 
     void CreateBasePolyDropdown()
@@ -154,14 +156,17 @@ public class PolyUI : MonoBehaviour {
         presetButtons.Clear();
     }
     
-    void CreatePresetButtons() {
+    void CreatePresetButtons()
+    {
         DestroyPresetButtons();
-        foreach (var preset in Presets.Items) {
+        for (var index = 0; index < Presets.Items.Count; index++)
+        {
+            var preset = Presets.Items[index];
             var presetButton = Instantiate(ButtonTemplate);
             presetButton.transform.SetParent(PresetButtonContainer);
-            presetButton.name = preset.Name;
+            presetButton.name = index.ToString();
             presetButton.GetComponentInChildren<Text>().text = preset.Name;
-            presetButton.onClick.AddListener(delegate{LoadPresetButtonClicked();});
+            presetButton.onClick.AddListener(delegate { LoadPresetButtonClicked(); });
             presetButtons.Add(presetButton);
         }
     }
@@ -173,13 +178,12 @@ public class PolyUI : MonoBehaviour {
             SavePresetButton.interactable = false;
         } else {
             SavePresetButton.interactable = true;
-            ////poly.name = PresetNameInput.text;
         }
     }
 
     void BasePolyDropdownChanged(Dropdown change) {
         poly.PolyType = (PolyComponent.PolyTypes)change.value;
-        poly.MakePolyhedron();
+        if (_shouldReBuild) poly.MakePolyhedron();
     }
 
     void XSliderChanged() {
@@ -196,18 +200,30 @@ public class PolyUI : MonoBehaviour {
 
     void TwoSidedToggleChanged() {
         poly.TwoSided = TwoSidedToggle.isOn;
-        poly.MakePolyhedron();
+        if (_shouldReBuild) poly.MakePolyhedron();
     }
 
     void BypassOpsToggleChanged() {
         poly.BypassOps = BypassOpsToggle.isOn;
-        poly.MakePolyhedron();
+        if (_shouldReBuild) poly.MakePolyhedron();
     }
 
     void LoadPresetButtonClicked() {
-        string buttonName = EventSystem.current.currentSelectedGameObject.name;
-        Presets.ApplyPresetToPoly(buttonName);
-        InitUI();
+        int buttonIndex = 0;
+        if (Int32.TryParse(EventSystem.current.currentSelectedGameObject.name, out buttonIndex))
+        {
+            _shouldReBuild = false;
+            var preset = Presets.ApplyPresetToPoly(buttonIndex);
+            PresetNameInput.text = preset.Name;
+            InitUI();
+            _shouldReBuild = true;
+            poly.MakePolyhedron();
+        }
+        else
+        {
+            Debug.LogError("Invalid button name: " + buttonIndex);
+        }        
+        
     }
     
     void SavePresetButtonClicked() {

@@ -10,9 +10,11 @@ public class PolyPresets : MonoBehaviour {
 	
 	public List<PolyPreset> Items;
 
-	public void ApplyPresetToPoly(string presetName)
+	public PolyPreset ApplyPresetToPoly(int presetIndex)
 	{
-		ApplyPresetToPoly(Items.Find(x => x.Name.Equals(presetName)));
+		var preset = Items[presetIndex];
+		ApplyPresetToPoly(preset);
+		return preset;
 	}
 
 	public void ApplyPresetToPoly(PolyPreset preset)
@@ -22,6 +24,8 @@ public class PolyPresets : MonoBehaviour {
 
 	public void AddPresetFromPoly(string presetName)
 	{
+		var existingPreset = Items.Find(x => x.Name.Equals(presetName));
+		Items.Remove(existingPreset);
 		var preset = new PolyPreset();
 		preset.CreateFromPoly(presetName, _poly);
 		Items.Add(preset);
