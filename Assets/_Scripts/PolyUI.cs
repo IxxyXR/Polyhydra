@@ -243,6 +243,12 @@ public class PolyUI : MonoBehaviour {
         Presets.SaveAllPresets();
         CreatePresetButtons();
     }
+    
+    public void HandleTabButton()
+    {
+        var button = EventSystem.current.currentSelectedGameObject;
+        ShowTab(button);
+    }
 
     private void ShowTab(GameObject button)
     {
