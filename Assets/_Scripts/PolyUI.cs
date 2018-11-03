@@ -60,10 +60,11 @@ public class PolyUI : MonoBehaviour {
 
     void AddOpButtonClicked()
     {
-        var newOp = new PolyComponent.ConwayOperator {disabled = true};
+        var newOp = new PolyComponent.ConwayOperator {disabled = false};
         Array.Resize(ref poly.ConwayOperators, poly.ConwayOperators.Length + 1);
         poly.ConwayOperators[poly.ConwayOperators.Length - 1] = newOp;
-        AddOpItemToUI(newOp);  // No need to rebuild as it's disabled initially
+        AddOpItemToUI(newOp);
+        if (_shouldReBuild) poly.MakePolyhedron();
     }
 
     void UpdatePolyUI()
@@ -121,6 +122,10 @@ public class PolyUI : MonoBehaviour {
         opUIItem.GetComponentInChildren<Dropdown>().onValueChanged.AddListener(delegate{OpsUIToPoly();});
         opUIItem.GetComponentInChildren<Toggle>().onValueChanged.AddListener(delegate{OpsUIToPoly();});
         opUIItem.GetComponentInChildren<Slider>().onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opUIItem.GetComponentsInChildren<Button>()[0].onClick.AddListener(ReorderOps);
+        opUIItem.GetComponentsInChildren<Button>()[1].onClick.AddListener(ReorderOps);
+        opUIItem.GetComponentsInChildren<Button>()[2].onClick.AddListener(DeleteOp);
+        opUIItem.name = opItems.Count.ToString();
         opItems.Add(opUIItem);
     }
 
@@ -135,6 +140,34 @@ public class PolyUI : MonoBehaviour {
             poly.ConwayOperators[index].amount = opUIItem.GetComponentInChildren<Slider>().value;
         }
         if (_shouldReBuild) poly.MakePolyhedron();
+    }
+
+    void ReorderOps()
+    {
+        string action = EventSystem.current.currentSelectedGameObject.name;
+        int opIndex;
+        if (Int32.TryParse(EventSystem.current.currentSelectedGameObject.transform.parent.name, out opIndex)) {
+            if (action == "Up") {
+                var temp = poly.ConwayOperators[opIndex];
+                poly.ConwayOperators[opIndex] = poly.ConwayOperators[opIndex - 1];
+                poly.ConwayOperators[opIndex - 1] = temp;
+                
+            }
+            else if (action == "Down")
+            {
+                var temp = poly.ConwayOperators[opIndex];
+                poly.ConwayOperators[opIndex] = poly.ConwayOperators[opIndex + 1];
+                poly.ConwayOperators[opIndex + 1] = temp;
+            }
+
+            CreateOps();
+            if (_shouldReBuild) poly.MakePolyhedron();
+        }
+    }
+    
+    void DeleteOp()
+    {
+        Debug.Log(EventSystem.current.currentSelectedGameObject.name);
     }
 
     void CreateBasePolyDropdown()
