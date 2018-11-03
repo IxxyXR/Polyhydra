@@ -348,15 +348,16 @@ public class PolyComponent : MonoBehaviour {
 							conway = conway.Dual();
 							conway = conway.Kis(c.amount);
 							conway = conway.Dual();
-							break;						
-						case Ops.Subdivide:
-							if (c.disabled) {break;}
-							//conway = conway.Subdivide();
 							break;
-						case Ops.Chamfer:
-							if (c.disabled) {break;}
-							//conway = conway.Chamfer();
-							break;
+							
+//						case Ops.Subdivide:
+//							if (c.disabled) {break;}
+//							conway = conway.Subdivide();
+//							break;
+//						case Ops.Chamfer:
+//							if (c.disabled) {break;}
+//							conway = conway.Chamfer();
+//							break;
 
 						
 						case Ops.Offset:
