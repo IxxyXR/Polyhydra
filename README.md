@@ -1,4 +1,4 @@
-# wythoff-polyhedra
+# Polyhydra
 
 ![Screenshot](https://github.com/Ixxy-Open-Source/wythoff-polyhedra/blob/master/anim.gif)
 
