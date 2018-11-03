@@ -60,12 +60,14 @@ public class PolyUI : MonoBehaviour {
 
     void AddOpButtonClicked()
     {
-        AddOpItem(new PolyComponent.ConwayOperator {disabled = true});  // No need to rebuild as it's disabled initially
+        var newOp = new PolyComponent.ConwayOperator {disabled = true};
         Array.Resize(ref poly.ConwayOperators, poly.ConwayOperators.Length + 1);
-        poly.ConwayOperators[poly.ConwayOperators.Length - 1] = new PolyComponent.ConwayOperator {disabled = true};
+        poly.ConwayOperators[poly.ConwayOperators.Length - 1] = newOp;
+        AddOpItemToUI(newOp);  // No need to rebuild as it's disabled initially
     }
 
-    void UpdatePolyUI() {
+    void UpdatePolyUI()
+    {
         TwoSidedToggle.isOn = poly.TwoSided;
         CreateBasePolyDropdown();
         BasePolyDropdown.value = (int)poly.PolyType;
@@ -100,11 +102,11 @@ public class PolyUI : MonoBehaviour {
         for (var index = 0; index < poly.ConwayOperators.Length; index++)
         {
             var conwayOperator = poly.ConwayOperators[index];
-            AddOpItem(conwayOperator);
+            AddOpItemToUI(conwayOperator);
         }
     }
 
-    void AddOpItem(PolyComponent.ConwayOperator opItem)
+    void AddOpItemToUI(PolyComponent.ConwayOperator opItem)
     {
         var opUIItem = Instantiate(OpTemplate);
         opUIItem.transform.SetParent(OperatorContainer);
@@ -145,7 +147,8 @@ public class PolyUI : MonoBehaviour {
         BasePolyDropdown.onValueChanged.AddListener(delegate{BasePolyDropdownChanged(BasePolyDropdown);});
     }
      
-    void DestroyPresetButtons() {
+    void DestroyPresetButtons()
+    {
         if (presetButtons == null) {return;}
         foreach (var btn in presetButtons) {
             Destroy(btn.gameObject);
@@ -170,42 +173,53 @@ public class PolyUI : MonoBehaviour {
     
     // Event handlers
 
-    void PresetNameChanged() {
-        if (String.IsNullOrEmpty(PresetNameInput.text)) {
+    void PresetNameChanged()
+    {
+        if (String.IsNullOrEmpty(PresetNameInput.text))
+        {
             SavePresetButton.interactable = false;
-        } else {
+        }
+        else
+        {
             SavePresetButton.interactable = true;
         }
     }
 
-    void BasePolyDropdownChanged(Dropdown change) {
+    void BasePolyDropdownChanged(Dropdown change)
+    {
         poly.PolyType = (PolyComponent.PolyTypes)change.value;
         if (_shouldReBuild) poly.MakePolyhedron();
     }
 
-    void XSliderChanged() {
+    void XSliderChanged()
+    {
         rotateObject.x = XRotateSlider.value;
     }
 
-    void YSliderChanged() {
+    void YSliderChanged()
+    {
         rotateObject.y = YRotateSlider.value;
     }
 
-    void ZSliderChanged() {
+    void ZSliderChanged()
+    {
         rotateObject.z = ZRotateSlider.value;
     }
 
-    void TwoSidedToggleChanged() {
+    void TwoSidedToggleChanged()
+    {
         poly.TwoSided = TwoSidedToggle.isOn;
         if (_shouldReBuild) poly.MakePolyhedron();
     }
 
-    void BypassOpsToggleChanged() {
+    void BypassOpsToggleChanged()
+    {
         poly.BypassOps = BypassOpsToggle.isOn;
         if (_shouldReBuild) poly.MakePolyhedron();
     }
 
-    void LoadPresetButtonClicked() {
+    void LoadPresetButtonClicked()
+    {
         int buttonIndex = 0;
         if (Int32.TryParse(EventSystem.current.currentSelectedGameObject.name, out buttonIndex))
         {
@@ -223,16 +237,11 @@ public class PolyUI : MonoBehaviour {
         
     }
     
-    void SavePresetButtonClicked() {
+    void SavePresetButtonClicked()
+    {
         Presets.AddPresetFromPoly(PresetNameInput.text);
         Presets.SaveAllPresets();
         CreatePresetButtons();
-    }
-
-    public void HandleTabButton()
-    {
-        var button = EventSystem.current.currentSelectedGameObject;
-        ShowTab(button);
     }
 
     private void ShowTab(GameObject button)
