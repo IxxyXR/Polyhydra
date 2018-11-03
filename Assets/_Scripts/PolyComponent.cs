@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Conway;
 using Wythoff;
@@ -123,6 +123,11 @@ public class PolyComponent : MonoBehaviour {
 		Meta,
 		Truncate,
 		Gyro,
+		Snub,
+		//Subdivide,
+		Exalt,
+		Yank,
+		//Chamfer,
 		Offset,
 		Ribbon,
 		Extrude,
@@ -185,7 +190,7 @@ public class PolyComponent : MonoBehaviour {
 	}
 
 	public void MakePolyhedron() {
-		Debug.Log("Making");
+		
 		if (!String.IsNullOrEmpty(WythoffSymbol))
 		{
 			MakePolyhedron(WythoffSymbol);
@@ -322,6 +327,38 @@ public class PolyComponent : MonoBehaviour {
 							if (c.disabled) {break;}
 							conway = conway.Gyro(0.3333333f, c.amount);
 							break;
+						case Ops.Snub:
+							if (c.disabled) {break;}
+							conway = conway.Gyro(0.3333333f, c.amount);
+							conway = conway.Dual();
+							break;
+						
+						
+						
+						case Ops.Exalt:
+							if (c.disabled) {break;}
+							conway = conway.Dual();
+							conway = conway.Kis(c.amount);
+							conway = conway.Dual();
+							conway = conway.Kis(c.amount);
+							break;						
+						case Ops.Yank:
+							if (c.disabled) {break;}
+							conway = conway.Kis(c.amount);
+							conway = conway.Dual();
+							conway = conway.Kis(c.amount);
+							conway = conway.Dual();
+							break;						
+						case Ops.Subdivide:
+							if (c.disabled) {break;}
+							//conway = conway.Subdivide();
+							break;
+						case Ops.Chamfer:
+							if (c.disabled) {break;}
+							//conway = conway.Chamfer();
+							break;
+
+						
 						case Ops.Offset:
 							if (c.disabled) {break;}
 							conway = conway.Offset(c.amount);
