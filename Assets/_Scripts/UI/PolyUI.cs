@@ -4,6 +4,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 
 public class PolyUI : MonoBehaviour {
@@ -62,7 +65,7 @@ public class PolyUI : MonoBehaviour {
     void AddOpButtonClicked()
     {
         var newOp = new PolyComponent.ConwayOperator {disabled = false};
-        poly.ConwayOperators.Append(newOp);
+        poly.ConwayOperators.Add(newOp);
         AddOpItemToUI(newOp);
         if (_shouldReBuild) poly.MakePolyhedron();
     }
@@ -111,35 +114,44 @@ public class PolyUI : MonoBehaviour {
     {
         var opUIItem = Instantiate(OpTemplate);
         opUIItem.transform.SetParent(OperatorContainer);
-        var opItemControl = opUIItem.GetComponent<OpItemControl>();
-        foreach (var opType in Enum.GetValues(typeof(PolyComponent.Ops))) {
-            var opLabel = new Dropdown.OptionData(opType.ToString());
-            opItemControl.OpType.options.Add(opLabel);
-        }
+        var opUIItemControls = opUIItem.GetComponent<OpItemControl>();
+        
         opUIItem.name = opItem.opType.ToString();
-        opItemControl.OpType.value = (int) opItem.opType;
-        opItemControl.Disabled.isOn = opItem.disabled;
-        opItemControl.Amount.value = opItem.amount;
-        opItemControl.OpType.onValueChanged.AddListener(delegate{OpsUIToPoly();});
-        opItemControl.Disabled.onValueChanged.AddListener(delegate{OpsUIToPoly();});
-        opItemControl.Amount.onValueChanged.AddListener(delegate{OpsUIToPoly();});
-        opItemControl.Up.onClick.AddListener(MoveOpUp);
-        opItemControl.Down.onClick.AddListener(MoveOpDown);
-        opItemControl.Delete.onClick.AddListener(DeleteOp);
-        opItemControl.Index = opItems.Count;
+        foreach (var item in Enum.GetValues(typeof(PolyComponent.Ops))) {
+            var label = new Dropdown.OptionData(item.ToString());
+            opUIItemControls.OpTypeControl.options.Add(label);
+        }
+        
+        foreach (var item in Enum.GetValues(typeof(PolyComponent.FaceSelections))) {
+            var label = new Dropdown.OptionData(item.ToString());
+            opUIItemControls.FaceSelectionControl.options.Add(label);
+        }
+        
+        opUIItemControls.OpTypeControl.value = (int) opItem.opType;
+        opUIItemControls.FaceSelectionControl.value = (int) opItem.faceSelections;
+        opUIItemControls.DisabledControl.isOn = opItem.disabled;
+        opUIItemControls.AmountControl.value = opItem.amount;
+        opUIItemControls.OpTypeControl.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opUIItemControls.FaceSelectionControl.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opUIItemControls.DisabledControl.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opUIItemControls.AmountControl.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opUIItemControls.UpControl.onClick.AddListener(MoveOpUp);
+        opUIItemControls.DownControl.onClick.AddListener(MoveOpDown);
+        opUIItemControls.DeleteControl.onClick.AddListener(DeleteOp);
+        opUIItemControls.Index = opItems.Count;
         
         // Enable/Disable down buttons as appropriate:
         // We are adding this at the end so it can't move down
-        opUIItem.GetComponent<OpItemControl>().Down.enabled = false;
+        opUIItem.GetComponent<OpItemControl>().DownControl.enabled = false;
         if (opItems.Count == 0) // Only one item exists
         {
             // First item can't move up
-            opUIItem.GetComponent<OpItemControl>().Up.enabled = false;
+            opUIItem.GetComponent<OpItemControl>().UpControl.enabled = false;
         }
         else
         {
             // Reenable down button on the previous final item
-            opItems[opItems.Count - 1].GetComponent<OpItemControl>().Down.enabled = true;
+            opItems[opItems.Count - 1].GetComponent<OpItemControl>().DownControl.enabled = true;
         }
         opItems.Add(opUIItem);
     }
@@ -147,14 +159,20 @@ public class PolyUI : MonoBehaviour {
     void OpsUIToPoly()
     {
         if (opItems == null) {return;}
+        
         for (var index = 0; index < opItems.Count; index++) {
+            
             var opUIItem = opItems[index];
-            var opsDropdown = opUIItem.GetComponentInChildren<Dropdown>();
+            var opUIItemControls = opUIItem.GetComponent<OpItemControl>();
+            
             var op = poly.ConwayOperators[index];
-            op.opType = (PolyComponent.Ops)opsDropdown.value;
-            op.disabled = opUIItem.GetComponentInChildren<Toggle>().isOn;
-            op.amount = opUIItem.GetComponentInChildren<Slider>().value;
+            
+            op.opType = (PolyComponent.Ops)opUIItemControls.OpTypeControl.value;
+            op.faceSelections = (PolyComponent.FaceSelections) opUIItemControls.FaceSelectionControl.value;
+            op.disabled = opUIItemControls.DisabledControl.isOn;
+            op.amount = opUIItemControls.AmountControl.value;
             poly.ConwayOperators[index] = op;
+            
         }
         if (_shouldReBuild) poly.MakePolyhedron();
     }
@@ -317,4 +335,13 @@ public class PolyUI : MonoBehaviour {
         button.GetComponent<Button>().interactable = false;
 
     }
+    
+    #if UNITY_EDITOR
+        [MenuItem ("Window/Open PersistentData Folder")]
+        public static void OpenPersistentDataFolder()
+        {
+            EditorUtility.RevealInFinder(Application.persistentDataPath);
+        } 
+    #endif
+
 }

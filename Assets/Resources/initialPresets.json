@@ -1,34 +1,123 @@
 [
-  {"Name":  "Preset 0", "PolyType": 40, "BypassOps": false, "TwoSided": true, "Ops": [
-    {"OpType": 1, "Amount": -0.05000000074505806, "Disabled": false},
-    {"OpType": 1, "Amount": 0.009999999776482582, "Disabled": false}
-  ]},
-  {"Name":  "Preset 1", "PolyType": 13, "BypassOps": false, "TwoSided": true, "Ops": [
-    {"OpType": 1, "Amount": -0.05000000074505806, "Disabled": false},
-    {"OpType": 1, "Amount": 0.009999999776482582, "Disabled": false}]
+  {
+    "Name":"Pentagrams",
+    "PolyType":"Great_Dodecadodecahedron",
+    "BypassOps":false,
+    "TwoSided":true,
+    "Ops":[
+      {
+        "OpType":"Kis",
+        "FaceSelections": "All",
+        "Amount":-0.05,
+        "Disabled":false
+      },
+      {
+        "OpType":"Kis",
+        "Amount":0.01,
+        "Disabled":false
+      }
+    ]
   },
-  {"Name":  "Preset 2", "PolyType": 45, "BypassOps": false, "TwoSided": true, "Ops": [
-    {"OpType": 1, "Amount": -0.05000000074505806, "Disabled": false},
-    {"OpType": 1, "Amount": 0.009999999776482582, "Disabled": false}]
+  {
+    "Name":"Dice",
+    "PolyType":"Truncated_Cube",
+    "BypassOps":false,
+    "TwoSided":true,
+    "Ops":[
+      {
+        "OpType":"Kis",
+        "Amount":-0.05,
+        "Disabled":false
+      },
+      {
+        "OpType":"Kis",
+        "Amount":0.01,
+        "Disabled":false
+      }
+    ]
   },
-  {"Name":  "Preset 3", "PolyType": 2, "BypassOps": false, "TwoSided": true, "Ops": [
-    {"OpType": 2, "Amount": 0.18000000715255738, "Disabled": false},
-    {"OpType": 1, "Amount": -0.9399999976158142, "Disabled": false},
-    {"OpType": 2, "Amount": -0.23000000417232514, "Disabled": false}]
+  {
+    "Name":"Xmas Star",
+    "PolyType":"Ditrigonal_Dodecadodecahedron",
+    "BypassOps":false,
+    "TwoSided":true,
+    "Ops":[
+      {
+        "OpType":"Kis",
+        "Amount":-0.05,
+        "Disabled":false
+      },
+      {
+        "OpType":"Kis",
+        "Amount":0.01,
+        "Disabled":false
+      }
+    ]
   },
-  {"Name":  "Preset 4", "PolyType": 10, "BypassOps": false, "TwoSided": true, "Ops": [
-    {"OpType": 4, "Amount": -1.5099999904632569, "Disabled": false},
-    {"OpType": 1, "Amount": -1.0099999904632569, "Disabled": false},
-    {"OpType": 9, "Amount": 0.0, "Disabled": false},
-    {"OpType": 1, "Amount": 0.8100000023841858, "Disabled": false}]
+  {
+    "Name":"Spikey",
+    "PolyType":"Cube",
+    "BypassOps":false,
+    "TwoSided":true,
+    "Ops":[
+      {
+        "OpType":"Kis",
+        "Amount":-1.01,
+        "Disabled":false
+      },
+      {
+        "OpType":"Zip",
+        "Amount":0.0,
+        "Disabled":false
+      },
+      {
+        "OpType":"Kis",
+        "Amount":0.81,
+        "Disabled":false
+      }
+    ]
   },
-  {"Name":  "Preset 5", "PolyType": 56, "BypassOps": false, "TwoSided": false, "Ops": [
-    {"OpType": 1, "Amount": -4.75, "Disabled": false},
-    {"OpType": 2, "Amount": 0.10999999940395355, "Disabled": false}]
+  {
+    "Name":"Blade Star",
+    "PolyType":"Great_Stellated_Dodecahedron",
+    "BypassOps":false,
+    "TwoSided":true,
+    "Ops":[
+      {
+        "OpType":"Kis",
+        "Amount":-4.75,
+        "Disabled":false
+      },
+      {
+        "OpType":"Kis",
+        "FaceSelections":"ThreeSided",
+        "Amount":0.11,
+        "Disabled":false
+      }
+    ]
   },
-  {"Name":  "Preset 6", "PolyType": 16, "BypassOps": false, "TwoSided": true, "Ops": [
-    {"OpType": 2, "Amount": -0.20999999344348908, "Disabled": false},
-    {"OpType": 14, "Amount": -3.25, "Disabled": false},
-    {"OpType": 11, "Amount": 0.0, "Disabled": false}
-  ]}
+  {
+    "Name":"Smooth",
+    "PolyType":"Snub_Cube",
+    "BypassOps":false,
+    "TwoSided":true,
+    "Ops":[
+      {
+        "OpType":"Kis",
+        "FaceSelections":"ThreeSided",
+        "Amount":-0.21,
+        "Disabled":false
+      },
+      {
+        "OpType":"Ortho",
+        "Amount":-3.25,
+        "Disabled":false
+      },
+      {
+        "OpType":"Bevel",
+        "Amount":0.0,
+        "Disabled":false
+      }
+    ]
+  }
 ]

@@ -5,10 +5,12 @@ public class OpItemControl : MonoBehaviour
 {
     public int Index;
     public PolyPreset Preset;
-    public Dropdown OpType;
-    public Slider Amount;
-    public Toggle Disabled;
-    public Button Up;
-    public Button Down;
-    public Button Delete;
+    
+    public Dropdown OpTypeControl;
+    public Dropdown FaceSelectionControl;
+    public Slider AmountControl;
+    public Toggle DisabledControl;
+    public Button UpControl;
+    public Button DownControl;
+    public Button DeleteControl;
 }

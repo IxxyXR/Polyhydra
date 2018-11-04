@@ -17,8 +17,8 @@ public class PolyPreset {
 	
 	[Serializable]
 	public struct Op {
-		[JsonConverter(typeof(StringEnumConverter))]
-		public PolyComponent.Ops OpType;
+		[JsonConverter(typeof(StringEnumConverter))] public PolyComponent.Ops OpType;
+		[JsonConverter(typeof(StringEnumConverter))] public PolyComponent.FaceSelections FaceSelections;
 		public float Amount;
 		public bool Disabled;
 	}
@@ -39,7 +39,8 @@ public class PolyPreset {
 			{
 				OpType = polyOp.opType,
 				Disabled = polyOp.disabled,
-				Amount = polyOp.amount
+				Amount = polyOp.amount,
+				FaceSelections = polyOp.faceSelections
 			};
 			Ops[index] = op;
 		}
@@ -56,9 +57,10 @@ public class PolyPreset {
 			var presetOp = Ops[index];
 			var op = new PolyComponent.ConwayOperator();
 			op.opType = presetOp.OpType;
+			op.faceSelections = presetOp.FaceSelections;
 			op.disabled = presetOp.Disabled;
 			op.amount = presetOp.Amount;
-			poly.ConwayOperators.Append(op);
+			poly.ConwayOperators.Add(op);
 		}
 	}
     

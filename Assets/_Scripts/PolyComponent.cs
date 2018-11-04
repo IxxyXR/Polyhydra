@@ -108,11 +108,6 @@ public class PolyComponent : MonoBehaviour {
 	public enum Ops {
 		Identity,
 		Kis,
-		Kis3,
-		Kis4,
-		Kis5,
-		Kis6,
-		Kis8,
 		Dual,
 		Ambo,
 		Zip,
@@ -135,11 +130,34 @@ public class PolyComponent : MonoBehaviour {
 		Scale,
 		Test
 	}
+
+	public enum FaceSelections
+	{
+		All,
+		ThreeSided,
+		FourSided,
+		FiveSided,
+		SixSided,
+		SevenSided,
+		EightSided
+	}
+	
+	public class OpConfig
+	{
+		public bool usesAmount = true;
+		public float amountMin = -20;
+		public float amountMax = 20;
+		public bool usesFaces = false;
+		public FaceSelections faceSelection = FaceSelections.All;	
+	}
+
+	public Dictionary<Ops, OpConfig> opconfigs;
 	
 	[Serializable]
 	public struct ConwayOperator {  
 		[FormerlySerializedAs("op")]
 		public Ops opType;
+		public FaceSelections faceSelections;
 		public float amount;
 		public bool disabled;
 	}
@@ -174,7 +192,32 @@ public class PolyComponent : MonoBehaviour {
 
 	void Start() {
 		meshFilter = gameObject.GetComponent<MeshFilter>();
-		//MakePolyhedron();
+		opconfigs = new Dictionary<Ops, OpConfig>()
+		{
+			{Ops.Identity, new OpConfig {}},
+			{Ops.Kis, new OpConfig{usesFaces=true}},
+			{Ops.Dual, new OpConfig{usesAmount=false}},
+			{Ops.Ambo, new OpConfig{usesAmount=false}},
+			{Ops.Zip, new OpConfig{}},
+			{Ops.Expand, new OpConfig{usesAmount=false}},
+			{Ops.Bevel, new OpConfig{}},
+			{Ops.Join, new OpConfig{usesAmount=false}},
+			{Ops.Needle, new OpConfig{}},
+			{Ops.Ortho, new OpConfig{usesAmount=false}},
+			{Ops.Meta, new OpConfig{}},
+			{Ops.Truncate, new OpConfig{}},
+			{Ops.Gyro, new OpConfig{}},
+			{Ops.Snub, new OpConfig{}},
+			//{Ops.Subdivide new OpConfig{}},
+			{Ops.Exalt, new OpConfig{}},
+			{Ops.Yank, new OpConfig{}},
+			//{Ops.Chamfer new OpConfig{}},
+			{Ops.Offset, new OpConfig{}},
+			{Ops.Ribbon, new OpConfig{}},
+			{Ops.Extrude, new OpConfig{}},
+			{Ops.Scale, new OpConfig{}},
+			{Ops.Test, new OpConfig{}}
+};
 	}
 
 	private void OnValidate() {
@@ -225,7 +268,27 @@ public class PolyComponent : MonoBehaviour {
 		_polyhedron.BuildFaces(BuildAux: BypassOps);
 		MakeMesh();	
 	}
-	
+
+	private int CalculateFaceSelection(FaceSelections faceSelections)
+	{
+		switch (faceSelections)
+		{
+			case FaceSelections.ThreeSided:
+				return 3;
+			case FaceSelections.FourSided:
+				return 4;
+			case FaceSelections.FiveSided:
+				return 5;
+			case FaceSelections.SixSided:
+				return 6;
+			case FaceSelections.SevenSided:
+				return 7;
+			case FaceSelections.EightSided:
+				return 8;
+		}
+		return 0;
+	}
+
 	public void MakeMesh() {
 		
 		var mesh = new Mesh();
@@ -235,148 +298,101 @@ public class PolyComponent : MonoBehaviour {
 			_polyhedron.BuildMesh();
 			mesh = _polyhedron.mesh;
 			mesh.RecalculateNormals();
-		} else {
-			
+		}
+		else
+		{
 			if (ConwayOperators != null) {
 				conway = new ConwayPoly(_polyhedron);
-				foreach (var c in ConwayOperators) {
-					switch (c.opType) {
+				foreach (var op in ConwayOperators) {
+					if (op.disabled) {continue;}
+					switch (op.opType) {
 						case Ops.Identity:
 							break;
 						case Ops.Scale:
-							if (c.disabled) {break;}
-							conway = conway.Foo(c.amount);
+							conway = conway.Foo(op.amount);
 							break;
 						case Ops.Kis:
-							if (c.disabled) {break;}
-							conway = conway.Kis(c.amount);
-							break;
-						case Ops.Kis3:
-							if (c.disabled) {break;}
-							conway = conway.KisN(c.amount, 3);
-							break;
-						case Ops.Kis4:
-							if (c.disabled) {break;}
-							conway = conway.KisN(c.amount, 4);
-							break;
-						case Ops.Kis5:
-							if (c.disabled) {break;}
-							conway = conway.KisN(c.amount, 5);
-							break;
-						case Ops.Kis6:
-							if (c.disabled) {break;}
-							conway = conway.KisN(c.amount, 6);
-							break;
-						case Ops.Kis8:
-							if (c.disabled) {break;}
-							conway = conway.KisN(c.amount, 8);
+							var faceSelection = CalculateFaceSelection(op.faceSelections);
+							conway = faceSelection==0 ? conway.Kis(op.amount) : conway.KisN(op.amount, faceSelection);								
 							break;
 						case Ops.Dual:
-							if (c.disabled) {break;}
 							conway = conway.Dual();
 							break;
 						case Ops.Ambo:
-							if (c.disabled) {break;}
 							conway = conway.Ambo();
 							break;
 						case Ops.Zip:
-							if (c.disabled) {break;}
-							conway = conway.Kis(c.amount);
+							conway = conway.Kis(op.amount);
 							conway = conway.Dual();
 							break;
 						case Ops.Expand:
-							if (c.disabled) {break;}
 							conway = conway.Ambo();
 							conway = conway.Ambo();
 							break;
 						case Ops.Bevel:
-							if (c.disabled) {break;}
 							conway = conway.Ambo();
 							conway = conway.Dual();
-							conway = conway.Kis(c.amount);
+							conway = conway.Kis(op.amount);
 							conway = conway.Dual();
 							break;
 						case Ops.Join:
-							if (c.disabled) {break;}
 							conway = conway.Ambo();
 							conway = conway.Dual();
 							break;
 						case Ops.Needle:
-							if (c.disabled) {break;}
 							conway = conway.Dual();
-							conway = conway.Kis(c.amount);
+							conway = conway.Kis(op.amount);
 							break;
 						case Ops.Ortho:
-							if (c.disabled) {break;}
 							conway = conway.Ambo();
 							conway = conway.Ambo();
 							conway = conway.Dual();
 							break;
 						case Ops.Meta:
-							if (c.disabled) {break;}
 							conway = conway.Ambo();
 							conway = conway.Dual();
-							conway = conway.Kis(c.amount);
+							conway = conway.Kis(op.amount);
 							break;
 						case Ops.Truncate:
-							if (c.disabled) {break;}
 							conway = conway.Dual();
-							conway = conway.Kis(c.amount);
+							conway = conway.Kis(op.amount);
 							conway = conway.Dual();
 							break;
 						case Ops.Gyro:
-							if (c.disabled) {break;}
-							conway = conway.Gyro(0.3333333f, c.amount);
+							conway = conway.Gyro(op.amount);
 							break;
 						case Ops.Snub:
-							if (c.disabled) {break;}
-							conway = conway.Gyro(0.3333333f, c.amount);
+							conway = conway.Gyro(op.amount);
 							conway = conway.Dual();
 							break;
-						
-						
-						
 						case Ops.Exalt:
-							if (c.disabled) {break;}
 							conway = conway.Dual();
-							conway = conway.Kis(c.amount);
+							conway = conway.Kis(op.amount);
 							conway = conway.Dual();
-							conway = conway.Kis(c.amount);
+							conway = conway.Kis(op.amount);
 							break;						
 						case Ops.Yank:
-							if (c.disabled) {break;}
-							conway = conway.Kis(c.amount);
+							conway = conway.Kis(op.amount);
 							conway = conway.Dual();
-							conway = conway.Kis(c.amount);
+							conway = conway.Kis(op.amount);
 							conway = conway.Dual();
 							break;
 							
 //						case Ops.Subdivide:
-//							if (c.disabled) {break;}
 //							conway = conway.Subdivide();
 //							break;
 //						case Ops.Chamfer:
-//							if (c.disabled) {break;}
 //							conway = conway.Chamfer();
 //							break;
 
-						
 						case Ops.Offset:
-							if (c.disabled) {break;}
-							conway = conway.Offset(c.amount);
+							conway = conway.Offset(op.amount);
 							break;
 						case Ops.Extrude:
-							if (c.disabled) {break;}
-							conway = conway.Extrude(c.amount, false);
+							conway = conway.Extrude(op.amount, false);
 							break;
 						case Ops.Ribbon:
-							if (c.disabled) {break;}
-							conway = conway.Ribbon(c.amount, false, 0.1f);
-							break;
-						
-						case Ops.Test:
-							if (c.disabled) {break;}
-							
+							conway = conway.Ribbon(op.amount, false, 0.1f);
 							break;
 					}
 				}

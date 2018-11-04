@@ -321,7 +321,7 @@ namespace Conway {
             return new ConwayPoly(vertexPoints, faceIndices.ToArray());
         }
         
-        public ConwayPoly Kebab(float r = 0.3333f, float h = 0.2f)  // A kebab is a mixed up gyro... Geddit?
+        public ConwayPoly Kebab(float r = 0.3333f)  // A kebab is a mixed up gyro... Geddit?
         {
         
             var vertexPoints = new List<Vector3>();
@@ -371,7 +371,7 @@ namespace Conway {
             return new ConwayPoly(vertexPoints, faceIndices);
         }
 
-        public ConwayPoly Gyro(float r = 0.3333f, float scale = 0.8f)
+        public ConwayPoly Gyro(float r = 0.3333f)
         {
             
             // Happy accidents - skip n new faces - offset just the centroid?
@@ -760,7 +760,6 @@ namespace Conway {
             for (var count=0; count<iterations; count++) {    // iteration:
                 dpoly.Vertices = ReciprocalC(poly);             // reciprocate face centers
                 poly.Vertices = ReciprocalC(dpoly);            // reciprocate face centers
-                Debug.Log(Vertices);
             }
             
             return poly;
