@@ -127,11 +127,20 @@ public class PolyUI : MonoBehaviour {
             opUIItemControls.FaceSelectionControl.options.Add(label);
         }
         
+        var opconfig = poly.opconfigs[opItem.opType];
+
+        // WIP
+//        if (!opconfig.usesFaces) opUIItemControls.FaceSelectionControl.gameObject.active = false;
+//        if (!opconfig.usesAmount)
+//        {
+//            opUIItemControls.AmountControl.gameObject.active = false;
+//        }
+        
         opUIItemControls.OpTypeControl.value = (int) opItem.opType;
         opUIItemControls.FaceSelectionControl.value = (int) opItem.faceSelections;
         opUIItemControls.DisabledControl.isOn = opItem.disabled;
         opUIItemControls.AmountControl.value = opItem.amount;
-        opUIItemControls.OpTypeControl.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opUIItemControls.OpTypeControl.onValueChanged.AddListener(delegate{OpTypeChanged();});
         opUIItemControls.FaceSelectionControl.onValueChanged.AddListener(delegate{OpsUIToPoly();});
         opUIItemControls.DisabledControl.onValueChanged.AddListener(delegate{OpsUIToPoly();});
         opUIItemControls.AmountControl.onValueChanged.AddListener(delegate{OpsUIToPoly();});
@@ -154,6 +163,11 @@ public class PolyUI : MonoBehaviour {
             opItems[opItems.Count - 1].GetComponent<OpItemControl>().DownControl.enabled = true;
         }
         opItems.Add(opUIItem);
+    }
+
+    void OpTypeChanged()
+    {
+        OpsUIToPoly();
     }
 
     void OpsUIToPoly()

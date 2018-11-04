@@ -190,11 +190,11 @@ public class PolyComponent : MonoBehaviour {
 		Color.magenta
 	};
 
-	void Start() {
-		meshFilter = gameObject.GetComponent<MeshFilter>();
+	void Awake()
+	{
 		opconfigs = new Dictionary<Ops, OpConfig>()
 		{
-			{Ops.Identity, new OpConfig {}},
+			{Ops.Identity, new OpConfig {usesAmount=false}},
 			{Ops.Kis, new OpConfig{usesFaces=true}},
 			{Ops.Dual, new OpConfig{usesAmount=false}},
 			{Ops.Ambo, new OpConfig{usesAmount=false}},
@@ -217,7 +217,11 @@ public class PolyComponent : MonoBehaviour {
 			{Ops.Extrude, new OpConfig{}},
 			{Ops.Scale, new OpConfig{}},
 			{Ops.Test, new OpConfig{}}
-};
+		};
+	}
+
+	void Start() {
+		meshFilter = gameObject.GetComponent<MeshFilter>();
 	}
 
 	private void OnValidate() {
