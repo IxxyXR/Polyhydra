@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -30,8 +31,8 @@ public class PolyPreset {
 		PolyType = poly.PolyType;
 		BypassOps = poly.BypassOps;
 		TwoSided = poly.TwoSided;
-		Ops = new Op[poly.ConwayOperators.Length];
-		for (var index = 0; index < poly.ConwayOperators.Length; index++)
+		Ops = new Op[poly.ConwayOperators.Count];
+		for (var index = 0; index < poly.ConwayOperators.Count; index++)
 		{
 			var polyOp = poly.ConwayOperators[index];
 			var op = new Op
@@ -49,7 +50,7 @@ public class PolyPreset {
 		poly.PolyType = PolyType;
 		poly.BypassOps = BypassOps;
 		poly.TwoSided = TwoSided;
-		poly.ConwayOperators = new PolyComponent.ConwayOperator[Ops.Length];
+		poly.ConwayOperators = new List<PolyComponent.ConwayOperator>();
 		for (var index = 0; index < Ops.Length; index++)
 		{
 			var presetOp = Ops[index];
@@ -57,7 +58,7 @@ public class PolyPreset {
 			op.opType = presetOp.OpType;
 			op.disabled = presetOp.Disabled;
 			op.amount = presetOp.Amount;
-			poly.ConwayOperators[index] = op;
+			poly.ConwayOperators.Append(op);
 		}
 	}
     

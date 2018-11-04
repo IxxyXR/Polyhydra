@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Conway;
 using Wythoff;
@@ -142,7 +143,7 @@ public class PolyComponent : MonoBehaviour {
 		public float amount;
 		public bool disabled;
 	}
-	public ConwayOperator[] ConwayOperators;
+	public List<ConwayOperator> ConwayOperators;
 		
 	[Header("Gizmos")]
 	public bool vertexGizmos;

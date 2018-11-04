@@ -49,8 +49,8 @@ Preset:
     value: 5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[0].op
-    value: 7
+    propertyPath: ConwayOperators.Array.data[0].opType
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: ConwayOperators.Array.data[0].amount
@@ -61,8 +61,8 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[1].op
-    value: 17
+    propertyPath: ConwayOperators.Array.data[1].opType
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: ConwayOperators.Array.data[1].amount
@@ -73,8 +73,8 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[2].op
-    value: 21
+    propertyPath: ConwayOperators.Array.data[2].opType
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: ConwayOperators.Array.data[2].amount
@@ -85,8 +85,8 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[3].op
-    value: 20
+    propertyPath: ConwayOperators.Array.data[3].opType
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: ConwayOperators.Array.data[3].amount
@@ -97,8 +97,8 @@ Preset:
     value: 1
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[4].op
-    value: 4
+    propertyPath: ConwayOperators.Array.data[4].opType
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: ConwayOperators.Array.data[4].amount

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -61,8 +62,7 @@ public class PolyUI : MonoBehaviour {
     void AddOpButtonClicked()
     {
         var newOp = new PolyComponent.ConwayOperator {disabled = false};
-        Array.Resize(ref poly.ConwayOperators, poly.ConwayOperators.Length + 1);
-        poly.ConwayOperators[poly.ConwayOperators.Length - 1] = newOp;
+        poly.ConwayOperators.Append(newOp);
         AddOpItemToUI(newOp);
         if (_shouldReBuild) poly.MakePolyhedron();
     }
@@ -100,7 +100,7 @@ public class PolyUI : MonoBehaviour {
     {
         DestroyOps();
         if (poly.ConwayOperators == null) {return;}
-        for (var index = 0; index < poly.ConwayOperators.Length; index++)
+        for (var index = 0; index < poly.ConwayOperators.Count; index++)
         {
             var conwayOperator = poly.ConwayOperators[index];
             AddOpItemToUI(conwayOperator);
@@ -111,21 +111,36 @@ public class PolyUI : MonoBehaviour {
     {
         var opUIItem = Instantiate(OpTemplate);
         opUIItem.transform.SetParent(OperatorContainer);
-        var opsDropdown = opUIItem.GetComponentInChildren<Dropdown>();
+        var opItemControl = opUIItem.GetComponent<OpItemControl>();
         foreach (var opType in Enum.GetValues(typeof(PolyComponent.Ops))) {
             var opLabel = new Dropdown.OptionData(opType.ToString());
-            opsDropdown.options.Add(opLabel);
+            opItemControl.OpType.options.Add(opLabel);
         }
-        opsDropdown.value = (int) opItem.opType;
-        opUIItem.GetComponentInChildren<Toggle>().isOn = opItem.disabled;
-        opUIItem.GetComponentInChildren<Slider>().value = opItem.amount;
-        opUIItem.GetComponentInChildren<Dropdown>().onValueChanged.AddListener(delegate{OpsUIToPoly();});
-        opUIItem.GetComponentInChildren<Toggle>().onValueChanged.AddListener(delegate{OpsUIToPoly();});
-        opUIItem.GetComponentInChildren<Slider>().onValueChanged.AddListener(delegate{OpsUIToPoly();});
-        opUIItem.GetComponentsInChildren<Button>()[0].onClick.AddListener(ReorderOps);
-        opUIItem.GetComponentsInChildren<Button>()[1].onClick.AddListener(ReorderOps);
-        opUIItem.GetComponentsInChildren<Button>()[2].onClick.AddListener(DeleteOp);
-        opUIItem.name = opItems.Count.ToString();
+        opUIItem.name = opItem.opType.ToString();
+        opItemControl.OpType.value = (int) opItem.opType;
+        opItemControl.Disabled.isOn = opItem.disabled;
+        opItemControl.Amount.value = opItem.amount;
+        opItemControl.OpType.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opItemControl.Disabled.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opItemControl.Amount.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opItemControl.Up.onClick.AddListener(MoveOpUp);
+        opItemControl.Down.onClick.AddListener(MoveOpDown);
+        opItemControl.Delete.onClick.AddListener(DeleteOp);
+        opItemControl.Index = opItems.Count;
+        
+        // Enable/Disable down buttons as appropriate:
+        // We are adding this at the end so it can't move down
+        opUIItem.GetComponent<OpItemControl>().Down.enabled = false;
+        if (opItems.Count == 0) // Only one item exists
+        {
+            // First item can't move up
+            opUIItem.GetComponent<OpItemControl>().Up.enabled = false;
+        }
+        else
+        {
+            // Reenable down button on the previous final item
+            opItems[opItems.Count - 1].GetComponent<OpItemControl>().Down.enabled = true;
+        }
         opItems.Add(opUIItem);
     }
 
@@ -135,39 +150,43 @@ public class PolyUI : MonoBehaviour {
         for (var index = 0; index < opItems.Count; index++) {
             var opUIItem = opItems[index];
             var opsDropdown = opUIItem.GetComponentInChildren<Dropdown>();
-            poly.ConwayOperators[index].opType = (PolyComponent.Ops)opsDropdown.value;
-            poly.ConwayOperators[index].disabled = opUIItem.GetComponentInChildren<Toggle>().isOn;
-            poly.ConwayOperators[index].amount = opUIItem.GetComponentInChildren<Slider>().value;
+            var op = poly.ConwayOperators[index];
+            op.opType = (PolyComponent.Ops)opsDropdown.value;
+            op.disabled = opUIItem.GetComponentInChildren<Toggle>().isOn;
+            op.amount = opUIItem.GetComponentInChildren<Slider>().value;
+            poly.ConwayOperators[index] = op;
         }
         if (_shouldReBuild) poly.MakePolyhedron();
     }
 
-    void ReorderOps()
+    void MoveOpUp()
     {
-        string action = EventSystem.current.currentSelectedGameObject.name;
-        int opIndex;
-        if (Int32.TryParse(EventSystem.current.currentSelectedGameObject.transform.parent.name, out opIndex)) {
-            if (action == "Up") {
-                var temp = poly.ConwayOperators[opIndex];
-                poly.ConwayOperators[opIndex] = poly.ConwayOperators[opIndex - 1];
-                poly.ConwayOperators[opIndex - 1] = temp;
-                
-            }
-            else if (action == "Down")
-            {
-                var temp = poly.ConwayOperators[opIndex];
-                poly.ConwayOperators[opIndex] = poly.ConwayOperators[opIndex + 1];
-                poly.ConwayOperators[opIndex + 1] = temp;
-            }
+        SwapOpWith(-1);
+    }
 
-            CreateOps();
-            if (_shouldReBuild) poly.MakePolyhedron();
-        }
+    void MoveOpDown()
+    {
+        SwapOpWith(1);
+    }
+
+    private void SwapOpWith(int offset)
+    {
+        var opItemControl = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpItemControl>();
+        var src = opItemControl.Index;
+        var dest = src + offset;
+        var temp = poly.ConwayOperators[src];
+        poly.ConwayOperators[src] = poly.ConwayOperators[dest];
+        poly.ConwayOperators[dest] = temp;
+        CreateOps();
+        if (_shouldReBuild) poly.MakePolyhedron();
     }
     
     void DeleteOp()
     {
-        Debug.Log(EventSystem.current.currentSelectedGameObject.name);
+        var opItemControl = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpItemControl>();
+        poly.ConwayOperators.RemoveAt(opItemControl.Index);
+        CreateOps();
+        if (_shouldReBuild) poly.MakePolyhedron();
     }
 
     void CreateBasePolyDropdown()
@@ -199,7 +218,7 @@ public class PolyUI : MonoBehaviour {
             presetButton.transform.SetParent(PresetButtonContainer);
             presetButton.name = index.ToString();
             presetButton.GetComponentInChildren<Text>().text = preset.Name;
-            presetButton.onClick.AddListener(delegate { LoadPresetButtonClicked(); });
+            presetButton.onClick.AddListener(LoadPresetButtonClicked);
             presetButtons.Add(presetButton);
         }
     }

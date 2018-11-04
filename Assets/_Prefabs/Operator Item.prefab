@@ -463,6 +463,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224557752433810586}
   - component: {fileID: 114068480204018864}
+  - component: {fileID: 114257129090061356}
   m_Layer: 5
   m_Name: Operator Item
   m_TagString: Untagged
@@ -805,6 +806,24 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114257129090061356
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1821758201440246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c116c3e70097447388cc7bfad76c7d82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Index: 0
+  OpType: {fileID: 114804761198664328}
+  Amount: {fileID: 114713314477920534}
+  Disabled: {fileID: 114087965532053908}
+  Up: {fileID: 114454907246998274}
+  Down: {fileID: 114741096766453508}
+  Delete: {fileID: 114230593587510782}
 --- !u!114 &114288455244209610
 MonoBehaviour:
   m_ObjectHideFlags: 1
