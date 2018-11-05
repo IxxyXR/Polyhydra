@@ -124,11 +124,11 @@ public class PolyComponent : MonoBehaviour {
 		Exalt,
 		Yank,
 		//Chamfer,
-		Offset,
-		Ribbon,
+		//Offset,
+		//Ribbon,
 		Extrude,
 		Scale,
-		Test
+		//Test
 	}
 
 	public enum FaceSelections
@@ -193,30 +193,30 @@ public class PolyComponent : MonoBehaviour {
 	void Awake()
 	{
 		opconfigs = new Dictionary<Ops, OpConfig>()
-		{
+		{	
 			{Ops.Identity, new OpConfig {usesAmount=false}},
-			{Ops.Kis, new OpConfig{usesFaces=true}},
+			{Ops.Kis, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
 			{Ops.Dual, new OpConfig{usesAmount=false}},
 			{Ops.Ambo, new OpConfig{usesAmount=false}},
-			{Ops.Zip, new OpConfig{}},
+			{Ops.Zip, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
 			{Ops.Expand, new OpConfig{usesAmount=false}},
-			{Ops.Bevel, new OpConfig{}},
+			{Ops.Bevel, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
 			{Ops.Join, new OpConfig{usesAmount=false}},
-			{Ops.Needle, new OpConfig{}},
+			{Ops.Needle, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
 			{Ops.Ortho, new OpConfig{usesAmount=false}},
-			{Ops.Meta, new OpConfig{}},
-			{Ops.Truncate, new OpConfig{}},
-			{Ops.Gyro, new OpConfig{}},
-			{Ops.Snub, new OpConfig{}},
+			{Ops.Meta, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
+			{Ops.Truncate, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
+			{Ops.Gyro, new OpConfig{amountMin = -.5f, amountMax = 0.5f}},
+			{Ops.Snub, new OpConfig{amountMin = -.5f, amountMax = 0.5f}},
 			//{Ops.Subdivide new OpConfig{}},
-			{Ops.Exalt, new OpConfig{}},
-			{Ops.Yank, new OpConfig{}},
+			{Ops.Exalt, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
+			{Ops.Yank, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
 			//{Ops.Chamfer new OpConfig{}},
-			{Ops.Offset, new OpConfig{}},
-			{Ops.Ribbon, new OpConfig{}},
-			{Ops.Extrude, new OpConfig{}},
+			//{Ops.Offset, new OpConfig{}},
+			//{Ops.Ribbon, new OpConfig{}},
+			{Ops.Extrude, new OpConfig{amountMin = -10, amountMax = 10}},
 			{Ops.Scale, new OpConfig{}},
-			{Ops.Test, new OpConfig{}}
+			//{Ops.Test, new OpConfig{}}
 		};
 	}
 
@@ -389,15 +389,15 @@ public class PolyComponent : MonoBehaviour {
 //							conway = conway.Chamfer();
 //							break;
 
-						case Ops.Offset:
-							conway = conway.Offset(op.amount);
-							break;
+//						case Ops.Offset:
+//							conway = conway.Offset(op.amount);
+//							break;
 						case Ops.Extrude:
 							conway = conway.Extrude(op.amount, false);
 							break;
-						case Ops.Ribbon:
-							conway = conway.Ribbon(op.amount, false, 0.1f);
-							break;
+//						case Ops.Ribbon:
+//							conway = conway.Ribbon(op.amount, false, 0.1f);
+//							break;
 					}
 				}
 			}

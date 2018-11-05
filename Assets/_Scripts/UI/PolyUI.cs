@@ -111,7 +111,7 @@ public class PolyUI : MonoBehaviour {
         }
     }
 
-    void SetOpControlVisibility(OpPrefabManager opPrefabManager)
+    void ConfigureOpControls(OpPrefabManager opPrefabManager)
     {
         var opType = (PolyComponent.Ops)opPrefabManager.OpTypeDropdown.value;
         var opConfig = poly.opconfigs[opType];
@@ -119,6 +119,9 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.FaceSelectionDropdown.gameObject.SetActive(opConfig.usesFaces);
         opPrefabManager.AmountSlider.gameObject.SetActive(opConfig.usesAmount);
         
+        opPrefabManager.AmountSlider.minValue = opConfig.amountMin;
+        opPrefabManager.AmountSlider.maxValue = opConfig.amountMax;
+
     }
 
     void AddOpItemToUI(PolyComponent.ConwayOperator op)
@@ -151,7 +154,7 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.DeleteButton.onClick.AddListener(DeleteOp);
         opPrefabManager.Index = opPrefabs.Count;
         
-        SetOpControlVisibility(opPrefab.GetComponent<OpPrefabManager>());
+        ConfigureOpControls(opPrefab.GetComponent<OpPrefabManager>());
 
         // Enable/Disable down buttons as appropriate:
         // We are adding this at the end so it can't move down
@@ -171,7 +174,7 @@ public class PolyUI : MonoBehaviour {
 
     void OpTypeChanged()
     {
-        SetOpControlVisibility(EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>());
+        ConfigureOpControls(EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>());
         OpsUIToPoly();
     }
 

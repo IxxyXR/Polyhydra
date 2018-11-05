@@ -321,7 +321,7 @@ namespace Conway {
             return new ConwayPoly(vertexPoints, faceIndices.ToArray());
         }
         
-        public ConwayPoly Kebab(float r = 0.3333f)  // A kebab is a mixed up gyro... Geddit?
+        public ConwayPoly Kebab(float ratio = 0.3333f)  // A kebab is a mixed up gyro... Geddit?
         {
         
             var vertexPoints = new List<Vector3>();
@@ -371,7 +371,7 @@ namespace Conway {
             return new ConwayPoly(vertexPoints, faceIndices);
         }
 
-        public ConwayPoly Gyro(float r = 0.3333f)
+        public ConwayPoly Gyro(float ratio = 0.3333f)
         {
             
             // Happy accidents - skip n new faces - offset just the centroid?
@@ -400,15 +400,15 @@ namespace Conway {
                     vertexPoints.Add(seedVertex.Position);
                     var seedVertexIndex = vertexPoints.Count - 1;
                     
-                    var OneThirdVertex = edges[j].OneThirdPoint;
+                    var OneThirdVertex = edges[j].PointAlongEdge(ratio);
                     vertexPoints.Add(OneThirdVertex);
                     int OneThirdIndex = vertexPoints.Count - 1;
                     
-                    var PrevThirdVertex = edges[j].Next.TwoThirdsPoint;
+                    var PrevThirdVertex = edges[j].Next.PointAlongEdge(1-ratio);
                     vertexPoints.Add(PrevThirdVertex);
                     int PrevThirdIndex = vertexPoints.Count - 1;
                     
-                    var PrevTwoThirdVertex = edges[j].Next.OneThirdPoint;
+                    var PrevTwoThirdVertex = edges[j].Next.PointAlongEdge(ratio);
                     vertexPoints.Add(PrevTwoThirdVertex);
                     int PrevTwoThirdIndex = vertexPoints.Count - 1;
                     
