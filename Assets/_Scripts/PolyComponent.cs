@@ -215,7 +215,7 @@ public class PolyComponent : MonoBehaviour {
 			//{Ops.Offset, new OpConfig{}},
 			//{Ops.Ribbon, new OpConfig{}},
 			{Ops.Extrude, new OpConfig{amountMin = -10, amountMax = 10}},
-			{Ops.Scale, new OpConfig{}},
+			{Ops.Scale, new OpConfig{amountMin = -10, amountMax = 10}},
 			//{Ops.Test, new OpConfig{}}
 		};
 	}
