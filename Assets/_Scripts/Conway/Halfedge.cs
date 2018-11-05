@@ -62,6 +62,11 @@ namespace Conway {
                 get { return Vertex.Position - Prev.Vertex.Position; }
             }
 
+        public Vector3 PointAlongEdge(float n)
+        {
+            return Vertex.Position + n * (Vertex.Position - Prev.Vertex.Position);
+        }
+
         #endregion
     }
 }
