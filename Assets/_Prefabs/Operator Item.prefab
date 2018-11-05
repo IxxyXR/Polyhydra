@@ -1179,13 +1179,13 @@ MonoBehaviour:
     BypassOps: 0
     TwoSided: 0
     Ops: []
-  OpTypeControl: {fileID: 114291170716099160}
-  FaceSelectionControl: {fileID: 114804761198664328}
-  AmountControl: {fileID: 114713314477920534}
-  DisabledControl: {fileID: 114087965532053908}
-  UpControl: {fileID: 114454907246998274}
-  DownControl: {fileID: 114741096766453508}
-  DeleteControl: {fileID: 114230593587510782}
+  OpTypeDropdown: {fileID: 114291170716099160}
+  FaceSelectionDropdown: {fileID: 114804761198664328}
+  AmountSlider: {fileID: 114713314477920534}
+  DisabledToggle: {fileID: 114087965532053908}
+  UpButton: {fileID: 114454907246998274}
+  DownButton: {fileID: 114741096766453508}
+  DeleteButton: {fileID: 114230593587510782}
 --- !u!114 &114288455244209610
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,7 +22,7 @@ public class PolyUI : MonoBehaviour {
     public Toggle TwoSidedToggle;
     public Toggle BypassOpsToggle;
     public Button AddOpButton;
-    public RectTransform OperatorContainer;
+    [FormerlySerializedAs("OperatorContainer")] public RectTransform OpContainer;
     public Transform OpTemplate;
     public Button ButtonTemplate;
     public RectTransform PresetButtonContainer;
@@ -33,12 +34,12 @@ public class PolyUI : MonoBehaviour {
     
     private List<Button> presetButtons;
     private List<Button> basePolyButtons;
-    private List<Transform> opItems;
+    private List<Transform> opPrefabs;
     private bool _shouldReBuild = true;
 
     void Start()
     {
-        opItems = new List<Transform>();
+        opPrefabs = new List<Transform>();
         presetButtons = new List<Button>();
         rotateObject = poly.GetComponent<RotateObject>();
         PresetNameInput.onValueChanged.AddListener(delegate{PresetNameChanged();});
@@ -92,11 +93,11 @@ public class PolyUI : MonoBehaviour {
 
     void DestroyOps()
     {
-        if (opItems == null) {return;}
-        foreach (var item in opItems) {
+        if (opPrefabs == null) {return;}
+        foreach (var item in opPrefabs) {
             Destroy(item.gameObject);
         }
-        opItems.Clear();
+        opPrefabs.Clear();
     }
     
     void CreateOps()
@@ -110,81 +111,85 @@ public class PolyUI : MonoBehaviour {
         }
     }
 
-    void AddOpItemToUI(PolyComponent.ConwayOperator opItem)
+    void SetOpControlVisibility(OpPrefabManager opPrefabManager)
     {
-        var opUIItem = Instantiate(OpTemplate);
-        opUIItem.transform.SetParent(OperatorContainer);
-        var opUIItemControls = opUIItem.GetComponent<OpItemControl>();
+        var opType = (PolyComponent.Ops)opPrefabManager.OpTypeDropdown.value;
+        var opConfig = poly.opconfigs[opType];
         
-        opUIItem.name = opItem.opType.ToString();
+        opPrefabManager.FaceSelectionDropdown.gameObject.SetActive(opConfig.usesFaces);
+        opPrefabManager.AmountSlider.gameObject.SetActive(opConfig.usesAmount);
+        
+    }
+
+    void AddOpItemToUI(PolyComponent.ConwayOperator op)
+    {
+        var opPrefab = Instantiate(OpTemplate);
+        opPrefab.transform.SetParent(OpContainer);
+        var opPrefabManager = opPrefab.GetComponent<OpPrefabManager>();
+        
+        opPrefab.name = op.opType.ToString();
         foreach (var item in Enum.GetValues(typeof(PolyComponent.Ops))) {
             var label = new Dropdown.OptionData(item.ToString());
-            opUIItemControls.OpTypeControl.options.Add(label);
+            opPrefabManager.OpTypeDropdown.options.Add(label);
         }
         
         foreach (var item in Enum.GetValues(typeof(PolyComponent.FaceSelections))) {
             var label = new Dropdown.OptionData(item.ToString());
-            opUIItemControls.FaceSelectionControl.options.Add(label);
+            opPrefabManager.FaceSelectionDropdown.options.Add(label);
         }
         
-        var opconfig = poly.opconfigs[opItem.opType];
-
-        // WIP
-//        if (!opconfig.usesFaces) opUIItemControls.FaceSelectionControl.gameObject.active = false;
-//        if (!opconfig.usesAmount)
-//        {
-//            opUIItemControls.AmountControl.gameObject.active = false;
-//        }
-        
-        opUIItemControls.OpTypeControl.value = (int) opItem.opType;
-        opUIItemControls.FaceSelectionControl.value = (int) opItem.faceSelections;
-        opUIItemControls.DisabledControl.isOn = opItem.disabled;
-        opUIItemControls.AmountControl.value = opItem.amount;
-        opUIItemControls.OpTypeControl.onValueChanged.AddListener(delegate{OpTypeChanged();});
-        opUIItemControls.FaceSelectionControl.onValueChanged.AddListener(delegate{OpsUIToPoly();});
-        opUIItemControls.DisabledControl.onValueChanged.AddListener(delegate{OpsUIToPoly();});
-        opUIItemControls.AmountControl.onValueChanged.AddListener(delegate{OpsUIToPoly();});
-        opUIItemControls.UpControl.onClick.AddListener(MoveOpUp);
-        opUIItemControls.DownControl.onClick.AddListener(MoveOpDown);
-        opUIItemControls.DeleteControl.onClick.AddListener(DeleteOp);
-        opUIItemControls.Index = opItems.Count;
+        SetOpControlVisibility(opPrefab.GetComponent<OpPrefabManager>());
+                
+        opPrefabManager.OpTypeDropdown.value = (int) op.opType;
+        opPrefabManager.FaceSelectionDropdown.value = (int) op.faceSelections;
+        opPrefabManager.DisabledToggle.isOn = op.disabled;
+        opPrefabManager.AmountSlider.value = op.amount;
+        opPrefabManager.OpTypeDropdown.onValueChanged.AddListener(delegate{OpTypeChanged();});
+        opPrefabManager.FaceSelectionDropdown.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opPrefabManager.DisabledToggle.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opPrefabManager.AmountSlider.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opPrefabManager.UpButton.onClick.AddListener(MoveOpUp);
+        opPrefabManager.DownButton.onClick.AddListener(MoveOpDown);
+        opPrefabManager.DeleteButton.onClick.AddListener(DeleteOp);
+        opPrefabManager.Index = opPrefabs.Count;
         
         // Enable/Disable down buttons as appropriate:
         // We are adding this at the end so it can't move down
-        opUIItem.GetComponent<OpItemControl>().DownControl.enabled = false;
-        if (opItems.Count == 0) // Only one item exists
+        opPrefab.GetComponent<OpPrefabManager>().DownButton.enabled = false;
+        if (opPrefabs.Count == 0) // Only one item exists
         {
             // First item can't move up
-            opUIItem.GetComponent<OpItemControl>().UpControl.enabled = false;
+            opPrefab.GetComponent<OpPrefabManager>().UpButton.enabled = false;
         }
         else
         {
             // Reenable down button on the previous final item
-            opItems[opItems.Count - 1].GetComponent<OpItemControl>().DownControl.enabled = true;
+            opPrefabs[opPrefabs.Count - 1].GetComponent<OpPrefabManager>().DownButton.enabled = true;
         }
-        opItems.Add(opUIItem);
+        opPrefabs.Add(opPrefab);
     }
 
     void OpTypeChanged()
     {
+        SetOpControlVisibility(EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>());
         OpsUIToPoly();
     }
 
     void OpsUIToPoly()
     {
-        if (opItems == null) {return;}
+        if (opPrefabs == null) {return;}
         
-        for (var index = 0; index < opItems.Count; index++) {
+        for (var index = 0; index < opPrefabs.Count; index++) {
             
-            var opUIItem = opItems[index];
-            var opUIItemControls = opUIItem.GetComponent<OpItemControl>();
+            var opPrefab = opPrefabs[index];
+            var opPrefabManager = opPrefab.GetComponent<OpPrefabManager>();
             
             var op = poly.ConwayOperators[index];
             
-            op.opType = (PolyComponent.Ops)opUIItemControls.OpTypeControl.value;
-            op.faceSelections = (PolyComponent.FaceSelections) opUIItemControls.FaceSelectionControl.value;
-            op.disabled = opUIItemControls.DisabledControl.isOn;
-            op.amount = opUIItemControls.AmountControl.value;
+            op.opType = (PolyComponent.Ops)opPrefabManager.OpTypeDropdown.value;
+            op.faceSelections = (PolyComponent.FaceSelections) opPrefabManager.FaceSelectionDropdown.value;
+            op.disabled = opPrefabManager.DisabledToggle.isOn;
+            op.amount = opPrefabManager.AmountSlider.value;
             poly.ConwayOperators[index] = op;
             
         }
@@ -203,8 +208,8 @@ public class PolyUI : MonoBehaviour {
 
     private void SwapOpWith(int offset)
     {
-        var opItemControl = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpItemControl>();
-        var src = opItemControl.Index;
+        var opPrefabManager = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>();
+        var src = opPrefabManager.Index;
         var dest = src + offset;
         var temp = poly.ConwayOperators[src];
         poly.ConwayOperators[src] = poly.ConwayOperators[dest];
@@ -215,8 +220,8 @@ public class PolyUI : MonoBehaviour {
     
     void DeleteOp()
     {
-        var opItemControl = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpItemControl>();
-        poly.ConwayOperators.RemoveAt(opItemControl.Index);
+        var opPrefabManager = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>();
+        poly.ConwayOperators.RemoveAt(opPrefabManager.Index);
         CreateOps();
         if (_shouldReBuild) poly.MakePolyhedron();
     }
@@ -225,8 +230,8 @@ public class PolyUI : MonoBehaviour {
     {
         BasePolyDropdown.ClearOptions();
         foreach (var polyType in Enum.GetValues(typeof(PolyComponent.PolyTypes))) {
-            var polyLabel = new Dropdown.OptionData(polyType.ToString().Replace("_", " "));
-            BasePolyDropdown.options.Add(polyLabel);
+            var label = new Dropdown.OptionData(polyType.ToString().Replace("_", " "));
+            BasePolyDropdown.options.Add(label);
         }
         BasePolyDropdown.onValueChanged.AddListener(delegate{BasePolyDropdownChanged(BasePolyDropdown);});
     }
