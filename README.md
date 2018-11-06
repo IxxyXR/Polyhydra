@@ -4,7 +4,7 @@
 
 Procedural generation of geometric forms in Unity.
 
-You start by choosing a uniform polyhedra: https://en.wikipedia.org/wiki/Uniform_polyhedron - these are generated using the Wythoff construction.
+You start by choosing a uniform polyhedron: https://en.wikipedia.org/wiki/Uniform_polyhedron - these are generated using the Wythoff construction.
 
 You can then stack up Conway Operators on top to create much more complex shapes: https://en.wikipedia.org/wiki/Conway_polyhedron_notation
 
