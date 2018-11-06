@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -30,32 +31,33 @@ public class PolyPresets : MonoBehaviour {
 		preset.CreateFromPoly(presetName, _poly);
 		Items.Add(preset);
 	}
-	
-	public void LoadAllPresets()
+
+	public void AddPresetsFromPath(string path)
 	{
-		bool presetsExist = false;
-		Items.Clear();
-		var info = new DirectoryInfo(Application.persistentDataPath);
-		var fileInfo = info.GetFiles();
+		var existingPresets = Items.Select(x => x.Name);
+		var dirInfo = new DirectoryInfo(path);
+		var fileInfo = dirInfo.GetFiles(PresetFileNamePrefix + "*.json");
 		foreach (var file in fileInfo) {
-			if (file.Name.StartsWith(PresetFileNamePrefix))
+			var preset = new PolyPreset();
+			preset = JsonConvert.DeserializeObject<PolyPreset>(File.ReadAllText(file.FullName));
+			if (string.IsNullOrEmpty(preset.Name))
 			{
-				presetsExist = true;
-				var preset = new PolyPreset();
-				preset = JsonConvert.DeserializeObject<PolyPreset>(File.ReadAllText(file.FullName));
-				if (string.IsNullOrEmpty(preset.Name)) {
-					preset.Name = file.Name.Replace(PresetFileNamePrefix, "").Replace(".json", "");
-				}
-				Items.Add(preset);
+				preset.Name = file.Name.Replace(PresetFileNamePrefix, "").Replace(".json", "");
+			}
+			if (!existingPresets.Contains(preset.Name))
+			{
+				Items.Add(preset);						
 			}
 		}
 
-		if (!presetsExist)
-		{
-			// If we don't have any presets then create the default set.
-			ResetInitialPresets();
-			SaveAllPresets();
-		}
+	}
+	
+	public void LoadAllPresets()
+	{
+		Items.Clear();
+		AddPresetsFromPath(Application.persistentDataPath);
+		AddPresetsFromPath(Path.Combine(Application.streamingAssetsPath, "InitialPresets"));
+		SaveAllPresets();
 	}
 	
 	public void SaveAllPresets()
@@ -64,21 +66,6 @@ public class PolyPresets : MonoBehaviour {
 			var fileName = Path.Combine(Application.persistentDataPath, PresetFileNamePrefix + preset.Name + ".json");
 			var polyJson = JsonConvert.SerializeObject(preset);
 			File.WriteAllText(fileName, polyJson);
-		}
-	}
-
-	public void ResetInitialPresets()
-	{
-		Items.Clear();
-		var initialPresetFile = Resources.Load("initialPresets") as TextAsset;
-		if (initialPresetFile != null)
-		{
-			var presets = JsonConvert.DeserializeObject<List<PolyPreset>>(initialPresetFile.text);
-			foreach (var preset in presets) {
-				Items.Add(preset);
-			}
-		} else {
-			Debug.Log("No initial presets found");
 		}
 	}
 

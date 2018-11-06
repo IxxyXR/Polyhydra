@@ -1,0 +1,28 @@
+{
+  "Name": "Jewelberries",
+  "PolyType": 33,
+  "BypassOps": false,
+  "TwoSided": true,
+  "Ops": [
+    {
+      "OpType": 1,
+      "Amount": 1.3899999856948853,
+      "Disabled": false
+    },
+    {
+      "OpType": 1,
+      "Amount": -0.4699999988079071,
+      "Disabled": false
+    },
+    {
+      "OpType": 3,
+      "Amount": 0.0,
+      "Disabled": false
+    },
+    {
+      "OpType": 9,
+      "Amount": 0.0,
+      "Disabled": false
+    }
+  ]
+}
