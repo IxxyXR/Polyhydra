@@ -188,7 +188,7 @@ namespace Conway {
 
         #region conway methods
 
-        public ConwayPoly Foo(float offset) {
+        public ConwayPoly Scale(float offset) {
             
             var vertexPoints = new List<Vector3>();
             var faceIndices = new List<IEnumerable<int>>();
@@ -304,7 +304,7 @@ namespace Conway {
                     fIndex.Add(flookup[f.Name]);
                 }
                     
-                if (naked[v.Name]) {  // Handle boundary vertices...
+                if (naked.ContainsKey(v.Name) && naked[v.Name]) {  // Handle boundary vertices...
                     var h = v.Halfedges;
                     if (h.Count > 0) {
                         // Add points on naked edges and the naked vertex

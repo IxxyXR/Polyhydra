@@ -313,7 +313,7 @@ public class PolyComponent : MonoBehaviour {
 						case Ops.Identity:
 							break;
 						case Ops.Scale:
-							conway = conway.Foo(op.amount);
+							conway = conway.Scale(op.amount);
 							break;
 						case Ops.Kis:
 							var faceSelection = CalculateFaceSelection(op.faceSelections);
