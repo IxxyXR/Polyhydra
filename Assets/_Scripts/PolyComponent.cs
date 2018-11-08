@@ -128,7 +128,9 @@ public class PolyComponent : MonoBehaviour {
 		//Ribbon,
 		Extrude,
 		Scale,
-		//Test
+		//Test,
+		FaceExclude,
+		FaceInclude
 	}
 
 	public enum FaceSelections
@@ -217,6 +219,8 @@ public class PolyComponent : MonoBehaviour {
 			{Ops.Extrude, new OpConfig{amountMin = -10, amountMax = 10}},
 			{Ops.Scale, new OpConfig{amountMin = -10, amountMax = 10}},
 			//{Ops.Test, new OpConfig{}}
+			{Ops.FaceExclude, new OpConfig{usesAmount=false, usesFaces=true}},
+			{Ops.FaceInclude, new OpConfig{usesAmount=false, usesFaces=true}}
 		};
 	}
 
@@ -305,9 +309,11 @@ public class PolyComponent : MonoBehaviour {
 		}
 		else
 		{
-			if (ConwayOperators != null) {
+			if (ConwayOperators != null)
+			{
 				conway = new ConwayPoly(_polyhedron);
 				foreach (var op in ConwayOperators) {
+					int faceSelection;
 					if (op.disabled) {continue;}
 					switch (op.opType) {
 						case Ops.Identity:
@@ -316,7 +322,7 @@ public class PolyComponent : MonoBehaviour {
 							conway = conway.Scale(op.amount);
 							break;
 						case Ops.Kis:
-							var faceSelection = CalculateFaceSelection(op.faceSelections);
+							faceSelection = CalculateFaceSelection(op.faceSelections);
 							conway = faceSelection==0 ? conway.Kis(op.amount) : conway.KisN(op.amount, faceSelection);								
 							break;
 						case Ops.Dual:
@@ -398,6 +404,14 @@ public class PolyComponent : MonoBehaviour {
 //						case Ops.Ribbon:
 //							conway = conway.Ribbon(op.amount, false, 0.1f);
 //							break;
+						case Ops.FaceExclude:
+							faceSelection = CalculateFaceSelection(op.faceSelections);
+							conway = faceSelection==0 ? conway : conway.FaceExclude(faceSelection, false);								
+							break;
+						case Ops.FaceInclude:
+							faceSelection = CalculateFaceSelection(op.faceSelections);
+							conway = faceSelection==0 ? conway : conway.FaceExclude(faceSelection, true);								
+							break;
 					}
 				}
 			}

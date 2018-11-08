@@ -217,6 +217,38 @@ namespace Conway {
             return new ConwayPoly(vertexPoints, faceIndices);
         }
         
+        public ConwayPoly FaceExclude(int sides, bool invertLogic) {
+            
+            var vertexPoints = new List<Vector3>();
+            var faceIndices = new List<IEnumerable<int>>();
+
+            for (int i = 0; i < Faces.Count; i++)
+            {
+                var includeFace = Faces[i].Sides == sides;
+                includeFace = invertLogic ? includeFace : !includeFace;
+                if (includeFace)
+                {
+                    var face = Faces[i];
+
+                    int c = vertexPoints.Count;
+                    var faceIndex = new List<int>();
+
+                    c = vertexPoints.Count;
+                    vertexPoints.AddRange(face.GetVertices().Select(v => v.Position));
+                    faceIndex = new List<int>();
+                    for (int ii = 0; ii < face.GetVertices().Count; ii++)
+                    {
+                        faceIndex.Add(c + ii);
+                    }
+
+                    faceIndices.Add(faceIndex);
+
+                }
+            }
+
+            return new ConwayPoly(vertexPoints, faceIndices);                        
+        }
+        
         public ConwayPoly KisN(float offset, int sides) {
 
             // vertices and faces to vertices
