@@ -430,14 +430,18 @@ public class PolyComponent : MonoBehaviour {
 		
 		var transform = this.transform;
 
-		if (_polyhedron == null) {
+		if (_polyhedron == null)
+		{
 			return;
 		}
 
-		if (vertexGizmos) {
+		if (vertexGizmos)
+		{
 			Gizmos.color = Color.white;
-			if (_polyhedron.Vertices != null) {
-				for (int i = 0; i < _polyhedron.Vertices.Length; i++) {
+			if (_polyhedron.Vertices != null)
+			{
+				for (int i = 0; i < _polyhedron.Vertices.Length; i++)
+				{
 					Vector3 vert = _polyhedron.Vertices[i].getVector3();
 					Vector3 pos = transform.TransformPoint(vert);
 					Gizmos.DrawWireSphere(pos, GizmoRadius);
@@ -446,10 +450,13 @@ public class PolyComponent : MonoBehaviour {
 			}
 		}
 
-		if (faceCenterGizmos) {
+		if (faceCenterGizmos)
+		{
 			Gizmos.color = Color.blue;
-			if (_polyhedron.FaceCenters != null) {
-				foreach (var f in _polyhedron.FaceCenters) {
+			if (_polyhedron.FaceCenters != null)
+			{
+				foreach (var f in _polyhedron.FaceCenters)
+				{
 					Gizmos.DrawWireSphere(transform.TransformPoint(f.getVector3()), GizmoRadius);
 				}
 			}
@@ -457,8 +464,10 @@ public class PolyComponent : MonoBehaviour {
 		}
 
 
-		if (edgeGizmos) {
-			for (int i = 0; i < _polyhedron.EdgeCount; i++) {
+		if (edgeGizmos)
+		{
+			for (int i = 0; i < _polyhedron.EdgeCount; i++)
+			{
 				Gizmos.color = Color.yellow;
 				var edgeStart = _polyhedron.Edges[0, i];
 				var edgeEnd = _polyhedron.Edges[1, i];
@@ -469,27 +478,20 @@ public class PolyComponent : MonoBehaviour {
 			}
 		}
 
-		if (faceGizmos) {
-			int gizmoColor = 0;
-			for (int f = 0; f < _polyhedron.faces.Count; f++) {
-				if (faceGizmosList.Contains(f) || faceGizmosList.Length==0)
-				{
-					Gizmos.color = gizmoPallette[gizmoColor++ % gizmoPallette.Length];
-					Face face = _polyhedron.faces[f];
-					for (int i = 0; i < face.points.Count; i++)
-					{
-						var edgeStart = face.points[i];
-						var edgeEnd = face.points[(i + 1) % face.points.Count];
-						Gizmos.DrawLine(
-							transform.TransformPoint(_polyhedron.Vertices[edgeStart].getVector3()),
-							transform.TransformPoint(_polyhedron.Vertices[edgeEnd].getVector3())
-						);
-					}
-				}
+		if (faceGizmos)
+		{
+			if (conway == null)
+			{
+				NonConwayFaceGizmos();
 			}
+			else
+			{
+				ConwayFaceGizmos();
+			}			
 		}
 		
-		if (dualGizmo) {
+		if (dualGizmo)
+		{
 			for (int i = 0; i < _polyhedron.EdgeCount; i++)
 			{
 				var edgeStart = _polyhedron.DualEdges[0, i];
@@ -498,6 +500,56 @@ public class PolyComponent : MonoBehaviour {
 					transform.TransformPoint(_polyhedron.FaceCenters[edgeStart].getVector3()),
 					transform.TransformPoint(_polyhedron.FaceCenters[edgeEnd].getVector3())
 				);
+			}
+		}
+	}
+
+	private void ConwayFaceGizmos()
+	{
+		int gizmoColor = 0;
+		var faces = conway.Faces;
+		var verts = conway.Vertices;
+		for (int f = 0; f < faces.Count; f++)
+		{
+			if (faceGizmosList.Contains(f) || faceGizmosList.Length==0)
+			{
+				Gizmos.color = gizmoPallette[gizmoColor++ % gizmoPallette.Length];
+				var face = faces[f];
+				var faceVerts = face.GetVertices();
+				for (int i = 0; i < faceVerts.Count; i++)
+				{
+					var edgeStart = faceVerts[i];
+					var edgeEnd = faceVerts[(i + 1) % faceVerts.Count];
+					Gizmos.DrawLine(
+						transform.TransformPoint(edgeStart.Position),
+						transform.TransformPoint(edgeEnd.Position)
+					);
+				}
+			}
+		}
+	}
+	
+	private void NonConwayFaceGizmos()
+	{
+		int gizmoColor = 0;
+		var faces = _polyhedron.faces;
+		var verts = _polyhedron.Vertices;				
+		for (int f = 0; f < faces.Count; f++)
+		{
+			if (faceGizmosList.Contains(f) || faceGizmosList.Length==0)
+			{
+				Gizmos.color = gizmoPallette[gizmoColor++ % gizmoPallette.Length];
+				var face = faces[f];
+				var faceVerts = face.points;
+				for (int i = 0; i < faceVerts.Count; i++)
+				{
+					var edgeStart = faceVerts[i];
+					var edgeEnd = faceVerts[(i + 1) % faceVerts.Count];
+					Gizmos.DrawLine(
+						transform.TransformPoint(verts[edgeStart].getVector3()),
+						transform.TransformPoint(verts[edgeEnd].getVector3())
+					);
+				}
 			}
 		}
 	}
