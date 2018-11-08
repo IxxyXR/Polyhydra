@@ -20,7 +20,7 @@ namespace Conway {
             Faces = new MeshFaceList(this);
         }
 
-        public ConwayPoly(Polyhedron source) : this() {
+        public ConwayPoly(WythoffPoly source) : this() {
 
             // Add vertices
             Vertices.Capacity = source.VertexCount;
@@ -67,32 +67,6 @@ namespace Conway {
                     Array.Reverse(v);
                     Faces.Add(v);
                 }
-            }
-
-            // Find and link halfedge pairs
-            Halfedges.MatchPairs();
-        }
-
-        /// <summary>
-        /// Constructor to build a custom mesh from Unity's mesh type
-        /// </summary>
-        /// <param name="source">the Rhino mesh</param>
-        public ConwayPoly(UnityEngine.Mesh source) : this() {
-
-            // Add vertices
-            Vertices.Capacity = source.vertexCount;
-            foreach (Vector3 p in source.vertices) {
-                Vertices.Add(new Vertex(p));
-            }
-
-            // Add faces (and construct halfedges and store in hash table)
-            for (int i = 0; i < source.triangles.Length; i += 3) {
-                var v = new List<Vertex> {
-                    Vertices[source.triangles[i]],
-                    Vertices[source.triangles[i + 1]],
-                    Vertices[source.triangles[i + 2]]
-                };
-                Faces.Add(v);
             }
 
             // Find and link halfedge pairs
@@ -846,7 +820,7 @@ namespace Conway {
             /// Gets the positions of all mesh vertices. Note that points are duplicated.
             /// </summary>
             /// <returns>a list of vertex positions</returns>
-            private Vector3[] ListVerticesByPoints() {
+            public Vector3[] ListVerticesByPoints() {
                 Vector3[] points = new Vector3[Vertices.Count];
                 for (int i = 0; i < Vertices.Count; i++) {
                     Vector3 pos = Vertices[i].Position;
@@ -861,7 +835,7 @@ namespace Conway {
             /// Used for duplication and conversion to other mesh types, such as Rhino's.
             /// </summary>
             /// <returns>An array of lists of vertex indices.</returns>
-            private List<int>[] ListFacesByVertexIndices() {
+            public List<int>[] ListFacesByVertexIndices() {
                 
                 var fIndex = new List<int>[Faces.Count];
                 var vlookup = new Dictionary<String, int>();
@@ -880,83 +854,10 @@ namespace Conway {
     
                 return fIndex;
             }
-    
-            /// <summary>
-            /// Convert to Unity mesh type.
-            /// Recursively triangulates until only tri-faces remain.
-            /// </summary>
-            /// <returns>A Rhino mesh.</returns>
-            public UnityEngine.Mesh ToUnityMesh(bool forceTwosided=false) {
 
-                bool hasNaked = Halfedges.Select((item, ii) => ii).Where(i => Halfedges[i].Pair == null).ToList().Count > 0;
-                
-                var target = new UnityEngine.Mesh();
-                var meshTriangles = new List<int>();
-                var meshVertices = new List<Vector3>();
-                var meshNormals = new List<Vector3>();
-    
-                // TODO: duplicate mesh and triangulate
-                ConwayPoly source = Duplicate(); //.Triangulate();
-//                for (int i = 0; i < source.Faces.Count; i++) {
-//                    if (source.Faces[i].Sides > 3) {
-//                        source.Faces.Triangulate(i, false);
-//                    }
-//                }
-    
-                // Strip down to Face-Vertex structure
-                Vector3[] points = source.ListVerticesByPoints();
-                List<int>[] faceIndices = source.ListFacesByVertexIndices();
-    
-                // Add faces
-                int index = 0;
-
-                for (var i = 0; i < faceIndices.Length; i++) {
-                    List<int> f = faceIndices[i];
-                    if (f.Count == 3) {
-                        
-                        var faceNormal = source.Faces[i].Normal;
-                        
-                        meshNormals.Add(faceNormal);
-                        meshNormals.Add(faceNormal);
-                        meshNormals.Add(faceNormal);
-                        
-                        meshVertices.Add(points[f[0]]);
-                        meshTriangles.Add(index++);
-                        meshVertices.Add(points[f[1]]);
-                        meshTriangles.Add(index++);
-                        meshVertices.Add(points[f[2]]);
-                        meshTriangles.Add(index++);
-
-                        if (hasNaked || forceTwosided) {
-                            
-                            meshNormals.Add(-faceNormal);
-                            meshNormals.Add(-faceNormal);
-                            meshNormals.Add(-faceNormal);
-                        
-                            meshVertices.Add(points[f[0]]);
-                            meshTriangles.Add(index++);
-                            meshVertices.Add(points[f[2]]);
-                            meshTriangles.Add(index++);
-                            meshVertices.Add(points[f[1]]);
-                            meshTriangles.Add(index++);
-                        }
-                        
-                    }
-                    else {
-                        Debug.Log("Non-triangular face found");
-                    }
-                }
-
-                target.vertices = meshVertices.ToArray();
-                target.normals = meshNormals.ToArray();
-                target.triangles = meshTriangles.ToArray();
-                
-                if (hasNaked || forceTwosided) {
-                    target.RecalculateNormals();
-                }
-                target.RecalculateNormals();
-
-                return target;
+            public bool HasNaked()
+            {
+                return Halfedges.Select((item, ii) => ii).Where(i => Halfedges[i].Pair == null).ToList().Count > 0;
             }
         
             public void ScaleToUnitSphere() {

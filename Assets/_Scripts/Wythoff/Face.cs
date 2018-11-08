@@ -19,7 +19,7 @@ namespace Wythoff {
 			double r = Math.Sqrt(face.x * face.x + face.y * face.y + face.z * face.z);
 			double r0 = Math.Sqrt(vertex.x * vertex.x + vertex.y * vertex.y + vertex.z * vertex.z);
         
-			if (Math.Abs(r - r0) < Polyhedron.DBL_EPSILON) {
+			if (Math.Abs(r - r0) < WythoffPoly.DBL_EPSILON) {
 				center = new Vector(
 					face.x * Math.Cos(angle),
 					face.y * Math.Cos(angle),

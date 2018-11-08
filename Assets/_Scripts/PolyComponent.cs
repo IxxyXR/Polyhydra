@@ -174,7 +174,7 @@ public class PolyComponent : MonoBehaviour {
 	public bool dualGizmo;
 	
 	private int[] meshFaces;
-	private Polyhedron _polyhedron;
+	private WythoffPoly _wythoffPoly;
 	private bool ShowDuals = false;
 	private ConwayPoly conway;
 
@@ -262,18 +262,18 @@ public class PolyComponent : MonoBehaviour {
 	public void MakePolyhedron(string symbol)
 	{
 
-		if (_polyhedron == null || _polyhedron.WythoffSymbol != symbol)
+		if (_wythoffPoly == null || _wythoffPoly.WythoffSymbol != symbol)
 		{
-			_polyhedron = new Polyhedron(symbol);
+			_wythoffPoly = new WythoffPoly(symbol);
 		}
-		_polyhedron.BuildFaces(BuildAux: BypassOps);
+		_wythoffPoly.BuildFaces(BuildAux: BypassOps);
 		MakeMesh();
 	}
 	
 	public void MakePolyhedron(Vector4 wythoffParams)
 	{
-		_polyhedron = new Polyhedron(wythoffParams[0], wythoffParams[1], wythoffParams[2], wythoffParams[3]);
-		_polyhedron.BuildFaces(BuildAux: BypassOps);
+		_wythoffPoly = new WythoffPoly(wythoffParams[0], wythoffParams[1], wythoffParams[2], wythoffParams[3]);
+		_wythoffPoly.BuildFaces(BuildAux: BypassOps);
 		MakeMesh();	
 	}
 
@@ -303,15 +303,14 @@ public class PolyComponent : MonoBehaviour {
 		
 		if (BypassOps)
 		{
-			_polyhedron.BuildMesh();
-			mesh = _polyhedron.mesh;
+			mesh = BuildMeshFromWythoffData(_wythoffPoly);
 			mesh.RecalculateNormals();
 		}
 		else
 		{
 			if (ConwayOperators != null)
 			{
-				conway = new ConwayPoly(_polyhedron);
+				conway = new ConwayPoly(_wythoffPoly);
 				foreach (var op in ConwayOperators) {
 					int faceSelection;
 					if (op.disabled) {continue;}
@@ -420,7 +419,8 @@ public class PolyComponent : MonoBehaviour {
 		
 			// If we Kis we don't need fan triangulation (which breaks on non-convex faces)
 			conway = conway.Kis(0, true);
-			mesh = conway.ToUnityMesh(forceTwosided:TwoSided);
+			
+			mesh = BuildMeshFromConwayPoly(conway, TwoSided);
 			
 		}
 
@@ -434,6 +434,127 @@ public class PolyComponent : MonoBehaviour {
 		}
 
 	}
+	
+
+
+	public Mesh BuildMeshFromWythoffData(WythoffPoly source)
+	{
+		
+		var meshVertices = new List<Vector3>();
+		var meshTriangles = new List<int>();
+		var MeshVertexToVertex = new List<int>(); // Mapping of mesh vertices to polyh vertices (one to many as we duplicate verts)
+		var meshColors = new List<Color>();
+		
+		Color[] vertexPallette = {
+			Color.red,
+			Color.yellow,
+			Color.green,
+			Color.cyan,
+			Color.blue,
+			Color.magenta
+		};;
+		
+		
+		var mesh = new Mesh();
+
+		int meshVertexIndex = 0;
+
+		foreach (Face face in source.faces) {
+			face.CalcTriangles();
+		}
+
+		for (int faceType = 0; faceType < source.FaceTypeCount; faceType++) {
+			foreach (Face face in source.faces) {
+				if (face.configuration == source.FaceSidesByType[faceType]) {
+					Color faceColor = vertexPallette[(int) (face.configuration % vertexPallette.Length)];
+					// Vertices
+					for (int i = 0; i < face.triangles.Length; i++) {
+						Vector v = source.Vertices[face.triangles[i]];
+						meshVertices.Add(v.getVector3());
+						meshColors.Add(faceColor);
+						meshTriangles.Add(meshVertexIndex);
+						MeshVertexToVertex.Add(face.triangles[i]);
+						meshVertexIndex++;
+					}
+				}
+			}
+		}
+
+		mesh.vertices = meshVertices.ToArray();
+		mesh.triangles = meshTriangles.ToArray();
+		mesh.colors = meshColors.ToArray();
+
+		return mesh;
+
+	}
+	
+	public Mesh BuildMeshFromConwayPoly(ConwayPoly conway, bool forceTwosided=false) {
+
+		var target = new Mesh();
+		var meshTriangles = new List<int>();
+		var meshVertices = new List<Vector3>();
+		var meshNormals = new List<Vector3>();
+
+		ConwayPoly source = conway.Duplicate();
+		var hasNaked = source.HasNaked();
+
+		// Strip down to Face-Vertex structure
+		Vector3[] points = source.ListVerticesByPoints();
+		List<int>[] faceIndices = source.ListFacesByVertexIndices();
+
+		// Add faces
+		int index = 0;
+
+		for (var i = 0; i < faceIndices.Length; i++) {
+			List<int> f = faceIndices[i];
+			if (f.Count == 3) {
+				
+				var faceNormal = source.Faces[i].Normal;
+				
+				meshNormals.Add(faceNormal);
+				meshNormals.Add(faceNormal);
+				meshNormals.Add(faceNormal);
+				
+				meshVertices.Add(points[f[0]]);
+				meshTriangles.Add(index++);
+				meshVertices.Add(points[f[1]]);
+				meshTriangles.Add(index++);
+				meshVertices.Add(points[f[2]]);
+				meshTriangles.Add(index++);
+
+				if (hasNaked || forceTwosided) {
+					
+					meshNormals.Add(-faceNormal);
+					meshNormals.Add(-faceNormal);
+					meshNormals.Add(-faceNormal);
+				
+					meshVertices.Add(points[f[0]]);
+					meshTriangles.Add(index++);
+					meshVertices.Add(points[f[2]]);
+					meshTriangles.Add(index++);
+					meshVertices.Add(points[f[1]]);
+					meshTriangles.Add(index++);
+				}
+				
+			}
+			else {
+				Debug.Log("Non-triangular face found");
+			}
+		}
+
+		target.vertices = meshVertices.ToArray();
+		target.normals = meshNormals.ToArray();
+		target.triangles = meshTriangles.ToArray();
+		
+		if (hasNaked || forceTwosided) {
+			target.RecalculateNormals();
+		}
+		target.RecalculateNormals();
+
+		return target;
+	}	
+
+	
 #if UNITY_EDITOR
 	void OnDrawGizmos () {
 		
@@ -444,7 +565,7 @@ public class PolyComponent : MonoBehaviour {
 		
 		var transform = this.transform;
 
-		if (_polyhedron == null)
+		if (_wythoffPoly == null)
 		{
 			return;
 		}
@@ -452,11 +573,11 @@ public class PolyComponent : MonoBehaviour {
 		if (vertexGizmos)
 		{
 			Gizmos.color = Color.white;
-			if (_polyhedron.Vertices != null)
+			if (_wythoffPoly.Vertices != null)
 			{
-				for (int i = 0; i < _polyhedron.Vertices.Length; i++)
+				for (int i = 0; i < _wythoffPoly.Vertices.Length; i++)
 				{
-					Vector3 vert = _polyhedron.Vertices[i].getVector3();
+					Vector3 vert = _wythoffPoly.Vertices[i].getVector3();
 					Vector3 pos = transform.TransformPoint(vert);
 					Gizmos.DrawWireSphere(pos, GizmoRadius);
 					Handles.Label(pos + new Vector3(0, .15f, 0), i.ToString());
@@ -467,9 +588,9 @@ public class PolyComponent : MonoBehaviour {
 		if (faceCenterGizmos)
 		{
 			Gizmos.color = Color.blue;
-			if (_polyhedron.FaceCenters != null)
+			if (_wythoffPoly.FaceCenters != null)
 			{
-				foreach (var f in _polyhedron.FaceCenters)
+				foreach (var f in _wythoffPoly.FaceCenters)
 				{
 					Gizmos.DrawWireSphere(transform.TransformPoint(f.getVector3()), GizmoRadius);
 				}
@@ -480,14 +601,14 @@ public class PolyComponent : MonoBehaviour {
 
 		if (edgeGizmos)
 		{
-			for (int i = 0; i < _polyhedron.EdgeCount; i++)
+			for (int i = 0; i < _wythoffPoly.EdgeCount; i++)
 			{
 				Gizmos.color = Color.yellow;
-				var edgeStart = _polyhedron.Edges[0, i];
-				var edgeEnd = _polyhedron.Edges[1, i];
+				var edgeStart = _wythoffPoly.Edges[0, i];
+				var edgeEnd = _wythoffPoly.Edges[1, i];
 				Gizmos.DrawLine(
-					transform.TransformPoint(_polyhedron.Vertices[edgeStart].getVector3()),
-					transform.TransformPoint(_polyhedron.Vertices[edgeEnd].getVector3())
+					transform.TransformPoint(_wythoffPoly.Vertices[edgeStart].getVector3()),
+					transform.TransformPoint(_wythoffPoly.Vertices[edgeEnd].getVector3())
 				);
 			}
 		}
@@ -506,13 +627,13 @@ public class PolyComponent : MonoBehaviour {
 		
 		if (dualGizmo)
 		{
-			for (int i = 0; i < _polyhedron.EdgeCount; i++)
+			for (int i = 0; i < _wythoffPoly.EdgeCount; i++)
 			{
-				var edgeStart = _polyhedron.DualEdges[0, i];
-				var edgeEnd = _polyhedron.DualEdges[1, i];
+				var edgeStart = _wythoffPoly.DualEdges[0, i];
+				var edgeEnd = _wythoffPoly.DualEdges[1, i];
 				Gizmos.DrawLine(
-					transform.TransformPoint(_polyhedron.FaceCenters[edgeStart].getVector3()),
-					transform.TransformPoint(_polyhedron.FaceCenters[edgeEnd].getVector3())
+					transform.TransformPoint(_wythoffPoly.FaceCenters[edgeStart].getVector3()),
+					transform.TransformPoint(_wythoffPoly.FaceCenters[edgeEnd].getVector3())
 				);
 			}
 		}
@@ -546,8 +667,8 @@ public class PolyComponent : MonoBehaviour {
 	private void NonConwayFaceGizmos()
 	{
 		int gizmoColor = 0;
-		var faces = _polyhedron.faces;
-		var verts = _polyhedron.Vertices;				
+		var faces = _wythoffPoly.faces;
+		var verts = _wythoffPoly.Vertices;				
 		for (int f = 0; f < faces.Count; f++)
 		{
 			if (faceGizmosList.Contains(f) || faceGizmosList.Length==0)

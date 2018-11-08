@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Wythoff {
     
-    public class Polyhedron
+    public class WythoffPoly
     {
         
         public int PolyTypeIndex; // index to the standard list, the array uniform[] 
@@ -59,21 +59,14 @@ namespace Wythoff {
 
         public List<Face> faces; // Array of Face instances
 
-        public List<Vector3> meshVertices;
-        public List<int> meshTriangles;
-        public List<int> MeshVertexToVertex; // Mapping of mesh vertices to polyh vertices (one to many as we duplicate verts)
-        public List<Color> meshColors;
 
-        public Mesh mesh;
-        public Color[] vertexPallette;
-
-        public Polyhedron(string symbol)
+        public WythoffPoly(string symbol)
         {
             UnpackSym(symbol);
             _Polyhedron();
         }
 
-        public Polyhedron(double p0, double p1, double p2, double p3)
+        public WythoffPoly(double p0, double p1, double p2, double p3)
         {
             WythoffParams[0] = p0;
             WythoffParams[1] = p1;
@@ -98,22 +91,6 @@ namespace Wythoff {
             CalcEdgeList();
 
             // TODO generate mesh for duals
-
-            meshVertices = new List<Vector3>();
-            meshTriangles = new List<int>();
-            MeshVertexToVertex = new List<int>();
-
-            meshColors = new List<Color>();
-            mesh = new Mesh();
-
-            vertexPallette = new Color[] {
-                Color.red,
-                Color.yellow,
-                Color.green,
-                Color.cyan,
-                Color.blue,
-                Color.magenta
-            };
 
         }
 
@@ -191,38 +168,7 @@ namespace Wythoff {
             }
 
         }
-
-        public void BuildMesh() {
-
-            int meshVertexIndex = 0;
-
-            foreach (Face face in faces) {
-                face.CalcTriangles();
-            }
-
-            for (int faceType = 0; faceType < FaceTypeCount; faceType++) {
-                foreach (Face face in faces) {
-                    if (face.configuration == FaceSidesByType[faceType]) {
-                        Color faceColor = vertexPallette[(int) (face.configuration % vertexPallette.Length)];
-                        // Vertices
-                        for (int i = 0; i < face.triangles.Length; i++) {
-                            Vector v = Vertices[face.triangles[i]];
-                            meshVertices.Add(v.getVector3());
-                            meshColors.Add(faceColor);
-                            meshTriangles.Add(meshVertexIndex);
-                            MeshVertexToVertex.Add(face.triangles[i]);
-                            meshVertexIndex++;
-                        }
-                    }
-                }
-            }
-
-            mesh.vertices = meshVertices.ToArray();
-            mesh.triangles = meshTriangles.ToArray();
-            mesh.colors = meshColors.ToArray();
         
-        }
-
         // Returns the first vertex for a given face
         private int SeekVertex(int face) {
             for (int vc = 0; vc < VertexCount; vc++) {
@@ -237,50 +183,50 @@ namespace Wythoff {
             throw new SystemException("SeekVertex failed on face: " + face);
         }
 
-        public void CreateBlendShapes() {
-        
-            int vCount = mesh.vertexCount;
-            var deltaVertices = new Vector3[vCount];
-            var deltaNormals = new Vector3[vCount];
+//        public void CreateBlendShapes() {
+//        
+//            int vCount = mesh.vertexCount;
+//            var deltaVertices = new Vector3[vCount];
+//            var deltaNormals = new Vector3[vCount];
+//
+//            int meshVertexIndex = 0;
+//
+//            for (int faceType = 0; faceType < FaceTypeCount; faceType++) {
+//                for (int faceIndex = 0; faceIndex < FaceCount; faceIndex++) {
+//                    Face face = faces[faceIndex];
+//                    if (face.configuration == FaceSidesByType[faceType]) {
+//                        for (int i = 0; i < face.triangles.Length; i++) {
+//                            int ii = (i + 3) % face.triangles.Length;
+//                            Vector v1 = Vertices[face.triangles[i]];
+//                            Vector v2 = Vertices[face.triangles[ii]];
+//                            deltaVertices[meshVertexIndex] = v2.getVector3() - v1.getVector3();
+//                            meshVertexIndex++;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            mesh.AddBlendShapeFrame("example blendshape", 1, deltaVertices, deltaNormals, null);
+//        
+//        }
 
-            int meshVertexIndex = 0;
-
-            for (int faceType = 0; faceType < FaceTypeCount; faceType++) {
-                for (int faceIndex = 0; faceIndex < FaceCount; faceIndex++) {
-                    Face face = faces[faceIndex];
-                    if (face.configuration == FaceSidesByType[faceType]) {
-                        for (int i = 0; i < face.triangles.Length; i++) {
-                            int ii = (i + 3) % face.triangles.Length;
-                            Vector v1 = Vertices[face.triangles[i]];
-                            Vector v2 = Vertices[face.triangles[ii]];
-                            deltaVertices[meshVertexIndex] = v2.getVector3() - v1.getVector3();
-                            meshVertexIndex++;
-                        }
-                    }
-                }
-            }
-
-            mesh.AddBlendShapeFrame("example blendshape", 1, deltaVertices, deltaNormals, null);
-        
-        }
-
-        public Mesh Explode() {
-            var newMesh = new Mesh();
-            var newVerts = new Vector3[mesh.vertexCount];
-
-            foreach (var t in mesh.triangles) {
-                var direction = mesh.normals[t];
-                newVerts[t] = mesh.vertices[t] + direction.normalized * 1.1f;
-            }
-
-            newMesh.vertices = newVerts.ToArray();
-            newMesh.triangles = mesh.triangles;
-            newMesh.colors = mesh.colors;
-            newMesh.RecalculateNormals();
-            newMesh.RecalculateTangents();
-            newMesh.RecalculateBounds();
-            return newMesh;
-        }
+//        public Mesh Explode() {
+//            var newMesh = new Mesh();
+//            var newVerts = new Vector3[mesh.vertexCount];
+//
+//            foreach (var t in mesh.triangles) {
+//                var direction = mesh.normals[t];
+//                newVerts[t] = mesh.vertices[t] + direction.normalized * 1.1f;
+//            }
+//
+//            newMesh.vertices = newVerts.ToArray();
+//            newMesh.triangles = mesh.triangles;
+//            newMesh.colors = mesh.colors;
+//            newMesh.RecalculateNormals();
+//            newMesh.RecalculateTangents();
+//            newMesh.RecalculateBounds();
+//            return newMesh;
+//        }
 
         public static double DBL_EPSILON = 2.2204460492503131e-16;
         public static double BIG_EPSILON = 3e-2;
