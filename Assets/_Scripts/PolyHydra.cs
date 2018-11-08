@@ -218,7 +218,7 @@ public class PolyHydra : MonoBehaviour {
 		
 		if (BypassOps)
 		{
-			mesh = BuildMeshFromWythoffData(_wythoffPoly);
+			mesh = BuildMeshFromWythoffPoly(_wythoffPoly);
 			mesh.RecalculateNormals();
 		}
 		else
@@ -352,7 +352,7 @@ public class PolyHydra : MonoBehaviour {
 	
 
 
-	public Mesh BuildMeshFromWythoffData(WythoffPoly source)
+	public Mesh BuildMeshFromWythoffPoly(WythoffPoly source)
 	{
 		
 		var meshVertices = new List<Vector3>();
