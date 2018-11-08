@@ -960,14 +960,18 @@ namespace Conway {
             }
         
             public void ScaleToUnitSphere() {
+                if (Vertices.Count > 0)
+                {
                 
-                // Find the furthest vertex
-                Vertex max = Vertices.OrderByDescending(x => x.Position.magnitude).FirstOrDefault();
-                float scale = 1.0f/max.Position.magnitude;
+                    // Find the furthest vertex
+                    Vertex max = Vertices.OrderByDescending(x => x.Position.magnitude).FirstOrDefault();
+                    float scale = 1.0f/max.Position.magnitude;
                 
-                // TODO Ideal use case for Linq if I could get my head round the type-wrangling needed
-                foreach (Vertex v in Vertices) {
-                    v.Position = v.Position * scale;
+                    // TODO Ideal use case for Linq if I could get my head round the type-wrangling needed
+                    foreach (Vertex v in Vertices)
+                    {
+                        v.Position = v.Position * scale;
+                    }                    
                 }
                 
             }
