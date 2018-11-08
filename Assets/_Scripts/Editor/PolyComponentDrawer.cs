@@ -3,13 +3,13 @@ using System.Collections;
 using UnityEditor;
 
 
-[CustomEditor(typeof(PolyComponent))]
+[CustomEditor(typeof(PolyHydra))]
 public class PolyComponentDrawer : Editor
 {
     public override void OnInspectorGUI()
     {
         GUI.enabled = EditorApplication.isPlaying;
-        PolyComponent ui = (PolyComponent)target;
+        PolyHydra ui = (PolyHydra)target;
         if(GUILayout.Button("Sync UI to Inspector"))
         {
             ui.polyUI.InitUI();

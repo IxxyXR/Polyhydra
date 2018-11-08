@@ -11,21 +11,21 @@ public class PolyPreset {
 
 	public string Name;
 	[JsonConverter(typeof(StringEnumConverter))]
-	public PolyComponent.PolyTypes PolyType;
+	public PolyHydra.PolyTypes PolyType;
 	public bool BypassOps;
 	public bool TwoSided;
 	
 	[Serializable]
 	public struct Op {
-		[JsonConverter(typeof(StringEnumConverter))] public PolyComponent.Ops OpType;
-		[JsonConverter(typeof(StringEnumConverter))] public PolyComponent.FaceSelections FaceSelections;
+		[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.Ops OpType;
+		[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.FaceSelections FaceSelections;
 		public float Amount;
 		public bool Disabled;
 	}
 	
 	public Op[] Ops;
 		
-	public void CreateFromPoly(string presetName, PolyComponent poly)
+	public void CreateFromPoly(string presetName, PolyHydra poly)
 	{
 		Name = presetName;
 		PolyType = poly.PolyType;
@@ -46,16 +46,16 @@ public class PolyPreset {
 		}
 	}
 
-	public void ApplyToPoly(ref PolyComponent poly)
+	public void ApplyToPoly(ref PolyHydra poly)
 	{
 		poly.PolyType = PolyType;
 		poly.BypassOps = BypassOps;
 		poly.TwoSided = TwoSided;
-		poly.ConwayOperators = new List<PolyComponent.ConwayOperator>();
+		poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();
 		for (var index = 0; index < Ops.Length; index++)
 		{
 			var presetOp = Ops[index];
-			var op = new PolyComponent.ConwayOperator();
+			var op = new PolyHydra.ConwayOperator();
 			op.opType = presetOp.OpType;
 			op.faceSelections = presetOp.FaceSelections;
 			op.disabled = presetOp.Disabled;

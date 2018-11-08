@@ -12,7 +12,7 @@ using UnityEditor;
 
 public class PolyUI : MonoBehaviour {
     
-    public PolyComponent poly;
+    public PolyHydra poly;
     private RotateObject rotateObject;
 
     public InputField PresetNameInput;
@@ -65,7 +65,7 @@ public class PolyUI : MonoBehaviour {
 
     void AddOpButtonClicked()
     {
-        var newOp = new PolyComponent.ConwayOperator {disabled = false};
+        var newOp = new PolyHydra.ConwayOperator {disabled = false};
         poly.ConwayOperators.Add(newOp);
         AddOpItemToUI(newOp);
         if (_shouldReBuild) poly.MakePolyhedron();
@@ -113,7 +113,7 @@ public class PolyUI : MonoBehaviour {
 
     void ConfigureOpControls(OpPrefabManager opPrefabManager)
     {
-        var opType = (PolyComponent.Ops)opPrefabManager.OpTypeDropdown.value;
+        var opType = (PolyHydra.Ops)opPrefabManager.OpTypeDropdown.value;
         var opConfig = poly.opconfigs[opType];
         
         opPrefabManager.FaceSelectionDropdown.gameObject.SetActive(opConfig.usesFaces);
@@ -124,19 +124,19 @@ public class PolyUI : MonoBehaviour {
 
     }
 
-    void AddOpItemToUI(PolyComponent.ConwayOperator op)
+    void AddOpItemToUI(PolyHydra.ConwayOperator op)
     {
         var opPrefab = Instantiate(OpTemplate);
         opPrefab.transform.SetParent(OpContainer);
         var opPrefabManager = opPrefab.GetComponent<OpPrefabManager>();
         
         opPrefab.name = op.opType.ToString();
-        foreach (var item in Enum.GetValues(typeof(PolyComponent.Ops))) {
+        foreach (var item in Enum.GetValues(typeof(PolyHydra.Ops))) {
             var label = new Dropdown.OptionData(item.ToString());
             opPrefabManager.OpTypeDropdown.options.Add(label);
         }
         
-        foreach (var item in Enum.GetValues(typeof(PolyComponent.FaceSelections))) {
+        foreach (var item in Enum.GetValues(typeof(PolyHydra.FaceSelections))) {
             var label = new Dropdown.OptionData(item.ToString());
             opPrefabManager.FaceSelectionDropdown.options.Add(label);
         }
@@ -189,8 +189,8 @@ public class PolyUI : MonoBehaviour {
             
             var op = poly.ConwayOperators[index];
             
-            op.opType = (PolyComponent.Ops)opPrefabManager.OpTypeDropdown.value;
-            op.faceSelections = (PolyComponent.FaceSelections) opPrefabManager.FaceSelectionDropdown.value;
+            op.opType = (PolyHydra.Ops)opPrefabManager.OpTypeDropdown.value;
+            op.faceSelections = (PolyHydra.FaceSelections) opPrefabManager.FaceSelectionDropdown.value;
             op.disabled = opPrefabManager.DisabledToggle.isOn;
             op.amount = opPrefabManager.AmountSlider.value;
             poly.ConwayOperators[index] = op;
@@ -232,7 +232,7 @@ public class PolyUI : MonoBehaviour {
     void CreateBasePolyDropdown()
     {
         BasePolyDropdown.ClearOptions();
-        foreach (var polyType in Enum.GetValues(typeof(PolyComponent.PolyTypes))) {
+        foreach (var polyType in Enum.GetValues(typeof(PolyHydra.PolyTypes))) {
             var label = new Dropdown.OptionData(polyType.ToString().Replace("_", " "));
             BasePolyDropdown.options.Add(label);
         }
@@ -279,7 +279,7 @@ public class PolyUI : MonoBehaviour {
 
     void BasePolyDropdownChanged(Dropdown change)
     {
-        poly.PolyType = (PolyComponent.PolyTypes)change.value;
+        poly.PolyType = (PolyHydra.PolyTypes)change.value;
         if (_shouldReBuild) poly.MakePolyhedron();
     }
 

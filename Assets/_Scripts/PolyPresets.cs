@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PolyPresets : MonoBehaviour {
 	
-	public PolyComponent _poly;
+	public PolyHydra _poly;
 	private const string PresetFileNamePrefix = "PolyPreset-";
 	
 	public List<PolyPreset> Items;
