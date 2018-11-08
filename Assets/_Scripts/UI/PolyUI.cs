@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -232,7 +231,7 @@ public class PolyUI : MonoBehaviour {
     void CreateBasePolyDropdown()
     {
         BasePolyDropdown.ClearOptions();
-        foreach (var polyType in Enum.GetValues(typeof(PolyHydra.PolyTypes))) {
+        foreach (var polyType in Enum.GetValues(typeof(PolyTypes))) {
             var label = new Dropdown.OptionData(polyType.ToString().Replace("_", " "));
             BasePolyDropdown.options.Add(label);
         }
@@ -279,7 +278,7 @@ public class PolyUI : MonoBehaviour {
 
     void BasePolyDropdownChanged(Dropdown change)
     {
-        poly.PolyType = (PolyHydra.PolyTypes)change.value;
+        poly.PolyType = (PolyTypes)change.value;
         if (_shouldReBuild) poly.MakePolyhedron();
     }
 

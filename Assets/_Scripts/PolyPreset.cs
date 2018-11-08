@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using UnityEngine;
 
 
 [Serializable]
@@ -11,7 +9,7 @@ public class PolyPreset {
 
 	public string Name;
 	[JsonConverter(typeof(StringEnumConverter))]
-	public PolyHydra.PolyTypes PolyType;
+	public PolyTypes PolyType;
 	public bool BypassOps;
 	public bool TwoSided;
 	
