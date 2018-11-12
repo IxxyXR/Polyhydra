@@ -178,7 +178,7 @@ namespace Conway {
 
                 c = vertexPoints.Count;
                 vertexPoints.AddRange(face.GetVertices()
-                    .Select(v => includeFace?v.Position + face.Centroid - face.Centroid * scale:v.Position));
+                    .Select(v => includeFace?Vector3.LerpUnclamped(face.Centroid, v.Position, scale + 1):v.Position));
                 faceIndex = new List<int>();
                 for (int ii = 0; ii < face.GetVertices().Count; ii++)
                 {
