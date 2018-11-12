@@ -198,8 +198,8 @@ public class PolyUI : MonoBehaviour {
     {
         var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountSlider;
         var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountInput;
-        int value;
-        if (Int32.TryParse(input.text, out value))
+        float value;
+        if (float.TryParse(input.text, out value))
         {
             slider.value = value;
         }
