@@ -327,11 +327,11 @@ public class PolyHydra : MonoBehaviour {
 							break;
 						case Ops.FaceRemove:
 							faceSelection = CalculateFaceSelection(op.faceSelections);
-							conway = faceSelection==0 ? conway : conway.FaceRemove(faceSelection, false);								
+							conway = conway.FaceRemove(faceSelection, false);								
 							break;
 						case Ops.FaceKeep:
 							faceSelection = CalculateFaceSelection(op.faceSelections);
-							conway = faceSelection==0 ? conway : conway.FaceRemove(faceSelection, true);								
+							conway = conway.FaceRemove(faceSelection, true);								
 							break;
 					}
 				}

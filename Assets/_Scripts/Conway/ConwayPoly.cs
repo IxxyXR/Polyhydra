@@ -238,7 +238,8 @@ namespace Conway {
             {
                 var includeFace = t.Sides == sides;
                 includeFace = invertLogic ? includeFace : !includeFace;
-            
+                if (includeFace)
+                {
                     var face = t;
 
                     int c = vertexPoints.Count;
@@ -253,8 +254,7 @@ namespace Conway {
                     }
 
                     faceIndices.Add(faceIndex);
-
-             
+                }
             }
 
             return new ConwayPoly(vertexPoints, faceIndices);                        
