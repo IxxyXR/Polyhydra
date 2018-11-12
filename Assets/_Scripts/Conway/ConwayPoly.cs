@@ -162,61 +162,66 @@ namespace Conway {
 
         #region conway methods
 
-        public ConwayPoly Scale(float scale) {
+        public ConwayPoly FaceScale(float scale, int sides) {
             
             var vertexPoints = new List<Vector3>();
             var faceIndices = new List<IEnumerable<int>>();
             
-            for (int i = 0; i < Faces.Count; i++) {
+            foreach (var t in Faces)
+            {
+                var includeFace = t.Sides == sides || sides==0;
                 
-                var face = Faces[i];
-                
+                var face = t;
+
                 int c = vertexPoints.Count;
-                //vertexPoints.AddRange(face.GetVertices().Select(v => v.Position));
                 var faceIndex = new List<int>();
-                //for (int ii = 0; ii < face.GetVertices().Count; ii++) {
-                //    faceIndex.Add(c+ii);
-                //}
-                
+
                 c = vertexPoints.Count;
-                vertexPoints.AddRange(face.GetVertices().Select(v => v.Position + face.Centroid - ( face.Centroid * scale)));
+                vertexPoints.AddRange(face.GetVertices()
+                    .Select(v => includeFace?v.Position + face.Centroid - face.Centroid * scale:v.Position));
                 faceIndex = new List<int>();
-                for (int ii = 0; ii < face.GetVertices().Count; ii++) {
-                    faceIndex.Add(c+ii);
+                for (int ii = 0; ii < face.GetVertices().Count; ii++)
+                {
+                    faceIndex.Add(c + ii);
                 }
+
                 faceIndices.Add(faceIndex);
-                
+
             }
                 
             return new ConwayPoly(vertexPoints, faceIndices);
         }
         
-        public ConwayPoly FaceRotate(float angle) {
+        public ConwayPoly FaceRotate(float angle, int sides) {
             
             var vertexPoints = new List<Vector3>();
             var faceIndices = new List<IEnumerable<int>>();
             
-            for (int i = 0; i < Faces.Count; i++) {
-                
-                var face = Faces[i];
-                
+            foreach (var t in Faces)
+            {
+                var includeFace = t.Sides == sides || sides==0;
+
+                var face = t;
+
                 int c = vertexPoints.Count;
                 var faceIndex = new List<int>();
-                
+
                 c = vertexPoints.Count;
 
                 var pivot = face.Centroid;
                 var rot = Quaternion.AngleAxis(angle, face.Normal);
-                
+
                 vertexPoints.AddRange(
                     face.GetVertices().Select(
-                        v => pivot + rot * (v.Position - pivot)
+                        v => includeFace?pivot + rot * (v.Position - pivot):v.Position
                     )
                 );
                 faceIndex = new List<int>();
-                for (int ii = 0; ii < face.GetVertices().Count; ii++) {
-                    faceIndex.Add(c+ii);
+                for (int ii = 0; ii < face.GetVertices().Count; ii++)
+                {
+                    faceIndex.Add(c + ii);
                 }
+
                 faceIndices.Add(faceIndex);
                 
             }
@@ -224,18 +229,17 @@ namespace Conway {
             return new ConwayPoly(vertexPoints, faceIndices);
         }
         
-        public ConwayPoly FaceExclude(int sides, bool invertLogic) {
+        public ConwayPoly FaceRemove(int sides, bool invertLogic) {
             
             var vertexPoints = new List<Vector3>();
             var faceIndices = new List<IEnumerable<int>>();
 
-            for (int i = 0; i < Faces.Count; i++)
+            foreach (var t in Faces)
             {
-                var includeFace = Faces[i].Sides == sides;
+                var includeFace = t.Sides == sides;
                 includeFace = invertLogic ? includeFace : !includeFace;
-                if (includeFace)
-                {
-                    var face = Faces[i];
+            
+                    var face = t;
 
                     int c = vertexPoints.Count;
                     var faceIndex = new List<int>();
@@ -250,7 +254,7 @@ namespace Conway {
 
                     faceIndices.Add(faceIndex);
 
-                }
+             
             }
 
             return new ConwayPoly(vertexPoints, faceIndices);                        

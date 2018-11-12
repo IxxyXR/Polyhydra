@@ -32,7 +32,7 @@ public class PolyPresets : MonoBehaviour {
 		Items.Add(preset);
 	}
 
-	public void AddPresetsFromPath(string path)
+	public void AddPresetsFromPath(string path, bool overwrite=false)
 	{
 		var existingPresets = Items.Select(x => x.Name);
 		var dirInfo = new DirectoryInfo(path);
@@ -44,9 +44,9 @@ public class PolyPresets : MonoBehaviour {
 			{
 				preset.Name = file.Name.Replace(PresetFileNamePrefix, "").Replace(".json", "");
 			}
-			if (!existingPresets.Contains(preset.Name))
+			if (!existingPresets.Contains(preset.Name) || overwrite)
 			{
-				Items.Add(preset);						
+				Items.Add(preset);
 			}
 		}
 
@@ -67,6 +67,14 @@ public class PolyPresets : MonoBehaviour {
 			var polyJson = JsonConvert.SerializeObject(preset);
 			File.WriteAllText(fileName, polyJson);
 		}
+	}
+
+	public void ResetPresets()
+	{
+		Items.Clear();
+		AddPresetsFromPath(Path.Combine(Application.streamingAssetsPath, "InitialPresets"));
+		AddPresetsFromPath(Application.persistentDataPath, overwrite:true);
+		SaveAllPresets();
 	}
 
 }

@@ -42,11 +42,11 @@ public class PolyHydra : MonoBehaviour {
 		//Offset,
 		//Ribbon,
 		Extrude,
-		Scale,
+		FaceScale,
 		FaceRotate,
 		//Test,
-		FaceExclude,
-		FaceInclude
+		FaceRemove,
+		FaceKeep
 	}
 
 	public enum FaceSelections
@@ -133,11 +133,11 @@ public class PolyHydra : MonoBehaviour {
 			//{Ops.Offset, new OpConfig{}},
 			//{Ops.Ribbon, new OpConfig{}},
 			{Ops.Extrude, new OpConfig{amountMin = -10, amountMax = 10}},
-			{Ops.Scale, new OpConfig{amountMin = -10, amountMax = 10}},
-			{Ops.FaceRotate, new OpConfig{amountMin = -180, amountMax = 180}},
+			{Ops.FaceScale, new OpConfig{amountMin = -10, amountMax = 10, usesFaces=true}},
+			{Ops.FaceRotate, new OpConfig{amountMin = -180, amountMax = 180, usesFaces=true}},
 			//{Ops.Test, new OpConfig{}}
-			{Ops.FaceExclude, new OpConfig{usesAmount=false, usesFaces=true}},
-			{Ops.FaceInclude, new OpConfig{usesAmount=false, usesFaces=true}}
+			{Ops.FaceRemove, new OpConfig{usesAmount=false, usesFaces=true}},
+			{Ops.FaceKeep, new OpConfig{usesAmount=false, usesFaces=true}}
 		};
 	}
 
@@ -234,9 +234,6 @@ public class PolyHydra : MonoBehaviour {
 					switch (op.opType) {
 						case Ops.Identity:
 							break;
-						case Ops.Scale:
-							conway = conway.Scale(op.amount);
-							break;
 						case Ops.Kis:
 							faceSelection = CalculateFaceSelection(op.faceSelections);
 							conway = faceSelection==0 ? conway.Kis(op.amount) : conway.KisN(op.amount, faceSelection);								
@@ -320,17 +317,21 @@ public class PolyHydra : MonoBehaviour {
 //						case Ops.Ribbon:
 //							conway = conway.Ribbon(op.amount, false, 0.1f);
 //							break;
+						case Ops.FaceScale:
+							faceSelection = CalculateFaceSelection(op.faceSelections);
+							conway = conway.FaceScale(op.amount, faceSelection);
+							break;
 						case Ops.FaceRotate:
-							//faceSelection = CalculateFaceSelection(op.faceSelections);
-							conway = conway.FaceRotate(op.amount);								
-							break;
-						case Ops.FaceExclude:
 							faceSelection = CalculateFaceSelection(op.faceSelections);
-							conway = faceSelection==0 ? conway : conway.FaceExclude(faceSelection, false);								
+							conway = conway.FaceRotate(op.amount, faceSelection);
 							break;
-						case Ops.FaceInclude:
+						case Ops.FaceRemove:
 							faceSelection = CalculateFaceSelection(op.faceSelections);
-							conway = faceSelection==0 ? conway : conway.FaceExclude(faceSelection, true);								
+							conway = faceSelection==0 ? conway : conway.FaceRemove(faceSelection, false);								
+							break;
+						case Ops.FaceKeep:
+							faceSelection = CalculateFaceSelection(op.faceSelections);
+							conway = faceSelection==0 ? conway : conway.FaceRemove(faceSelection, true);								
 							break;
 					}
 				}

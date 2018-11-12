@@ -10,6 +10,7 @@ public class OpPrefabManager : MonoBehaviour
     public Dropdown OpTypeDropdown;
     public Dropdown FaceSelectionDropdown;
     public Slider AmountSlider;
+    public InputField AmountInput;
     public Toggle DisabledToggle;
     public Button UpButton;
     public Button DownButton;

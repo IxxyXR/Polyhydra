@@ -27,6 +27,8 @@ public class PolyUI : MonoBehaviour {
     public RectTransform PresetButtonContainer;
     public Dropdown BasePolyDropdown; 
     public Button SavePresetButton;
+    public Button ResetPresetsButton;
+    public Button OpenPresetsFolderButton;
     public PolyPresets Presets;
     public GameObject[] Tabs; 
     public GameObject[] TabButtons;
@@ -49,6 +51,8 @@ public class PolyUI : MonoBehaviour {
         TwoSidedToggle.onValueChanged.AddListener(delegate{TwoSidedToggleChanged();});
         BypassOpsToggle.onValueChanged.AddListener(delegate{BypassOpsToggleChanged();});
         AddOpButton.onClick.AddListener(AddOpButtonClicked);
+        ResetPresetsButton.onClick.AddListener(ResetPresetsButtonClicked);
+        OpenPresetsFolderButton.onClick.AddListener(OpenPersistentDataFolder);
         Presets.LoadAllPresets();
         InitUI();
         CreatePresetButtons();
@@ -117,6 +121,7 @@ public class PolyUI : MonoBehaviour {
         
         opPrefabManager.FaceSelectionDropdown.gameObject.SetActive(opConfig.usesFaces);
         opPrefabManager.AmountSlider.gameObject.SetActive(opConfig.usesAmount);
+        opPrefabManager.AmountInput.gameObject.SetActive(opConfig.usesAmount);
         
         opPrefabManager.AmountSlider.minValue = opConfig.amountMin;
         opPrefabManager.AmountSlider.maxValue = opConfig.amountMax;
@@ -144,10 +149,12 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.FaceSelectionDropdown.value = (int) op.faceSelections;
         opPrefabManager.DisabledToggle.isOn = op.disabled;
         opPrefabManager.AmountSlider.value = op.amount;
+        opPrefabManager.AmountInput.text = op.amount.ToString();
         opPrefabManager.OpTypeDropdown.onValueChanged.AddListener(delegate{OpTypeChanged();});
         opPrefabManager.FaceSelectionDropdown.onValueChanged.AddListener(delegate{OpsUIToPoly();});
         opPrefabManager.DisabledToggle.onValueChanged.AddListener(delegate{OpsUIToPoly();});
-        opPrefabManager.AmountSlider.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opPrefabManager.AmountSlider.onValueChanged.AddListener(delegate{AmountSliderChanged();});
+        opPrefabManager.AmountInput.onValueChanged.AddListener(delegate{AmountInputChanged();});
         opPrefabManager.UpButton.onClick.AddListener(MoveOpUp);
         opPrefabManager.DownButton.onClick.AddListener(MoveOpDown);
         opPrefabManager.DeleteButton.onClick.AddListener(DeleteOp);
@@ -174,6 +181,27 @@ public class PolyUI : MonoBehaviour {
     void OpTypeChanged()
     {
         ConfigureOpControls(EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>());
+        OpsUIToPoly();
+    }
+
+    void AmountSliderChanged()
+    {
+        var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountSlider;
+        var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountInput;
+        input.text = slider.value.ToString();
+        OpsUIToPoly();
+    }
+
+    void AmountInputChanged()
+    {
+        var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountSlider;
+        var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountInput;
+        int value;
+        if (Int32.TryParse(input.text, out value))
+        {
+            slider.value = value;
+        }
+        
         OpsUIToPoly();
     }
 
@@ -356,13 +384,19 @@ public class PolyUI : MonoBehaviour {
         button.GetComponent<Button>().interactable = false;
 
     }
+
+    public void ResetPresetsButtonClicked()
+    {
+        Presets.ResetPresets();
+    }
     
     #if UNITY_EDITOR
         [MenuItem ("Window/Open PersistentData Folder")]
-        public static void OpenPersistentDataFolder()
-        {
-            EditorUtility.RevealInFinder(Application.persistentDataPath);
-        } 
     #endif
+    public static void OpenPersistentDataFolder()
+    {
+        EditorUtility.RevealInFinder(Application.persistentDataPath);
+    } 
+
 
 }
