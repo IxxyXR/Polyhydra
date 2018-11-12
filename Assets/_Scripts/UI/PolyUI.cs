@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -392,11 +394,16 @@ public class PolyUI : MonoBehaviour {
     
     #if UNITY_EDITOR
         [MenuItem ("Window/Open PersistentData Folder")]
+        public static void OpenPersistentDataFolder()
+        {
+            EditorUtility.RevealInFinder(Application.persistentDataPath);
+        }
+    #else
+        public static void OpenPersistentDataFolder()
+        {
+            string path = Application.persistentDataPath.TrimEnd(new[]{'\\', '/'}); // Mac doesn't like trailing slash
+            Process.Start(path);
+        } 
     #endif
-    public static void OpenPersistentDataFolder()
-    {
-        EditorUtility.RevealInFinder(Application.persistentDataPath);
-    } 
-
 
 }
