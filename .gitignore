@@ -40,3 +40,4 @@ sysinfo.txt
 Assets/Plugins/Editor/JetBrains*
 .DS_Store
 /Experimental/
+/WebGL*
