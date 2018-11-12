@@ -243,6 +243,7 @@ public class PolyUI : MonoBehaviour {
         var opPrefabManager = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>();
         var src = opPrefabManager.Index;
         var dest = src + offset;
+        if (dest < 0 || dest > poly.ConwayOperators.Count - 1) return;
         var temp = poly.ConwayOperators[src];
         poly.ConwayOperators[src] = poly.ConwayOperators[dest];
         poly.ConwayOperators[dest] = temp;
