@@ -43,6 +43,7 @@ public class PolyHydra : MonoBehaviour {
 		//Ribbon,
 		Extrude,
 		Scale,
+		FaceRotate,
 		//Test,
 		FaceExclude,
 		FaceInclude
@@ -133,6 +134,7 @@ public class PolyHydra : MonoBehaviour {
 			//{Ops.Ribbon, new OpConfig{}},
 			{Ops.Extrude, new OpConfig{amountMin = -10, amountMax = 10}},
 			{Ops.Scale, new OpConfig{amountMin = -10, amountMax = 10}},
+			{Ops.FaceRotate, new OpConfig{amountMin = -180, amountMax = 180}},
 			//{Ops.Test, new OpConfig{}}
 			{Ops.FaceExclude, new OpConfig{usesAmount=false, usesFaces=true}},
 			{Ops.FaceInclude, new OpConfig{usesAmount=false, usesFaces=true}}
@@ -318,6 +320,10 @@ public class PolyHydra : MonoBehaviour {
 //						case Ops.Ribbon:
 //							conway = conway.Ribbon(op.amount, false, 0.1f);
 //							break;
+						case Ops.FaceRotate:
+							//faceSelection = CalculateFaceSelection(op.faceSelections);
+							conway = conway.FaceRotate(op.amount);								
+							break;
 						case Ops.FaceExclude:
 							faceSelection = CalculateFaceSelection(op.faceSelections);
 							conway = faceSelection==0 ? conway : conway.FaceExclude(faceSelection, false);								

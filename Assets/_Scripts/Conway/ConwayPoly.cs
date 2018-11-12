@@ -162,7 +162,7 @@ namespace Conway {
 
         #region conway methods
 
-        public ConwayPoly Scale(float offset) {
+        public ConwayPoly Scale(float scale) {
             
             var vertexPoints = new List<Vector3>();
             var faceIndices = new List<IEnumerable<int>>();
@@ -174,12 +174,45 @@ namespace Conway {
                 int c = vertexPoints.Count;
                 //vertexPoints.AddRange(face.GetVertices().Select(v => v.Position));
                 var faceIndex = new List<int>();
-                for (int ii = 0; ii < face.GetVertices().Count; ii++) {
+                //for (int ii = 0; ii < face.GetVertices().Count; ii++) {
                 //    faceIndex.Add(c+ii);
-                }
+                //}
                 
                 c = vertexPoints.Count;
-                vertexPoints.AddRange(face.GetVertices().Select(v => v.Position +  face.Centroid - ( face.Centroid * offset)));
+                vertexPoints.AddRange(face.GetVertices().Select(v => v.Position + face.Centroid - ( face.Centroid * scale)));
+                faceIndex = new List<int>();
+                for (int ii = 0; ii < face.GetVertices().Count; ii++) {
+                    faceIndex.Add(c+ii);
+                }
+                faceIndices.Add(faceIndex);
+                
+            }
+                
+            return new ConwayPoly(vertexPoints, faceIndices);
+        }
+        
+        public ConwayPoly FaceRotate(float angle) {
+            
+            var vertexPoints = new List<Vector3>();
+            var faceIndices = new List<IEnumerable<int>>();
+            
+            for (int i = 0; i < Faces.Count; i++) {
+                
+                var face = Faces[i];
+                
+                int c = vertexPoints.Count;
+                var faceIndex = new List<int>();
+                
+                c = vertexPoints.Count;
+
+                var pivot = face.Centroid;
+                var rot = Quaternion.AngleAxis(angle, face.Normal);
+                
+                vertexPoints.AddRange(
+                    face.GetVertices().Select(
+                        v => pivot + rot * (v.Position - pivot)
+                    )
+                );
                 faceIndex = new List<int>();
                 for (int ii = 0; ii < face.GetVertices().Count; ii++) {
                     faceIndex.Add(c+ii);
