@@ -21,6 +21,8 @@ public class PolyUI : MonoBehaviour {
     public Slider YRotateSlider;
     public Slider ZRotateSlider;
     public Toggle TwoSidedToggle;
+    public Button PrevPolyButton;
+    public Button NextPolyButton;
     public Text OpsWarning;
     public Button AddOpButton;
     public Toggle BypassOpsToggle;
@@ -51,6 +53,8 @@ public class PolyUI : MonoBehaviour {
         XRotateSlider.onValueChanged.AddListener(delegate{XSliderChanged();});
         YRotateSlider.onValueChanged.AddListener(delegate{YSliderChanged();});
         ZRotateSlider.onValueChanged.AddListener(delegate{ZSliderChanged();});
+        PrevPolyButton.onClick.AddListener(PrevPolyButtonClicked);
+        NextPolyButton.onClick.AddListener(NextPolyButtonClicked);
         TwoSidedToggle.onValueChanged.AddListener(delegate{TwoSidedToggleChanged();});
         BypassOpsToggle.onValueChanged.AddListener(delegate{BypassOpsToggleChanged();});
         AddOpButton.onClick.AddListener(AddOpButtonClicked);
@@ -62,6 +66,18 @@ public class PolyUI : MonoBehaviour {
         ShowTab(TabButtons[0].gameObject);
     }
 
+    private void PrevPolyButtonClicked()
+    {
+        BasePolyDropdown.value -= 1;
+        BasePolyDropdown.value %= Enum.GetValues(typeof(PolyTypes)).Length;
+    }
+    
+    private void NextPolyButtonClicked()
+    {
+        BasePolyDropdown.value += 1;
+        BasePolyDropdown.value %= Enum.GetValues(typeof(PolyTypes)).Length;
+    }
+    
     public void InitUI()
     {
         UpdatePolyUI();
@@ -315,25 +331,13 @@ public class PolyUI : MonoBehaviour {
         if (poly.WythoffPoly.IsOneSided)
         {
             BypassOpsToggle.isOn = true;
-            BypassOpsToggle.interactable = false;
-            AddOpButton.interactable = false;
             OpsWarning.enabled = true;
-            foreach (var item in opPrefabs)
-            {
-                item.gameObject.GetComponent<OpPrefabManager>().DisableAll();
-            }
 
         }
         else
         {
             BypassOpsToggle.isOn = false;
-            BypassOpsToggle.interactable = true;
-            AddOpButton.interactable = true;
             OpsWarning.enabled = false;
-            foreach (var item in opPrefabs)
-            {
-                item.gameObject.GetComponent<OpPrefabManager>().EnableAll();
-            }
         }
     }
 
