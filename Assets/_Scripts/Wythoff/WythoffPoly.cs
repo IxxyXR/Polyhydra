@@ -151,7 +151,7 @@ namespace Wythoff {
             
             // We only do this if we're not running the Conway transform
             // That does it's own triangulation which is generally superior.
-            if (auxiliaryNeeded && BuildAux) {  
+            if (auxiliaryNeeded && BuildAux) {
                 // TODO this is awful
                 Debug.Log("auxiliaryNeeded");
                 var tempVerts = new List<Vector>();
@@ -489,9 +489,10 @@ namespace Wythoff {
 
                 // p = q'
                 // P->p[0]==compl(P->p[1]) should work.  However, MSDOS
-                // yeilds a 7e-17 difference! Reported by Jim Buddenhagen
+                // yields a 7e-17 difference! Reported by Jim Buddenhagen
                 // <jb1556@daditz.sbc.com> */
-                if (Math.Abs(WythoffParams[0] - Fraction.compl(WythoffParams[1])) < DBL_EPSILON) {
+                if (Math.Abs(WythoffParams[0] - Fraction.compl(WythoffParams[1])) < DBL_EPSILON)
+                {
                     IsHemi = true;
                     Density = 0;
                     if (WythoffParams[0] != 2 &&

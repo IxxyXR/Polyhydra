@@ -21,9 +21,10 @@ public class PolyUI : MonoBehaviour {
     public Slider YRotateSlider;
     public Slider ZRotateSlider;
     public Toggle TwoSidedToggle;
-    public Toggle BypassOpsToggle;
+    public Text OpsWarning;
     public Button AddOpButton;
-    [FormerlySerializedAs("OperatorContainer")] public RectTransform OpContainer;
+    public Toggle BypassOpsToggle;
+    public RectTransform OpContainer;
     public Transform OpTemplate;
     public Button ButtonTemplate;
     public RectTransform PresetButtonContainer;
@@ -311,6 +312,29 @@ public class PolyUI : MonoBehaviour {
     {
         poly.PolyType = (PolyTypes)change.value;
         if (_shouldReBuild) poly.MakePolyhedron();
+        if (poly.WythoffPoly.IsOneSided)
+        {
+            BypassOpsToggle.isOn = true;
+            BypassOpsToggle.interactable = false;
+            AddOpButton.interactable = false;
+            OpsWarning.enabled = true;
+            foreach (var item in opPrefabs)
+            {
+                item.gameObject.GetComponent<OpPrefabManager>().DisableAll();
+            }
+
+        }
+        else
+        {
+            BypassOpsToggle.isOn = false;
+            BypassOpsToggle.interactable = true;
+            AddOpButton.interactable = true;
+            OpsWarning.enabled = false;
+            foreach (var item in opPrefabs)
+            {
+                item.gameObject.GetComponent<OpPrefabManager>().EnableAll();
+            }
+        }
     }
 
     void XSliderChanged()
