@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Conway;
+using Newtonsoft.Json;
 using Wythoff;
 using UnityEditor;
 using UnityEngine;
@@ -73,15 +75,14 @@ public class PolyHydra : MonoBehaviour {
 	public Dictionary<Ops, OpConfig> opconfigs;
 	
 	[Serializable]
-	public struct ConwayOperator {  
-		[FormerlySerializedAs("op")]
+	public struct ConwayOperator {
 		public Ops opType;
 		public FaceSelections faceSelections;
 		public float amount;
 		public bool disabled;
 	}
 	public List<ConwayOperator> ConwayOperators;
-		
+	
 	[Header("Gizmos")]
 	public bool vertexGizmos;
 	public bool faceCenterGizmos;
@@ -100,6 +101,19 @@ public class PolyHydra : MonoBehaviour {
 	private PolyPreset previousState;
 
 	public PolyUI polyUI;
+	
+	private struct ConwayCacheEntry
+	{
+		public ConwayPoly conway;
+		public long timestamp;
+
+		public ConwayCacheEntry(ConwayPoly c, long t)
+		{
+			conway = c;
+			timestamp = t;
+		}
+	}
+	private Dictionary<string, ConwayCacheEntry> _conwayCache;
 	
 	public Color[] gizmoPallette = {
 		Color.red,
@@ -251,124 +265,148 @@ public class PolyHydra : MonoBehaviour {
 	{
 		if (ConwayOperators == null) return;
 		conway = new ConwayPoly(WythoffPoly);
+		var cacheKey = WythoffPoly.WythoffSymbol;
 		foreach (var op in ConwayOperators)
 		{
-			int faceSelection;
 			if (op.disabled)
 			{
 				continue;
 			}
 
-			switch (op.opType)
+			cacheKey += JsonConvert.SerializeObject(op);
+			if (_conwayCache == null) _conwayCache = new Dictionary<string, ConwayCacheEntry>();
+			if (_conwayCache.ContainsKey(cacheKey))
 			{
-				case Ops.Identity:
-					break;
-				case Ops.Kis:
-					faceSelection = CalculateFaceSelection(op.faceSelections);
-					conway = faceSelection == 0 ? conway.Kis(op.amount) : conway.KisN(op.amount, faceSelection);
-					break;
-				case Ops.Dual:
-					conway = conway.Dual();
-					break;
-				case Ops.Ambo:
-					conway = conway.Ambo();
-					break;
-				case Ops.Zip:
-					conway = conway.Kis(op.amount);
-					conway = conway.Dual();
-					break;
-				case Ops.Expand:
-					conway = conway.Ambo();
-					conway = conway.Ambo();
-					break;
-				case Ops.Bevel:
-					conway = conway.Ambo();
-					conway = conway.Dual();
-					conway = conway.Kis(op.amount);
-					conway = conway.Dual();
-					break;
-				case Ops.Join:
-					conway = conway.Ambo();
-					conway = conway.Dual();
-					break;
-				case Ops.Needle:
-					conway = conway.Dual();
-					conway = conway.Kis(op.amount);
-					break;
-				case Ops.Ortho:
-					conway = conway.Ambo();
-					conway = conway.Ambo();
-					conway = conway.Dual();
-					break;
-				case Ops.Meta:
-					conway = conway.Ambo();
-					conway = conway.Dual();
-					conway = conway.Kis(op.amount);
-					break;
-				case Ops.Truncate:
-					conway = conway.Dual();
-					conway = conway.Kis(op.amount);
-					conway = conway.Dual();
-					break;
-				case Ops.Gyro:
-					conway = conway.Gyro(op.amount);
-					break;
-				case Ops.Snub:
-					conway = conway.Gyro(op.amount);
-					conway = conway.Dual();
-					break;
-				case Ops.Exalt:
-					conway = conway.Dual();
-					conway = conway.Kis(op.amount);
-					conway = conway.Dual();
-					conway = conway.Kis(op.amount);
-					break;
-				case Ops.Yank:
-					conway = conway.Kis(op.amount);
-					conway = conway.Dual();
-					conway = conway.Kis(op.amount);
-					conway = conway.Dual();
-					break;
+				Debug.Log("main cache hit");
+				conway = _conwayCache[cacheKey].conway;
+			}
+			else
+			{
+				Debug.Log("main cache miss");
+				int faceSelection;
+	
+				switch (op.opType)
+				{
+					case Ops.Identity:
+						break;
+					case Ops.Kis:
+						faceSelection = CalculateFaceSelection(op.faceSelections);
+						conway = faceSelection == 0 ? conway.Kis(op.amount) : conway.KisN(op.amount, faceSelection);
+						break;
+					case Ops.Dual:
+						conway = conway.Dual();
+						break;
+					case Ops.Ambo:
+						conway = conway.Ambo();
+						break;
+					case Ops.Zip:
+						conway = conway.Kis(op.amount);
+						conway = conway.Dual();
+						break;
+					case Ops.Expand:
+						conway = conway.Ambo();
+						conway = conway.Ambo();
+						break;
+					case Ops.Bevel:
+						conway = conway.Ambo();
+						conway = conway.Dual();
+						conway = conway.Kis(op.amount);
+						conway = conway.Dual();
+						break;
+					case Ops.Join:
+						conway = conway.Ambo();
+						conway = conway.Dual();
+						break;
+					case Ops.Needle:
+						conway = conway.Dual();
+						conway = conway.Kis(op.amount);
+						break;
+					case Ops.Ortho:
+						conway = conway.Ambo();
+						conway = conway.Ambo();
+						conway = conway.Dual();
+						break;
+					case Ops.Meta:
+						conway = conway.Ambo();
+						conway = conway.Dual();
+						conway = conway.Kis(op.amount);
+						break;
+					case Ops.Truncate:
+						conway = conway.Dual();
+						conway = conway.Kis(op.amount);
+						conway = conway.Dual();
+						break;
+					case Ops.Gyro:
+						conway = conway.Gyro(op.amount);
+						break;
+					case Ops.Snub:
+						conway = conway.Gyro(op.amount);
+						conway = conway.Dual();
+						break;
+					case Ops.Exalt:
+						conway = conway.Dual();
+						conway = conway.Kis(op.amount);
+						conway = conway.Dual();
+						conway = conway.Kis(op.amount);
+						break;
+					case Ops.Yank:
+						conway = conway.Kis(op.amount);
+						conway = conway.Dual();
+						conway = conway.Kis(op.amount);
+						conway = conway.Dual();
+						break;
+	
+					//						case Ops.Subdivide:
+					//							conway = conway.Subdivide();
+					//							break;
+					//						case Ops.Chamfer:
+					//							conway = conway.Chamfer();
+					//							break;
+	
+					case Ops.Offset:
+						// Split faces
+						conway = conway.FaceScale(0, 0);
+						conway = conway.Offset(op.amount);
+						break;
+					case Ops.Extrude:
+						// Split faces
+						conway = conway.FaceScale(0, 0);
+						conway = conway.Extrude(op.amount, false);
+						break;
+					//						case Ops.Ribbon:
+					//							conway = conway.Ribbon(op.amount, false, 0.1f);
+					//							break;
+					case Ops.FaceScale:
+						faceSelection = CalculateFaceSelection(op.faceSelections);
+						conway = conway.FaceScale(op.amount, faceSelection);
+						break;
+					case Ops.FaceRotate:
+						faceSelection = CalculateFaceSelection(op.faceSelections);
+						conway = conway.FaceRotate(op.amount, faceSelection);
+						break;
+					case Ops.FaceRemove:
+						faceSelection = CalculateFaceSelection(op.faceSelections);
+						conway = conway.FaceRemove(faceSelection, false);
+						break;
+					case Ops.FaceKeep:
+						faceSelection = CalculateFaceSelection(op.faceSelections);
+						conway = conway.FaceRemove(faceSelection, true);
+						break;
+					case Ops.AddDual:
+						conway = conway.AddDual(op.amount);
+						break;
+				}
 
-				//						case Ops.Subdivide:
-				//							conway = conway.Subdivide();
-				//							break;
-				//						case Ops.Chamfer:
-				//							conway = conway.Chamfer();
-				//							break;
+				var cached = new ConwayCacheEntry(conway, DateTime.UtcNow.Ticks);
+				_conwayCache[cacheKey] = cached;
+				if (_conwayCache.Count > 1000)
+				{
+					var sortedDict = from i in _conwayCache orderby i.Value.timestamp ascending select i;
+					Debug.Log(sortedDict.First().Value.timestamp);
+					Debug.Log(sortedDict.Last().Value.timestamp);
+					Debug.Log("++++++++++++++++");
+				}
 
-				case Ops.Offset:
-					// Split faces
-					conway = conway.FaceScale(0, 0);
-					conway = conway.Offset(op.amount);
-					break;
-				case Ops.Extrude:
-					// Split faces
-					conway = conway.FaceScale(0, 0);
-					conway = conway.Extrude(op.amount, false);
-					break;
-				//						case Ops.Ribbon:
-				//							conway = conway.Ribbon(op.amount, false, 0.1f);
-				//							break;
-				case Ops.FaceScale:
-					faceSelection = CalculateFaceSelection(op.faceSelections);
-					conway = conway.FaceScale(op.amount, faceSelection);
-					break;
-				case Ops.FaceRotate:
-					faceSelection = CalculateFaceSelection(op.faceSelections);
-					conway = conway.FaceRotate(op.amount, faceSelection);
-					break;
-				case Ops.FaceRemove:
-					faceSelection = CalculateFaceSelection(op.faceSelections);
-					conway = conway.FaceRemove(faceSelection, false);
-					break;
-				case Ops.FaceKeep:
-					faceSelection = CalculateFaceSelection(op.faceSelections);
-					conway = conway.FaceRemove(faceSelection, true);
-					break;
-				case Ops.AddDual:
-					conway = conway.AddDual(op.amount);
-					break;
 			}
 		}
 	}
