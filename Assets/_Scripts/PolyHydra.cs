@@ -191,13 +191,6 @@ public class PolyHydra : MonoBehaviour {
 		MakeMesh();
 	}
 	
-	public void MakePolyhedron(Vector4 wythoffParams)
-	{
-		WythoffPoly = new WythoffPoly(wythoffParams[0], wythoffParams[1], wythoffParams[2], wythoffParams[3]);
-		WythoffPoly.BuildFaces(BuildAux: BypassOps);
-		MakeMesh();	
-	}
-
 	private int CalculateFaceSelection(FaceSelections faceSelections)
 	{
 		switch (faceSelections)
