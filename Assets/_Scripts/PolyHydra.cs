@@ -46,7 +46,8 @@ public class PolyHydra : MonoBehaviour {
 		FaceRotate,
 		//Test,
 		FaceRemove,
-		FaceKeep
+		FaceKeep,
+		AddDual
 	}
 
 	public enum FaceSelections
@@ -57,7 +58,10 @@ public class PolyHydra : MonoBehaviour {
 		FiveSided,
 		SixSided,
 		SevenSided,
-		EightSided
+		EightSided,
+		TenSided,
+		TwelveSided,
+		SixteenSided
 	}
 	
 	public class OpConfig
@@ -138,7 +142,9 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.FaceRotate, new OpConfig{amountMin = -180, amountMax = 180, usesFaces=true}},
 			//{Ops.Test, new OpConfig{}}
 			{Ops.FaceRemove, new OpConfig{usesAmount=false, usesFaces=true}},
-			{Ops.FaceKeep, new OpConfig{usesAmount=false, usesFaces=true}}
+			{Ops.FaceKeep, new OpConfig{usesAmount=false, usesFaces=true}},
+			{Ops.AddDual, new OpConfig{usesAmount=true, amountMin = -10, amountMax = 10}}
+			
 		};
 	}
 
@@ -211,6 +217,12 @@ public class PolyHydra : MonoBehaviour {
 				return 7;
 			case FaceSelections.EightSided:
 				return 8;
+			case FaceSelections.TenSided:
+				return 10;
+			case FaceSelections.TwelveSided:
+				return 12;
+			case FaceSelections.SixteenSided:
+				return 16;
 		}
 		return 0;
 	}
@@ -338,11 +350,14 @@ public class PolyHydra : MonoBehaviour {
 							faceSelection = CalculateFaceSelection(op.faceSelections);
 							conway = conway.FaceRemove(faceSelection, true);								
 							break;
+						case Ops.AddDual:
+							conway = conway.AddDual(op.amount);								
+							break;
 					}
 				}
 			}
 			
-			conway.ScaleToUnitSphere();
+			conway.ScalePolyhedra();
 		
 			// If we Kis we don't need fan triangulation (which breaks on non-convex faces)
 			conway = conway.Kis(0, true);

@@ -236,7 +236,17 @@ namespace Conway {
 
             return new ConwayPoly(vertexPoints, faceIndices.ToArray());
         }
-        
+
+        public ConwayPoly AddDual(float scale = 1f)
+        {
+            var oldPoly = Duplicate();
+            var newPoly = Dual();
+            oldPoly.ScalePolyhedra();
+            newPoly.ScalePolyhedra(scale);
+            oldPoly.Append(newPoly);
+            return oldPoly;
+        }
+
         public ConwayPoly Kebab(float ratio = 0.3333f)  // A kebab is a mixed up gyro... Geddit?
         {
         
@@ -850,18 +860,19 @@ namespace Conway {
                 return Halfedges.Select((item, ii) => ii).Where(i => Halfedges[i].Pair == null).ToList().Count > 0;
             }
         
-            public void ScaleToUnitSphere() {
+            public void ScalePolyhedra(float scale=1) {
+                
                 if (Vertices.Count > 0)
                 {
                 
                     // Find the furthest vertex
                     Vertex max = Vertices.OrderByDescending(x => x.Position.magnitude).FirstOrDefault();
-                    float scale = 1.0f/max.Position.magnitude;
+                    float unitScale = 1.0f/max.Position.magnitude;
                 
                     // TODO Ideal use case for Linq if I could get my head round the type-wrangling needed
                     foreach (Vertex v in Vertices)
                     {
-                        v.Position = v.Position * scale;
+                        v.Position = v.Position * unitScale * scale;
                     }                    
                 }
                 
