@@ -58,10 +58,7 @@ public class PolyHydra : MonoBehaviour {
 		FiveSided,
 		SixSided,
 		SevenSided,
-		EightSided,
-		TenSided,
-		TwelveSided,
-		SixteenSided
+		EightSided
 	}
 	
 	public class OpConfig
@@ -118,32 +115,32 @@ public class PolyHydra : MonoBehaviour {
 		opconfigs = new Dictionary<Ops, OpConfig>()
 		{	
 			{Ops.Identity, new OpConfig {usesAmount=false}},
-			{Ops.Kis, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
+			{Ops.Kis, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.Dual, new OpConfig{usesAmount=false}},
 			{Ops.Ambo, new OpConfig{usesAmount=false}},
-			{Ops.Zip, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
+			{Ops.Zip, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.Expand, new OpConfig{usesAmount=false}},
-			{Ops.Bevel, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
+			{Ops.Bevel, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.Join, new OpConfig{usesAmount=false}},
-			{Ops.Needle, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
+			{Ops.Needle, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.Ortho, new OpConfig{usesAmount=false}},
-			{Ops.Meta, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
-			{Ops.Truncate, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
+			{Ops.Meta, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
+			{Ops.Truncate, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.Gyro, new OpConfig{amountMin = -.5f, amountMax = 0.5f}},
 			{Ops.Snub, new OpConfig{amountMin = -.5f, amountMax = 0.5f}},
 			//{Ops.Subdivide new OpConfig{}},
-			{Ops.Exalt, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
-			{Ops.Yank, new OpConfig{usesFaces=true, amountMin = -10, amountMax = 10}},
+			{Ops.Exalt, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
+			{Ops.Yank, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			//{Ops.Chamfer new OpConfig{}},
-			{Ops.Offset, new OpConfig{amountMin = -10, amountMax = 10}},
+			{Ops.Offset, new OpConfig{amountMin = -6, amountMax = 6}},
 			//{Ops.Ribbon, new OpConfig{}},
-			{Ops.Extrude, new OpConfig{amountMin = -10, amountMax = 10}},
-			{Ops.FaceScale, new OpConfig{amountMin = -10, amountMax = 10, usesFaces=true}},
+			{Ops.Extrude, new OpConfig{amountMin = -6, amountMax = 6}},
+			{Ops.FaceScale, new OpConfig{amountMin = -6, amountMax = 6, usesFaces=true}},
 			{Ops.FaceRotate, new OpConfig{amountMin = -180, amountMax = 180, usesFaces=true}},
 			//{Ops.Test, new OpConfig{}}
 			{Ops.FaceRemove, new OpConfig{usesAmount=false, usesFaces=true}},
 			{Ops.FaceKeep, new OpConfig{usesAmount=false, usesFaces=true}},
-			{Ops.AddDual, new OpConfig{usesAmount=true, amountMin = -10, amountMax = 10}}
+			{Ops.AddDual, new OpConfig{usesAmount=true, amountMin = -6, amountMax = 6}}
 			
 		};
 	}
@@ -217,12 +214,6 @@ public class PolyHydra : MonoBehaviour {
 				return 7;
 			case FaceSelections.EightSided:
 				return 8;
-			case FaceSelections.TenSided:
-				return 10;
-			case FaceSelections.TwelveSided:
-				return 12;
-			case FaceSelections.SixteenSided:
-				return 16;
 		}
 		return 0;
 	}
