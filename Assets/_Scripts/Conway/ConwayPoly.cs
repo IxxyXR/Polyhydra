@@ -474,7 +474,6 @@ namespace Conway {
             
             foreach (var t in Faces)
             {
-                Debug.Log(t.Sides);
                 var includeFace = t.Sides == sides || sides==0;
                 
                 var face = t;

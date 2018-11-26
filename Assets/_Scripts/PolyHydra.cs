@@ -92,6 +92,7 @@ public class PolyHydra : MonoBehaviour {
 	
 	private int[] meshFaces;
 	public WythoffPoly WythoffPoly;
+	private Dictionary<string, WythoffPoly> _wythoffCache;
 	private bool ShowDuals = false;
 	private ConwayPoly conway;
 
@@ -111,7 +112,7 @@ public class PolyHydra : MonoBehaviour {
 
 
 	void Awake()
-	{
+	{		
 		opconfigs = new Dictionary<Ops, OpConfig>()
 		{	
 			{Ops.Identity, new OpConfig {usesAmount=false}},
@@ -141,12 +142,17 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.FaceRemove, new OpConfig{usesAmount=false, usesFaces=true}},
 			{Ops.FaceKeep, new OpConfig{usesAmount=false, usesFaces=true}},
 			{Ops.AddDual, new OpConfig{usesAmount=true, amountMin = -6, amountMax = 6}}
-			
 		};
 	}
 
 	void Start() {
 		meshFilter = gameObject.GetComponent<MeshFilter>();
+	}
+
+	public void MakePolyhedron()
+	{
+		MakeWythoff();
+		MakeMesh();
 	}
 
 	private void OnValidate() {
@@ -162,33 +168,42 @@ public class PolyHydra : MonoBehaviour {
 		}
 	}
 
-	public void MakePolyhedron() {
+	public void MakeWythoff() {
 		
 		if (!String.IsNullOrEmpty(WythoffSymbol))
 		{
-			MakePolyhedron(WythoffSymbol);
+			MakeWythoff(WythoffSymbol);
 		}
 		else
 		{
-			MakePolyhedron((int)PolyType);						
+			MakeWythoff((int)PolyType);						
 		}
 	}
 
-	public void MakePolyhedron(int polyType)
+	public void MakeWythoff(int polyType)
 	{
 		polyType++;  // We're 1-indexed not 0-indexed
-		MakePolyhedron(Uniform.Uniforms[polyType].Wythoff);
+		MakeWythoff(Uniform.Uniforms[polyType].Wythoff);
 	}
 
-	public void MakePolyhedron(string symbol)
+	public void MakeWythoff(string symbol)
 	{
 
 		if (WythoffPoly == null || WythoffPoly.WythoffSymbol != symbol)
 		{
-			WythoffPoly = new WythoffPoly(symbol);
+			if (_wythoffCache==null) _wythoffCache = new Dictionary<string, WythoffPoly>();
+			if (_wythoffCache.ContainsKey(symbol))
+			{
+				WythoffPoly = _wythoffCache[symbol];
+			}
+			else
+			{
+				WythoffPoly = new WythoffPoly(symbol);
+				_wythoffCache[symbol] = WythoffPoly;
+			}
+			
 		}
 		WythoffPoly.BuildFaces(BuildAux: BypassOps);
-		MakeMesh();
 	}
 	
 	private int CalculateFaceSelection(FaceSelections faceSelections)
@@ -210,11 +225,10 @@ public class PolyHydra : MonoBehaviour {
 		}
 		return 0;
 	}
-
-	public void MakeMesh() {
-		
+	
+	public void MakeMesh()
+	{
 		var mesh = new Mesh();
-		
 		if (BypassOps)
 		{
 			mesh = BuildMeshFromWythoffPoly(WythoffPoly);
@@ -222,147 +236,143 @@ public class PolyHydra : MonoBehaviour {
 		}
 		else
 		{
-			if (ConwayOperators != null)
-			{
-				conway = new ConwayPoly(WythoffPoly);
-				foreach (var op in ConwayOperators) {
-					int faceSelection;
-					if (op.disabled) {continue;}
-					switch (op.opType) {
-						case Ops.Identity:
-							break;
-						case Ops.Kis:
-							faceSelection = CalculateFaceSelection(op.faceSelections);
-							conway = faceSelection==0 ? conway.Kis(op.amount) : conway.KisN(op.amount, faceSelection);								
-							break;
-						case Ops.Dual:
-							conway = conway.Dual();
-							break;
-						case Ops.Ambo:
-							conway = conway.Ambo();
-							break;
-						case Ops.Zip:
-							conway = conway.Kis(op.amount);
-							conway = conway.Dual();
-							break;
-						case Ops.Expand:
-							conway = conway.Ambo();
-							conway = conway.Ambo();
-							break;
-						case Ops.Bevel:
-							conway = conway.Ambo();
-							conway = conway.Dual();
-							conway = conway.Kis(op.amount);
-							conway = conway.Dual();
-							break;
-						case Ops.Join:
-							conway = conway.Ambo();
-							conway = conway.Dual();
-							break;
-						case Ops.Needle:
-							conway = conway.Dual();
-							conway = conway.Kis(op.amount);
-							break;
-						case Ops.Ortho:
-							conway = conway.Ambo();
-							conway = conway.Ambo();
-							conway = conway.Dual();
-							break;
-						case Ops.Meta:
-							conway = conway.Ambo();
-							conway = conway.Dual();
-							conway = conway.Kis(op.amount);
-							break;
-						case Ops.Truncate:
-							conway = conway.Dual();
-							conway = conway.Kis(op.amount);
-							conway = conway.Dual();
-							break;
-						case Ops.Gyro:
-							conway = conway.Gyro(op.amount);
-							break;
-						case Ops.Snub:
-							conway = conway.Gyro(op.amount);
-							conway = conway.Dual();
-							break;
-						case Ops.Exalt:
-							conway = conway.Dual();
-							conway = conway.Kis(op.amount);
-							conway = conway.Dual();
-							conway = conway.Kis(op.amount);
-							break;						
-						case Ops.Yank:
-							conway = conway.Kis(op.amount);
-							conway = conway.Dual();
-							conway = conway.Kis(op.amount);
-							conway = conway.Dual();
-							break;
-							
-//						case Ops.Subdivide:
-//							conway = conway.Subdivide();
-//							break;
-//						case Ops.Chamfer:
-//							conway = conway.Chamfer();
-//							break;
-
-						case Ops.Offset:
-							// Split faces
-							conway = conway.FaceScale(0, 0);
-							conway = conway.Offset(op.amount);
-							break;
-						case Ops.Extrude:
-							// Split faces
-							conway = conway.FaceScale(0, 0);
-							conway = conway.Extrude(op.amount, false);
-							break;
-//						case Ops.Ribbon:
-//							conway = conway.Ribbon(op.amount, false, 0.1f);
-//							break;
-						case Ops.FaceScale:
-							faceSelection = CalculateFaceSelection(op.faceSelections);
-							conway = conway.FaceScale(op.amount, faceSelection);
-							break;
-						case Ops.FaceRotate:
-							faceSelection = CalculateFaceSelection(op.faceSelections);
-							conway = conway.FaceRotate(op.amount, faceSelection);
-							break;
-						case Ops.FaceRemove:
-							faceSelection = CalculateFaceSelection(op.faceSelections);
-							conway = conway.FaceRemove(faceSelection, false);								
-							break;
-						case Ops.FaceKeep:
-							faceSelection = CalculateFaceSelection(op.faceSelections);
-							conway = conway.FaceRemove(faceSelection, true);								
-							break;
-						case Ops.AddDual:
-							conway = conway.AddDual(op.amount);								
-							break;
-					}
-				}
-			}
-			
+			ApplyOps();
 			conway.ScalePolyhedra();
-		
 			// If we Kis we don't need fan triangulation (which breaks on non-convex faces)
 			conway = conway.Kis(0, true);
-			
 			mesh = BuildMeshFromConwayPoly(conway, TwoSided);
-			
 		}
-
-		//_polyhedron.CreateBlendShapes();
-		
 		mesh.RecalculateTangents();
 		mesh.RecalculateBounds();
-		if (meshFilter != null)
-		{
-			meshFilter.mesh = mesh;
-		}
+		if (meshFilter != null) meshFilter.mesh = mesh;
+	}
 
+	private void ApplyOps()
+	{
+		if (ConwayOperators == null) return;
+		conway = new ConwayPoly(WythoffPoly);
+		foreach (var op in ConwayOperators)
+		{
+			int faceSelection;
+			if (op.disabled)
+			{
+				continue;
+			}
+
+			switch (op.opType)
+			{
+				case Ops.Identity:
+					break;
+				case Ops.Kis:
+					faceSelection = CalculateFaceSelection(op.faceSelections);
+					conway = faceSelection == 0 ? conway.Kis(op.amount) : conway.KisN(op.amount, faceSelection);
+					break;
+				case Ops.Dual:
+					conway = conway.Dual();
+					break;
+				case Ops.Ambo:
+					conway = conway.Ambo();
+					break;
+				case Ops.Zip:
+					conway = conway.Kis(op.amount);
+					conway = conway.Dual();
+					break;
+				case Ops.Expand:
+					conway = conway.Ambo();
+					conway = conway.Ambo();
+					break;
+				case Ops.Bevel:
+					conway = conway.Ambo();
+					conway = conway.Dual();
+					conway = conway.Kis(op.amount);
+					conway = conway.Dual();
+					break;
+				case Ops.Join:
+					conway = conway.Ambo();
+					conway = conway.Dual();
+					break;
+				case Ops.Needle:
+					conway = conway.Dual();
+					conway = conway.Kis(op.amount);
+					break;
+				case Ops.Ortho:
+					conway = conway.Ambo();
+					conway = conway.Ambo();
+					conway = conway.Dual();
+					break;
+				case Ops.Meta:
+					conway = conway.Ambo();
+					conway = conway.Dual();
+					conway = conway.Kis(op.amount);
+					break;
+				case Ops.Truncate:
+					conway = conway.Dual();
+					conway = conway.Kis(op.amount);
+					conway = conway.Dual();
+					break;
+				case Ops.Gyro:
+					conway = conway.Gyro(op.amount);
+					break;
+				case Ops.Snub:
+					conway = conway.Gyro(op.amount);
+					conway = conway.Dual();
+					break;
+				case Ops.Exalt:
+					conway = conway.Dual();
+					conway = conway.Kis(op.amount);
+					conway = conway.Dual();
+					conway = conway.Kis(op.amount);
+					break;
+				case Ops.Yank:
+					conway = conway.Kis(op.amount);
+					conway = conway.Dual();
+					conway = conway.Kis(op.amount);
+					conway = conway.Dual();
+					break;
+
+				//						case Ops.Subdivide:
+				//							conway = conway.Subdivide();
+				//							break;
+				//						case Ops.Chamfer:
+				//							conway = conway.Chamfer();
+				//							break;
+
+				case Ops.Offset:
+					// Split faces
+					conway = conway.FaceScale(0, 0);
+					conway = conway.Offset(op.amount);
+					break;
+				case Ops.Extrude:
+					// Split faces
+					conway = conway.FaceScale(0, 0);
+					conway = conway.Extrude(op.amount, false);
+					break;
+				//						case Ops.Ribbon:
+				//							conway = conway.Ribbon(op.amount, false, 0.1f);
+				//							break;
+				case Ops.FaceScale:
+					faceSelection = CalculateFaceSelection(op.faceSelections);
+					conway = conway.FaceScale(op.amount, faceSelection);
+					break;
+				case Ops.FaceRotate:
+					faceSelection = CalculateFaceSelection(op.faceSelections);
+					conway = conway.FaceRotate(op.amount, faceSelection);
+					break;
+				case Ops.FaceRemove:
+					faceSelection = CalculateFaceSelection(op.faceSelections);
+					conway = conway.FaceRemove(faceSelection, false);
+					break;
+				case Ops.FaceKeep:
+					faceSelection = CalculateFaceSelection(op.faceSelections);
+					conway = conway.FaceRemove(faceSelection, true);
+					break;
+				case Ops.AddDual:
+					conway = conway.AddDual(op.amount);
+					break;
+			}
+		}
 	}
 	
-
-
 	public Mesh BuildMeshFromWythoffPoly(WythoffPoly source)
 	{
 		
