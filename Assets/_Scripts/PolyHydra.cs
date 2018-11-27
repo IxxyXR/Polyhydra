@@ -17,6 +17,9 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshFilter))]
 public class PolyHydra : MonoBehaviour {
+	
+	const int MAX_CACHE_LENGTH = 5000;
+	
 	public PolyTypes PolyType;
 	public string WythoffSymbol;
 	public bool BypassOps;
@@ -113,7 +116,7 @@ public class PolyHydra : MonoBehaviour {
 			timestamp = t;
 		}
 	}
-	private Dictionary<string, ConwayCacheEntry> _conwayCache;
+	private Dictionary<int, ConwayCacheEntry> _conwayCache;
 	
 	public Color[] gizmoPallette = {
 		Color.red,
@@ -265,7 +268,7 @@ public class PolyHydra : MonoBehaviour {
 	{
 		if (ConwayOperators == null) return;
 		conway = new ConwayPoly(WythoffPoly);
-		var cacheKey = WythoffPoly.WythoffSymbol;
+		var cacheKeySource = WythoffPoly.WythoffSymbol;
 		foreach (var op in ConwayOperators)
 		{
 			if (op.disabled)
@@ -273,16 +276,14 @@ public class PolyHydra : MonoBehaviour {
 				continue;
 			}
 
-			cacheKey += JsonConvert.SerializeObject(op);
-			if (_conwayCache == null) _conwayCache = new Dictionary<string, ConwayCacheEntry>();
-			if (_conwayCache.ContainsKey(cacheKey))
+			cacheKeySource += JsonConvert.SerializeObject(op);
+			if (_conwayCache == null) _conwayCache = new Dictionary<int, ConwayCacheEntry>();
+			if (_conwayCache.ContainsKey(cacheKeySource.GetHashCode()))
 			{
-				Debug.Log("main cache hit");
-				conway = _conwayCache[cacheKey].conway;
+				conway = _conwayCache[cacheKeySource.GetHashCode()].conway;
 			}
 			else
 			{
-				Debug.Log("main cache miss");
 				int faceSelection;
 	
 				switch (op.opType)
@@ -398,13 +399,13 @@ public class PolyHydra : MonoBehaviour {
 				}
 
 				var cached = new ConwayCacheEntry(conway, DateTime.UtcNow.Ticks);
-				_conwayCache[cacheKey] = cached;
-				if (_conwayCache.Count > 1000)
+				_conwayCache[cacheKeySource.GetHashCode()] = cached;
+				if (_conwayCache.Count > MAX_CACHE_LENGTH)
 				{
-					var sortedDict = from i in _conwayCache orderby i.Value.timestamp ascending select i;
-					Debug.Log(sortedDict.First().Value.timestamp);
-					Debug.Log(sortedDict.Last().Value.timestamp);
-					Debug.Log("++++++++++++++++");
+					// Cull half the cache
+					var ordered = _conwayCache.OrderBy(kv => kv.Key);
+					var half = _conwayCache.Count/2;
+					_conwayCache = ordered.Skip(half).ToDictionary(kv => kv.Key, kv => kv.Value);
 				}
 
 			}
