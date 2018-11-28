@@ -87,7 +87,8 @@ public class PolyHydra : MonoBehaviour {
 	public List<ConwayOperator> ConwayOperators;
 	
 	[Header("Gizmos")]
-	public bool vertexGizmos;
+	public bool wythoffVertexGizmos;
+	public bool conwayVertexGizmos;
 	public bool faceCenterGizmos;
 	public bool edgeGizmos;
 	public bool faceGizmos;
@@ -256,8 +257,7 @@ public class PolyHydra : MonoBehaviour {
 			ApplyOps();
 			conway.ScalePolyhedra();
 			// If we Kis we don't need fan triangulation (which breaks on non-convex faces)
-			conway = conway.Kis(0, true);
-			mesh = BuildMeshFromConwayPoly(conway, TwoSided);
+			mesh = BuildMeshFromConwayPoly(conway.Kis(0, true), TwoSided);
 		}
 		mesh.RecalculateTangents();
 		mesh.RecalculateBounds();
@@ -271,11 +271,8 @@ public class PolyHydra : MonoBehaviour {
 		var cacheKeySource = WythoffPoly.WythoffSymbol;
 		foreach (var op in ConwayOperators)
 		{
-			if (op.disabled)
-			{
-				continue;
-			}
-
+			if (op.disabled) continue;
+			
 			cacheKeySource += JsonConvert.SerializeObject(op);
 			if (_conwayCache == null) _conwayCache = new Dictionary<int, ConwayCacheEntry>();
 			if (_conwayCache.ContainsKey(cacheKeySource.GetHashCode()))
@@ -546,7 +543,7 @@ public class PolyHydra : MonoBehaviour {
 			return;
 		}
 
-		if (vertexGizmos)
+		if (wythoffVertexGizmos)
 		{
 			Gizmos.color = Color.white;
 			if (WythoffPoly.Vertices != null)
@@ -554,6 +551,21 @@ public class PolyHydra : MonoBehaviour {
 				for (int i = 0; i < WythoffPoly.Vertices.Length; i++)
 				{
 					Vector3 vert = WythoffPoly.Vertices[i].getVector3();
+					Vector3 pos = transform.TransformPoint(vert);
+					Gizmos.DrawWireSphere(pos, GizmoRadius);
+					Handles.Label(pos + new Vector3(0, .15f, 0), i.ToString());
+				}
+			}
+		}
+		
+		if (conwayVertexGizmos && conway!=null)
+		{
+			Gizmos.color = Color.white;
+			if (conway.Vertices != null)
+			{
+				for (int i = 0; i < conway.Vertices.Count; i++)
+				{
+					Vector3 vert = conway.Vertices[i].Position;
 					Vector3 pos = transform.TransformPoint(vert);
 					Gizmos.DrawWireSphere(pos, GizmoRadius);
 					Handles.Label(pos + new Vector3(0, .15f, 0), i.ToString());
