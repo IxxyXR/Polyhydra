@@ -77,21 +77,9 @@ namespace Conway {
 
         private ConwayPoly(IEnumerable<Vector3> verticesByPoints, IEnumerable<IEnumerable<int>> facesByVertexIndices) : this()
         {
-            //InitIndexed(verticesByPoints, facesByVertexIndices);
+            InitIndexed(verticesByPoints, facesByVertexIndices);
 
-            // Add vertices
-            foreach (Vector3 p in verticesByPoints) {
-                Vertices.Add(new Vertex(p));
-            }
-
-            foreach (IEnumerable<int> indices in facesByVertexIndices) {
-                Faces.Add(indices.Select(i => Vertices[i]));
-            }
-
-            // Find and link halfedge pairs
-            Halfedges.MatchPairs();
-
-            //Vertices.CullUnused();
+            Vertices.CullUnused();
         }
 
         private void InitIndexed(IEnumerable<Vector3> verticesByPoints,
@@ -247,61 +235,13 @@ namespace Conway {
             return oldPoly;
         }
 
-        public ConwayPoly Kebab(float ratio = 0.3333f)  // A kebab is a mixed up gyro... Geddit?
-        {
-        
-            var vertexPoints = new List<Vector3>();
-            var faceIndices = new List<IEnumerable<int>>();
-                
-            // Loop through old faces
-            for (int i = 0; i < Faces.Count; i++)
-            {
-                var oldFace = Faces[i];                
-                var thisFaceIndices = new List<int>();
-                
-                // Loop through each vertex on old face and create a new face for each
-                for (int j = 0; j < oldFace.GetHalfedges().Count; j++)
-                {
-
-                    var edges = oldFace.GetHalfedges();
-
-                    vertexPoints.Add(oldFace.Centroid);
-                    int centroidIndex = vertexPoints.Count - 1;
-
-                    var seedVertex = edges[j].Vertex;
-                    vertexPoints.Add(seedVertex.Position);
-                    var seedVertexIndex = vertexPoints.Count - 1;
-                    
-                    var OneThirdVertex = edges[j].Prev.OneThirdPoint;
-                    vertexPoints.Add(OneThirdVertex);
-                    int OneThirdIndex = vertexPoints.Count - 1;
-                    
-                    var PrevThirdVertex = edges[j].OneThirdPoint;
-                    vertexPoints.Add(PrevThirdVertex);
-                    int PrevThirdIndex = vertexPoints.Count - 1;
-                    
-                    var PrevTwoThirdVertex = edges[j].Prev.TwoThirdsPoint;
-                    vertexPoints.Add(PrevTwoThirdVertex);
-                    int PrevTwoThirdIndex = vertexPoints.Count - 1;
-                    
-                    thisFaceIndices.Add(centroidIndex);
-                    thisFaceIndices.Add(OneThirdIndex);
-                    thisFaceIndices.Add(seedVertexIndex);
-                    thisFaceIndices.Add(PrevTwoThirdIndex);
-                    thisFaceIndices.Add(PrevThirdIndex);
-                }
-            
-            faceIndices.Add(thisFaceIndices);
-
-            }
-            return new ConwayPoly(vertexPoints, faceIndices);
-        }
-
         public ConwayPoly Gyro(float ratio = 0.3333f)
         {
             
             // Happy accidents - skip n new faces - offset just the centroid?
-        
+
+            var existingVerts = new Dictionary<string, int>();
+            var newVerts = new Dictionary<string, int>();
             var vertexPoints = new List<Vector3>();
             var faceIndices = new List<IEnumerable<int>>();
                 
@@ -310,46 +250,89 @@ namespace Conway {
             {
                 var oldFace = Faces[i];                
                 
+                vertexPoints.Add(oldFace.Centroid);
+                int centroidIndex = vertexPoints.Count - 1;
+
                 // Loop through each vertex on old face and create a new face for each
                 for (int j = 0; j < oldFace.GetHalfedges().Count; j++)
                 {
+
+                    int seedVertexIndex;
+                    int OneThirdIndex;
+                    int PairOneThirdIndex;
+                    int PrevThirdIndex;
+
+                    string keyName;
 
                     var thisFaceIndices = new List<int>();
 
                     var edges = oldFace.GetHalfedges();
 
-                    //vertexPoints.Add(oldFace.Centroid * (1 + scale));
-                    vertexPoints.Add(oldFace.Centroid);
-                    int centroidIndex = vertexPoints.Count - 1;
 
                     var seedVertex = edges[j].Vertex;
-                    vertexPoints.Add(seedVertex.Position);
-                    var seedVertexIndex = vertexPoints.Count - 1;
+                    keyName = seedVertex.Name;
+                    if (existingVerts.ContainsKey(keyName))
+                    {
+                        seedVertexIndex = existingVerts[keyName];
+                    }
+                    else
+                    {
+                        vertexPoints.Add(seedVertex.Position);
+                        seedVertexIndex = vertexPoints.Count - 1;
+                        existingVerts[keyName] = seedVertexIndex;
+                    }
                     
                     var OneThirdVertex = edges[j].PointAlongEdge(ratio);
-                    vertexPoints.Add(OneThirdVertex);
-                    int OneThirdIndex = vertexPoints.Count - 1;
+                    keyName = edges[j].Name;
+                    if (newVerts.ContainsKey(keyName))
+                    {
+                        OneThirdIndex = newVerts[keyName];
+                    }
+                    else
+                    {
+                        vertexPoints.Add(OneThirdVertex);
+                        OneThirdIndex = vertexPoints.Count - 1;
+                        newVerts[keyName] = OneThirdIndex;
+                    }
                     
-                    var PrevThirdVertex = edges[j].Next.PointAlongEdge(1-ratio);
-                    vertexPoints.Add(PrevThirdVertex);
-                    int PrevThirdIndex = vertexPoints.Count - 1;
                     
-                    var PrevTwoThirdVertex = edges[j].Next.PointAlongEdge(ratio);
-                    vertexPoints.Add(PrevTwoThirdVertex);
-                    int PrevTwoThirdIndex = vertexPoints.Count - 1;
+                    var PrevThirdVertex = edges[j].Next.Pair.PointAlongEdge(ratio);
+                    keyName = edges[j].Next.Pair.Name;
+                    if (newVerts.ContainsKey(keyName))
+                    {
+                        PrevThirdIndex = newVerts[keyName];
+                    }
+                    else
+                    {
+                        vertexPoints.Add(PrevThirdVertex);
+                        PrevThirdIndex = vertexPoints.Count - 1;
+                        newVerts[keyName] = PrevThirdIndex;
+                    }
+                    
+                    var PairOneThird = edges[j].Pair.PointAlongEdge(ratio);
+                    keyName = edges[j].Pair.Name;
+                    if (newVerts.ContainsKey(keyName))
+                    {
+                        PairOneThirdIndex = newVerts[keyName];
+                    }
+                    else
+                    {
+                        vertexPoints.Add(PairOneThird);
+                        PairOneThirdIndex = vertexPoints.Count - 1;
+                        newVerts[keyName] = PairOneThirdIndex;
+                    }
                     
                     thisFaceIndices.Add(centroidIndex);
-                    thisFaceIndices.Add(OneThirdIndex);
-                    thisFaceIndices.Add(seedVertexIndex);
                     thisFaceIndices.Add(PrevThirdIndex);
-                    thisFaceIndices.Add(PrevTwoThirdIndex);
+                    thisFaceIndices.Add(seedVertexIndex);
+                    thisFaceIndices.Add(OneThirdIndex);
+                    thisFaceIndices.Add(PairOneThirdIndex);
                     
                     faceIndices.Add(thisFaceIndices);
                 }
             }
 
             var poly = new ConwayPoly(vertexPoints, faceIndices);
-            //AdjustXYZ(3);
             return poly;
         }
         
