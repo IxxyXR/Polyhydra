@@ -323,10 +323,10 @@ namespace Conway {
                     }
                     
                     thisFaceIndices.Add(centroidIndex);
-                    thisFaceIndices.Add(PrevThirdIndex);
-                    thisFaceIndices.Add(seedVertexIndex);
-                    thisFaceIndices.Add(OneThirdIndex);
                     thisFaceIndices.Add(PairOneThirdIndex);
+                    thisFaceIndices.Add(OneThirdIndex);
+                    thisFaceIndices.Add(seedVertexIndex);
+                    thisFaceIndices.Add(PrevThirdIndex);
                     
                     faceIndices.Add(thisFaceIndices);
                 }
