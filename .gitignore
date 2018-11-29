@@ -41,3 +41,4 @@ Assets/Plugins/Editor/JetBrains*
 .DS_Store
 /Experimental/
 /WebGL*
+Assets/3rd Party Optional*
