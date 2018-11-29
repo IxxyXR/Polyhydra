@@ -42,3 +42,4 @@ Assets/Plugins/Editor/JetBrains*
 /Experimental/
 /WebGL*
 Assets/3rd Party Optional*
+ProjectSettings\FbxExportSettings.asset
