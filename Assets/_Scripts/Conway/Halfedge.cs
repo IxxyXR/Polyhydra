@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -34,16 +35,20 @@ namespace Conway {
     
             public String Name {
                 get {
-                    if (Vertex == null || Prev == null) {
-                        return null;
-                    }
-    
-                    if (Prev.Vertex == null) {
-                        return null;
-                    }
-    
+                    if (Vertex == null || Prev == null || Prev.Vertex == null) return null;
                     return Vertex.Name + Prev.Vertex.Name;
                 }
+            }
+        
+            public String PairedName {
+                // A unique name for the half-edge pair
+                get
+                {
+                    if (Vertex == null || Prev == null || Prev.Vertex == null) return null;
+                    var names = new List<string> {Vertex.Name, Prev.Vertex.Name};
+                    names.Sort();
+                    return String.Join(",", names);
+            }
             }
     
             public Vector3 Midpoint {
@@ -68,5 +73,10 @@ namespace Conway {
         }
 
         #endregion
+
+        public string[] getEnds()
+        {
+            return new string[2] { Vertex.Name, Pair.Vertex.Name};
+        }
     }
 }

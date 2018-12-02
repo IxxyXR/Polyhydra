@@ -40,7 +40,8 @@ public class PolyHydra : MonoBehaviour {
 		Truncate,
 		Gyro,
 		Snub,
-		//Subdivide,
+		Subdivide,
+		Loft,
 		Exalt,
 		Yank,
 		//Chamfer,
@@ -98,7 +99,6 @@ public class PolyHydra : MonoBehaviour {
 	private int[] meshFaces;
 	public WythoffPoly WythoffPoly;
 	private Dictionary<string, WythoffPoly> _wythoffCache;
-	private bool ShowDuals = false;
 	private ConwayPoly conway;
 
 	private MeshFilter meshFilter;
@@ -147,7 +147,8 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.Truncate, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.Gyro, new OpConfig{amountMin = -.5f, amountMax = 0.5f}},
 			{Ops.Snub, new OpConfig{amountMin = -.5f, amountMax = 0.5f}},
-			//{Ops.Subdivide new OpConfig{}},
+			{Ops.Subdivide, new OpConfig {usesAmount=false}},
+			{Ops.Loft, new OpConfig {usesFaces=true, amountMin = 0, amountMax = 1}},
 			{Ops.Exalt, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.Yank, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			//{Ops.Chamfer new OpConfig{}},
@@ -261,7 +262,17 @@ public class PolyHydra : MonoBehaviour {
 		}
 		mesh.RecalculateTangents();
 		mesh.RecalculateBounds();
-		if (meshFilter != null) meshFilter.mesh = mesh;
+		if (meshFilter != null)
+		{
+			if (Application.isEditor)
+			{
+				meshFilter.sharedMesh = mesh;
+			}
+			else
+			{
+				meshFilter.mesh = mesh;
+			}
+		}
 	}
 
 	private void ApplyOps()
@@ -289,7 +300,7 @@ public class PolyHydra : MonoBehaviour {
 						break;
 					case Ops.Kis:
 						faceSelection = CalculateFaceSelection(op.faceSelections);
-						conway = faceSelection == 0 ? conway.Kis(op.amount) : conway.KisN(op.amount, faceSelection);
+						conway = conway.KisN(op.amount, faceSelection);
 						break;
 					case Ops.Dual:
 						conway = conway.Dual();
@@ -353,10 +364,13 @@ public class PolyHydra : MonoBehaviour {
 						conway = conway.Kis(op.amount);
 						conway = conway.Dual();
 						break;
-	
-					//						case Ops.Subdivide:
-					//							conway = conway.Subdivide();
-					//							break;
+					case Ops.Subdivide:
+						conway = conway.Subdivide();
+						break;
+					case Ops.Loft:
+						faceSelection = CalculateFaceSelection(op.faceSelections);
+						conway = conway.Loft(op.amount, faceSelection);
+						break;					
 					//						case Ops.Chamfer:
 					//							conway = conway.Chamfer();
 					//							break;
@@ -575,15 +589,26 @@ public class PolyHydra : MonoBehaviour {
 
 		if (faceCenterGizmos)
 		{
-			Gizmos.color = Color.blue;
-			if (WythoffPoly.FaceCenters != null)
+			if (conway == null)
 			{
-				foreach (var f in WythoffPoly.FaceCenters)
+				Gizmos.color = Color.blue;
+				if (WythoffPoly.FaceCenters != null)
 				{
-					Gizmos.DrawWireSphere(transform.TransformPoint(f.getVector3()), GizmoRadius);
+					foreach (var f in WythoffPoly.FaceCenters)
+					{
+						Gizmos.DrawWireSphere(transform.TransformPoint(f.getVector3()), GizmoRadius);
+					}
 				}
 			}
-			
+			else
+			{
+				Gizmos.color = Color.green;
+				foreach (var f in conway.Faces)
+				{
+					Gizmos.DrawWireSphere(transform.TransformPoint(f.Centroid), GizmoRadius);
+				}
+			}
+
 		}
 
 

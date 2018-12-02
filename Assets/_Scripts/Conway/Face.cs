@@ -13,6 +13,10 @@ namespace Conway {
                 Halfedge = edge;
                 Name = Guid.NewGuid().ToString("N").Substring(0, 8);
             }
+        
+        public Face() {
+            Name = Guid.NewGuid().ToString("N").Substring(0, 8);
+        }
 
         #endregion
 

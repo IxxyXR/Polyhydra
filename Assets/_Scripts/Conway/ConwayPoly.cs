@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Schema;
 using Wythoff;
 using UnityEngine;
 
@@ -152,16 +153,6 @@ namespace Conway {
 
         #region conway methods
 
-        // TODO
-        // See http://elfnor.com/conway-polyhedron-operators-in-sverchok.html
-        // and https://en.wikipedia.org/wiki/Conway_polyhedron_notation
-        //
-        // chamfer
-        // gyro
-        // whirl
-        // propellor
-        // snub (=gyro(dual))
-
         /// <summary>
         /// Conway's dual operator
         /// </summary>
@@ -233,6 +224,116 @@ namespace Conway {
             newPoly.ScalePolyhedra(scale);
             oldPoly.Append(newPoly);
             return oldPoly;
+        }
+
+        /// <summary>
+        /// Conway's ambo operator
+        /// </summary>
+        /// <returns>the ambo as a new mesh</returns>
+        public ConwayPoly Ambo() {
+            
+            // Create points at midpoint of unique halfedges (edges to vertices) and create lookup table
+            List<Vector3> vertexPoints = new List<Vector3>();  // vertices as points
+            Dictionary<string, int> hlookup = new Dictionary<string, int>();
+            int count = 0;
+            
+            foreach (var edge in Halfedges) {
+                // if halfedge's pair is already in the table, give it the same index
+                if (edge.Pair != null && hlookup.ContainsKey(edge.Pair.Name)) {
+                    hlookup.Add(edge.Name, hlookup[edge.Pair.Name]);
+                } else {  // otherwise create a new vertex and increment the index
+                    hlookup.Add(edge.Name, count++);
+                    vertexPoints.Add(edge.Midpoint);
+                }
+            }
+
+            var faceIndices = new List<IEnumerable<int>>();  // faces as vertex indices
+            // faces to faces
+            foreach (var face in Faces) {
+                faceIndices.Add(face.GetHalfedges().Select(edge => hlookup[edge.Name]));
+            }
+
+            // vertices to faces
+            foreach (var vertex in Vertices) {
+                var he = vertex.Halfedges;
+                if (he.Count == 0) continue;  // no halfedges (naked vertex, ignore)
+                var list = he.Select(edge => hlookup[edge.Name]);  // halfedge indices for vertex-loop
+                if (he[0].Next.Pair == null) {
+                    // Handle boundary vertex, add itself and missing boundary halfedge
+                    list = list.Concat(new[] {vertexPoints.Count, hlookup[he[0].Next.Name]});
+                    vertexPoints.Add(vertex.Position);
+                }
+
+                faceIndices.Add(list);
+            }
+
+            return new ConwayPoly(vertexPoints, faceIndices);
+        }
+
+        /// <summary>
+        /// Conway's kis operator
+        /// </summary>
+        /// <returns>the kis as a new mesh</returns>
+        public ConwayPoly Kis(float offset=0, bool excludeTriangles=false) {
+            
+            // vertices and faces to vertices
+            var newVerts = Faces.Select(f => f.Centroid + f.Normal * offset);
+            var vertexPoints = Enumerable.Concat(Vertices.Select(v => v.Position), newVerts);
+            
+            // vertex lookup
+            Dictionary<string, int> vlookup = new Dictionary<string, int>();
+            int n = Vertices.Count;
+            for (int i = 0; i < n; i++) {
+                vlookup.Add(Vertices[i].Name, i);
+            }
+
+            // create new tri-faces (like a fan)
+            var faceIndices = new List<IEnumerable<int>>(); // faces as vertex indices
+            for (int i = 0; i < Faces.Count; i++) {
+                if (Faces[i].Sides <= 3 && excludeTriangles) {
+                    faceIndices.Add(ListFacesByVertexIndices()[i]);
+                } else {
+                    foreach (var edge in Faces[i].GetHalfedges()) {
+                        // create new face from edge start, edge end and centroid
+                        faceIndices.Add(
+                            new[] {vlookup[edge.Prev.Vertex.Name], vlookup[edge.Vertex.Name], i + n}
+                        );
+                    }
+                }
+            }
+            
+            return new ConwayPoly(vertexPoints, faceIndices);
+        }
+
+        public ConwayPoly KisN(float offset, int sides) {
+
+            // vertices and faces to vertices
+            var newVerts = Faces.Select(f => f.Centroid + f.Normal * offset);
+            var vertexPoints = Enumerable.Concat(Vertices.Select(v => v.Position), newVerts);
+                
+            // vertex lookup
+            Dictionary<string, int> vlookup = new Dictionary<string, int>();
+            int n = Vertices.Count;
+            for (int i = 0; i < n; i++) {
+                vlookup.Add(Vertices[i].Name, i);
+            }
+    
+            // create new tri-faces (like a fan)
+            var faceIndices = new List<IEnumerable<int>>(); // faces as vertex indices
+            for (int i = 0; i < Faces.Count; i++) {
+                if (sides > 2 && Faces[i].Sides != sides) {
+                    faceIndices.Add(ListFacesByVertexIndices()[i]);
+                } else {
+                    foreach (var edge in Faces[i].GetHalfedges()) {
+                        // create new face from edge start, edge end and centroid
+                        faceIndices.Add(
+                            new[] {vlookup[edge.Prev.Vertex.Name], vlookup[edge.Vertex.Name], i + n}
+                        );
+                    }
+                }
+            }
+                
+            return new ConwayPoly(vertexPoints, faceIndices);
         }
 
         public ConwayPoly Gyro(float ratio = 0.3333f)
@@ -336,116 +437,744 @@ namespace Conway {
             return poly;
         }
         
-        /// <summary>
-        /// Conway's ambo operator
-        /// </summary>
-        /// <returns>the ambo as a new mesh</returns>
-        public ConwayPoly Ambo() {
-            
-            // Create points at midpoint of unique halfedges (edges to vertices) and create lookup table
-            List<Vector3> vertexPoints = new List<Vector3>();  // vertices as points
-            Dictionary<string, int> hlookup = new Dictionary<string, int>();
-            int count = 0;
-            
-            foreach (var edge in Halfedges) {
-                // if halfedge's pair is already in the table, give it the same index
-                if (edge.Pair != null && hlookup.ContainsKey(edge.Pair.Name)) {
-                    hlookup.Add(edge.Name, hlookup[edge.Pair.Name]);
-                } else {  // otherwise create a new vertex and increment the index
-                    hlookup.Add(edge.Name, count++);
-                    vertexPoints.Add(edge.Midpoint);
-                }
+        #endregion
+
+        #region extended conway methods
+	    
+		// Add Vertices at edge midpoints and new faces around each vertex
+		// Equivalent to ambo without removing vertices
+		public ConwayPoly Subdivide()
+		{
+			
+			var faceIndices = new List<int[]>();			
+			var vertexPoints = Vertices.Select(x => x.Position).ToList(); // Existing vertices
+			
+			// Create new vertices, one at the midpoint of each edge
+		    
+			var newVertices = new Dictionary<string, int>();
+			int vertexIndex = vertexPoints.Count();
+		    
+			foreach (var face in Faces)
+			{
+				// Create a new face for each existing face
+				var newFace = new int[face.Sides];
+			    var edge = face.Halfedge;
+			    
+				for (int i=0; i<face.Sides; i++)
+				{
+				    if (!newVertices.ContainsKey(edge.PairedName))
+				    {
+				        vertexPoints.Add(edge.Midpoint);
+				        newVertices[edge.PairedName] = vertexIndex++;
+				    }
+				    newFace[i] = newVertices[edge.PairedName];
+				    edge = edge.Next;
+				}
+			    faceIndices.Add(newFace);
+			}
+			
+			// Create new faces for each vertex
+		    		    
+			for (int i = 0 ; i < Vertices.Count; i++)
+			{
+			    
+				var adjacentFaces = Vertices[i].GetVertexFaces();
+			    
+				foreach (Face face in adjacentFaces)
+				{
+				    var edge = face.GetHalfedges().Find(x => x.Vertex == Vertices[i]);
+					int currVertex = newVertices[edge.PairedName];
+				    int prevVertex = newVertices[edge.Next.PairedName];
+					var triangle = new int[]{i, prevVertex, currVertex};
+					faceIndices.Add(triangle);
+				}
+			}
+			
+			return new ConwayPoly(vertexPoints, faceIndices);
+		}
+	
+        // Interesting accident
+        public ConwayPoly BrokenLoft(float ratio=0.33333333f, int sides=0)
+        {
+
+            var faceIndices = new List<int[]>();
+            var vertexPoints = new List<Vector3>();
+            var existingVertices = new Dictionary<Vector3, int>();
+            var newVertices = new Dictionary<string, int>();
+
+            for (var i = 0; i < Vertices.Count; i++)
+            {
+                vertexPoints.Add(Vertices[i].Position);
+                existingVertices[vertexPoints[i]] = i;
             }
 
-            var faceIndices = new List<IEnumerable<int>>();  // faces as vertex indices
-            // faces to faces
-            foreach (var face in Faces) {
-                faceIndices.Add(face.GetHalfedges().Select(edge => hlookup[edge.Name]));
-            }
+            int vertexIndex = vertexPoints.Count();
+		    
+            // Create new vertices
 
-            // vertices to faces
-            foreach (var vertex in Vertices) {
-                var he = vertex.Halfedges;
-                if (he.Count == 0) continue;  // no halfedges (naked vertex, ignore)
-                var list = he.Select(edge => hlookup[edge.Name]);  // halfedge indices for vertex-loop
-                if (he[0].Next.Pair == null) {
-                    // Handle boundary vertex, add itself and missing boundary halfedge
-                    list = list.Concat(new[] {vertexPoints.Count, hlookup[he[0].Next.Name]});
-                    vertexPoints.Add(vertex.Position);
-                }
+            foreach (var face in Faces)
+            {
+                if (sides == 0 || face.Sides == sides)
+                {
+                    var edge = face.Halfedge;
+                    var centroid = face.Centroid;
+			        
+                    // Create a new face for each existing face
+                    var newInsetFace = new int[face.Sides];
 
-                faceIndices.Add(list);
-            }
+                    for (int i = 0; i < face.Sides; i++)
+                    {
+                        var vertex = edge.Vertex.Position;
+                        var newVertex = Vector3.Lerp(vertex, centroid, ratio);
 
-            return new ConwayPoly(vertexPoints, faceIndices);
-        }
+                        vertexPoints.Add(newVertex);
+                        newInsetFace[i] = vertexIndex;
+                        newVertices[edge.Name] = vertexIndex++;
+	
+                        // Generate new faces
 
-        /// <summary>
-        /// Conway's kis operator
-        /// </summary>
-        /// <returns>the kis as a new mesh</returns>
-        public ConwayPoly Kis(float offset=0, bool excludeTriangles=false) {
-            
-            // vertices and faces to vertices
-            var newVerts = Faces.Select(f => f.Centroid + f.Normal * offset);
-            var vertexPoints = Enumerable.Concat(Vertices.Select(v => v.Position), newVerts);
-            
-            // vertex lookup
-            Dictionary<string, int> vlookup = new Dictionary<string, int>();
-            int n = Vertices.Count;
-            for (int i = 0; i < n; i++) {
-                vlookup.Add(Vertices[i].Name, i);
-            }
+                        var newFace = new[]{
+                            existingVertices[edge.Vertex.Position],
+                            (existingVertices[edge.Next.Vertex.Position] + 1),
+                            newVertices[edge.Name],
+//						    //newVertices[edge.Prev.PairedName],
 
-            // create new tri-faces (like a fan)
-            var faceIndices = new List<IEnumerable<int>>(); // faces as vertex indices
-            for (int i = 0; i < Faces.Count; i++) {
-                if (Faces[i].Sides <= 3 && excludeTriangles) {
-                    faceIndices.Add(ListFacesByVertexIndices()[i]);
-                } else {
-                    foreach (var edge in Faces[i].GetHalfedges()) {
-                        // create new face from edge start, edge end and centroid
-                        faceIndices.Add(
-                            new[] {vlookup[edge.Prev.Vertex.Name], vlookup[edge.Vertex.Name], i + n}
-                        );
+                        };
+                        faceIndices.Add(newFace);
+	
+                        edge = edge.Next;
                     }
-                }
-            }
-            
-            return new ConwayPoly(vertexPoints, faceIndices);
-        }
-
-        public ConwayPoly KisN(float offset, int sides) {
-
-            // vertices and faces to vertices
-            var newVerts = Faces.Select(f => f.Centroid + f.Normal * offset);
-            var vertexPoints = Enumerable.Concat(Vertices.Select(v => v.Position), newVerts);
-                
-            // vertex lookup
-            Dictionary<string, int> vlookup = new Dictionary<string, int>();
-            int n = Vertices.Count;
-            for (int i = 0; i < n; i++) {
-                vlookup.Add(Vertices[i].Name, i);
-            }
-    
-            // create new tri-faces (like a fan)
-            var faceIndices = new List<IEnumerable<int>>(); // faces as vertex indices
-            for (int i = 0; i < Faces.Count; i++) {
-                if (Faces[i].Sides != sides) {
-                    faceIndices.Add(ListFacesByVertexIndices()[i]);
+                    faceIndices.Add(newInsetFace);
                 } else {
-                    foreach (var edge in Faces[i].GetHalfedges()) {
-                        // create new face from edge start, edge end and centroid
-                        faceIndices.Add(
-                            new[] {vlookup[edge.Prev.Vertex.Name], vlookup[edge.Vertex.Name], i + n}
-                        );
-                    }
+                    // Keep original face
+                    //faceIndices.Add(face);
                 }
             }
-                
+	
             return new ConwayPoly(vertexPoints, faceIndices);
         }
+        
+		/**
+		* Adds smaller version of each face, with n trapezoidal faces connecting the inner
+		* it to the original version, where n is the number of vertices of the face.
+		*/
+		public ConwayPoly Loft(float ratio=0.33333333f, int sides=0)
+		{
 
+		    var faceIndices = new List<int[]>();
+		    var vertexPoints = new List<Vector3>();
+		    var existingVertices = new Dictionary<Vector3, int>();
+		    var newVertices = new Dictionary<string, int>();
+
+		    for (var i = 0; i < Vertices.Count; i++)
+		    {
+		        vertexPoints.Add(Vertices[i].Position);
+		        existingVertices[vertexPoints[i]] = i;
+		    }
+
+			int vertexIndex = vertexPoints.Count();
+		    
+		    // Create new vertices
+
+		    foreach (var face in Faces)
+			{
+			    if (sides == 0 || face.Sides == sides)
+			    {
+			        var edge = face.Halfedge;
+			        var centroid = face.Centroid;
+			        
+			        // Create a new face for each existing face
+			        var newInsetFace = new int[face.Sides];
+			        int newV = -1;
+			        int prevNewV = -1;
+
+			        for (int i = 0; i < face.Sides; i++)
+			        {
+			            var vertex = edge.Vertex.Position;
+			            var newVertex = Vector3.Lerp(vertex, centroid, ratio);
+
+			            vertexPoints.Add(newVertex);
+			            newInsetFace[i] = vertexIndex;
+			            newVertices[edge.Name] = vertexIndex++;
+
+			            // Generate new faces
+			            newV = newVertices[edge.Name];
+			            if (i > 0)
+			            {
+			                var newEdgeFace = new[]
+			                {
+			                    newV,
+			                    prevNewV,
+			                    existingVertices[edge.Prev.Vertex.Position],
+			                    existingVertices[edge.Vertex.Position]
+			                };
+			                faceIndices.Add(newEdgeFace);
+			            }
+			            prevNewV = newV;	
+					    edge = edge.Next;
+					}
+			        faceIndices.Add(newInsetFace);
+				} else {
+			        
+				    faceIndices.Add(
+				        face.GetHalfedges().Select(
+				            x => existingVertices[x.Vertex.Position]
+                    ).ToArray());
+				}
+
+			    var lastEdge = face.Halfedge.Prev;
+			    var finalFace = new[]
+			    {
+			        existingVertices[lastEdge.Vertex.Position],
+			        existingVertices[lastEdge.Next.Vertex.Position],
+			        newVertices[lastEdge.Next.Name],
+			        newVertices[lastEdge.Name]
+			    };
+			    faceIndices.Add(finalFace);
+			}
+		    
+		    Debug.Log("Outer: " + faceIndices.Count);
+		    foreach (var x in faceIndices)
+		    {
+		        Debug.Log("Inner: " + x.Count());
+                
+		    }
+	
+			return new ConwayPoly(vertexPoints, faceIndices);
+		}
+//				
+//		/**
+//		* Compute the "quinto" polyhedron of this polyhedron. Equivalent to an
+//		* ortho but truncating the vertex at the center of original faces. This
+//		* creates a small copy of the original face (but rotated).
+//		* 
+//		* @return The quinto polyhedron.
+//		*/
+//		public ConwayPoly quinto() {
+//			
+//					
+//			var vertexPoints = new List<Vector3>();
+//			var faceIndices = new List<List<int>>();
+//			
+//			foreach (var vertexPos in Vertices) {
+//				vertexPoints.Add(new Vertex(vertexPos.Position));
+//			}
+//			
+//			// Create new vertices at the midpoint of each edge and toward the
+//			// face's centroid
+//			Dictionary<int, Dictionary<int, int>> edgeToVertex = PolyhedraUtils.addEdgeToCentroidVertices(this, quintoPolyhedron);
+//	
+//			int vertexIndex = vertexPoints.Count;
+//			var midptVertices = new Dictionary<Halfedge, int>();
+//			foreach (Halfedge edge in this.Halfedges) {
+//				vertexPoints.Add(edge.Midpoint);
+//				midptVertices[edge] = vertexIndex++;
+//			}
+//			
+//			// Generate new faces
+//			foreach (Face face in Faces) {
+//				Face centralFace = new Face();
+//				List<Halfedge> edges = face.GetHalfedges();
+//				
+//				int[] prevEnds = edges[face.Sides - 1].getEnds();
+//				int prevVertex = edgeToVertex[prevEnds[0]][prevEnds[1]];
+//				int prevMidpt = midptVertices[edges[face.Sides - 1]];
+//				int centralIndex = 0;
+//				foreach (Halfedge currEdge in edges) {
+//					int[] currEnds = currEdge.getEnds();
+//					int currVertex = edgeToVertex[currEnds[0]][currEnds[1]];
+//					int currMidpt = midptVertices[currEdge];
+//					
+//					Face pentagon = new Face();
+//					pentagon.setAllVertexIndices(prevVertex, prevMidpt, currEnds[0], currMidpt, currVertex);
+//					quintoPolyhedron.Faces.Add(pentagon);
+//					
+//					centralFace.setVertexIndex(centralIndex++, currVertex);
+//					
+//					// Update previous vertex indices
+//					prevVertex = currVertex;
+//					prevMidpt = currMidpt;
+//				}
+//				quintoPolyhedron.Faces.Add(centralFace);
+//			}
+//			
+//			//quintoPolyhedron.setVertexNormalsToFaceNormals();
+//			return new ConwayPoly(vertexPoints, faceIndices);
+//		}
+//	
+//		/**
+//		* Computes the "joined-lace" polyhedron of this polyhedron. Like lace, but
+//		* old edges are replaced by quadrilateral faces instead of two triangular
+//		* faces.
+//		*
+//		* @return The joined-lace polyhedron.
+//		*/
+//		public ConwayPoly joinedLace() {
+//			return this.lace(-1, true, true);
+//		}
+//	
+//		/**
+//		* Computes the "lace" polyhedron of this polyhedron. Like loft, but has
+//		* on each face an antiprism of the original face instead of a prism.
+//		* 
+//		* @return The lace polyhedron.
+//		*/
+//		public ConwayPoly lace() {
+//			return this.lace(-1, true, false);
+//		}
+//	
+//		/**
+//		* Computes the "lace" polyhedron of this polyhedron, except the operation
+//		* is only applied to faces with the specified number of sides.
+//		*
+//		* @param n The number of sides a face needs to have lace applied to it.
+//		* @return The polyhedron with lace applied to faces with n sides.
+//		*/
+//		public ConwayPoly lace(int n) {
+//			return this.lace(n, false, false);
+//		}
+//	
+//		/**
+//		* A helper method for implementing lace, parametrized lace, and
+//		* joined-lace.
+//		*
+//		* @param n      The number of sides a face needs to have lace applied
+//		*               to it.
+//		* @param ignore True if we want to ignore the parameter n.
+//		* @param joined True if we want to compute joined-lace.
+//		* @return The lace polyhedron.
+//		*/
+//		private ConwayPoly lace(int n, bool ignore, bool joined) {
+//					
+//			var vertexPoints = new List<Vector3>();
+//			var faceIndices = new List<List<int>>();
+//			
+//			foreach (var vertexPos in Vertices) {
+//				vertexPoints.Add(new Vertex(vertexPos.Position));
+//			}
+//	
+//			// Generate new vertices
+//			Dictionary<int, Dictionary<int, int>> edgeToVertex = PolyhedraUtils.addEdgeToCentroidVertices(this, lacePolyhedron);
+//	
+//			if (joined) {
+//				PolyhedraUtils.addRhombicFacesAtEdges(this, lacePolyhedron, edgeToVertex);
+//			}
+//	
+//			// Generate new faces
+//			foreach (Face face in Faces) {
+//				if (ignore || face.Sides == n) {
+//					Face twist = new Face();
+//					List<Halfedge> edges = face.GetHalfedges();
+//	
+//					for (int i = 0; i < face.Sides; i++) {
+//						// Build face at center of each original face
+//						int[] ends = edges[i].getEnds();
+//						int newVertex = edgeToVertex[ends[0]][ends[1]];
+//						twist.setVertexIndex(i, newVertex);
+//	
+//						// Always generate triangles from vertices to central face
+//						int nextInd = (i + 1) % face.Sides;
+//						int[] nextEnds = edges[nextInd].getEnds();
+//						int nextNewVertex = edgeToVertex[nextEnds[0]][nextEnds[1]];
+//	
+//						Face smallTriangle = new Face();
+//						smallTriangle.setAllVertexIndices(nextNewVertex, newVertex, ends[1]);
+//	
+//						lacePolyhedron.Faces.Add(smallTriangle);
+//					}
+//	
+//					lacePolyhedron.Faces.Add(twist);
+//	
+//					if (!joined) {
+//						// If not joined, generate triangle faces
+//						foreach (Halfedge edge in edges) {
+//							int[] ends = edge.getEnds();
+//							int currVertex = edgeToVertex[ends[0]][ends[1]];
+//	
+//							Face largeTriangle = new Face();
+//							largeTriangle.setAllVertexIndices(currVertex, ends[0], ends[1]);
+//	
+//							lacePolyhedron.Faces.Add(largeTriangle);
+//						}
+//					}
+//				} else {
+//					// Keep original face
+//					lacePolyhedron.Faces.Add(face);
+//				}
+//			}
+//	
+//			//lacePolyhedron.setVertexNormalsToFaceNormals();
+//			return new ConwayPoly(vertexPoints, faceIndices);
+//		}
+//	
+//		/**
+//		* Computes the "stake" polyhedron of this polyhedron. Like lace, but
+//		* instead of having a central face, there is a central vertex and 
+//		* quadrilaterals around the center.
+//		* 
+//		* @return The stake polyhedron.
+//		*/
+//		public ConwayPoly stake() {
+//			return this.stake(-1, true);
+//		}
+//	
+//		/**
+//		* Computes the "stake" polyhedron of this polyhedron, but only performs
+//		* the operation on faces with n sides.
+//		*
+//		* @param n The number of sides a face needs to have stake applied to it.
+//		* @return The polyhedron with stake applied to faces with n sides.
+//		*/
+//		public ConwayPoly stake(int n) {
+//			return this.stake(n, false);
+//		}
+//	
+//		/**
+//		* A helper method for implementing stake and parametrized stake.
+//		*
+//		* @param n      The number of sides a face needs to have stake applied
+//		*               to it.
+//		* @param ignore True if we want to ignore the parameter n.
+//		* @return The stake polyhedron.
+//		*/
+//		private ConwayPoly stake(int n, bool ignore) {
+//			
+//			var vertexPoints = new List<Vector3>();
+//			var faceIndices = new List<List<int>>();
+//			
+//			foreach (var vertexPos in Vertices) {
+//				vertexPoints.Add(new Vertex(vertexPos.Position));
+//			}
+//	
+//			// Generate new vertices
+//			Dictionary<int, Dictionary<int, int>> edgeToVertex = PolyhedraUtils.addEdgeToCentroidVertices(this, stakePolyhedron);
+//	
+//			int vertexIndex = vertexPoints.Count;
+//			foreach (Face face in Faces) {
+//				if (ignore || face.Sides == n) {
+//					Vector3 centroid = face.Centroid;
+//					vertexPoints.Add(new Vertex(centroid));
+//					int centroidIndex = vertexIndex++;
+//	
+//					List<Halfedge> edges = face.GetHalfedges();
+//	
+//					// Generate the quads and triangles on this face
+//					for (int i = 0; i < face.Sides; i++) {
+//						int[] ends = edges[i].getEnds();
+//						int currVertex = edgeToVertex[ends[0]][ends[1]];
+//						int[] nextEnds = edges[(i + 1) % face.Sides].getEnds();
+//						int nextVertex = edgeToVertex[nextEnds[0]][nextEnds[1]];
+//	
+//						Face triangle = new Face();
+//						Face quad = new Face();
+//						triangle.setAllVertexIndices(currVertex, ends[0], ends[1]);
+//						quad.setAllVertexIndices(nextVertex, centroidIndex, currVertex, ends[1]);
+//	
+//						stakePolyhedron.Faces.Add(triangle);
+//						stakePolyhedron.Faces.Add(quad);
+//					}
+//				} else {
+//					// Keep original face
+//					stakePolyhedron.Faces.Add(face);
+//				}
+//			}
+//	
+//			//stakePolyhedron.setVertexNormalsToFaceNormals();
+//			return new ConwayPoly(vertexPoints, faceIndices);
+//		}
+	    
+	    
+//		/**
+//		* Computes the "medial" polyhedron of this polyhedron. Adds vertices at the
+//		* face centroids and edge midpoints. Each face is split into 2n triangles,
+//		* where n is the number of vertices in the face. These triangles share a
+//		* vertex at the face's centroid.
+//		* 
+//		* @return The medial polyhedron.
+//		*/
+//		public ConwayPoly medial() {
+//			return this.medial(2);
+//		}
+//	
+//		/**
+//		* Computes the "edge-medial" polyhedron of this polyhedron. Places a
+//		* vertex at the centroid of every face, and subdivides each edge into
+//		* n segments, with edges from these subdivision points to the centroid.
+//		*
+//		* For example, the "edge-medial-3" operator corresponds to n = 3.
+//		*
+//		* @param n The number of subdivisions on each edge.
+//		* @return The edge-medial polyhedron with n subdivisions per edge.
+//		*/
+//		public ConwayPoly edgeMedial(int n) {
+//			return medial(n, true);
+//		}
+//
+//		/**
+//		 * Generalized medial, parametrized on the number of subdivisions on each
+//		 * edge. The regular medial operation corresponds to n = 2 subdivisions.
+//		 *
+//		 * @param n The number of subdivisions on each edge.
+//		 * @return The medial polyhedron with n subdivisions per edge.
+//		 */
+//		public ConwayPoly medial(int n) {
+//			return medial(n, false);
+//		}
+//	
+//		/**
+//		* Computes the "joined-medial" polyhedron of this polyhedron. The same as
+//		* medial, but with rhombic faces im place of original edges.
+//		*
+//		* @return The joined-medial polyhedron.
+//		*/
+//		public ConwayPoly joinedMedial() {
+//			
+//					
+//			var vertexPoints = new List<Vector3>();
+//			var faceIndices = new List<List<int>>();
+//			
+//			
+//			foreach (var vertexPos in Vertices) {
+//				vertexPoints.Add(new Vertex(vertexPos.Position));
+//			}
+//	
+//			// Generate new vertices and rhombic faces on original edges
+//			Dictionary<int, Dictionary<int, int>> edgeToVertex = PolyhedraUtils.addEdgeToCentroidVertices(this, medialPolyhedron);
+//			PolyhedraUtils.addRhombicFacesAtEdges(this, medialPolyhedron, edgeToVertex);
+//	
+//			// Generate triangular faces
+//			int vertexIndex = vertexPoints.Count;
+//			foreach (Face face in Faces) {
+//				Vector3 centroid = face.Centroid;
+//				vertexPoints.Add(new Vertex(centroid));
+//	
+//				List<Halfedge> edges = face.GetHalfedges();
+//				int[] prevEnds = edges[face.Sides - 1].getEnds();
+//				int prevVertex = edgeToVertex[prevEnds[0]][prevEnds[1]];
+//				foreach (Halfedge edge in edges) {
+//					int[] ends = edge.getEnds();
+//					int currVertex = edgeToVertex[ends[0]][ends[1]];
+//	
+//					Face triangle1 = new Face();
+//					Face triangle2 = new Face();
+//					triangle1.setAllVertexIndices(vertexIndex, ends[0], currVertex);
+//					triangle2.setAllVertexIndices(vertexIndex, prevVertex, ends[0]);
+//	
+//					medialPolyhedron.Faces.Add(triangle1);
+//					medialPolyhedron.Faces.Add(triangle2);
+//	
+//					prevVertex = currVertex;
+//				}
+//	
+//				vertexIndex++;
+//			}
+//	
+//			//medialPolyhedron.setVertexNormalsToFaceNormals();
+//			return new ConwayPoly(vertexPoints, faceIndices);
+//		}
+//	
+//		/**
+//		* A helper method for computing edge-medial and medial (parametrized).
+//		*
+//		* @param n    The number of subdivisions per edge.
+//		* @param edge True if computing edge-medial, false if regular medial.
+//		* @return The medial polyhedron subjected to the input constraints.
+//		*/
+//		private ConwayPoly medial(int n, bool edge) {
+//			
+//					
+//			var vertexPoints = new List<Vector3>();
+//			var faceIndices = new List<List<int>>();
+//			
+//			
+//			foreach (var vertexPos in Vertices) {
+//				vertexPoints.Add(vertexPos.Position);
+//			}
+//	
+//			// Create new vertices on edges
+//			Dictionary<int, Dictionary<int, int[]>> newVertices = PolyhedraUtils.subdivideEdges(this, medialPolyhedron, n);
+//	
+//			int vertexIndex = vertexPoints.Count();
+//			foreach (Face face in Faces) {
+//				Vector3 centroid = face.Centroid;
+//	
+//				List<Halfedge> faceEdges = face.GetHalfedges();
+//	
+//				Halfedge prevEdge = faceEdges[faceEdges.Count - 1];
+//				int[] prevEnds = prevEdge.getEnds();
+//				foreach (Halfedge currEdge in faceEdges) {
+//					int[] currEnds = currEdge.getEnds();
+//					int[] currNewVerts = newVertices[currEnds[0]][currEnds[1]];
+//	
+//					int prevLastVert = newVertices[prevEnds[0]][prevEnds[1]][n - 2];
+//					if (edge) {
+//						// One quadrilateral face
+//						Face quad = new Face();
+//						quad.setAllVertexIndices(currEnds[0], currNewVerts[0], vertexIndex, prevLastVert);
+//						medialPolyhedron.Faces.Add(quad);
+//					} else {
+//						// Two triangular faces
+//						Face triangle1 = new Face();
+//						Face triangle2 = new Face();
+//						triangle1.setAllVertexIndices(currEnds[0], currNewVerts[0], vertexIndex);
+//						triangle2.setAllVertexIndices(vertexIndex, prevLastVert, currEnds[0]);
+//	
+//						medialPolyhedron.Faces.Add(triangle1);
+//						medialPolyhedron.Faces.Add(triangle2);
+//					}
+//	
+//					// Create new triangular faces at edges
+//					for (int i = 0 ; i < currNewVerts.Count() - 1 ; i++) {
+//						Face edgeTriangle = new Face();
+//						edgeTriangle.setAllVertexIndices(vertexIndex, currNewVerts[i], currNewVerts[i + 1]);
+//	
+//						medialPolyhedron.Faces.Add(edgeTriangle);
+//					}
+//				}
+//	
+//				vertexPoints.Add(new Vertex(centroid));
+//				vertexIndex++;
+//			}
+//	
+//			//medialPolyhedron.setVertexNormalsToFaceNormals();
+//			return new ConwayPoly(vertexPoints, faceIndices);
+//		}
+//		
+//		/**
+//		* Computes the "propellor" polyhedron of this polyhedron. It is like gyro,
+//		* but instead of having a central vertex we have a central face. This
+//		* creates quadrilateral faces instead of pentagonal faces.
+//		* 
+//		* @return The propellor polyhedron.
+//		*/
+//		public ConwayPoly propellor() {
+//			
+//					
+//			var vertexPoints = new List<Vector3>();
+//			var faceIndices = new List<List<int>>();
+//			
+//			foreach (var vertexPos in Vertices) {
+//				vertexPoints.Add(vertexPos.Position);
+//			}
+//			
+//			// Create new vertices on edges
+//			Dictionary<int, Dictionary<int, int[]>> newVertices = PolyhedraUtils.subdivideEdges(this, propellorPolyhedron, 3);
+//			
+//			// Create quadrilateral faces and one central face on each face
+//			foreach (Face face in Faces) {
+//				List<Halfedge> faceEdges = face.GetHalfedges();
+//				
+//				Face centralFace = new Face();
+//				int[] prevEnds = faceEdges[faceEdges.Count - 1].getEnds();
+//				int[] prevEdgeVertices = newVertices[prevEnds[0]][prevEnds[1]];
+//				for (int i = 0 ; i < face.Sides; i++) {
+//					int[] ends = faceEdges[i].getEnds();
+//					int[] newEdgeVertices = newVertices[ends[0]][ends[1]];
+//					
+//					Face quad = new Face();
+//					quad.setAllVertexIndices(ends[0], newEdgeVertices[0], prevEdgeVertices[0], prevEdgeVertices[1]);
+//					propellorPolyhedron.Faces.Add(quad);
+//					
+//					centralFace.setVertexIndex(i, newEdgeVertices[0]);
+//					
+//					prevEnds = ends;
+//					prevEdgeVertices = newEdgeVertices;
+//				}
+//				
+//				propellorPolyhedron.Faces.Add(centralFace);
+//			}
+//			
+//			//propellorPolyhedron.setVertexNormalsToFaceNormals();
+//			return new ConwayPoly(vertexPoints, faceIndices);
+//		}
+//		
+//		/**
+//		* Computes the "whirl" polyhedron of this polyhedron. Forms hexagon
+//		* faces at each edge, with a small copy of the original face at the
+//		* center of the original face.
+//		* 
+//		* @return The whirl polyhedron.
+//		*/
+//		public ConwayPoly whirl() {
+//			
+//					
+//			var vertexPoints = new List<Vector3>();
+//			var faceIndices = new List<List<int>>();
+//			
+//			foreach (var vertexPos in Vertices) {
+//				vertexPoints.Add(vertexPos.Position);
+//			}
+//			
+//			// Create new vertices on edges
+//			Dictionary<int, Dictionary<int, int[]>> newVertices = PolyhedraUtils.subdivideEdges(this, whirlPolyhedron, 3);
+//			
+//			// Generate vertices near the center of each face
+//			var centerVertices = new Dictionary<Face, int[]>();
+//			int vertexIndex = vertexPoints.Count();
+//			foreach (Face face in Faces) {
+//				int[] newCenterIndices = new int[face.Sides];
+//				Vector3 centroid = face.Centroid;
+//				int i = 0;
+//				foreach (Halfedge edge in face.GetHalfedges()) {
+//					int[] ends = edge.getEnds();
+//					int[] edgeVertices = newVertices[ends[0]][ends[1]];
+//					Vector3 edgePoint = vertexPoints[edgeVertices[1]];
+//					Vector3 diff = new Vector3();
+//					diff = edgePoint - centroid;
+//					diff *= 0.3f; // 0 < arbitrary scale factor < 1
+//					
+//					Vector3 newFacePoint = new Vector3();
+//					newFacePoint = centroid + diff;
+//					
+//					vertexPoints.Add(newFacePoint);
+//					newCenterIndices[i++] = vertexIndex++;
+//				}
+//				
+//				centerVertices[face] = newCenterIndices;
+//			}
+//			
+//			// Generate hexagonal faces and central face
+//			foreach (Face face in Faces) {
+//				Face centralFace = new Face();
+//				
+//				List<Halfedge> faceEdges = face.GetHalfedges();
+//				int[] centralVertices = centerVertices[face];
+//				int[] pEnds = faceEdges[faceEdges.Count() - 1].getEnds();
+//				int[] prevEdgeVertices = newVertices[pEnds[0]][pEnds[1]];
+//				int prevCenterIndex = centralVertices[centralVertices.Count() - 1];
+//				for (int i = 0 ; i < face.Sides ; i++) {
+//					int[] ends = faceEdges[i].getEnds();
+//					int[] edgeVertices = newVertices[ends[0]][ends[1]];
+//					int currCenterIndex = centralVertices[i];
+//					
+//					Face hexagon = new Face();
+//					hexagon.setAllVertexIndices(ends[0], edgeVertices[0], edgeVertices[1], currCenterIndex, prevCenterIndex, prevEdgeVertices[1]);
+//					whirlPolyhedron.Faces.Add(hexagon);
+//					
+//					centralFace.setVertexIndex(i, currCenterIndex);
+//					
+//					prevEdgeVertices = edgeVertices;
+//					prevCenterIndex = currCenterIndex;
+//				}
+//				
+//				whirlPolyhedron.Faces.Add(centralFace);
+//			}
+//			
+//			//whirlPolyhedron.setVertexNormalsToFaceNormals();
+//			return new ConwayPoly(vertexPoints, faceIndices);
+//		}
+//	
+//		/**
+//		* Computes the "volute" polyhedron of this polyhedron. Equivalent to a
+//		* snub operation followed by kis on the original faces. This is the dual
+//		* of whirl.
+//		* 
+//		* @return The volute polyhedron.
+//		*/
+//		public ConwayPoly volute() {
+//			return this.whirl().Dual();
+//		}
+        
         #endregion
 
         #region geometry methods
@@ -787,166 +1516,157 @@ namespace Conway {
             return ext;
         }
     
-        #endregion
+        public void ScalePolyhedra(float scale=1) {
+            
+            if (Vertices.Count > 0)
+            {
+            
+                // Find the furthest vertex
+                Vertex max = Vertices.OrderByDescending(x => x.Position.magnitude).FirstOrDefault();
+                float unitScale = 1.0f/max.Position.magnitude;
+            
+                // TODO Ideal use case for Linq if I could get my head round the type-wrangling needed
+                foreach (Vertex v in Vertices)
+                {
+                    v.Position = v.Position * unitScale * scale;
+                }                    
+            }
+            
+        }
 
+        #endregion
+	    
+        #region canonicalize
+        
+//		/**
+//		* Canonicalizes this polyhedron for the given number of iterations.
+//		* See util.Canonicalize for more details. Performs "adjust" followed
+//		* by "planarize".
+//		* 
+//		* @param iterationsAdjust    The number of iterations to "adjust" for.
+//		* @param iterationsPlanarize The number of iterations to "planarize" for.
+//		* @return The canonicalized version of this polyhedron.
+//		*/
+//	    public ConwayPoly canonicalize(int iterationsAdjust,
+//		    int iterationsPlanarize) {
+//		    ConwayPoly canonicalized = this.Duplicate();
+//		    Canonicalize.adjust(canonicalized, iterationsAdjust);
+//		    Canonicalize.planarize(canonicalized, iterationsPlanarize);
+//		    return canonicalized;
+//	    }
+//	
+//	    /**
+//	     * Canonicalizes this polyhedron until the change in position does not
+//	     * exceed the given threshold. That is, the algorithm terminates when no vertex
+//	     * moves more than the threshold after one iteration.
+//	     * 
+//	     * @param thresholdAdjust    The threshold for change in one "adjust"
+//	     *                           iteration.
+//	     * @param thresholdPlanarize The threshold for change in one "planarize"
+//	     *                           iteration.
+//	     * @return The canonicalized version of this polyhedron.
+//	     */
+//	    public ConwayPoly canonicalize(double thresholdAdjust,
+//		    double thresholdPlanarize) {
+//		    ConwayPoly canonicalized = Duplicate();
+//		    Canonicalize.adjust(canonicalized, thresholdAdjust);
+//		    Canonicalize.planarize(canonicalized, thresholdPlanarize);
+//		    return canonicalized;
+//	    }
+	    
+	    
+        
+        
+        #endregion
+        
         #region methods
 
-            /// <summary>
-            /// A string representation of the mesh, mimicking Grasshopper's mesh class.
-            /// </summary>
-            /// <returns>a string representation of the mesh</returns>
-            public override string ToString() {
-                return base.ToString() + string.Format(" (V:{0} F:{1})", Vertices.Count, Faces.Count);
+        /// <summary>
+        /// A string representation of the mesh.
+        /// </summary>
+        /// <returns>a string representation of the mesh</returns>
+        public override string ToString() {
+            return base.ToString() + string.Format(" (V:{0} F:{1})", Vertices.Count, Faces.Count);
+        }
+    
+        /// <summary>
+        /// Gets the positions of all mesh vertices. Note that points are duplicated.
+        /// </summary>
+        /// <returns>a list of vertex positions</returns>
+        public Vector3[] ListVerticesByPoints() {
+            Vector3[] points = new Vector3[Vertices.Count];
+            for (int i = 0; i < Vertices.Count; i++) {
+                Vector3 pos = Vertices[i].Position;
+                points[i] = new Vector3(pos.x, pos.y, pos.z);
             }
     
-            /// <summary>
-            /// Gets the positions of all mesh vertices. Note that points are duplicated.
-            /// </summary>
-            /// <returns>a list of vertex positions</returns>
-            public Vector3[] ListVerticesByPoints() {
-                Vector3[] points = new Vector3[Vertices.Count];
-                for (int i = 0; i < Vertices.Count; i++) {
-                    Vector3 pos = Vertices[i].Position;
-                    points[i] = new Vector3(pos.x, pos.y, pos.z);
-                }
-    
-                return points;
-            }
-    
-            /// <summary>
-            /// Gets the indices of vertices in each face loop (i.e. index face-vertex data structure).
-            /// Used for duplication and conversion to other mesh types, such as Rhino's.
-            /// </summary>
-            /// <returns>An array of lists of vertex indices.</returns>
-            public List<int>[] ListFacesByVertexIndices() {
-                
-                var fIndex = new List<int>[Faces.Count];
-                var vlookup = new Dictionary<String, int>();
-    
-                for (int i = 0; i < Vertices.Count; i++) {
-                    vlookup.Add(Vertices[i].Name, i);
-                }
-                
-                for (int i = 0; i < Faces.Count; i++) {
-                    List<int> vertIdx = new List<int>();
-                    foreach (Vertex v in Faces[i].GetVertices()) {
-                        vertIdx.Add(vlookup[v.Name]);
-                    }
-                    fIndex[i] = vertIdx;
-                }
-    
-                return fIndex;
-            }
+            return points;
+        }
 
-            public bool HasNaked()
-            {
-                return Halfedges.Select((item, ii) => ii).Where(i => Halfedges[i].Pair == null).ToList().Count > 0;
+        /// <summary>
+        /// Gets the indices of vertices in each face loop (i.e. index face-vertex data structure).
+        /// Used for duplication and conversion to other mesh types, such as Rhino's.
+        /// </summary>
+        /// <returns>An array of lists of vertex indices.</returns>
+        public List<int>[] ListFacesByVertexIndices() {
+            
+            var fIndex = new List<int>[Faces.Count];
+            var vlookup = new Dictionary<String, int>();
+    
+            for (int i = 0; i < Vertices.Count; i++) {
+                vlookup.Add(Vertices[i].Name, i);
             }
-        
-            public void ScalePolyhedra(float scale=1) {
-                
-                if (Vertices.Count > 0)
-                {
-                
-                    // Find the furthest vertex
-                    Vertex max = Vertices.OrderByDescending(x => x.Position.magnitude).FirstOrDefault();
-                    float unitScale = 1.0f/max.Position.magnitude;
-                
-                    // TODO Ideal use case for Linq if I could get my head round the type-wrangling needed
-                    foreach (Vertex v in Vertices)
-                    {
-                        v.Position = v.Position * unitScale * scale;
-                    }                    
+            
+            for (int i = 0; i < Faces.Count; i++) {
+                List<int> vertIdx = new List<int>();
+                foreach (Vertex v in Faces[i].GetVertices()) {
+                    vertIdx.Add(vlookup[v.Name]);
                 }
-                
+                fIndex[i] = vertIdx;
             }
     
-    //        TODO
-    //        public List<Polyline> ToClosedPolylines() {
-    //            List<Polyline> polylines = new List<Polyline>(Faces.Count);
-    //            foreach (Face f in Faces) {
-    //                polylines.Add(f.ToClosedPolyline());
-    //            }
-    //
-    //            return polylines;
-    //        }
-    //
-    //        public List<Line> ToLines() {
-    //            return Halfedges.GetUnique().Select(h => new Rhino.Geometry.Line(h.Prev.BVertex.Position, h.BVertex.Position))
-    //                .ToList();
-    //        }
+            return fIndex;
+        }
     
+        public bool HasNaked()
+        {
+            return Halfedges.Select((item, ii) => ii).Where(i => Halfedges[i].Pair == null).ToList().Count > 0;
+        }
+    
+//        TODO
+//        public List<Polyline> ToClosedPolylines() {
+//            List<Polyline> polylines = new List<Polyline>(Faces.Count);
+//            foreach (Face f in Faces) {
+//                polylines.Add(f.ToClosedPolyline());
+//            }
+//
+//            return polylines;
+//        }
+//
+//        public List<Line> ToLines() {
+//            return Halfedges.GetUnique().Select(h => new Rhino.Geometry.Line(h.Prev.BVertex.Position, h.BVertex.Position))
+//                .ToList();
+//        }
+
         /// <summary>
         /// Appends a copy of another mesh to this one.
         /// </summary>
         /// <param name="other">Mesh to append to this one.</param>
         public void Append(ConwayPoly other) {
             ConwayPoly dup = other.Duplicate();
-
+        
             Vertices.AddRange(dup.Vertices);
             foreach (Halfedge edge in dup.Halfedges) {
                 Halfedges.Add(edge);
             }
-
+        
             foreach (Face face in dup.Faces) {
                 Faces.Add(face);
             }
         }
-        
-        
 
-
-        #endregion
-        
-        // Next 3 methods taken from http://www.georgehart.com/virtual-polyhedra/conway_notation.html
-        
-        public ConwayPoly AdjustXYZ(int iterations)
-        {
-            var poly = Duplicate();
-            var dpoly = Dual();   // v's of dual are in order or arg's f's
-            
-            for (var count=0; count<iterations; count++) {    // iteration:
-                dpoly.Vertices = ReciprocalC(poly);             // reciprocate face centers
-                poly.Vertices = ReciprocalC(dpoly);            // reciprocate face centers
-            }
-            
-            return poly;
-        }
-        
-        // Returns array of reciprocals of face centers
-        public MeshVertexList ReciprocalC(ConwayPoly poly)
-        {
-            
-            MeshVertexList centers = FaceCenters(poly);
-            
-            for (int i=0; i<poly.Faces.Count; i++)
-            {
-                var m2 =
-                    centers[i].Position.x * centers[i].Position.x +
-                    centers[i].Position.y * centers[i].Position.y +
-                    centers[i].Position.z * centers[i].Position.z;
-                // Divide each coord by magnitude squared
-                centers[i] = new Vertex(new Vector3(
-                    centers[i].Position.x / m2,
-                    centers[i].Position.y / m2,
-                    centers[i].Position.z / m2
-                ));
-            }
-            return centers;
-        }
-        
-        // Returns array of Face centers
-        public MeshVertexList FaceCenters(ConwayPoly poly)
-        {
-            var ans = new MeshVertexList();
-            for (int i=0; i<poly.Faces.Count; i++)
-            {
-                ans.Add(new Vertex(poly.Faces[i].Centroid));
-            }
-            return ans;
-        }
-
-
-        
-    }
+#endregion
+	    
+	}
+	
 }

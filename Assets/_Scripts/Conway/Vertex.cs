@@ -4,7 +4,9 @@ using Wythoff;
 using UnityEngine;
 
 namespace Conway {
+    
     public class Vertex {
+        
         #region constructors
 
         public Vertex(Vector3 point) {
