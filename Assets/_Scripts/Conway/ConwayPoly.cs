@@ -633,13 +633,6 @@ namespace Conway {
 			    faceIndices.Add(finalFace);
 			}
 		    
-		    Debug.Log("Outer: " + faceIndices.Count);
-		    foreach (var x in faceIndices)
-		    {
-		        Debug.Log("Inner: " + x.Count());
-                
-		    }
-	
 			return new ConwayPoly(vertexPoints, faceIndices);
 		}
 //				
