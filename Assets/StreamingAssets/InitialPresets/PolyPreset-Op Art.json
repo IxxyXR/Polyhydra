@@ -1,0 +1,1 @@
+{"Name":"Op Art","PolyType":"Dodecahedron","BypassOps":false,"TwoSided":true,"Ops":[{"OpType":"Snub","FaceSelections":"All","Amount":0.3792,"Disabled":false},{"OpType":"Expand","FaceSelections":"All","Amount":-0.3333,"Disabled":false},{"OpType":"Expand","FaceSelections":"All","Amount":-0.1,"Disabled":false}]}
