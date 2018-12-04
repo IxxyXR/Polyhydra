@@ -613,7 +613,20 @@ namespace Conway {
 					    edge = edge.Next;
 					}
 			        faceIndices.Add(newInsetFace);
-				} else {
+				    
+				    // Add the final missing new edge face
+				    
+				    var lastEdge = face.Halfedge.Prev;
+				    var finalFace = new[]
+				    {
+					    existingVertices[lastEdge.Vertex.Position],
+					    existingVertices[lastEdge.Next.Vertex.Position],
+					    newVertices[lastEdge.Next.Name],
+					    newVertices[lastEdge.Name]
+				    };
+				    faceIndices.Add(finalFace);
+				    
+			    } else {
 			        
 				    faceIndices.Add(
 				        face.GetHalfedges().Select(
@@ -621,15 +634,6 @@ namespace Conway {
                     ).ToArray());
 				}
 
-			    var lastEdge = face.Halfedge.Prev;
-			    var finalFace = new[]
-			    {
-			        existingVertices[lastEdge.Vertex.Position],
-			        existingVertices[lastEdge.Next.Vertex.Position],
-			        newVertices[lastEdge.Next.Name],
-			        newVertices[lastEdge.Name]
-			    };
-			    faceIndices.Add(finalFace);
 			}
 		    
 			var poly = new ConwayPoly(vertexPoints, faceIndices);
