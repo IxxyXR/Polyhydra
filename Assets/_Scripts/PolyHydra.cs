@@ -53,7 +53,8 @@ public class PolyHydra : MonoBehaviour {
 		//Test,
 		FaceRemove,
 		FaceKeep,
-		AddDual
+		AddDual,
+		Canonicalize
 	}
 
 	public enum FaceSelections
@@ -160,7 +161,8 @@ public class PolyHydra : MonoBehaviour {
 			//{Ops.Test, new OpConfig{}}
 			{Ops.FaceRemove, new OpConfig{usesAmount=false, usesFaces=true}},
 			{Ops.FaceKeep, new OpConfig{usesAmount=false, usesFaces=true}},
-			{Ops.AddDual, new OpConfig{usesAmount=true, amountMin = -6, amountMax = 6}}
+			{Ops.AddDual, new OpConfig{usesAmount=true, amountMin = -6, amountMax = 6}},
+			{Ops.Canonicalize, new OpConfig{usesAmount=true, amountMin = 0.0001f, amountMax = 1f}}
 		};
 	}
 
@@ -406,6 +408,9 @@ public class PolyHydra : MonoBehaviour {
 						break;
 					case Ops.AddDual:
 						conway = conway.AddDual(op.amount);
+						break;
+					case Ops.Canonicalize:
+						conway = conway.Canonicalize(op.amount, op.amount);
 						break;
 				}
 
