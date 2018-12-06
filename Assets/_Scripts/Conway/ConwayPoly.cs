@@ -524,7 +524,7 @@ namespace Conway {
                     for (int i = 0; i < face.Sides; i++)
                     {
                         var vertex = edge.Vertex.Position;
-                        var newVertex = Vector3.Lerp(vertex, centroid, ratio);
+                        var newVertex = Vector3.LerpUnclamped(vertex, centroid, ratio);
 
                         vertexPoints.Add(newVertex);
                         newInsetFace[i] = vertexIndex;
@@ -590,7 +590,7 @@ namespace Conway {
 			        for (int i = 0; i < face.Sides; i++)
 			        {
 			            var vertex = edge.Vertex.Position;
-			            var newVertex = Vector3.Lerp(vertex, centroid, ratio);
+			            var newVertex = Vector3.LerpUnclamped(vertex, centroid, ratio);
 
 			            vertexPoints.Add(newVertex);
 			            newInsetFace[i] = vertexIndex;
@@ -639,66 +639,89 @@ namespace Conway {
 			var poly = new ConwayPoly(vertexPoints, faceIndices);
 			return poly;
 		}
-//				
-//		/**
-//		* Compute the "quinto" polyhedron of this polyhedron. Equivalent to an
-//		* ortho but truncating the vertex at the center of original faces. This
-//		* creates a small copy of the original face (but rotated).
-//		* 
-//		* @return The quinto polyhedron.
-//		*/
-//		public ConwayPoly quinto() {
-//			
-//					
-//			var vertexPoints = new List<Vector3>();
-//			var faceIndices = new List<List<int>>();
-//			
-//			foreach (var vertexPos in Vertices) {
-//				vertexPoints.Add(new Vertex(vertexPos.Position));
-//			}
-//			
-//			// Create new vertices at the midpoint of each edge and toward the
-//			// face's centroid
-//			Dictionary<int, Dictionary<int, int>> edgeToVertex = PolyhedraUtils.addEdgeToCentroidVertices(this, quintoPolyhedron);
-//	
-//			int vertexIndex = vertexPoints.Count;
-//			var midptVertices = new Dictionary<Halfedge, int>();
-//			foreach (Halfedge edge in this.Halfedges) {
-//				vertexPoints.Add(edge.Midpoint);
-//				midptVertices[edge] = vertexIndex++;
-//			}
-//			
-//			// Generate new faces
-//			foreach (Face face in Faces) {
-//				Face centralFace = new Face();
-//				List<Halfedge> edges = face.GetHalfedges();
-//				
-//				int[] prevEnds = edges[face.Sides - 1].getEnds();
-//				int prevVertex = edgeToVertex[prevEnds[0]][prevEnds[1]];
-//				int prevMidpt = midptVertices[edges[face.Sides - 1]];
-//				int centralIndex = 0;
-//				foreach (Halfedge currEdge in edges) {
-//					int[] currEnds = currEdge.getEnds();
-//					int currVertex = edgeToVertex[currEnds[0]][currEnds[1]];
-//					int currMidpt = midptVertices[currEdge];
-//					
-//					Face pentagon = new Face();
-//					pentagon.setAllVertexIndices(prevVertex, prevMidpt, currEnds[0], currMidpt, currVertex);
-//					quintoPolyhedron.Faces.Add(pentagon);
-//					
-//					centralFace.setVertexIndex(centralIndex++, currVertex);
-//					
-//					// Update previous vertex indices
-//					prevVertex = currVertex;
-//					prevMidpt = currMidpt;
-//				}
-//				quintoPolyhedron.Faces.Add(centralFace);
-//			}
-//			
-//			//quintoPolyhedron.setVertexNormalsToFaceNormals();
-//			return new ConwayPoly(vertexPoints, faceIndices);
-//		}
-//	
+		
+		public ConwayPoly Quinto(float ratio=0.33333333f)
+		{
+
+		    var faceIndices = new List<int[]>();
+		    var vertexPoints = new List<Vector3>();
+		    var existingVertices = new Dictionary<Vector3, int>();
+		    var newEdgeVertices = new Dictionary<string, int>();
+			var newInnerVertices = new Dictionary<string, int>();
+
+		    for (var i = 0; i < Vertices.Count; i++)
+		    {
+		        vertexPoints.Add(Vertices[i].Position);
+		        existingVertices[vertexPoints[i]] = i;
+		    }
+
+			int vertexIndex = vertexPoints.Count();
+		    
+		    // Create new edge vertices
+			foreach (var edge in Halfedges)
+			{
+				vertexPoints.Add(edge.Midpoint);			
+				newEdgeVertices[edge.PairedName] = vertexIndex++;
+			}
+
+		    foreach (var face in Faces)
+			{
+				var edge = face.Halfedge;
+				var centroid = face.Centroid;
+				
+				// Create a new face for each existing face
+				var newInsetFace = new int[face.Sides];
+				int prevNewEdgeVertex = -1;
+				int prevNewInnerVertex = -1;
+
+				for (int i = 0; i < face.Sides; i++)
+				{
+					var newEdgeVertex = vertexPoints[newEdgeVertices[edge.PairedName]];
+					var newInnerVertex = Vector3.LerpUnclamped(newEdgeVertex, centroid, ratio);
+
+					vertexPoints.Add(newInnerVertex);
+					newInsetFace[i] = vertexIndex;
+					newInnerVertices[edge.Name] = vertexIndex++;
+					
+
+					// Generate new faces
+					if (i>0)
+					{
+						var newEdgeFace = new[]
+						{
+							prevNewInnerVertex,
+							prevNewEdgeVertex,
+							existingVertices[edge.Prev.Vertex.Position],
+							newEdgeVertices[edge.PairedName],
+							newInnerVertices[edge.Name]
+						};
+						faceIndices.Add(newEdgeFace);
+					}
+					prevNewEdgeVertex = newEdgeVertices[edge.PairedName];
+					prevNewInnerVertex = newInnerVertices[edge.Name];	
+					edge = edge.Next;
+				}
+				faceIndices.Add(newInsetFace);
+
+				// Add the final missing new edge face
+				
+				var lastEdge = face.Halfedge.Prev;
+				var finalFace = new[]
+				{
+					prevNewInnerVertex,
+					prevNewEdgeVertex,
+					existingVertices[edge.Prev.Vertex.Position],
+					newEdgeVertices[edge.PairedName],
+					newInnerVertices[edge.Name]
+				};
+				faceIndices.Add(finalFace);
+
+			}
+		    
+			var poly = new ConwayPoly(vertexPoints, faceIndices);
+			return poly;
+		}
+
 //		/**
 //		* Computes the "joined-lace" polyhedron of this polyhedron. Like lace, but
 //		* old edges are replaced by quadrilateral faces instead of two triangular
@@ -1530,7 +1553,7 @@ namespace Conway {
             }
             
         }
-
+	    
         #endregion
 	    
         #region canonicalize
