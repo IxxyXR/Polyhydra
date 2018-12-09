@@ -43,6 +43,15 @@ public class PolyHydra : MonoBehaviour {
 		Subdivide,
 		Loft,
 		Quinto,
+		Lace,
+		JoinedLace,
+		Stake,
+//		Medial,
+//		EdgeMedial,
+//		JoinedMedial,
+//		Propellor,
+//		Whirl,
+//		Volute,
 		Exalt,
 		Yank,
 		//Chamfer,
@@ -150,8 +159,17 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.Gyro, new OpConfig{amountMin = -.5f, amountMax = 0.5f}},
 			{Ops.Snub, new OpConfig{amountMin = -.5f, amountMax = 0.5f}},
 			{Ops.Subdivide, new OpConfig {usesAmount=false}},
-			{Ops.Loft, new OpConfig {usesFaces=true, amountMin = -1, amountMax = 1}},
-			{Ops.Quinto, new OpConfig {amountMin = 0, amountMax = 1}},
+			{Ops.Loft, new OpConfig {usesFaces=true, amountMin = -4, amountMax = 4}},
+			{Ops.Quinto, new OpConfig{amountMin = -4, amountMax = 4}},
+			{Ops.Lace, new OpConfig{usesFaces=true, amountMin = -4, amountMax = 4}},
+			{Ops.JoinedLace, new OpConfig{amountMin = -4, amountMax = 4}},
+			{Ops.Stake, new OpConfig{usesFaces=true, amountMin = -4, amountMax = 4}},
+//			{Ops.Medial, new OpConfig{usesAmount=false}},
+//			{Ops.EdgeMedial, new OpConfig{amountMin = -4, amountMax = 4}},
+//			{Ops.JoinedMedial, new OpConfig{amountMin = -4, amountMax = 4}},
+//			{Ops.Propellor, new OpConfig{amountMin = -4, amountMax = 4}},
+//			{Ops.Whirl, new OpConfig{amountMin = -4, amountMax = 4}},
+//			{Ops.Volute, new OpConfig{amountMin = -4, amountMax = 4}},
 			{Ops.Exalt, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.Yank, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			//{Ops.Chamfer new OpConfig{}},
@@ -377,7 +395,36 @@ public class PolyHydra : MonoBehaviour {
 						break;					
 					case Ops.Quinto:
 						conway = conway.Quinto(op.amount);
-						break;					
+						break;
+					case Ops.JoinedLace:
+						conway = conway.JoinedLace(op.amount);
+						break;
+					case Ops.Lace:
+						faceSelection = CalculateFaceSelection(op.faceSelections);
+						conway = conway.Lace(op.amount, faceSelection);
+						break;
+					case Ops.Stake:
+						faceSelection = CalculateFaceSelection(op.faceSelections);
+						conway = conway.Stake(op.amount, faceSelection);
+						break;
+//					case Ops.Medial:
+//						conway = conway.Medial((int)op.amount);
+//						break;
+//					case Ops.EdgeMedial:
+//						conway = conway.EdgeMedial((int)op.amount);
+//						break;
+//					case Ops.JoinedMedial:
+//						conway = conway.JoinedMedial();
+//						break;
+//					case Ops.Propellor:
+//						conway = conway.Propellor(op.amount);
+//						break;
+//					case Ops.Whirl:
+//						conway = conway.Whirl(op.amount);
+//						break;
+//					case Ops.Volute:
+//						conway = conway.Volute(op.amount);
+//						break;
 					//						case Ops.Chamfer:
 					//							conway = conway.Chamfer();
 					//							break;
