@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using Conway;
 using Newtonsoft.Json;
 using Wythoff;
@@ -266,22 +268,34 @@ public class PolyHydra : MonoBehaviour {
 		}
 		return 0;
 	}
+
 	
 	public void MakeMesh()
 	{
-		var mesh = new Mesh();
 		if (BypassOps)
 		{
+			var mesh = new Mesh();
 			mesh = BuildMeshFromWythoffPoly(WythoffPoly);
 			mesh.RecalculateNormals();
+			FinishedMeshGeneration(mesh);
 		}
 		else
 		{
-			ApplyOps();
-			conway.ScalePolyhedra();
-			// If we Kis we don't need fan triangulation (which breaks on non-convex faces)
-			mesh = BuildMeshFromConwayPoly(conway.Kis(0, true), TwoSided);
+			StartCoroutine(RunOffMainThread(ApplyOps, FinishedApplyOps));
 		}
+	}
+
+	public void FinishedApplyOps()
+	{
+		var mesh = new Mesh();
+		conway.ScalePolyhedra();
+		// If we Kis we don't need fan triangulation (which breaks on non-convex faces)
+		mesh = BuildMeshFromConwayPoly(conway.Kis(0, true), TwoSided);
+		FinishedMeshGeneration(mesh);
+	}
+
+	public void FinishedMeshGeneration(Mesh mesh)
+	{
 		mesh.RecalculateTangents();
 		mesh.RecalculateBounds();
 		if (meshFilter != null)
@@ -296,6 +310,21 @@ public class PolyHydra : MonoBehaviour {
 			}
 		}
 	}
+	
+	// This is a helper coroutine
+	IEnumerator RunOffMainThread(Action toRun, Action callback) {
+		bool done = false;
+		new Thread(() => {
+			ApplyOps();
+			done = true;
+		}).Start();
+		while (!done)
+		{
+			yield return null;			
+		}
+		callback();
+	}
+
 
 	private void ApplyOps()
 	{
