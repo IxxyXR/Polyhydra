@@ -116,6 +116,8 @@ public class PolyHydra : MonoBehaviour {
 
 	private MeshFilter meshFilter;
 	private PolyPreset previousState;
+	private bool threadRunning;
+	private Thread thread;
 
 	public PolyUI polyUI;
 	
@@ -274,23 +276,25 @@ public class PolyHydra : MonoBehaviour {
 	{
 		if (BypassOps)
 		{
-			var mesh = new Mesh();
-			mesh = BuildMeshFromWythoffPoly(WythoffPoly);
+			var mesh = BuildMeshFromWythoffPoly(WythoffPoly);
 			mesh.RecalculateNormals();
 			FinishedMeshGeneration(mesh);
 		}
 		else
 		{
-			StartCoroutine(RunOffMainThread(ApplyOps, FinishedApplyOps));
+			if (threadRunning)
+			{
+				thread.Abort();
+			}
+			StartCoroutine(RunOffMainThread(ApplyOps, FinishedApplyOps));				
 		}
 	}
 
 	public void FinishedApplyOps()
 	{
-		var mesh = new Mesh();
 		conway.ScalePolyhedra();
 		// If we Kis we don't need fan triangulation (which breaks on non-convex faces)
-		mesh = BuildMeshFromConwayPoly(conway.Kis(0, true), TwoSided);
+		var mesh = BuildMeshFromConwayPoly(conway.Kis(0, true), TwoSided);
 		FinishedMeshGeneration(mesh);
 	}
 
@@ -313,18 +317,18 @@ public class PolyHydra : MonoBehaviour {
 	
 	// This is a helper coroutine
 	IEnumerator RunOffMainThread(Action toRun, Action callback) {
-		bool done = false;
-		new Thread(() => {
-			ApplyOps();
-			done = true;
-		}).Start();
-		while (!done)
+		threadRunning = false;
+		thread = new Thread(() => {
+			toRun();
+			threadRunning = true;
+		});
+		thread.Start();
+		while (!threadRunning)
 		{
 			yield return null;			
 		}
 		callback();
 	}
-
 
 	private void ApplyOps()
 	{
