@@ -51,7 +51,7 @@ public class PolyHydra : MonoBehaviour {
 //		Medial,
 //		EdgeMedial,
 //		JoinedMedial,
-//		Propellor,
+		Propeller,
 //		Whirl,
 //		Volute,
 		Exalt,
@@ -171,7 +171,7 @@ public class PolyHydra : MonoBehaviour {
 //			{Ops.Medial, new OpConfig{usesAmount=false}},
 //			{Ops.EdgeMedial, new OpConfig{amountMin = -4, amountMax = 4}},
 //			{Ops.JoinedMedial, new OpConfig{amountMin = -4, amountMax = 4}},
-//			{Ops.Propellor, new OpConfig{amountMin = -4, amountMax = 4}},
+			{Ops.Propeller, new OpConfig{amountMin = -4, amountMax = 4}},
 //			{Ops.Whirl, new OpConfig{amountMin = -4, amountMax = 4}},
 //			{Ops.Volute, new OpConfig{amountMin = -4, amountMax = 4}},
 			{Ops.Exalt, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
@@ -282,7 +282,7 @@ public class PolyHydra : MonoBehaviour {
 		}
 		else
 		{
-			if (threadRunning)
+			if (thread!=null && threadRunning)
 			{
 				thread.Abort();
 			}
@@ -449,9 +449,9 @@ public class PolyHydra : MonoBehaviour {
 //					case Ops.JoinedMedial:
 //						conway = conway.JoinedMedial();
 //						break;
-//					case Ops.Propellor:
-//						conway = conway.Propellor(op.amount);
-//						break;
+					case Ops.Propeller:
+						conway = conway.Propeller(op.amount);
+						break;
 //					case Ops.Whirl:
 //						conway = conway.Whirl(op.amount);
 //						break;

@@ -1099,7 +1099,7 @@ namespace Conway {
 		}
 	  
 	    // TODO Fix
-		public ConwayPoly Propellor(float ratio = 0.33333333f)
+		public ConwayPoly Propeller(float ratio = 0.33333333f)
 		{				
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
@@ -1127,25 +1127,21 @@ namespace Conway {
 			foreach (var face in Faces)
 			{
 				var edge = face.Halfedge;
-				var faceEdges = face.GetHalfedges();
 				
 				var centralFace = new int[face.Sides];
-				var prevEnds = faceEdges[faceEdges.Count - 1].getEnds();
-				var prevedge = edge;
 				
 				for (int i=0; i<face.Sides; i++)
 				{
 					var quad = new int[]
 					{
+						newEdgeVertices[edge.Next.Name],
+						newEdgeVertices[edge.Next.Pair.Name],
+						newEdgeVertices[edge.Pair.Name],
 						existingVertices[edge.Vertex.Position],
-						newEdgeVertices[edge.Name],
-						newEdgeVertices[prevedge.Name],
-						newEdgeVertices[prevedge.Pair.Name]
 					};
 					faceIndices.Add(quad);
 					
-					centralFace[i] = newEdgeVertices[edge.Name];					
-					prevedge = edge;
+					centralFace[i] = newEdgeVertices[edge.Pair.Name];
 					edge = edge.Next;
 				}
 				
@@ -1251,7 +1247,6 @@ namespace Conway {
 			return new ConwayPoly(vertexPoints, faceIndices);
 		}
 	
-	    // TODO Fix
 		public ConwayPoly Volute(float ratio=0.33333333f)
 		{
 			return this.Whirl(ratio).Dual();
