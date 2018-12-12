@@ -1,0 +1,1 @@
+{"Name":"Snowball","PolyType":"Small_Ditrigonal_Icosidodecahedron","BypassOps":false,"TwoSided":true,"Ops":[{"OpType":"Lace","FaceSelections":"All","Amount":0.0078125,"Disabled":false},{"OpType":"Dual","FaceSelections":"All","Amount":0.0,"Disabled":false},{"OpType":"Canonicalize","FaceSelections":"All","Amount":0.58,"Disabled":true}]}
