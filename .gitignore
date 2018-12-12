@@ -43,3 +43,4 @@ Assets/Plugins/Editor/JetBrains*
 /WebGL*
 Assets/3rd Party Optional*
 ProjectSettings\FbxExportSettings.asset
+*.log
