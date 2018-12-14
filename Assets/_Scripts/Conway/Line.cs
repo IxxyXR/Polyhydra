@@ -12,15 +12,15 @@ namespace Conway {
             this.start = start;
             this.end = end;
         }
-
-        public Vertex PointAt(double p) {
-            // TODO
-            return start;
+        
+        public Line(Vector3 start, Vector3 end) {
+            this.start = new Vertex(start);
+            this.end = new Vertex(end);
         }
-
-        public double Intersect(Line l) {
-            // TODO
-            return 1.0;
+        
+        public Line(Halfedge halfEdge) {
+            this.start = halfEdge.Vertex;
+            this.end = halfEdge.Next.Vertex;
         }
 
         public Vector3 Direction() {
@@ -53,5 +53,21 @@ namespace Conway {
             }
         }
         
+        public Vector3 ClosestPoint(Vector3 vPoint)
+        {
+            var vVector1 = vPoint - start.Position;
+            var vVector2 = (end.Position - start.Position).normalized;
+ 
+            var d = Vector3.Distance(start.Position, end.Position);
+            var t = Vector3.Dot(vVector2, vVector1);
+ 
+            if (t <= 0) return start.Position;
+            if (t >= d) return end.Position;
+ 
+            var vVector3 = vVector2 * t;
+            var vClosestPoint = start.Position + vVector3;
+
+            return vClosestPoint;
+        }
     }
 }
