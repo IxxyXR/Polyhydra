@@ -52,8 +52,8 @@ public class PolyHydra : MonoBehaviour {
 //		EdgeMedial,
 //		JoinedMedial,
 		Propeller,
-//		Whirl,
-//		Volute,
+		Whirl,
+		Volute,
 		Exalt,
 		Yank,
 		//Chamfer,
@@ -172,8 +172,8 @@ public class PolyHydra : MonoBehaviour {
 //			{Ops.EdgeMedial, new OpConfig{amountMin = -4, amountMax = 4}},
 //			{Ops.JoinedMedial, new OpConfig{amountMin = -4, amountMax = 4}},
 			{Ops.Propeller, new OpConfig{amountMin = -4, amountMax = 4}},
-//			{Ops.Whirl, new OpConfig{amountMin = -4, amountMax = 4}},
-//			{Ops.Volute, new OpConfig{amountMin = -4, amountMax = 4}},
+			{Ops.Whirl, new OpConfig{amountMin = -4, amountMax = 4}},
+			{Ops.Volute, new OpConfig{amountMin = -4, amountMax = 4}},
 			{Ops.Exalt, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.Yank, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			//{Ops.Chamfer new OpConfig{}},
@@ -452,12 +452,12 @@ public class PolyHydra : MonoBehaviour {
 					case Ops.Propeller:
 						conway = conway.Propeller(op.amount);
 						break;
-//					case Ops.Whirl:
-//						conway = conway.Whirl(op.amount);
-//						break;
-//					case Ops.Volute:
-//						conway = conway.Volute(op.amount);
-//						break;
+					case Ops.Whirl:
+						conway = conway.Whirl(op.amount);
+						break;
+					case Ops.Volute:
+						conway = conway.Volute(op.amount);
+						break;
 					//						case Ops.Chamfer:
 					//							conway = conway.Chamfer();
 					//							break;

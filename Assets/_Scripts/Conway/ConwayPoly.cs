@@ -1030,7 +1030,7 @@ namespace Conway {
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
-			var newEdgeVertices = new Dictionary<string, int>();			
+			var newEdgeVertices = new Dictionary<string, int>();		
 			
 			for (var i = 0; i < Vertices.Count; i++)
 			{
@@ -1098,7 +1098,6 @@ namespace Conway {
 			return new ConwayPoly(vertexPoints, faceIndices);
 		}
 	  
-	    // TODO Fix
 		public ConwayPoly Propeller(float ratio = 0.33333333f)
 		{				
 			var faceIndices = new List<int[]>();
@@ -1151,7 +1150,6 @@ namespace Conway {
 			return new ConwayPoly(vertexPoints, faceIndices);
 		}
 		
-	    // TODO Fix
 		public ConwayPoly Whirl(float ratio=0.3333333f)
 		{
 					
@@ -1159,6 +1157,7 @@ namespace Conway {
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
 			var newEdgeVertices = new Dictionary<string, int>();
+			var newInnerVertices = new Dictionary<string, int>();
 			
 			for (var i = 0; i < Vertices.Count; i++)
 			{
@@ -1168,82 +1167,52 @@ namespace Conway {
 			
 			int vertexIndex = vertexPoints.Count();
 			
-			// Create new edge vertices
 			foreach (var edge in Halfedges)
 			{
-				vertexPoints.Add(edge.PointAlongEdge(ratio));			
+				vertexPoints.Add(edge.PointAlongEdge(ratio));		
 				newEdgeVertices[edge.Name] = vertexIndex++;
 				vertexPoints.Add(edge.Pair.PointAlongEdge(ratio));
 				newEdgeVertices[edge.Name] = vertexIndex++;
 			}
 			
-			// Generate vertices near the center of each face
-			var centerVertices = new Dictionary<string, int[]>();
-			
 			foreach (var face in Faces)
 			{
-				var newCenterIndices = new int[face.Sides];
-				var centroid = face.Centroid;
-				int i = 0;
-				
-				foreach (var edge in face.GetHalfedges())
+				var edges = face.GetHalfedges();
+				for (var i = 0; i < edges.Count; i++)
 				{
-					var edgeVertex = vertexPoints[newEdgeVertices[edge.Name]];
-					var diff = new Vector3();
-					diff = edgeVertex - centroid;
-					diff *= ratio;
-					
-					var newFacePoint = new Vector3();
-					newFacePoint = centroid + diff;
-					
-					vertexPoints.Add(newFacePoint);
-					newCenterIndices[i++] = vertexIndex++;
+					var edge = edges[i];
+					var direction = (face.Centroid - edge.Midpoint) * 2;	
+					var pointOnEdge = vertexPoints[newEdgeVertices[edge.Name]];
+					vertexPoints.Add(Vector3.LerpUnclamped(pointOnEdge, pointOnEdge + direction, ratio));
+					newInnerVertices[edge.Name] = vertexIndex++;
 				}
-				
-				centerVertices[face.Name] = newCenterIndices;
 			}
 			
 			// Generate hexagonal faces and central face
-			foreach (Face face in Faces)
+			foreach (var face in Faces)
 			{
 
-				var edge = face.Halfedge;
 				var centralFace = new int[face.Sides];
-				
-				var faceEdges = face.GetHalfedges();
-				int[] centralVertices = centerVertices[face.Name];
-				var pEnds = faceEdges[faceEdges.Count() - 1].getEnds();
-				var prevEdge = edge.Prev;
-				int prevCenterIndex = centralVertices[centralVertices.Count() - 1];
-				
-				for (int i=0; i<face.Sides; i++)
+				var edge = face.Halfedge;
+
+				for (var i = 0; i < face.Sides; i++)
 				{
-					var edgeVertices = newEdgeVertices[edge.Name];
-					int currCenterIndex = centralVertices[i];
-					
 					var hexagon = new int[]
 					{
-						existingVertices[edge.Vertex.Position],
+						newEdgeVertices[edge.Next.Name],
+						newInnerVertices[edge.Next.Name],
+						newInnerVertices[edge.Name],
 						newEdgeVertices[edge.Name],
 						newEdgeVertices[edge.Pair.Name],
-						currCenterIndex,
-						prevCenterIndex,
-						newEdgeVertices[prevEdge.Name]
+						existingVertices[edge.Vertex.Position]
 					};
 					faceIndices.Add(hexagon);
-					
-					centralFace[i] = currCenterIndex;
-					
-					prevEdge = edge;
-					prevCenterIndex = currCenterIndex;
-
+					centralFace[i] = newInnerVertices[edge.Name];
 					edge = edge.Next;
 				}
-				
 				faceIndices.Add(centralFace);
 			}
 			
-			//whirlPolyhedron.setVertexNormalsToFaceNormals();
 			return new ConwayPoly(vertexPoints, faceIndices);
 		}
 	
@@ -1632,13 +1601,13 @@ namespace Conway {
 		 * @return A list of the new vertices of the dual polyhedron.
 		 */
 		private static List<Vector3> ReciprocalVertices(ConwayPoly poly) {
+			
 			var newVertices = new List<Vector3>();
 			
-			List<Vector3> vertexPositions = poly.Vertices.Select(x => x.Position).ToList();
-			foreach (Face face in poly.Faces) {
+			foreach (var face in poly.Faces) {
 				// Initialize values which will be updated in the loop below
-				Vector3 centroid = face.Centroid;
-				Vector3 normalSum = new Vector3();
+				var centroid = face.Centroid;
+				var normalSum = new Vector3();
 				double avgEdgeDistance = 0.0;
 				
 				// Retrieve the indices of the vertices defining this face
@@ -1647,13 +1616,14 @@ namespace Conway {
 				// Keep track of the "previous" two vertices in CCW order
 				var lastlastVertex = faceVertices[faceVertices.Count - 2];
 				var lastVertex = faceVertices[faceVertices.Count - 1];
+				
 				foreach (var vertex in faceVertices) {
 					
 					// Compute the normal of the plane defined by this vertex and
 					// the previous two
-					Vector3 v1 = lastlastVertex.Position;
+					var v1 = lastlastVertex.Position;
 					v1 -= lastVertex.Position;
-					Vector3 v2 = vertex.Position;
+					var v2 = vertex.Position;
 					v2 -= lastVertex.Position;
 					var normal = Vector3.Cross(v1, v2);
 					normalSum += normal;
@@ -1669,10 +1639,10 @@ namespace Conway {
 				normalSum = normalSum.normalized;
 				avgEdgeDistance /= faceVertices.Count;
 				
-				Vector3 resultingVector = new Vector3();
+				var resultingVector = new Vector3();
 				resultingVector = Vector3.Dot(centroid, normalSum) * normalSum;
 				resultingVector *= Mathf.Pow(1.0f / resultingVector.magnitude, 2);
-				resultingVector *= ((1.0f + (float)avgEdgeDistance) / 2.0f);
+				resultingVector *= (1.0f + (float)avgEdgeDistance) / 2.0f;
 				newVertices.Add(resultingVector);
 			}
 			
@@ -1697,16 +1667,20 @@ namespace Conway {
 		 * @param numIterations The number of iterations to planarize for.
 		 */
 		public static void Planarize(ConwayPoly poly, int numIterations) {
-			ConwayPoly dual = poly.Dual();
+			
+			var dual = poly.Dual();
+			
 			for (int i = 0 ; i < numIterations ; i++) {
-				List<Vector3> newDualPositions = ReciprocalVertices(poly);
+				
+				var newDualPositions = ReciprocalVertices(poly);
 				dual.SetVertexPositions(newDualPositions);
-				List<Vector3> newPositions = ReciprocalVertices(dual);
+				var newPositions = ReciprocalVertices(dual);
 	
 				double maxChange = 0.0;
+				
 				for (int j = 0 ; j < poly.Vertices.Count ; j++) {
-					Vector3 newPos = poly.Vertices[j].Position;
-					Vector3 diff = newPos - poly.Vertices[j].Position;
+					var newPos = poly.Vertices[j].Position;
+					var diff = newPos - poly.Vertices[j].Position;
 					maxChange = Math.Max(maxChange, diff.magnitude);
 				}
 	
@@ -1724,7 +1698,7 @@ namespace Conway {
 	
 				poly.SetVertexPositions(newPositions);
 			}
-			//poly.setVertexNormalsToFaceNormals();
+			
 		}
 	
 		/**
@@ -1747,13 +1721,16 @@ namespace Conway {
 		 * @param poly The polyhedron whose centers to invert.
 		 * @return The list of inverted face centers.
 		 */
-		private static List<Vector3> reciprocalCenters(ConwayPoly poly) {
+		private static List<Vector3> ReciprocalCenters(ConwayPoly poly) {
+			
 			var faceCenters = new List<Vector3>();
+			
 			foreach (Face face in poly.Faces) {
-				Vector3 newCenter = face.Centroid;
-				newCenter *= (1.0f / Mathf.Pow(newCenter.magnitude, 2));
+				var newCenter = face.Centroid;
+				newCenter *= 1.0f / Mathf.Pow(newCenter.magnitude, 2);
 				faceCenters.Add(newCenter);
 			}
+			
 			return faceCenters;
 		}
 		
@@ -1764,14 +1741,16 @@ namespace Conway {
 		 * @param numIterations The number of iterations to adjust for.
 		 */
 		public static void Adjust(ConwayPoly poly, int numIterations) {
-			ConwayPoly dual = poly.Dual();
+			
+			var dual = poly.Dual();
+			
 			for (int i = 0 ; i < numIterations ; i++) {
-				List<Vector3> newDualPositions = reciprocalCenters(poly);
+				var newDualPositions = ReciprocalCenters(poly);
 				dual.SetVertexPositions(newDualPositions);
-				List<Vector3> newPositions = reciprocalCenters(dual);
+				var newPositions = ReciprocalCenters(dual);
 				poly.SetVertexPositions(newPositions);
 			}
-			//poly.setVertexNormalsToFaceNormals();
+			
 		}
 		
 		/**
@@ -1798,21 +1777,22 @@ namespace Conway {
 		 * @return The number of iterations that were executed.
 		 */
 		private static int _Canonicalize(ConwayPoly poly, double threshold, bool planarize) {
-			ConwayPoly dual = poly.Dual();
-			List<Vector3> currentPositions = poly.Vertices.Select(x => x.Position).ToList();
+			
+			var dual = poly.Dual();
+			var currentPositions = poly.Vertices.Select(x => x.Position).ToList();
 	
 			int iterations = 0;
+			
 			while (true) {
-				List<Vector3> newDualPositions = planarize ?
-						ReciprocalVertices(poly) : reciprocalCenters(poly);
+				
+				var newDualPositions = planarize ? ReciprocalVertices(poly) : ReciprocalCenters(poly);
 				dual.SetVertexPositions(newDualPositions);
-				List<Vector3> newPositions = planarize ?
-						ReciprocalVertices(dual) : reciprocalCenters(dual);
+				var newPositions = planarize ? ReciprocalVertices(dual) : ReciprocalCenters(dual);
 	
 				double maxChange = 0.0;
 				for (int i = 0 ; i < currentPositions.Count ; i++) {
-					Vector3 newPos = poly.Vertices[i].Position;
-					Vector3 diff = newPos - currentPositions[i];
+					var newPos = poly.Vertices[i].Position;
+					var diff = newPos - currentPositions[i];
 					maxChange = Math.Max(maxChange, diff.magnitude);
 				}
 	
@@ -1837,8 +1817,7 @@ namespace Conway {
 				currentPositions = poly.Vertices.Select(x => x.Position).ToList();
 				iterations++;
 			}
-	
-			//poly.setVertexNormalsToFaceNormals();
+			
 			return iterations;
 		}
 		
@@ -1852,12 +1831,12 @@ namespace Conway {
 		* @param iterationsPlanarize The number of iterations to "planarize" for.
 		* @return The canonicalized version of this polyhedron.
 		*/
-//	    public ConwayPoly Canonicalize(int iterationsAdjust, int iterationsPlanarize) {
-//		    ConwayPoly canonicalized = Duplicate();
-//	        Adjust(canonicalized, iterationsAdjust);
-//		    Planarize(canonicalized, iterationsPlanarize);
-//		    return canonicalized;
-//	    }
+	    public ConwayPoly Canonicalize(int iterationsAdjust, int iterationsPlanarize) {
+		    var canonicalized = Duplicate();
+	        Adjust(canonicalized, iterationsAdjust);
+		    Planarize(canonicalized, iterationsPlanarize);
+		    return canonicalized;
+	    }
 	
 	    /**
 	     * Canonicalizes this polyhedron until the change in position does not
