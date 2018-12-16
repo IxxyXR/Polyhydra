@@ -184,13 +184,13 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.Offset, new OpConfig{amountMin = -6, amountMax = 6}},
 			//{Ops.Ribbon, new OpConfig{}},
 			{Ops.Extrude, new OpConfig{amountMin = -6, amountMax = 6}},
-			{Ops.FaceScale, new OpConfig{amountMin = -6, amountMax = 6, usesFaces=true}},
-			{Ops.FaceRotate, new OpConfig{amountMin = -180, amountMax = 180, usesFaces=true}},
+			{Ops.FaceScale, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
+			{Ops.FaceRotate, new OpConfig{usesFaces=true, amountMin = -180, amountMax = 180}},
 			//{Ops.Test, new OpConfig{}}
-			{Ops.FaceRemove, new OpConfig{usesAmount=false, usesFaces=true}},
-			{Ops.FaceKeep, new OpConfig{usesAmount=false, usesFaces=true}},
-			{Ops.AddDual, new OpConfig{usesAmount=true, amountMin = -6, amountMax = 6}},
-			{Ops.Canonicalize, new OpConfig{usesAmount=true, amountMin = 0.0001f, amountMax = 1f}}
+			{Ops.FaceRemove, new OpConfig{usesFaces=true, usesAmount=false}},
+			{Ops.FaceKeep, new OpConfig{usesFaces=true, usesAmount=false}},
+			{Ops.AddDual, new OpConfig{amountMin = -6, amountMax = 6}},
+			{Ops.Canonicalize, new OpConfig{amountMin = 0.0001f, amountMax = 1f}}
 		};
 	}
 
@@ -356,7 +356,7 @@ public class PolyHydra : MonoBehaviour {
 						conway = conway.Ambo();
 						break;
 					case Ops.Zip:
-						conway = conway.Kis(op.amount, 0);
+						conway = conway.Kis(op.amount, op.faceSelections);
 						conway = conway.Dual();
 						break;
 					case Ops.Expand:
@@ -366,7 +366,7 @@ public class PolyHydra : MonoBehaviour {
 					case Ops.Bevel:
 						conway = conway.Ambo();
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount, 0);
+						conway = conway.Kis(op.amount, op.faceSelections);
 						conway = conway.Dual();
 						break;
 					case Ops.Join:
@@ -375,7 +375,7 @@ public class PolyHydra : MonoBehaviour {
 						break;
 					case Ops.Needle:
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount, 0);
+						conway = conway.Kis(op.amount, op.faceSelections);
 						break;
 					case Ops.Ortho:
 						conway = conway.Ambo();
@@ -385,11 +385,11 @@ public class PolyHydra : MonoBehaviour {
 					case Ops.Meta:
 						conway = conway.Ambo();
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount, 0);
+						conway = conway.Kis(op.amount, op.faceSelections);
 						break;
 					case Ops.Truncate:
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount, 0);
+						conway = conway.Kis(op.amount, op.faceSelections);
 						conway = conway.Dual();
 						break;
 					case Ops.Gyro:
@@ -401,14 +401,14 @@ public class PolyHydra : MonoBehaviour {
 						break;
 					case Ops.Exalt:
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount, 0);
+						conway = conway.Kis(op.amount, op.faceSelections);
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount, 0);
+						conway = conway.Kis(op.amount, op.faceSelections);
 						break;
 					case Ops.Yank:
-						conway = conway.Kis(op.amount, 0);
+						conway = conway.Kis(op.amount, op.faceSelections);
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount, 0);
+						conway = conway.Kis(op.amount, op.faceSelections);
 						conway = conway.Dual();
 						break;
 					case Ops.Subdivide:
@@ -577,9 +577,9 @@ public class PolyHydra : MonoBehaviour {
             
 		conway = new ConwayPoly(vertexPoints, faceIndices, faceRoles);
 		return originalFaceSides;
-	}
+	} 
 
-	public Mesh BuildMeshFromConwayPoly(bool forceTwosided=false, bool colorByRole=false)
+	public Mesh BuildMeshFromConwayPoly(bool forceTwosided=false, bool colorByRole=true)
 	{
 
 		var originalFaceSides = KisTriangulate();
