@@ -4,9 +4,10 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: CubeUnlitMatLinear
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: VertexColorUnlitLinear
   m_Shader: {fileID: 4800000, guid: ed0aa2b14cddf3c4ca092474027dae0f, type: 3}
   m_ShaderKeywords: LINEAR_COLORSPACE _EMISSION
   m_LightmapFlags: 1
