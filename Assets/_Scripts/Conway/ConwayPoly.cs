@@ -10,11 +10,13 @@ namespace Conway {
     /// A class for manifold meshes which uses the Halfedge data structure.
     /// </summary>
 
-    public class ConwayPoly {
+    public class ConwayPoly
+    {
 
         #region constructors
 
-        public ConwayPoly() {
+        public ConwayPoly()
+        {
             Halfedges = new MeshHalfedgeList(this);
             Vertices = new MeshVertexList(this);
             Faces = new MeshFaceList(this);
@@ -79,7 +81,7 @@ namespace Conway {
         {
             InitIndexed(verticesByPoints, facesByVertexIndices);
 
-            Vertices.CullUnused();
+	        Vertices.CullUnused();
         }
 
         private void InitIndexed(IEnumerable<Vector3> verticesByPoints, IEnumerable<IEnumerable<int>> facesByVertexIndices)
@@ -111,7 +113,7 @@ namespace Conway {
         public MeshVertexList Vertices { get; set; }
         public MeshFaceList Faces { get; private set; }
 
-        public bool IsValid {
+	    public bool IsValid {
             get {
                 if (Halfedges.Count == 0) {
                     return false;
@@ -232,8 +234,8 @@ namespace Conway {
         public ConwayPoly Ambo() {
             
             // Create points at midpoint of unique halfedges (edges to vertices) and create lookup table
-            List<Vector3> vertexPoints = new List<Vector3>();  // vertices as points
-            Dictionary<string, int> hlookup = new Dictionary<string, int>();
+            var vertexPoints = new List<Vector3>();  // vertices as points
+            var hlookup = new Dictionary<string, int>();
             int count = 0;
             
             foreach (var edge in Halfedges) {
@@ -623,7 +625,9 @@ namespace Conway {
 				    };
 				    faceIndices.Add(finalFace);
 				    
-			    } else {
+			    }
+			    else
+			    {
 			        
 				    faceIndices.Add(
 				        face.GetHalfedges().Select(

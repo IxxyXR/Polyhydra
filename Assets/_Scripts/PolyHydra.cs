@@ -332,7 +332,7 @@ public class PolyHydra : MonoBehaviour {
 
 	private void ApplyOps()
 	{
-		if (ConwayOperators == null) return;
+		if (ConwayOperators == null) return;		
 		conway = new ConwayPoly(WythoffPoly);
 		var cacheKeySource = WythoffPoly.WythoffSymbol;
 		foreach (var op in ConwayOperators)
@@ -533,7 +533,6 @@ public class PolyHydra : MonoBehaviour {
 		
 		
 		var mesh = new Mesh();
-
 		int meshVertexIndex = 0;
 
 		foreach (Wythoff.Face face in source.faces) {
