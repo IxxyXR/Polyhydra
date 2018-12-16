@@ -149,9 +149,13 @@ public class PolyHydra : MonoBehaviour {
 		new Color(0.5f, 0.6f, 0.6f),
 		new Color(1.0f, 0.94f, 0.9f),
 		new Color(0.66f, 0.2f, 0.2f),
-		new Color(1.0f, 0.0f, 0.0f), 
+		new Color(0.6f, 0.0f, 0.0f), 
 		new Color(1.0f, 1.0f, 1.0f),
-		new Color(0.66f, 0.66f, 0.66f)
+		new Color(0.6f, 0.6f, 0.6f),
+		new Color(0.5f, 1.0f, 0.5f),
+		new Color(0.5f, 0.5f, 1.0f),
+		new Color(0.5f, 1.0f, 1.0f),
+		new Color(1.0f, 0.5f, 1.0f),
 	};
 
 
@@ -294,19 +298,27 @@ public class PolyHydra : MonoBehaviour {
 		}
 		else
 		{
-			if (thread!=null && threadRunning)
+			var threaded = false;
+			if (threaded)
 			{
-				thread.Abort();
+				if (thread!=null && threadRunning)
+				{
+					thread.Abort();
+				}
+				StartCoroutine(RunOffMainThread(ApplyOps, FinishedApplyOps));			
 			}
-			StartCoroutine(RunOffMainThread(ApplyOps, FinishedApplyOps));				
+			else
+			{
+				ApplyOps();
+				FinishedApplyOps();
+			}
 		}
 	}
 
 	public void FinishedApplyOps()
 	{
 		conway.ScalePolyhedra();
-		// If we Kis we don't need fan triangulation (which breaks on non-convex faces)
-		var mesh = BuildMeshFromConwayPoly(conway.Kis(0, true), TwoSided);
+		var mesh = BuildMeshFromConwayPoly(TwoSided);
 		FinishedMeshGeneration(mesh);
 	}
 
@@ -331,8 +343,8 @@ public class PolyHydra : MonoBehaviour {
 	IEnumerator RunOffMainThread(Action toRun, Action callback) {
 		threadRunning = false;
 		thread = new Thread(() => {
-			toRun();
 			threadRunning = true;
+			toRun();
 		});
 		thread.Start();
 		while (!threadRunning)
@@ -368,7 +380,7 @@ public class PolyHydra : MonoBehaviour {
 						break;
 					case Ops.Kis:
 						faceSelection = CalculateFaceSelection(op.faceSelections);
-						conway = conway.KisN(op.amount, faceSelection);
+						conway = conway.Kis(op.amount, faceSelection);
 						break;
 					case Ops.Dual:
 						conway = conway.Dual();
@@ -377,7 +389,7 @@ public class PolyHydra : MonoBehaviour {
 						conway = conway.Ambo();
 						break;
 					case Ops.Zip:
-						conway = conway.Kis(op.amount);
+						conway = conway.Kis(op.amount, 0);
 						conway = conway.Dual();
 						break;
 					case Ops.Expand:
@@ -387,7 +399,7 @@ public class PolyHydra : MonoBehaviour {
 					case Ops.Bevel:
 						conway = conway.Ambo();
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount);
+						conway = conway.Kis(op.amount, 0);
 						conway = conway.Dual();
 						break;
 					case Ops.Join:
@@ -396,7 +408,7 @@ public class PolyHydra : MonoBehaviour {
 						break;
 					case Ops.Needle:
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount);
+						conway = conway.Kis(op.amount, 0);
 						break;
 					case Ops.Ortho:
 						conway = conway.Ambo();
@@ -406,11 +418,11 @@ public class PolyHydra : MonoBehaviour {
 					case Ops.Meta:
 						conway = conway.Ambo();
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount);
+						conway = conway.Kis(op.amount, 0);
 						break;
 					case Ops.Truncate:
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount);
+						conway = conway.Kis(op.amount, 0);
 						conway = conway.Dual();
 						break;
 					case Ops.Gyro:
@@ -422,14 +434,14 @@ public class PolyHydra : MonoBehaviour {
 						break;
 					case Ops.Exalt:
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount);
+						conway = conway.Kis(op.amount, 0);
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount);
+						conway = conway.Kis(op.amount, 0);
 						break;
 					case Ops.Yank:
-						conway = conway.Kis(op.amount);
+						conway = conway.Kis(op.amount, 0);
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount);
+						conway = conway.Kis(op.amount, 0);
 						conway = conway.Dual();
 						break;
 					case Ops.Subdivide:
@@ -566,64 +578,118 @@ public class PolyHydra : MonoBehaviour {
 
 	}
 	
-	public Mesh BuildMeshFromConwayPoly(ConwayPoly conway, bool forceTwosided=false) {
+	// Essentially Kis only on non-triangular faces
+	// Returns the original number of sides of each face to be used elsewhere
+	// TODO Detect convex faces and use fan triangulation to save on a vertex
+	public List<int> KisTriangulate() {
+            
+		var newVerts = conway.Faces.Select(f => f.Centroid);
+		var vertexPoints = Enumerable.Concat(conway.Vertices.Select(v => v.Position), newVerts);
+		var originalFaceSides = new List<int>();
+		var faceRoles = new List<ConwayPoly.Roles>();
+            
+		// vertex lookup
+		var vlookup = new Dictionary<string, int>();
+		int n = conway.Vertices.Count;
+		for (int i = 0; i < n; i++) {
+			vlookup.Add(conway.Vertices[i].Name, i);
+		}
+
+		var faceIndices = new List<IEnumerable<int>>(); // faces as vertex indices
+		for (int i = 0; i < conway.Faces.Count; i++)
+		{
+			int faceSides = conway.Faces[i].Sides;
+			if (conway.Faces[i].Sides <= 3) {
+				faceIndices.Add(conway.ListFacesByVertexIndices()[i]);
+				originalFaceSides.Add(faceSides);
+				faceRoles.Add(conway.FaceRoles[i]);
+			} else {
+				foreach (var edge in conway.Faces[i].GetHalfedges()) {
+					// create new face from edge start, edge end and centroid
+					faceIndices.Add(
+						new[] {vlookup[edge.Prev.Vertex.Name], vlookup[edge.Vertex.Name], i + n}
+					);
+					originalFaceSides.Add(faceSides);
+					faceRoles.Add(conway.FaceRoles[i]);
+				}
+			}
+		}
+            
+		conway = new ConwayPoly(vertexPoints, faceIndices, faceRoles);
+		return originalFaceSides;
+	}
+
+	public Mesh BuildMeshFromConwayPoly(bool forceTwosided=false, bool colorByRole=false)
+	{
+
+		var originalFaceSides = KisTriangulate();
 
 		var target = new Mesh();
 		var meshTriangles = new List<int>();
 		var meshVertices = new List<Vector3>();
 		var meshNormals = new List<Vector3>();
-
-		ConwayPoly source = conway.Duplicate();
-		var hasNaked = source.HasNaked();
+		var meshColors = new List<Color32>();
+		
+		var hasNaked = conway.HasNaked();
 		hasNaked = false;
 
 		// Strip down to Face-Vertex structure
-		Vector3[] points = source.ListVerticesByPoints();
-		List<int>[] faceIndices = source.ListFacesByVertexIndices();
+		var points = conway.ListVerticesByPoints();
+		var faceIndices = conway.ListFacesByVertexIndices();
 
 		// Add faces
 		int index = 0;
-
+		
 		for (var i = 0; i < faceIndices.Length; i++) {
-			List<int> f = faceIndices[i];
-			if (f.Count == 3) {
+			
+			var f = faceIndices[i];
+			var face = conway.Faces[i];
+			var faceNormal = face.Normal;
+			
+			var color = colorByRole ?
+				faceColors[(int)conway.FaceRoles[i]] :
+				faceColors[(originalFaceSides[i] - 3) % originalFaceSides.Count];				
+			
+			meshNormals.Add(faceNormal);
+			meshNormals.Add(faceNormal);
+			meshNormals.Add(faceNormal);
+			
+			meshVertices.Add(points[f[0]]);
+			meshTriangles.Add(index++);
+			meshVertices.Add(points[f[1]]);
+			meshTriangles.Add(index++);
+			meshVertices.Add(points[f[2]]);
+			meshTriangles.Add(index++);
+
+			if (hasNaked || forceTwosided) {
 				
-				var faceNormal = source.Faces[i].Normal;
-				
-				meshNormals.Add(faceNormal);
-				meshNormals.Add(faceNormal);
-				meshNormals.Add(faceNormal);
-				
+				meshNormals.Add(-faceNormal);
+				meshNormals.Add(-faceNormal);
+				meshNormals.Add(-faceNormal);
+			
 				meshVertices.Add(points[f[0]]);
-				meshTriangles.Add(index++);
-				meshVertices.Add(points[f[1]]);
 				meshTriangles.Add(index++);
 				meshVertices.Add(points[f[2]]);
 				meshTriangles.Add(index++);
+				meshVertices.Add(points[f[1]]);
+				meshTriangles.Add(index++);
+				
+				meshColors.Add(color);
+				meshColors.Add(color);
+				meshColors.Add(color);
 
-				if (hasNaked || forceTwosided) {
-					
-					meshNormals.Add(-faceNormal);
-					meshNormals.Add(-faceNormal);
-					meshNormals.Add(-faceNormal);
-				
-					meshVertices.Add(points[f[0]]);
-					meshTriangles.Add(index++);
-					meshVertices.Add(points[f[2]]);
-					meshTriangles.Add(index++);
-					meshVertices.Add(points[f[1]]);
-					meshTriangles.Add(index++);
-				}
-				
 			}
-			else {
-				Debug.Log("Non-triangular face found");
-			}
+			
+			meshColors.Add(color);
+			meshColors.Add(color);
+			meshColors.Add(color);
+			
 		}
 
 		target.vertices = meshVertices.ToArray();
 		target.normals = meshNormals.ToArray();
 		target.triangles = meshTriangles.ToArray();
+		target.colors32 = meshColors.ToArray();
 		
 		if (hasNaked || forceTwosided) {
 			target.RecalculateNormals();
