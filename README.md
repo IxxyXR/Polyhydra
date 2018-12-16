@@ -22,8 +22,16 @@ My original inspiration was 3DS Max's Hedra plugin which kept me entertained for
 
 # TODO
 
-1. Draw duals
-2. Animation: truncation and stellation? P/Q animation similar to 3DS Max's Hedra?
-3. VR controls, repetition, slow-motion generation, more shaders etc etc
+1. Allow face selection on all ops by checking that all faces sharing an edge match the rule
+2. Code all ops as primitive ops so we can preserve face roles
+3. Animation: truncation and stellation? P/Q animation similar to 3DS Max's Hedra?
+3. VR controls
+4. UI for choosing materials
+5. Augmentation
+6. Stellation
+7. Undo
+8. More base polys - Johnson Solids etc
+9. More ops. 
+10. slow-motion generation, more shaders etc etc
 
 ![Screenshot](https://github.com/Ixxy-Open-Source/wythoff-polyhedra/blob/master/wythoff.png)
