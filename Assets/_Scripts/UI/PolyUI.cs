@@ -163,10 +163,12 @@ public class PolyUI : MonoBehaviour {
             var label = new Dropdown.OptionData(item.ToString());
             opPrefabManager.FaceSelectionDropdown.options.Add(label);
         }
-                
+        
+        ConfigureOpControls(opPrefab.GetComponent<OpPrefabManager>());
+        
+        opPrefabManager.DisabledToggle.isOn = op.disabled;
         opPrefabManager.OpTypeDropdown.value = (int) op.opType;
         opPrefabManager.FaceSelectionDropdown.value = (int) op.faceSelections;
-        opPrefabManager.DisabledToggle.isOn = op.disabled;
         opPrefabManager.AmountSlider.value = op.amount;
         opPrefabManager.AmountInput.text = op.amount.ToString();
         opPrefabManager.OpTypeDropdown.onValueChanged.AddListener(delegate{OpTypeChanged();});
@@ -179,8 +181,6 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.DeleteButton.onClick.AddListener(DeleteOp);
         opPrefabManager.Index = opPrefabs.Count;
         
-        ConfigureOpControls(opPrefab.GetComponent<OpPrefabManager>());
-
         // Enable/Disable down buttons as appropriate:
         // We are adding this at the end so it can't move down
         opPrefab.GetComponent<OpPrefabManager>().DownButton.enabled = false;
