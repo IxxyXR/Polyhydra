@@ -141,6 +141,18 @@ public class PolyHydra : MonoBehaviour {
 		Color.blue,
 		Color.magenta
 	};
+	
+	private Color32[] faceColors = 
+	{
+		new Color(1.0f, 0.5f, 0.5f),
+		new Color(0.8f, 0.8f, 0.8f),
+		new Color(0.5f, 0.6f, 0.6f),
+		new Color(1.0f, 0.94f, 0.9f),
+		new Color(0.66f, 0.2f, 0.2f),
+		new Color(1.0f, 0.0f, 0.0f), 
+		new Color(1.0f, 1.0f, 1.0f),
+		new Color(0.66f, 0.66f, 0.66f)
+	};
 
 
 	void Awake()
@@ -522,16 +534,6 @@ public class PolyHydra : MonoBehaviour {
 		var MeshVertexToVertex = new List<int>(); // Mapping of mesh vertices to polyh vertices (one to many as we duplicate verts)
 		var meshColors = new List<Color>();
 		
-		Color[] vertexPallette = {
-			Color.red,
-			Color.yellow,
-			Color.green,
-			Color.cyan,
-			Color.blue,
-			Color.magenta
-		};;
-		
-		
 		var mesh = new Mesh();
 		int meshVertexIndex = 0;
 
@@ -542,7 +544,7 @@ public class PolyHydra : MonoBehaviour {
 		for (int faceType = 0; faceType < source.FaceTypeCount; faceType++) {
 			foreach (Wythoff.Face face in source.faces) {
 				if (face.configuration == source.FaceSidesByType[faceType]) {
-					Color faceColor = vertexPallette[(int) (face.configuration % vertexPallette.Length)];
+					var faceColor = faceColors[(int) ((face.configuration + 2) % faceColors.Length)];
 					// Vertices
 					for (int i = 0; i < face.triangles.Length; i++) {
 						Vector v = source.Vertices[face.triangles[i]];
