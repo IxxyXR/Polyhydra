@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Wythoff;
@@ -82,8 +82,8 @@ namespace Conway {
             Vertices.CullUnused();
         }
 
-        private void InitIndexed(IEnumerable<Vector3> verticesByPoints,
-            IEnumerable<IEnumerable<int>> facesByVertexIndices) {
+        private void InitIndexed(IEnumerable<Vector3> verticesByPoints, IEnumerable<IEnumerable<int>> facesByVertexIndices)
+        {
             // Add vertices
             foreach (Vector3 p in verticesByPoints) {
                 Vertices.Add(new Vertex(p));
@@ -253,11 +253,13 @@ namespace Conway {
             }
 
             // vertices to faces
-            foreach (var vertex in Vertices) {
+            foreach (var vertex in Vertices)
+            {
                 var he = vertex.Halfedges;
                 if (he.Count == 0) continue;  // no halfedges (naked vertex, ignore)
                 var list = he.Select(edge => hlookup[edge.Name]);  // halfedge indices for vertex-loop
-                if (he[0].Next.Pair == null) {
+                if (he[0].Next.Pair == null)
+                {
                     // Handle boundary vertex, add itself and missing boundary halfedge
                     list = list.Concat(new[] {vertexPoints.Count, hlookup[he[0].Next.Name]});
                     vertexPoints.Add(vertex.Position);
@@ -365,9 +367,7 @@ namespace Conway {
                     string keyName;
 
                     var thisFaceIndices = new List<int>();
-
                     var edges = oldFace.GetHalfedges();
-
 
                     var seedVertex = edges[j].Vertex;
                     keyName = seedVertex.Name;
@@ -855,7 +855,7 @@ namespace Conway {
 					var centroid = face.Centroid;
 
 					vertexPoints.Add(centroid);
-					int centroidIndex = vertexIndex++;
+					vertexIndex++;
 	
 					// Generate the quads and triangles on this face
 					for (int i=0; i<face.Sides; i++)
@@ -877,7 +877,7 @@ namespace Conway {
 					for (int i=0; i<face.Sides; i++)
 					{
 						
-						var triangle = new int[]
+						var triangle = new []
 						{
 							newInnerVertices[edge.Name],
 							existingVertices[edge.Prev.Vertex.Position],
@@ -885,7 +885,7 @@ namespace Conway {
 						};
 						faceIndices.Add(triangle);
 						
-						var quad = new int[]{
+						var quad = new []{
 							existingVertices[edge.Vertex.Position],
 							newInnerVertices[edge.Next.Name],
 							newCentroidVertices[face.Name],
@@ -972,7 +972,7 @@ namespace Conway {
 					if (edgeMedial)
 					{
 						// One quadrilateral face
-						var quad = new int[]
+						var quad = new []
 						{
 							existingVertices[edge.Vertex.Position],
 							currNewVerts[0],
@@ -985,7 +985,7 @@ namespace Conway {
 					{
 						// Two triangular faces
 						
-						var triangle1 = new int[]
+						var triangle1 = new []
 						{
 							existingVertices[edge.Vertex.Position],
 							currNewVerts[0],
@@ -993,7 +993,7 @@ namespace Conway {
 						};
 						//faceIndices.Add(triangle1);
 
-						var triangle2 = new int[]
+						var triangle2 = new []
 						{
 							centroidIndex,
 							prevLastVert,
@@ -1005,7 +1005,7 @@ namespace Conway {
 					// Create new triangular faces at edges
 					for (int j=0; j<currNewVerts.Count()-1 ; j++)
 					{
-						var edgeTriangle = new int[]
+						var edgeTriangle = new []
 						{
 							centroidIndex,
 							currNewVerts[j],
@@ -1045,7 +1045,7 @@ namespace Conway {
 			{
 				int v0 = newEdgeVertices[edge.PairedName];
 				int v2 = newEdgeVertices[edge.PairedName];
-				var rhombus = new int[]
+				var rhombus = new []
 				{
 					v0,
 					existingVertices[edge.Vertex.Position],
@@ -1131,7 +1131,7 @@ namespace Conway {
 				
 				for (int i=0; i<face.Sides; i++)
 				{
-					var quad = new int[]
+					var quad = new []
 					{
 						newEdgeVertices[edge.Next.Name],
 						newEdgeVertices[edge.Next.Pair.Name],
@@ -1197,7 +1197,7 @@ namespace Conway {
 
 				for (var i = 0; i < face.Sides; i++)
 				{
-					var hexagon = new int[]
+					var hexagon = new []
 					{
 						newEdgeVertices[edge.Next.Name],
 						newInnerVertices[edge.Next.Name],
@@ -1218,7 +1218,7 @@ namespace Conway {
 	
 		public ConwayPoly Volute(float ratio=0.33333333f)
 		{
-			return this.Whirl(ratio).Dual();
+			return Whirl(ratio).Dual();
 		}
         
         #endregion

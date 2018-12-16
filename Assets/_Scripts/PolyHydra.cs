@@ -132,7 +132,8 @@ public class PolyHydra : MonoBehaviour {
 	}
 	private Dictionary<int, ConwayCacheEntry> _conwayCache;
 	
-	public Color[] gizmoPallette = {
+	public Color[] gizmoPallette =
+	{
 		Color.red,
 		Color.yellow,
 		Color.green,
@@ -274,6 +275,7 @@ public class PolyHydra : MonoBehaviour {
 	{
 		if (BypassOps)
 		{
+			// Only need to deal with the Wythoff poly
 			var mesh = BuildMeshFromWythoffPoly(WythoffPoly);
 			mesh.RecalculateNormals();
 			FinishedMeshGeneration(mesh);
@@ -335,6 +337,7 @@ public class PolyHydra : MonoBehaviour {
 		var cacheKeySource = WythoffPoly.WythoffSymbol;
 		foreach (var op in ConwayOperators)
 		{
+			
 			if (op.disabled) continue;
 			
 			cacheKeySource += JsonConvert.SerializeObject(op);
@@ -624,7 +627,6 @@ public class PolyHydra : MonoBehaviour {
 		if (hasNaked || forceTwosided) {
 			target.RecalculateNormals();
 		}
-		//target.RecalculateNormals();
 
 		return target;
 	}	
