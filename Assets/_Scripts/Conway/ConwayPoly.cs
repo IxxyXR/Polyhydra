@@ -356,7 +356,7 @@ namespace Conway {
 	            else
 	            {
 		            faceIndices.Add(ListFacesByVertexIndices()[i]);
-		            faceRoles.Add(Roles.Existing);
+		            faceRoles.Add(Roles.Ignored);
 	            }
             }
             
