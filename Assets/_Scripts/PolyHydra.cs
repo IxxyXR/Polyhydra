@@ -2,14 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using Conway;
 using Newtonsoft.Json;
 using Wythoff;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 // ReSharper disable InconsistentNaming
