@@ -67,24 +67,13 @@ public class PolyHydra : MonoBehaviour {
 		Canonicalize
 	}
 
-	public enum FaceSelections
-	{
-		All,
-		ThreeSided,
-		FourSided,
-		FiveSided,
-		SixSided,
-		SevenSided,
-		EightSided
-	}
-	
 	public class OpConfig
 	{
 		public bool usesAmount = true;
 		public float amountMin = -20;
 		public float amountMax = 20;
 		public bool usesFaces = false;
-		public FaceSelections faceSelection = FaceSelections.All;	
+		public ConwayPoly.FaceSelections faceSelection = ConwayPoly.FaceSelections.All;	
 	}
 
 	public Dictionary<Ops, OpConfig> opconfigs;
@@ -92,7 +81,7 @@ public class PolyHydra : MonoBehaviour {
 	[Serializable]
 	public struct ConwayOperator {
 		public Ops opType;
-		public FaceSelections faceSelections;
+		public ConwayPoly.FaceSelections faceSelections;
 		public float amount;
 		public bool disabled;
 	}
@@ -266,27 +255,6 @@ public class PolyHydra : MonoBehaviour {
 		WythoffPoly.BuildFaces(BuildAux: BypassOps);
 	}
 	
-	private int CalculateFaceSelection(FaceSelections faceSelections)
-	{
-		switch (faceSelections)
-		{
-			case FaceSelections.ThreeSided:
-				return 3;
-			case FaceSelections.FourSided:
-				return 4;
-			case FaceSelections.FiveSided:
-				return 5;
-			case FaceSelections.SixSided:
-				return 6;
-			case FaceSelections.SevenSided:
-				return 7;
-			case FaceSelections.EightSided:
-				return 8;
-		}
-		return 0;
-	}
-
-	
 	public void MakeMesh()
 	{
 		if (BypassOps)
@@ -379,8 +347,7 @@ public class PolyHydra : MonoBehaviour {
 					case Ops.Identity:
 						break;
 					case Ops.Kis:
-						faceSelection = CalculateFaceSelection(op.faceSelections);
-						conway = conway.Kis(op.amount, faceSelection);
+						conway = conway.Kis(op.amount, op.faceSelections);
 						break;
 					case Ops.Dual:
 						conway = conway.Dual();
@@ -448,8 +415,7 @@ public class PolyHydra : MonoBehaviour {
 						conway = conway.Subdivide();
 						break;
 					case Ops.Loft:
-						faceSelection = CalculateFaceSelection(op.faceSelections);
-						conway = conway.Loft(op.amount, faceSelection);
+						conway = conway.Loft(op.amount, op.faceSelections);
 						break;					
 					case Ops.Quinto:
 						conway = conway.Quinto(op.amount);
@@ -458,12 +424,10 @@ public class PolyHydra : MonoBehaviour {
 						conway = conway.JoinedLace(op.amount);
 						break;
 					case Ops.Lace:
-						faceSelection = CalculateFaceSelection(op.faceSelections);
-						conway = conway.Lace(op.amount, faceSelection);
+						conway = conway.Lace(op.amount, op.faceSelections);
 						break;
 					case Ops.Stake:
-						faceSelection = CalculateFaceSelection(op.faceSelections);
-						conway = conway.Stake(op.amount, faceSelection);
+						conway = conway.Stake(op.amount, op.faceSelections);
 						break;
 //					case Ops.Medial:
 //						conway = conway.Medial((int)op.amount);
@@ -501,20 +465,16 @@ public class PolyHydra : MonoBehaviour {
 					//							conway = conway.Ribbon(op.amount, false, 0.1f);
 					//							break;
 					case Ops.FaceScale:
-						faceSelection = CalculateFaceSelection(op.faceSelections);
-						conway = conway.FaceScale(op.amount, faceSelection);
+						conway = conway.FaceScale(op.amount, op.faceSelections);
 						break;
 					case Ops.FaceRotate:
-						faceSelection = CalculateFaceSelection(op.faceSelections);
-						conway = conway.FaceRotate(op.amount, faceSelection);
+						conway = conway.FaceRotate(op.amount, op.faceSelections);
 						break;
 					case Ops.FaceRemove:
-						faceSelection = CalculateFaceSelection(op.faceSelections);
-						conway = conway.FaceRemove(faceSelection, false);
+						conway = conway.FaceRemove(op.faceSelections, false);
 						break;
 					case Ops.FaceKeep:
-						faceSelection = CalculateFaceSelection(op.faceSelections);
-						conway = conway.FaceRemove(faceSelection, true);
+						conway = conway.FaceRemove(op.faceSelections, true);
 						break;
 					case Ops.AddDual:
 						conway = conway.AddDual(op.amount);

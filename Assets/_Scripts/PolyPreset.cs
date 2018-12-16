@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Conway;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -16,7 +17,7 @@ public class PolyPreset {
 	[Serializable]
 	public struct Op {
 		[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.Ops OpType;
-		[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.FaceSelections FaceSelections;
+		[JsonConverter(typeof(StringEnumConverter))] public ConwayPoly.FaceSelections FaceSelections;
 		public float Amount;
 		public bool Disabled;
 	}

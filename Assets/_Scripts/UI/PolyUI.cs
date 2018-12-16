@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Conway;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -159,18 +160,19 @@ public class PolyUI : MonoBehaviour {
             opPrefabManager.OpTypeDropdown.options.Add(label);
         }
         
-        foreach (var item in Enum.GetValues(typeof(PolyHydra.FaceSelections))) {
+        foreach (var item in Enum.GetValues(typeof(ConwayPoly.FaceSelections))) {
             var label = new Dropdown.OptionData(item.ToString());
             opPrefabManager.FaceSelectionDropdown.options.Add(label);
         }
-        
-        ConfigureOpControls(opPrefab.GetComponent<OpPrefabManager>());
         
         opPrefabManager.DisabledToggle.isOn = op.disabled;
         opPrefabManager.OpTypeDropdown.value = (int) op.opType;
         opPrefabManager.FaceSelectionDropdown.value = (int) op.faceSelections;
         opPrefabManager.AmountSlider.value = op.amount;
         opPrefabManager.AmountInput.text = op.amount.ToString();
+
+        ConfigureOpControls(opPrefab.GetComponent<OpPrefabManager>());
+
         opPrefabManager.OpTypeDropdown.onValueChanged.AddListener(delegate{OpTypeChanged();});
         opPrefabManager.FaceSelectionDropdown.onValueChanged.AddListener(delegate{OpsUIToPoly();});
         opPrefabManager.DisabledToggle.onValueChanged.AddListener(delegate{OpsUIToPoly();});
@@ -179,6 +181,7 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.UpButton.onClick.AddListener(MoveOpUp);
         opPrefabManager.DownButton.onClick.AddListener(MoveOpDown);
         opPrefabManager.DeleteButton.onClick.AddListener(DeleteOp);
+        
         opPrefabManager.Index = opPrefabs.Count;
         
         // Enable/Disable down buttons as appropriate:
@@ -236,7 +239,7 @@ public class PolyUI : MonoBehaviour {
             var op = poly.ConwayOperators[index];
             
             op.opType = (PolyHydra.Ops)opPrefabManager.OpTypeDropdown.value;
-            op.faceSelections = (PolyHydra.FaceSelections) opPrefabManager.FaceSelectionDropdown.value;
+            op.faceSelections = (ConwayPoly.FaceSelections) opPrefabManager.FaceSelectionDropdown.value;
             op.disabled = opPrefabManager.DisabledToggle.isOn;
             op.amount = opPrefabManager.AmountSlider.value;
             poly.ConwayOperators[index] = op;
