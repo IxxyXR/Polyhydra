@@ -1,1 +1,0 @@
-{"Name":"Gem of Gems","PolyType":"Dodecahedron","BypassOps":false,"TwoSided":false,"Ops":[{"OpType":"Gyro","FaceSelections":"All","Amount":0.333333,"Disabled":false},{"OpType":"FaceScale","FaceSelections":"All","Amount":0.75,"Disabled":false},{"OpType":"Extrude","FaceSelections":"All","Amount":0.11,"Disabled":false}]}

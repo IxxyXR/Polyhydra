@@ -1,0 +1,1 @@
+{"Name":"Tiles","PolyType":"Cube","BypassOps":false,"TwoSided":true,"Ops":[{"OpType":"Stake","FaceSelections":"All","Amount":0.33,"Disabled":false},{"OpType":"Lace","FaceSelections":"All","Amount":0.33,"Disabled":false},{"OpType":"FaceRotate","FaceSelections":"All","Amount":1.0,"Disabled":true}]}
