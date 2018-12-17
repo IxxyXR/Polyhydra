@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Wythoff;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Conway {
 
@@ -949,7 +951,7 @@ namespace Conway {
 							newInnerVertices[edge.Name],
 						};
 						faceIndices.Add(quad);
-						faceRoles.Add(Roles.NewAlt);
+						faceRoles.Add(Roles.Existing);
 
 						edge = edge.Next;
 					}
@@ -1328,7 +1330,7 @@ namespace Conway {
 	        return new ConwayPoly(vertexPoints, faceIndices, faceRoles);
         }
         
-        public ConwayPoly FaceRotate(float angle, FaceSelections facesel) {
+        public ConwayPoly FaceRotate(float angle, FaceSelections facesel, int axis=0) {
 	        
             var vertexPoints = new List<Vector3>();
             var faceIndices = new List<IEnumerable<int>>();
@@ -1345,7 +1347,18 @@ namespace Conway {
 		        c = vertexPoints.Count;
 
 		        var pivot = face.Centroid;
-		        var rot = Quaternion.AngleAxis(angle, face.Normal);
+		        Vector3 direction = face.Normal;
+		        switch (axis)
+		        {
+			        case 1:
+				        direction = Vector3.Cross(face.Normal, Vector3.up);
+				        break;
+			        case 2:
+				        direction = Vector3.Cross(face.Normal, Vector3.forward);
+				        break;
+		        }
+		        
+		        var rot = Quaternion.AngleAxis(angle, direction);
 
 		        vertexPoints.AddRange(
 			        face.GetVertices().Select(
@@ -1406,6 +1419,24 @@ namespace Conway {
             var offsetList = Enumerable.Range(0, Vertices.Count).Select(i => offset).ToList();
             return Offset(offsetList);
         }
+	    
+	    public ConwayPoly Offset(double offset, FaceSelections facesel) {
+		    
+		    // This will only work if the faces are split and don't share vertices
+		    
+		    var offsetList = new List<double>();
+		    
+		    for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
+		    {
+			    var vertexOffset = IncludeFace(faceIndex, facesel) ? offset : 0;
+			    foreach (var vertex in Faces[faceIndex].GetVertices())
+			    {
+				    offsetList.Add(vertexOffset);				    
+			    }
+		    }
+
+		    return Offset(offsetList);
+	    }
     
         public ConwayPoly Offset(List<double> offset) {
             
@@ -1581,7 +1612,7 @@ namespace Conway {
 
             return ribbon;
         }
-
+	    
         /// <summary>
         /// Gives thickness to mesh faces by offsetting the mesh and connecting naked edges with new faces.
         /// </summary>
@@ -1593,6 +1624,7 @@ namespace Conway {
             return Extrude(offsetList, symmetric);
         }
 
+	    //TODO Use list parameter to implement face selection
         public ConwayPoly Extrude(List<double> distance, bool symmetric) {
             
             ConwayPoly result, top;
@@ -2067,7 +2099,9 @@ namespace Conway {
 			    case FaceSelections.Ignored:
 				    return FaceRoles[faceIndex] == Roles.Ignored;
 			    case FaceSelections.New:
-				    return FaceRoles[faceIndex] == Roles.New || FaceRoles[faceIndex] == Roles.NewAlt;
+				    return FaceRoles[faceIndex] == Roles.New;
+			    case FaceSelections.NewAlt:
+				    return FaceRoles[faceIndex] == Roles.NewAlt;
 		    }
 		    return Faces[faceIndex].Sides == FaceSelectionToSides(facesel);
 	    }

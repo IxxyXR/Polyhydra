@@ -58,8 +58,12 @@ public class PolyHydra : MonoBehaviour {
 		Offset,
 		//Ribbon,
 		Extrude,
+//		FaceTranslate,
+		FaceOffset,
 		FaceScale,
 		FaceRotate,
+//		FaceRotateX,
+//		FaceRotateY,
 		//Test,
 		FaceRemove,
 		FaceKeep,
@@ -181,11 +185,14 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.Exalt, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.Yank, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			//{Ops.Chamfer new OpConfig{}},
-			{Ops.Offset, new OpConfig{amountMin = -6, amountMax = 6}},
+			{Ops.FaceOffset, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			//{Ops.Ribbon, new OpConfig{}},
 			{Ops.Extrude, new OpConfig{amountMin = -6, amountMax = 6}},
+			//{Ops.FaceTranslate, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.FaceScale, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.FaceRotate, new OpConfig{usesFaces=true, amountMin = -180, amountMax = 180}},
+//			{Ops.FaceRotateX, new OpConfig{usesFaces=true, amountMin = -180, amountMax = 180}},
+//			{Ops.FaceRotateY, new OpConfig{usesFaces=true, amountMin = -180, amountMax = 180}},
 			//{Ops.Test, new OpConfig{}}
 			{Ops.FaceRemove, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.FaceKeep, new OpConfig{usesFaces=true, usesAmount=false}},
@@ -451,11 +458,6 @@ public class PolyHydra : MonoBehaviour {
 					//							conway = conway.Chamfer();
 					//							break;
 	
-					case Ops.Offset:
-						// Split faces
-						conway = conway.FaceScale(0, 0);
-						conway = conway.Offset(op.amount);
-						break;
 					case Ops.Extrude:
 						// Split faces
 						conway = conway.FaceScale(0, 0);
@@ -464,12 +466,28 @@ public class PolyHydra : MonoBehaviour {
 					//						case Ops.Ribbon:
 					//							conway = conway.Ribbon(op.amount, false, 0.1f);
 					//							break;
+//					case Ops.FaceTranslate:
+//						conway = conway.FaceTranslate(op.amount, op.faceSelections);
+//						break;
+					case Ops.FaceOffset:
+						// Split faces
+						var origRoles = conway.FaceRoles;
+						conway = conway.FaceScale(0, ConwayPoly.FaceSelections.All);
+						conway.FaceRoles = origRoles;
+						conway = conway.Offset(op.amount, op.faceSelections);
+						break;
 					case Ops.FaceScale:
 						conway = conway.FaceScale(op.amount, op.faceSelections);
 						break;
 					case Ops.FaceRotate:
 						conway = conway.FaceRotate(op.amount, op.faceSelections);
 						break;
+//					case Ops.FaceRotateX:
+//						conway = conway.FaceRotate(op.amount, op.faceSelections, 1);
+//						break;
+//					case Ops.FaceRotateY:
+//						conway = conway.FaceRotate(op.amount, op.faceSelections, 2);
+//						break;
 					case Ops.FaceRemove:
 						conway = conway.FaceRemove(op.faceSelections, false);
 						break;
