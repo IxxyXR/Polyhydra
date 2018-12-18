@@ -213,6 +213,7 @@ public class PolyHydra : MonoBehaviour {
 
 	private void OnValidate()
 	{
+		if (EditorApplication.isPlayingOrWillChangePlaymode) return;
 		var currentState = new PolyPreset();
 		currentState.CreateFromPoly("temp", this);
 		if (previousState != currentState)
@@ -297,7 +298,6 @@ public class PolyHydra : MonoBehaviour {
 
 	public void FinishedMeshGeneration(Mesh mesh)
 	{
-		if (EditorApplication.isPlayingOrWillChangePlaymode) return;
 		mesh.RecalculateTangents();
 		mesh.RecalculateBounds();
 		if (meshFilter != null)
