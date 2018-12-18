@@ -96,9 +96,11 @@ public class PolyUI : MonoBehaviour {
 
     void UpdatePolyUI()
     {
+        _shouldReBuild = false;
         TwoSidedToggle.isOn = poly.TwoSided;
         CreateBasePolyDropdown();
         BasePolyDropdown.value = (int)poly.PolyType;
+        _shouldReBuild = true;
     }
 
     void UpdateAnimUI()
@@ -331,7 +333,7 @@ public class PolyUI : MonoBehaviour {
     {
         poly.PolyType = (PolyTypes)change.value;
         if (_shouldReBuild) poly.MakePolyhedron();
-        if (poly.WythoffPoly.IsOneSided)
+        if (poly.WythoffPoly!=null && poly.WythoffPoly.IsOneSided)
         {
             BypassOpsToggle.isOn = true;
             OpsWarning.enabled = true;

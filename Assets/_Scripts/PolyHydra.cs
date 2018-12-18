@@ -211,17 +211,15 @@ public class PolyHydra : MonoBehaviour {
 		MakeMesh();
 	}
 
-	private void OnValidate() {
-		if (!Application.isPlaying)
+	private void OnValidate()
+	{
+		var currentState = new PolyPreset();
+		currentState.CreateFromPoly("temp", this);
+		if (previousState != currentState)
 		{
-			var currentState = new PolyPreset();
-			currentState.CreateFromPoly("temp", this);
-			if (previousState != currentState)
-			{
-				MakePolyhedron();
-				previousState = currentState;
-			}			
-		}
+			MakePolyhedron();
+			previousState = currentState;
+		}			
 	}
 
 	public void MakeWythoff() {
@@ -299,6 +297,7 @@ public class PolyHydra : MonoBehaviour {
 
 	public void FinishedMeshGeneration(Mesh mesh)
 	{
+		if (EditorApplication.isPlayingOrWillChangePlaymode) return;
 		mesh.RecalculateTangents();
 		mesh.RecalculateBounds();
 		if (meshFilter != null)
