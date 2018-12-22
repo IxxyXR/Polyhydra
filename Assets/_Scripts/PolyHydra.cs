@@ -58,6 +58,7 @@ public class PolyHydra : MonoBehaviour {
 		Offset,
 		//Ribbon,
 		Extrude,
+		VertexScale,
 //		FaceTranslate,
 		FaceOffset,
 		FaceScale,
@@ -68,6 +69,7 @@ public class PolyHydra : MonoBehaviour {
 		FaceRemove,
 		FaceKeep,
 		AddDual,
+		Planarize,
 		Canonicalize
 	}
 
@@ -163,7 +165,7 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.Zip, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.Expand, new OpConfig{usesAmount=false}},
 			{Ops.Bevel, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
-			{Ops.Join, new OpConfig{usesAmount=false}},
+			{Ops.Join, new OpConfig{amountMin = -6, amountMax = 6}},
 			{Ops.Needle, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.Ortho, new OpConfig{usesAmount=false}},
 			{Ops.Meta, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
@@ -188,6 +190,7 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.FaceOffset, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			//{Ops.Ribbon, new OpConfig{}},
 			{Ops.Extrude, new OpConfig{amountMin = -6, amountMax = 6}},
+			{Ops.VertexScale, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			//{Ops.FaceTranslate, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.FaceScale, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
 			{Ops.FaceRotate, new OpConfig{usesFaces=true, amountMin = -180, amountMax = 180}},
@@ -197,6 +200,7 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.FaceRemove, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.FaceKeep, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.AddDual, new OpConfig{amountMin = -6, amountMax = 6}},
+			{Ops.Planarize, new OpConfig{amountMin = 0.0001f, amountMax = 1f}},
 			{Ops.Canonicalize, new OpConfig{amountMin = 0.0001f, amountMax = 1f}}
 		};
 	}
@@ -213,7 +217,9 @@ public class PolyHydra : MonoBehaviour {
 
 	private void OnValidate()
 	{
-		if (EditorApplication.isPlayingOrWillChangePlaymode) return;
+		#if UNITY_EDITOR
+			if (EditorApplication.isPlayingOrWillChangePlaymode) return;
+		#endif
 		var currentState = new PolyPreset();
 		currentState.CreateFromPoly("temp", this);
 		if (previousState != currentState)
@@ -376,6 +382,7 @@ public class PolyHydra : MonoBehaviour {
 						conway = conway.Dual();
 						break;
 					case Ops.Join:
+						// conway = conway.Join(op.amount);  // Not currently used as it results in non-coplanar faces
 						conway = conway.Ambo();
 						conway = conway.Dual();
 						break;
@@ -468,6 +475,13 @@ public class PolyHydra : MonoBehaviour {
 //					case Ops.FaceTranslate:
 //						conway = conway.FaceTranslate(op.amount, op.faceSelections);
 //						break;
+					case Ops.VertexScale:
+						foreach (var v in conway.Vertices)
+						{
+							Debug.Log(v.Halfedges.Count);
+						}
+						conway = conway.VertexScale(op.amount, op.faceSelections);
+						break;
 					case Ops.FaceOffset:
 						// Split faces
 						var origRoles = conway.FaceRoles;
@@ -495,6 +509,9 @@ public class PolyHydra : MonoBehaviour {
 						break;
 					case Ops.AddDual:
 						conway = conway.AddDual(op.amount);
+						break;
+					case Ops.Planarize:
+						conway = conway.Canonicalize((int)op.amount, (int)op.amount);
 						break;
 					case Ops.Canonicalize:
 						conway = conway.Canonicalize(op.amount, op.amount);

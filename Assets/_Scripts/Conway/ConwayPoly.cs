@@ -322,10 +322,54 @@ namespace Conway {
 
             return new ConwayPoly(vertexPoints, faceIndices, faceRoles);
         }
-		
+
+		// Not currently used as it results in non-coplanar faces and it's cheaper to do ambo > dual than to follow this with canonicalize
+	    public ConwayPoly Join(float offset) {
+	        
+		    var faceIndices = new List<int[]>();
+		    var vertexPoints = new List<Vector3>();
+		    var existingVertices = new Dictionary<Vector3, int>();
+		    var newCentroidVertices = new Dictionary<string, int>();
+		    var rhombusFlags = new Dictionary<string, bool>(); // Track if we've created a face for joined edges
+		    var faceRoles = new List<Roles>();
+			
+		    for (var i = 0; i < Vertices.Count; i++)
+		    {
+			    vertexPoints.Add(Vertices[i].Position);
+			    existingVertices[vertexPoints[i]] = i;
+		    }
+		    
+		    int vertexIndex = vertexPoints.Count();
+
+		    for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
+		    {
+			    var face = Faces[faceIndex];
+			    vertexPoints.Add(face.Centroid + face.Normal * offset);
+			    newCentroidVertices[face.Name] = vertexIndex++;
+		    }
+		    
+		    foreach (var edge in Halfedges)
+		    {
+			    if (!rhombusFlags.ContainsKey(edge.PairedName))
+			    {
+				    var rhombus = new []
+				    {
+					    existingVertices[edge.Prev.Vertex.Position],
+					    newCentroidVertices[edge.Face.Name],
+					    existingVertices[edge.Vertex.Position],
+					    newCentroidVertices[edge.Pair.Face.Name]
+				    };
+				    faceIndices.Add(rhombus);
+				    faceRoles.Add(Roles.New);
+				    rhombusFlags[edge.PairedName] = true;
+			    }
+		    }
+		    
+		    return new ConwayPoly(vertexPoints, faceIndices, faceRoles);
+	    }
+	    
         public ConwayPoly Kis(float offset, FaceSelections facesel) {
 	        
-
             // vertices and faces to vertices
             var newVerts = Faces.Select(f => f.Centroid + f.Normal * offset);
             var vertexPoints = Vertices.Select(v => v.Position).Concat(newVerts);
@@ -590,8 +634,7 @@ namespace Conway {
         
 		public ConwayPoly Loft(float ratio=0.33333333f, FaceSelections facesel=FaceSelections.All)
 		{
-
-
+			
 		    var faceIndices = new List<int[]>();
 		    var vertexPoints = new List<Vector3>();
 		    var existingVertices = new Dictionary<Vector3, int>();
@@ -775,7 +818,6 @@ namespace Conway {
 	
 		private ConwayPoly _Lace(FaceSelections facesel, bool joined, float ratio=0.3333333f) {
 			
-					
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
@@ -885,7 +927,6 @@ namespace Conway {
 		public ConwayPoly Stake(float ratio=0.3333333f, FaceSelections facesel=FaceSelections.All)
 		{
 			
-			
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
@@ -966,8 +1007,7 @@ namespace Conway {
 					faceRoles.Add(Roles.Ignored);
 				}
 			}
-
-			//stakePolyhedron.setVertexNormalsToFaceNormals();
+			
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles);
 		}
 		
@@ -1301,6 +1341,22 @@ namespace Conway {
 
         #region geometry methods
 
+	    public ConwayPoly VertexScale(float scale, FaceSelections vertexsel) {
+	       
+		    var vertexPoints = new List<Vector3>();
+		    var faceIndices = ListFacesByVertexIndices();
+
+		    for (var vertexIndex = 0; vertexIndex < Vertices.Count; vertexIndex++)
+		    {
+			    var vertex = Vertices[vertexIndex];
+			    var includeVertex = IncludeVertex(vertexIndex, vertexsel);
+			    vertexPoints.Add(includeVertex ? vertex.Position * scale : vertex.Position);
+		    }
+
+		    return new ConwayPoly(vertexPoints, faceIndices, FaceRoles);
+	    }
+
+	    
         public ConwayPoly FaceScale(float scale, FaceSelections facesel) {
 	        
             
@@ -1950,8 +2006,8 @@ namespace Conway {
 	    {
 		    var previousFaceRoles = FaceRoles;
 		    var canonicalized = Duplicate();
-	        Adjust(canonicalized, iterationsAdjust);
-		    Planarize(canonicalized, iterationsPlanarize);
+		    if (iterationsAdjust > 0) Adjust(canonicalized, iterationsAdjust);
+		    if (iterationsPlanarize > 0) Planarize(canonicalized, iterationsPlanarize);
 		    canonicalized.FaceRoles = previousFaceRoles;
 		    return canonicalized;
 	    }
@@ -1971,8 +2027,8 @@ namespace Conway {
 	    {
 		    var previousFaceRoles = FaceRoles;
 		    ConwayPoly canonicalized = Duplicate();
-	        Adjust(canonicalized, thresholdAdjust);
-	        Planarize(canonicalized, thresholdPlanarize);
+		    if (thresholdAdjust > 0) Adjust(canonicalized, thresholdAdjust);
+		    if (thresholdPlanarize > 0) Planarize(canonicalized, thresholdPlanarize);
 		    canonicalized.FaceRoles = previousFaceRoles;
 		    return canonicalized;
 	    }
@@ -2106,7 +2162,26 @@ namespace Conway {
 		    return Faces[faceIndex].Sides == FaceSelectionToSides(facesel);
 	    }
 
-#endregion
+	    public bool IncludeVertex(int vertexIndex, FaceSelections vertexsel)
+	    {
+		    switch (vertexsel)
+		    {
+			    case FaceSelections.All:
+				    return true;
+			    // TODO
+//			    case FaceSelections.Existing:
+//				    return VertexRoles[vertexIndex] == Roles.Existing;
+//			    case FaceSelections.Ignored:
+//				    return VertexRoles[vertexIndex] == Roles.Ignored;
+//			    case FaceSelections.New:
+//				    return VertexRoles[vertexIndex] == Roles.New;
+//			    case FaceSelections.NewAlt:
+//				    return VertexRoles[vertexIndex] == Roles.NewAlt;
+		    }
+		    return Vertices[vertexIndex].Halfedges.Count == FaceSelectionToSides(vertexsel);
+	    }
+
+	    #endregion
 
     }
 	
