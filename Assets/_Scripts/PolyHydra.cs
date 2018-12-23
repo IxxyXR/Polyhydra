@@ -336,7 +336,7 @@ public class PolyHydra : MonoBehaviour {
 
 	private void ApplyOps()
 	{
-		if (ConwayOperators == null) return;		
+		if (ConwayOperators == null) return;
 		conway = new ConwayPoly(WythoffPoly);
 		var cacheKeySource = WythoffPoly.WythoffSymbol;
 		foreach (var op in ConwayOperators)
@@ -577,10 +577,13 @@ public class PolyHydra : MonoBehaviour {
 	// TODO Detect convex faces and use fan triangulation to save on a vertex
 	public List<int> KisTriangulate() {
             
+		var faceRoles = new List<ConwayPoly.Roles>();
+		var vertexRoles = new List<ConwayPoly.Roles>();
+		
 		var newVerts = conway.Faces.Select(f => f.Centroid);
 		var vertexPoints = Enumerable.Concat(conway.Vertices.Select(v => v.Position), newVerts);
+		vertexRoles.Concat(Enumerable.Repeat<ConwayPoly.Roles>(ConwayPoly.Roles.Existing, vertexPoints.Count()));
 		var originalFaceSides = new List<int>();
-		var faceRoles = new List<ConwayPoly.Roles>();
             
 		// vertex lookup
 		var vlookup = new Dictionary<string, int>();
@@ -608,8 +611,8 @@ public class PolyHydra : MonoBehaviour {
 				}
 			}
 		}
-            
-		conway = new ConwayPoly(vertexPoints, faceIndices, faceRoles);
+
+		conway = new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		return originalFaceSides;
 	} 
 
