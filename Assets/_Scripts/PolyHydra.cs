@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using Conway;
 using Newtonsoft.Json;
@@ -18,12 +19,30 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 public class PolyHydra : MonoBehaviour {
 	
+	private const bool disableThreading = false;
+	private const bool enableCaching = true;   
 	const int MAX_CACHE_LENGTH = 5000;
+	
+	private int _faceCount;
+	private int _vertexCount;
 	
 	public PolyTypes PolyType;
 	public string WythoffSymbol;
 	public bool BypassOps;
 	public bool TwoSided;
+	public bool ReScale;
+	
+	// Parameters for prismatic forms
+	public int PrismP = 5;
+	public int PrismQ = 2;
+
+	public enum ColorMethods
+	{
+		BySides,
+		ByRole
+	}
+
+	public ColorMethods ColorMethod;
 	
 	public enum Ops {
 		Identity,
@@ -54,23 +73,28 @@ public class PolyHydra : MonoBehaviour {
 		Volute,
 		Exalt,
 		Yank,
-		//Chamfer,
 		Offset,
-		//Ribbon,
 		Extrude,
 		VertexScale,
-//		FaceTranslate,
 		FaceOffset,
 		FaceScale,
 		FaceRotate,
+//		Chamfer,
+//		Ribbon,
+//		FaceTranslate,
 //		FaceRotateX,
 //		FaceRotateY,
-		//Test,
 		FaceRemove,
 		FaceKeep,
 		AddDual,
-		Planarize,
-		Canonicalize
+		Canonicalize,
+		CanonicalizeI
+	}
+
+	public string GetInfoText()
+	{
+		string infoText = $"Faces: {_faceCount}\nVertices: {_vertexCount}";
+		return infoText;
 	}
 
 	public class OpConfig
@@ -109,11 +133,12 @@ public class PolyHydra : MonoBehaviour {
 
 	private MeshFilter meshFilter;
 	private PolyPreset previousState;
-	private bool threadRunning;
-	private Thread thread;
 
 	public PolyUI polyUI;
-	
+
+	private bool finishedOpsThread = true;
+	private Thread thread;
+
 	private struct ConwayCacheEntry
 	{
 		public ConwayPoly conway;
@@ -152,7 +177,6 @@ public class PolyHydra : MonoBehaviour {
 		new Color(0.5f, 1.0f, 1.0f),
 		new Color(1.0f, 0.5f, 1.0f),
 	};
-
 
 	void Awake()
 	{		
@@ -200,19 +224,65 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.FaceRemove, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.FaceKeep, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.AddDual, new OpConfig{amountMin = -6, amountMax = 6}},
-			{Ops.Planarize, new OpConfig{amountMin = 0.0001f, amountMax = 1f}},
-			{Ops.Canonicalize, new OpConfig{amountMin = 0.0001f, amountMax = 1f}}
+			{Ops.Canonicalize, new OpConfig{amountMin = 0.0001f, amountMax = 1f}},
+			{Ops.CanonicalizeI, new OpConfig{amountMin = 1, amountMax = 400}}
 		};
 	}
 
-	void Start() {
+	void Start()
+	{
 		meshFilter = gameObject.GetComponent<MeshFilter>();
+	}
+
+	public Mesh GridToMesh()
+	{
+		return new Mesh();
 	}
 
 	public void MakePolyhedron()
 	{
-		MakeWythoff();
-		MakeMesh();
+		Mesh mesh;
+		bool bypassOps = BypassOps || ConwayOperators == null || ConwayOperators.Count < 1;
+		
+		if (bypassOps)
+		{
+			if (PolyType > 0)  // Uniform Polys
+			{
+				MakeWythoff();
+				mesh = BuildMeshFromWythoffPoly(WythoffPoly);
+				AssignFinishedMesh(mesh);
+				
+			}
+			else  // Special cases. Currently just a grid
+			{
+				conway = ConwayPoly.MakeGrid();
+				mesh = GridToMesh();
+				AssignFinishedMesh(mesh);
+			}
+			
+			return;
+		}
+		
+		if (PolyType > 0) // Uniform Polys
+		{
+			MakeWythoff();
+			conway = new ConwayPoly(WythoffPoly);			
+		}
+		else  // Special cases. Currently just a grid
+		{
+			conway = ConwayPoly.MakeGrid();	
+		}
+
+		if (disableThreading)
+		{
+			ApplyOps();
+			FinishedApplyOps();
+		}
+		else
+		{
+			StartCoroutine(RunOffMainThread(ApplyOps, FinishedApplyOps));
+		}
+	
 	}
 
 	private void OnValidate()
@@ -220,13 +290,20 @@ public class PolyHydra : MonoBehaviour {
 		#if UNITY_EDITOR
 			if (EditorApplication.isPlayingOrWillChangePlaymode) return;
 		#endif
+		
+		if (PrismP < 3) PrismP = 3;
+		if (PrismP > 16) PrismP = 16;
+		if (PrismQ > PrismP - 2) PrismQ = PrismP - 2;
+		if (PrismQ < 2) PrismQ = 2;
+		
 		var currentState = new PolyPreset();
 		currentState.CreateFromPoly("temp", this);
 		if (previousState != currentState)
 		{
 			MakePolyhedron();
 			previousState = currentState;
-		}			
+		}
+
 	}
 
 	public void MakeWythoff() {
@@ -237,19 +314,22 @@ public class PolyHydra : MonoBehaviour {
 		}
 		else
 		{
-			MakeWythoff((int)PolyType);						
+			MakeWythoff((int)PolyType);
 		}
+
 	}
 
 	public void MakeWythoff(int polyType)
 	{
-		polyType++;  // We're 1-indexed not 0-indexed
 		MakeWythoff(Uniform.Uniforms[polyType].Wythoff);
 	}
 
 	public void MakeWythoff(string symbol)
 	{
-
+		
+		symbol = symbol.Replace("p", PrismP.ToString());
+		symbol = symbol.Replace("q", PrismQ.ToString());
+		
 		if (WythoffPoly == null || WythoffPoly.WythoffSymbol != symbol)
 		{
 			if (_wythoffCache==null) _wythoffCache = new Dictionary<string, WythoffPoly>();
@@ -265,47 +345,25 @@ public class PolyHydra : MonoBehaviour {
 			
 		}
 		WythoffPoly.BuildFaces(BuildAux: BypassOps);
+		
+		//_faceCount = WythoffPoly.FaceCount;
+		//_vertexCount = WythoffPoly.VertexCount;
 	}
 	
-	public void MakeMesh()
-	{
-		if (BypassOps)
-		{
-			// Only need to deal with the Wythoff poly
-			var mesh = BuildMeshFromWythoffPoly(WythoffPoly);
-			mesh.RecalculateNormals();
-			FinishedMeshGeneration(mesh);
-		}
-		else
-		{
-			var threaded = false;
-			if (threaded)
-			{
-				if (thread!=null && threadRunning)
-				{
-					thread.Abort();
-				}
-				StartCoroutine(RunOffMainThread(ApplyOps, FinishedApplyOps));			
-			}
-			else
-			{
-				ApplyOps();
-				FinishedApplyOps();
-			}
-		}
-	}
-
 	public void FinishedApplyOps()
 	{
-		conway.ScalePolyhedra();
+		_faceCount = conway.Faces.Count;
+		_vertexCount = conway.Vertices.Count;
+
 		var mesh = BuildMeshFromConwayPoly(TwoSided);
-		FinishedMeshGeneration(mesh);
+		AssignFinishedMesh(mesh);
 	}
 
-	public void FinishedMeshGeneration(Mesh mesh)
+	public void AssignFinishedMesh(Mesh mesh)
 	{
 		mesh.RecalculateTangents();
 		mesh.RecalculateBounds();
+		
 		if (meshFilter != null)
 		{
 			if (Application.isEditor)
@@ -320,39 +378,45 @@ public class PolyHydra : MonoBehaviour {
 	}
 	
 	// This is a helper coroutine
-	IEnumerator RunOffMainThread(Action toRun, Action callback) {
-		threadRunning = false;
-		thread = new Thread(() => {
-			threadRunning = true;
+	IEnumerator RunOffMainThread(Action toRun, Action callback)
+	{
+		if (thread != null)
+		{
+			thread.Abort();
+			thread.Join();			
+		}
+		finishedOpsThread = false;
+		thread = null;
+
+		thread = new Thread(() =>
+		{
 			toRun();
+			finishedOpsThread = true;
 		});
 		thread.Start();
-		while (!threadRunning)
-		{
-			yield return null;			
-		}
+		while (!finishedOpsThread)
+			yield return null;
 		callback();
 	}
 
 	private void ApplyOps()
 	{
-		if (ConwayOperators == null) return;
-		conway = new ConwayPoly(WythoffPoly);
-		var cacheKeySource = WythoffPoly.WythoffSymbol;
-		foreach (var op in ConwayOperators)
+		
+		var cacheKeySource = $"{PolyType} {PrismP} {PrismQ}";
+		
+		foreach (var op in ConwayOperators.ToList())
 		{
 			
 			if (op.disabled) continue;
 			
 			cacheKeySource += JsonConvert.SerializeObject(op);
 			if (_conwayCache == null) _conwayCache = new Dictionary<int, ConwayCacheEntry>();
-			if (_conwayCache.ContainsKey(cacheKeySource.GetHashCode()))
+			if (enableCaching && _conwayCache.ContainsKey(cacheKeySource.GetHashCode()))
 			{
 				conway = _conwayCache[cacheKeySource.GetHashCode()].conway;
 			}
 			else
 			{
-				int faceSelection;
 	
 				switch (op.opType)
 				{
@@ -460,26 +524,12 @@ public class PolyHydra : MonoBehaviour {
 					case Ops.Volute:
 						conway = conway.Volute(op.amount);
 						break;
-					//						case Ops.Chamfer:
-					//							conway = conway.Chamfer();
-					//							break;
-	
 					case Ops.Extrude:
 						// Split faces
 						conway = conway.FaceScale(0, 0);
 						conway = conway.Extrude(op.amount, false);
 						break;
-					//						case Ops.Ribbon:
-					//							conway = conway.Ribbon(op.amount, false, 0.1f);
-					//							break;
-//					case Ops.FaceTranslate:
-//						conway = conway.FaceTranslate(op.amount, op.faceSelections);
-//						break;
 					case Ops.VertexScale:
-						foreach (var v in conway.Vertices)
-						{
-							Debug.Log(v.Halfedges.Count);
-						}
 						conway = conway.VertexScale(op.amount, op.faceSelections);
 						break;
 					case Ops.FaceOffset:
@@ -495,6 +545,15 @@ public class PolyHydra : MonoBehaviour {
 					case Ops.FaceRotate:
 						conway = conway.FaceRotate(op.amount, op.faceSelections);
 						break;
+//					case Ops.Chamfer:
+//						conway = conway.Chamfer();
+//						break;
+//					case Ops.Ribbon:
+//						conway = conway.Ribbon(op.amount, false, 0.1f);
+//						break;
+//					case Ops.FaceTranslate:
+//						conway = conway.FaceTranslate(op.amount, op.faceSelections);
+//						break;
 //					case Ops.FaceRotateX:
 //						conway = conway.FaceRotate(op.amount, op.faceSelections, 1);
 //						break;
@@ -510,25 +569,33 @@ public class PolyHydra : MonoBehaviour {
 					case Ops.AddDual:
 						conway = conway.AddDual(op.amount);
 						break;
-					case Ops.Planarize:
-						conway = conway.Canonicalize((int)op.amount, (int)op.amount);
-						break;
 					case Ops.Canonicalize:
 						conway = conway.Canonicalize(op.amount, op.amount);
 						break;
+					case Ops.CanonicalizeI:
+						conway = conway.Canonicalize((int)op.amount, (int)op.amount);
+						break;
 				}
 
-				var cached = new ConwayCacheEntry(conway, DateTime.UtcNow.Ticks);
-				_conwayCache[cacheKeySource.GetHashCode()] = cached;
-				if (_conwayCache.Count > MAX_CACHE_LENGTH)
+				if (enableCaching)
 				{
-					// Cull half the cache
-					var ordered = _conwayCache.OrderBy(kv => kv.Key);
-					var half = _conwayCache.Count/2;
-					_conwayCache = ordered.Skip(half).ToDictionary(kv => kv.Key, kv => kv.Value);
+					var cached = new ConwayCacheEntry(conway, DateTime.UtcNow.Ticks);
+					_conwayCache[cacheKeySource.GetHashCode()] = cached;
+					if (_conwayCache.Count > MAX_CACHE_LENGTH)
+					{
+						// Cull half the cache
+						var ordered = _conwayCache.OrderBy(kv => kv.Key);
+						var half = _conwayCache.Count/2;
+						_conwayCache = ordered.Skip(half).ToDictionary(kv => kv.Key, kv => kv.Value);
+					}					
 				}
 
 			}
+		}
+
+		if (ReScale)
+		{
+			conway.ScalePolyhedra();			
 		}
 	}
 	
@@ -567,14 +634,14 @@ public class PolyHydra : MonoBehaviour {
 		mesh.vertices = meshVertices.ToArray();
 		mesh.triangles = meshTriangles.ToArray();
 		mesh.colors = meshColors.ToArray();
-
+		mesh.RecalculateNormals();
 		return mesh;
 
 	}
 	
 	// Essentially Kis only on non-triangular faces
 	// Returns the original number of sides of each face to be used elsewhere
-	// TODO Detect convex faces and use fan triangulation to save on a vertex
+	// TODO Detect convex faces and use fan triangulation to save on a vertex?
 	public List<int> KisTriangulate() {
             
 		var faceRoles = new List<ConwayPoly.Roles>();
@@ -582,7 +649,7 @@ public class PolyHydra : MonoBehaviour {
 		
 		var newVerts = conway.Faces.Select(f => f.Centroid);
 		var vertexPoints = Enumerable.Concat(conway.Vertices.Select(v => v.Position), newVerts);
-		vertexRoles.Concat(Enumerable.Repeat<ConwayPoly.Roles>(ConwayPoly.Roles.Existing, vertexPoints.Count()));
+		vertexRoles.Concat(Enumerable.Repeat(ConwayPoly.Roles.Existing, vertexPoints.Count()));
 		var originalFaceSides = new List<int>();
             
 		// vertex lookup
@@ -616,7 +683,7 @@ public class PolyHydra : MonoBehaviour {
 		return originalFaceSides;
 	} 
 
-	public Mesh BuildMeshFromConwayPoly(bool forceTwosided=false, bool colorByRole=true)
+	public Mesh BuildMeshFromConwayPoly(bool forceTwosided)
 	{
 
 		var originalFaceSides = KisTriangulate();
@@ -628,8 +695,8 @@ public class PolyHydra : MonoBehaviour {
 		var meshColors = new List<Color32>();
 		
 		var hasNaked = conway.HasNaked();
-		hasNaked = false;
-
+		hasNaked = false;  // TODO
+		
 		// Strip down to Face-Vertex structure
 		var points = conway.ListVerticesByPoints();
 		var faceIndices = conway.ListFacesByVertexIndices();
@@ -643,10 +710,20 @@ public class PolyHydra : MonoBehaviour {
 			var face = conway.Faces[i];
 			var faceNormal = face.Normal;
 			
-			var color = colorByRole ?
-				faceColors[(int)conway.FaceRoles[i]] :
-				faceColors[(originalFaceSides[i] - 3) % originalFaceSides.Count];				
-			
+			Color32 color;
+			switch (ColorMethod)
+			{
+				case ColorMethods.ByRole:
+					color = faceColors[(int) conway.FaceRoles[i]];
+					break;
+				case ColorMethods.BySides:
+					color = faceColors[(originalFaceSides[i] - 3) % originalFaceSides.Count];
+					break;
+				default:
+					color = Color.red;
+					break;
+			}
+
 			meshNormals.Add(faceNormal);
 			meshNormals.Add(faceNormal);
 			meshNormals.Add(faceNormal);

@@ -1,4 +1,5 @@
 public enum PolyTypes {
+    Grid,
     Pentagonal_Prism,
     Pentagonal_Antiprism,
     Pentagrammic_Prism,

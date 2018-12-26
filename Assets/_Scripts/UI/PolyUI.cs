@@ -24,6 +24,7 @@ public class PolyUI : MonoBehaviour {
     public Toggle TwoSidedToggle;
     public Button PrevPolyButton;
     public Button NextPolyButton;
+    public Text InfoText;
     public Text OpsWarning;
     public Button AddOpButton;
     public Toggle BypassOpsToggle;
@@ -67,6 +68,12 @@ public class PolyUI : MonoBehaviour {
         ShowTab(TabButtons[0].gameObject);
     }
 
+    void Update()
+    {
+        // TODO hook up a signal or something to only set this when the mesh has changed
+        InfoText.text = poly.GetInfoText();
+    }
+
     private void PrevPolyButtonClicked()
     {
         BasePolyDropdown.value -= 1;
@@ -86,12 +93,17 @@ public class PolyUI : MonoBehaviour {
         UpdateAnimUI();
     }
 
+    void Rebuild()
+    {
+        if (_shouldReBuild) poly.MakePolyhedron();
+    }
+
     void AddOpButtonClicked()
     {
         var newOp = new PolyHydra.ConwayOperator {disabled = false};
         poly.ConwayOperators.Add(newOp);
         AddOpItemToUI(newOp);
-        if (_shouldReBuild) poly.MakePolyhedron();
+        Rebuild();
     }
 
     void UpdatePolyUI()
@@ -210,10 +222,12 @@ public class PolyUI : MonoBehaviour {
 
     void AmountSliderChanged()
     {
+        //if (!poly.disableThreading && !poly.done) return;
         var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountSlider;
         var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountInput;
         input.text = slider.value.ToString();
-        OpsUIToPoly();
+        // Not needed if we also modify the text field
+        // OpsUIToPoly();
     }
 
     void AmountInputChanged()
@@ -224,8 +238,7 @@ public class PolyUI : MonoBehaviour {
         if (float.TryParse(input.text, out value))
         {
             slider.value = value;
-        }
-        
+        }        
         OpsUIToPoly();
     }
 
@@ -247,7 +260,7 @@ public class PolyUI : MonoBehaviour {
             poly.ConwayOperators[index] = op;
             
         }
-        if (_shouldReBuild) poly.MakePolyhedron();
+        Rebuild();
     }
 
     void MoveOpUp()
@@ -270,7 +283,7 @@ public class PolyUI : MonoBehaviour {
         poly.ConwayOperators[src] = poly.ConwayOperators[dest];
         poly.ConwayOperators[dest] = temp;
         CreateOps();
-        if (_shouldReBuild) poly.MakePolyhedron();
+        Rebuild();
     }
     
     void DeleteOp()
@@ -278,12 +291,14 @@ public class PolyUI : MonoBehaviour {
         var opPrefabManager = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>();
         poly.ConwayOperators.RemoveAt(opPrefabManager.Index);
         CreateOps();
-        if (_shouldReBuild) poly.MakePolyhedron();
+        Rebuild();
     }
 
     void CreateBasePolyDropdown()
     {
         BasePolyDropdown.ClearOptions();
+        
+        // Uniform Polyhedra
         foreach (var polyType in Enum.GetValues(typeof(PolyTypes))) {
             var label = new Dropdown.OptionData(polyType.ToString().Replace("_", " "));
             BasePolyDropdown.options.Add(label);
@@ -332,18 +347,17 @@ public class PolyUI : MonoBehaviour {
     void BasePolyDropdownChanged(Dropdown change)
     {
         poly.PolyType = (PolyTypes)change.value;
-        if (_shouldReBuild) poly.MakePolyhedron();
+        Rebuild();
         if (poly.WythoffPoly!=null && poly.WythoffPoly.IsOneSided)
         {
             BypassOpsToggle.isOn = true;
             OpsWarning.enabled = true;
-
         }
         else
         {
-            BypassOpsToggle.isOn = false;
+            BypassOpsToggle.isOn = poly.BypassOps;
             OpsWarning.enabled = false;
-        }
+        }            
     }
 
     void XSliderChanged()
@@ -364,13 +378,13 @@ public class PolyUI : MonoBehaviour {
     void TwoSidedToggleChanged()
     {
         poly.TwoSided = TwoSidedToggle.isOn;
-        if (_shouldReBuild) poly.MakePolyhedron();
+        Rebuild();
     }
 
     void BypassOpsToggleChanged()
     {
         poly.BypassOps = BypassOpsToggle.isOn;
-        if (_shouldReBuild) poly.MakePolyhedron();
+        Rebuild();
     }
 
     void LoadPresetButtonClicked()

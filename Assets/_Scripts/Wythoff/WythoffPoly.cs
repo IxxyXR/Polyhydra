@@ -56,22 +56,13 @@ namespace Wythoff {
 
         public Vector[] Vertices; // vertex coordinates (array VertexCount) 
         public Vector[] FaceCenters; // face coordinates (array FaceCount)
-
+        
         public List<Face> faces; // Array of Face instances
 
 
         public WythoffPoly(string symbol)
         {
             UnpackSym(symbol);
-            _Polyhedron();
-        }
-
-        public WythoffPoly(double p0, double p1, double p2, double p3)
-        {
-            WythoffParams[0] = p0;
-            WythoffParams[1] = p1;
-            WythoffParams[2] = p2;
-            WythoffParams[3] = p3;
             _Polyhedron();
         }
         

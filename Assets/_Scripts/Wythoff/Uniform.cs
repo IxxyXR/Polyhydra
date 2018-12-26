@@ -55,46 +55,46 @@ namespace Wythoff {
 		
         public static Uniform[] Uniforms = {
             
-            new Uniform("", "", "", 0, 0),
+            new Uniform("-", "Grid", "Dual Grid", 0, 0),
 
             // Dihedral Schwarz Triangles (D5 only)
 
             // (2 2 5) (D1/5) 
 
             new Uniform( // 1
-                "2 5|2",
-                "pentagonal prism",
-                "pentagonal dipyramid",
+                "2 p|2",
+                "polygonal prism",
+                "polygonal dipyramid",
                 0, 0
             ),
             new Uniform( // 2
-                "|2 2 5",
-                "pentagonal antiprism",
-                "pentagonal deltohedron",
+                "|2 2 p",
+                "polygonal antiprism",
+                "polygonal deltohedron",
                 0, 0
             ),
 
             // (2 2 5/2) (D2/5) 
 
             new Uniform( // 3
-                "2 5/2|2",
-                "pentagrammic prism",
-                "pentagrammic dipyramid",
+                "2 p/q|2",
+                "polygrammic prism",
+                "polygrammic dipyramid",
                 0, 0
             ),
             new Uniform( // 4
-                "|2 2 5/2",
-                "pentagrammic antiprism",
-                "pentagrammic deltohedron",
+                "|2 2 p/q",
+                "polygrammic antiprism",
+                "polygrammic deltohedron",
                 0, 0
             ),
 
             // (5/3 2 2) (D3/5) 
 
             new Uniform( // 5
-                "|2 2 5/3",
-                "pentagrammic crossed antiprism",
-                "pentagrammic concave deltohedron",
+                "|2 2 p/q",
+                "polygrammic crossed antiprism",
+                "polygrammic concave deltohedron",
                 0, 0
             ),
 
