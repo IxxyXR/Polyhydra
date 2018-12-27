@@ -2,14 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using Conway;
 using Newtonsoft.Json;
 using Wythoff;
 using UnityEditor;
 using UnityEngine;
-
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable UnusedMember.Global
@@ -19,7 +17,7 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 public class PolyHydra : MonoBehaviour {
 	
-	private const bool disableThreading = false;
+	private const bool enableThreading = true;
 	private const bool enableCaching = true;   
 	const int MAX_CACHE_LENGTH = 5000;
 	
@@ -273,7 +271,7 @@ public class PolyHydra : MonoBehaviour {
 			conway = ConwayPoly.MakeGrid();	
 		}
 
-		if (disableThreading)
+		if (!enableThreading)
 		{
 			ApplyOps();
 			FinishedApplyOps();
@@ -282,7 +280,6 @@ public class PolyHydra : MonoBehaviour {
 		{
 			StartCoroutine(RunOffMainThread(ApplyOps, FinishedApplyOps));
 		}
-	
 	}
 
 	private void OnValidate()
@@ -354,7 +351,7 @@ public class PolyHydra : MonoBehaviour {
 	{
 		_faceCount = conway.Faces.Count;
 		_vertexCount = conway.Vertices.Count;
-
+		
 		var mesh = BuildMeshFromConwayPoly(TwoSided);
 		AssignFinishedMesh(mesh);
 	}
@@ -411,7 +408,7 @@ public class PolyHydra : MonoBehaviour {
 			
 			cacheKeySource += JsonConvert.SerializeObject(op);
 			if (_conwayCache == null) _conwayCache = new Dictionary<int, ConwayCacheEntry>();
-			if (enableCaching && _conwayCache.ContainsKey(cacheKeySource.GetHashCode()))
+			if (enableCaching &&_conwayCache.ContainsKey(cacheKeySource.GetHashCode()))
 			{
 				conway = _conwayCache[cacheKeySource.GetHashCode()].conway;
 			}
@@ -604,7 +601,7 @@ public class PolyHydra : MonoBehaviour {
 		
 		var meshVertices = new List<Vector3>();
 		var meshTriangles = new List<int>();
-		var MeshVertexToVertex = new List<int>(); // Mapping of mesh vertices to polyh vertices (one to many as we duplicate verts)
+		var MeshVertexToVertex = new List<int>(); // Mapping of mesh vertices to poly vertices (one to many as we duplicate verts)
 		var meshColors = new List<Color>();
 		
 		var mesh = new Mesh();
@@ -643,7 +640,7 @@ public class PolyHydra : MonoBehaviour {
 	// Returns the original number of sides of each face to be used elsewhere
 	// TODO Detect convex faces and use fan triangulation to save on a vertex?
 	public List<int> KisTriangulate() {
-            
+        
 		var faceRoles = new List<ConwayPoly.Roles>();
 		var vertexRoles = new List<ConwayPoly.Roles>();
 		
@@ -680,14 +677,16 @@ public class PolyHydra : MonoBehaviour {
 		}
 
 		conway = new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+		
+		
+		
 		return originalFaceSides;
 	} 
 
 	public Mesh BuildMeshFromConwayPoly(bool forceTwosided)
 	{
-
-		var originalFaceSides = KisTriangulate();
-
+		//var originalFaceSides = KisTriangulate();
+		
 		var target = new Mesh();
 		var meshTriangles = new List<int>();
 		var meshVertices = new List<Vector3>();
@@ -696,6 +695,20 @@ public class PolyHydra : MonoBehaviour {
 		
 		var hasNaked = conway.HasNaked();
 		hasNaked = false;  // TODO
+		
+		
+		
+		
+//		for (int i = 0; i < conway.Faces.Count; i++)
+//		{
+//			if (conway.Faces[i].Sides > 3)
+//			{
+//				conway.Faces.Triangulate(i, false);
+//			}
+//		}
+		
+		
+		
 		
 		// Strip down to Face-Vertex structure
 		var points = conway.ListVerticesByPoints();
@@ -706,7 +719,7 @@ public class PolyHydra : MonoBehaviour {
 		
 		for (var i = 0; i < faceIndices.Length; i++) {
 			
-			var f = faceIndices[i];
+			var faceIndex = faceIndices[i];
 			var face = conway.Faces[i];
 			var faceNormal = face.Normal;
 			
@@ -717,47 +730,73 @@ public class PolyHydra : MonoBehaviour {
 					color = faceColors[(int) conway.FaceRoles[i]];
 					break;
 				case ColorMethods.BySides:
-					color = faceColors[(originalFaceSides[i] - 3) % originalFaceSides.Count];
+					color = faceColors[face.Sides % faceColors.Length];
 					break;
 				default:
 					color = Color.red;
 					break;
 			}
 
-			meshNormals.Add(faceNormal);
-			meshNormals.Add(faceNormal);
-			meshNormals.Add(faceNormal);
-			
-			meshVertices.Add(points[f[0]]);
-			meshTriangles.Add(index++);
-			meshVertices.Add(points[f[1]]);
-			meshTriangles.Add(index++);
-			meshVertices.Add(points[f[2]]);
-			meshTriangles.Add(index++);
+			if (face.Sides > 3)
+			{
+				for (var edgeIndex = 0; edgeIndex < faceIndex.Count; edgeIndex++)
+				{
+					
+					meshVertices.Add(face.Centroid);
+					meshTriangles.Add(index++);
+					meshVertices.Add(points[faceIndex[edgeIndex]]);
+					meshTriangles.Add(index++);
+					meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
+					meshTriangles.Add(index++);
 
-			if (hasNaked || forceTwosided) {
+					meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
+					meshColors.AddRange(Enumerable.Repeat(color, 3));
+				}
+			}
+			else
+			{
+				meshVertices.Add(points[faceIndex[0]]);
+				meshTriangles.Add(index++);
+				meshVertices.Add(points[faceIndex[1]]);
+				meshTriangles.Add(index++);
+				meshVertices.Add(points[faceIndex[2]]);
+				meshTriangles.Add(index++);
 				
-				meshNormals.Add(-faceNormal);
-				meshNormals.Add(-faceNormal);
-				meshNormals.Add(-faceNormal);
-			
-				meshVertices.Add(points[f[0]]);
-				meshTriangles.Add(index++);
-				meshVertices.Add(points[f[2]]);
-				meshTriangles.Add(index++);
-				meshVertices.Add(points[f[1]]);
-				meshTriangles.Add(index++);
-				
-				meshColors.Add(color);
-				meshColors.Add(color);
-				meshColors.Add(color);
-
+				meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
+				meshColors.AddRange(Enumerable.Repeat(color, 3));
 			}
 			
-			meshColors.Add(color);
-			meshColors.Add(color);
-			meshColors.Add(color);
 			
+			if (hasNaked || forceTwosided)
+			{
+				if (faceIndex.Count > 3)
+				{
+					for (var edgeIndex = 0; edgeIndex < faceIndex.Count; edgeIndex++)
+					{					
+						meshVertices.Add(face.Centroid);
+						meshTriangles.Add(index++);
+						meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
+						meshTriangles.Add(index++);
+						meshVertices.Add(points[faceIndex[edgeIndex]]);
+						meshTriangles.Add(index++);
+
+						meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
+						meshColors.AddRange(Enumerable.Repeat(color, 3));
+					}					
+				}
+				else
+				{
+					meshVertices.Add(points[faceIndex[0]]);
+					meshTriangles.Add(index++);
+					meshVertices.Add(points[faceIndex[2]]);
+					meshTriangles.Add(index++);
+					meshVertices.Add(points[faceIndex[1]]);
+					meshTriangles.Add(index++);
+					
+					meshNormals.AddRange(Enumerable.Repeat(-faceNormal, faceIndex.Count));
+					meshColors.AddRange(Enumerable.Repeat(color, faceIndex.Count));
+				}
+			}		
 		}
 
 		target.vertices = meshVertices.ToArray();

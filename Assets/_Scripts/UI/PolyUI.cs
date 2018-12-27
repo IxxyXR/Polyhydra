@@ -71,7 +71,7 @@ public class PolyUI : MonoBehaviour {
     void Update()
     {
         // TODO hook up a signal or something to only set this when the mesh has changed
-        InfoText.text = poly.GetInfoText();
+        //InfoText.text = poly.GetInfoText();
     }
 
     private void PrevPolyButtonClicked()
