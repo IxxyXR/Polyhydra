@@ -141,7 +141,7 @@ public class ClippedRenderer : MonoBehaviour, ISerializationCallbackReceiver {
 #if UNITY_EDITOR
         if (Camera.current.name != "Preview Scene Camera") Draw();
 #else
-        Draw()
+        Draw();
 #endif
     }
     #endregion
