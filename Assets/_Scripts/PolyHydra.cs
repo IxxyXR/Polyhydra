@@ -23,9 +23,12 @@ public class PolyHydra : MonoBehaviour {
 	
 	private int _faceCount;
 	private int _vertexCount;
+
 	
 	public PolyTypes PolyType;
 	public string WythoffSymbol;
+	public string PresetName;
+	public string APresetName;
 	public bool BypassOps;
 	public bool TwoSided;
 	public bool ReScale;
@@ -33,15 +36,9 @@ public class PolyHydra : MonoBehaviour {
 	// Parameters for prismatic forms
 	public int PrismP = 5;
 	public int PrismQ = 2;
-
-	public enum ColorMethods
-	{
-		BySides,
-		ByRole
-	}
-
-	public ColorMethods ColorMethod;
 	
+	public AppearancePreset.ColorMethods ColorMethod;
+
 	public enum Ops {
 		Identity,
 		Kis,
@@ -726,10 +723,10 @@ public class PolyHydra : MonoBehaviour {
 			Color32 color;
 			switch (ColorMethod)
 			{
-				case ColorMethods.ByRole:
+				case AppearancePreset.ColorMethods.ByRole:
 					color = faceColors[(int) conway.FaceRoles[i]];
 					break;
-				case ColorMethods.BySides:
+				case AppearancePreset.ColorMethods.BySides:
 					color = faceColors[face.Sides % faceColors.Length];
 					break;
 				default:

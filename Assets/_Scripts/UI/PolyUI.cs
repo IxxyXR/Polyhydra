@@ -15,6 +15,9 @@ using UnityEditor;
 public class PolyUI : MonoBehaviour {
     
     public PolyHydra poly;
+    public PolyPresets Presets;
+    public AppearancePresets APresets;
+    public int currentAPreset;
     private RotateObject rotateObject;
 
     public InputField PresetNameInput;
@@ -36,7 +39,8 @@ public class PolyUI : MonoBehaviour {
     public Button SavePresetButton;
     public Button ResetPresetsButton;
     public Button OpenPresetsFolderButton;
-    public PolyPresets Presets;
+    public Button PrevAPresetButton;
+    public Button NextAPresetButton;
     public GameObject[] Tabs; 
     public GameObject[] TabButtons;
     
@@ -44,6 +48,7 @@ public class PolyUI : MonoBehaviour {
     private List<Button> basePolyButtons;
     private List<Transform> opPrefabs;
     private bool _shouldReBuild = true;
+    
 
     void Start()
     {
@@ -62,6 +67,8 @@ public class PolyUI : MonoBehaviour {
         AddOpButton.onClick.AddListener(AddOpButtonClicked);
         ResetPresetsButton.onClick.AddListener(ResetPresetsButtonClicked);
         OpenPresetsFolderButton.onClick.AddListener(OpenPersistentDataFolder);
+        PrevAPresetButton.onClick.AddListener(PrevAPresetButtonClicked);
+        NextAPresetButton.onClick.AddListener(NextAPresetButtonClicked);
         Presets.LoadAllPresets();
         InitUI();
         CreatePresetButtons();
@@ -71,7 +78,7 @@ public class PolyUI : MonoBehaviour {
     void Update()
     {
         // TODO hook up a signal or something to only set this when the mesh has changed
-        //InfoText.text = poly.GetInfoText();
+        InfoText.text = poly.GetInfoText();
     }
 
     private void PrevPolyButtonClicked()
@@ -84,6 +91,22 @@ public class PolyUI : MonoBehaviour {
     {
         BasePolyDropdown.value += 1;
         BasePolyDropdown.value %= Enum.GetValues(typeof(PolyTypes)).Length;
+    }
+    
+    int mod(int x, int m) {return (x % m + m) % m;}  // Cos C# just *has* to be different...
+    
+    private void PrevAPresetButtonClicked()
+    {
+        currentAPreset++;
+        currentAPreset = mod(currentAPreset, APresets.Items.Count);
+        APresets.ApplyPresetToPoly(APresets.Items[currentAPreset]);  // TODO
+    }
+
+    private void NextAPresetButtonClicked()
+    {
+        currentAPreset--;
+        currentAPreset = mod(currentAPreset, APresets.Items.Count);
+        APresets.ApplyPresetToPoly(APresets.Items[currentAPreset]);  // TODO       
     }
     
     public void InitUI()
@@ -350,12 +373,10 @@ public class PolyUI : MonoBehaviour {
         Rebuild();
         if (poly.WythoffPoly!=null && poly.WythoffPoly.IsOneSided)
         {
-            BypassOpsToggle.isOn = true;
             OpsWarning.enabled = true;
         }
         else
         {
-            BypassOpsToggle.isOn = poly.BypassOps;
             OpsWarning.enabled = false;
         }            
     }

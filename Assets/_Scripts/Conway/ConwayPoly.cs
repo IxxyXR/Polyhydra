@@ -54,8 +54,6 @@ namespace Conway
 					{
 						Debug.LogError("Failed even after flipping.");
 					}
-
-					;
 				}
 
 				FaceRoles.Add(Roles.Existing);
@@ -250,9 +248,9 @@ namespace Conway
 
 			var faceIndices = new List<List<int>>(Vertices.Count);
 
-			foreach (var v in Vertices)
+			for (var i = 0; i < Vertices.Count; i++)
 			{
-
+				var v = Vertices[i];
 				var fIndex = new List<int>();
 
 				foreach (Face f in v.GetVertexFaces())
@@ -276,7 +274,7 @@ namespace Conway
 				}
 
 				faceIndices.Add(fIndex);
-				faceRoles.Add(Roles.New);
+				faceRoles.Add(VertexRoles[i]);
 			}
 
 			return new ConwayPoly(vertexPoints, faceIndices.ToArray(), faceRoles, vertexRoles);
@@ -426,13 +424,18 @@ namespace Conway
 			{
 				if (IncludeFace(i, facesel))
 				{
-					foreach (var edge in Faces[i].GetHalfedges())
+					var list = Faces[i].GetHalfedges();
+					for (var edgeIndex = 0; edgeIndex < list.Count; edgeIndex++)
 					{
+						var edge = list[edgeIndex];
 						// Create new face from edge start, edge end and centroid
 						faceIndices.Add(
 							new[] {vlookup[edge.Prev.Vertex.Name], vlookup[edge.Vertex.Name], i + n}
 						);
-						faceRoles.Add(Roles.New);
+						// Alternate roles but only for faces with an even number of sides
+						if (edgeIndex % 2 == 0 || Faces[i].Sides % 2 != 0)
+						{faceRoles.Add(Roles.New);}
+						else {faceRoles.Add(Roles.NewAlt);}
 					}
 				}
 				else
@@ -509,9 +512,17 @@ namespace Conway
 						newVerts[keyName] = OneThirdIndex;
 					}
 
-
-					var PrevThirdVertex = edges[j].Next.Pair.PointAlongEdge(ratio);
-					keyName = edges[j].Next.Pair.Name;
+					Vector3 PrevThirdVertex;
+					if (edges[j].Next.Pair != null)
+					{
+						PrevThirdVertex = edges[j].Next.Pair.PointAlongEdge(ratio);
+						keyName = edges[j].Next.Pair.Name;						
+					}
+					else
+					{
+						PrevThirdVertex = edges[j].Next.PointAlongEdge(1 - ratio);
+						keyName = edges[j].Next.Name + "-Pair";					
+					}
 					if (newVerts.ContainsKey(keyName))
 					{
 						PrevThirdIndex = newVerts[keyName];
@@ -524,8 +535,17 @@ namespace Conway
 						newVerts[keyName] = PrevThirdIndex;
 					}
 
-					var PairOneThird = edges[j].Pair.PointAlongEdge(ratio);
-					keyName = edges[j].Pair.Name;
+					Vector3 PairOneThird;
+					if (edges[j].Pair != null)
+					{
+						PairOneThird = edges[j].Pair.PointAlongEdge(ratio);
+						keyName = edges[j].Pair.Name;
+					}
+					else
+					{
+						PairOneThird = edges[j].PointAlongEdge(1 - ratio);
+						keyName = edges[j].Name + "-Pair";					
+					}
 					if (newVerts.ContainsKey(keyName))
 					{
 						PairOneThirdIndex = newVerts[keyName];
@@ -545,7 +565,9 @@ namespace Conway
 					thisFaceIndices.Add(PrevThirdIndex);
 
 					faceIndices.Add(thisFaceIndices);
-					faceRoles.Add(Roles.New);
+					// Alternate roles but only for faces with an even number of sides
+					if (j % 2 == 0 || Faces[j].Sides % 2 != 0){faceRoles.Add(Roles.New);}
+					else {faceRoles.Add(Roles.NewAlt);}
 				}
 			}
 
@@ -610,7 +632,9 @@ namespace Conway
 					int prevVertex = newVertices[edge.Next.PairedName];
 					var triangle = new[] {i, prevVertex, currVertex};
 					faceIndices.Add(triangle);
-					faceRoles.Add(Roles.New);
+					// Alternate roles but only for faces with an even number of sides
+					if (i % 2 == 0 || face.Sides % 2 != 0){faceRoles.Add(Roles.New);}
+					else {faceRoles.Add(Roles.NewAlt);}
 				}
 			}
 
@@ -745,7 +769,9 @@ namespace Conway
 								existingVertices[edge.Vertex.Position]
 							};
 							faceIndices.Add(newEdgeFace);
-							faceRoles.Add(Roles.New);
+							// Alternate roles but only for faces with an even number of sides
+							if (i % 2 == 0 || face.Sides % 2 != 0){faceRoles.Add(Roles.New);}
+							else {faceRoles.Add(Roles.NewAlt);}
 						}
 
 						prevNewV = newV;
@@ -844,7 +870,9 @@ namespace Conway
 							newInnerVertices[edge.Name]
 						};
 						faceIndices.Add(newEdgeFace);
-						faceRoles.Add(Roles.New);
+						// Alternate roles but only for faces with an even number of sides
+						if (i % 2 == 0 || face.Sides % 2 != 0){faceRoles.Add(Roles.New);}
+						else {faceRoles.Add(Roles.NewAlt);}
 					}
 
 					prevNewEdgeVertex = newEdgeVertices[edge.PairedName];
@@ -867,7 +895,9 @@ namespace Conway
 					newInnerVertices[edge.Name]
 				};
 				faceIndices.Add(finalFace);
-				faceRoles.Add(Roles.New);
+				// Alternate roles for final face
+				if (face.Sides % 2 == 0 || face.Sides % 2 != 0){faceRoles.Add(Roles.New);}
+				else {faceRoles.Add(Roles.NewAlt);}
 
 			}
 
@@ -1058,7 +1088,9 @@ namespace Conway
 							existingVertices[edge.Vertex.Position]
 						};
 						faceIndices.Add(triangle);
-						faceRoles.Add(Roles.New);
+						// Alternate roles but only for faces with an even number of sides
+						if (i % 2 == 0 || face.Sides % 2 != 0){faceRoles.Add(Roles.New);}
+						else {faceRoles.Add(Roles.NewAlt);}
 
 						var quad = new[]
 						{
@@ -1316,33 +1348,63 @@ namespace Conway
 			foreach (var edge in Halfedges)
 			{
 				vertexPoints.Add(edge.PointAlongEdge(ratio));
-				vertexRoles.Add(Roles.New);
 				newEdgeVertices[edge.Name] = vertexIndex++;
-				vertexPoints.Add(edge.Pair.PointAlongEdge(ratio));
 				vertexRoles.Add(Roles.New);
-				newEdgeVertices[edge.Name] = vertexIndex++;
+
+				if (edge.Pair != null)
+				{
+					vertexPoints.Add(edge.Pair.PointAlongEdge(ratio));
+					newEdgeVertices[edge.Pair.Name] = vertexIndex++;
+				}
+				else
+				{
+					vertexPoints.Add(edge.PointAlongEdge(1 - ratio));
+					newEdgeVertices[edge.Name + "-Pair"] = vertexIndex++;
+				}
+				vertexRoles.Add(Roles.New);
 			}
 
 			// Create quadrilateral faces and one central face on each face
 			foreach (var face in Faces)
 			{
 				var edge = face.Halfedge;
-
 				var centralFace = new int[face.Sides];
 
 				for (int i = 0; i < face.Sides; i++)
 				{
+					string edgePairName;
+					if (edge.Pair !=null)
+					{
+						edgePairName = edge.Pair.Name;
+					}
+					else
+					{
+						edgePairName = edge.Name + "-Pair";
+					}
+					
+					string edgeNextPairName;
+					if (edge.Next.Pair !=null)
+					{
+						edgeNextPairName = edge.Next.Pair.Name;
+					}
+					else
+					{
+						edgeNextPairName = edge.Next.Name + "-Pair";
+					}
+
 					var quad = new[]
 					{
 						newEdgeVertices[edge.Next.Name],
-						newEdgeVertices[edge.Next.Pair.Name],
-						newEdgeVertices[edge.Pair.Name],
+						newEdgeVertices[edgeNextPairName],
+						newEdgeVertices[edgePairName],
 						existingVertices[edge.Vertex.Position],
 					};
 					faceIndices.Add(quad);
-					faceRoles.Add(Roles.New);
+					// Alternate roles but only for faces with an even number of sides
+					if (i % 2 == 0 || face.Sides % 2 != 0){faceRoles.Add(Roles.New);}
+					else {faceRoles.Add(Roles.NewAlt);}
 
-					centralFace[i] = newEdgeVertices[edge.Pair.Name];
+					centralFace[i] = newEdgeVertices[edgePairName];
 					edge = edge.Next;
 				}
 
@@ -1379,9 +1441,17 @@ namespace Conway
 				vertexPoints.Add(edge.PointAlongEdge(ratio));
 				vertexRoles.Add(Roles.New);
 				newEdgeVertices[edge.Name] = vertexIndex++;
-				vertexPoints.Add(edge.Pair.PointAlongEdge(ratio));
+				if (edge.Pair != null)
+				{
+					vertexPoints.Add(edge.Pair.PointAlongEdge(ratio));				
+					newEdgeVertices[edge.Pair.Name] = vertexIndex++;
+				}
+				else
+				{
+					vertexPoints.Add(edge.PointAlongEdge(1 - ratio));	
+					newEdgeVertices[edge.Name + "-Pair"] = vertexIndex++;
+				}
 				vertexRoles.Add(Roles.New);
-				newEdgeVertices[edge.Name] = vertexIndex++;
 			}
 
 			foreach (var face in Faces)
@@ -1407,17 +1477,26 @@ namespace Conway
 
 				for (var i = 0; i < face.Sides; i++)
 				{
+					
+					string edgeNextPairName;
+					if (edge.Next.Pair != null) {edgeNextPairName = edge.Next.Pair.Name;}
+					else {edgeNextPairName = edge.Next.Name + "-Pair";}
+					
 					var hexagon = new[]
 					{
+						existingVertices[edge.Vertex.Position],
+						newEdgeVertices[edgeNextPairName],
 						newEdgeVertices[edge.Next.Name],
 						newInnerVertices[edge.Next.Name],
 						newInnerVertices[edge.Name],
 						newEdgeVertices[edge.Name],
-						newEdgeVertices[edge.Pair.Name],
-						existingVertices[edge.Vertex.Position]
 					};
 					faceIndices.Add(hexagon);
-					faceRoles.Add(Roles.New);
+					
+					// Alternate roles but only for faces with an even number of sides
+					if (i % 2 == 0 || face.Sides % 2 != 0){faceRoles.Add(Roles.New);}
+					else {faceRoles.Add(Roles.NewAlt);}
+					
 					centralFace[i] = newInnerVertices[edge.Name];
 					edge = edge.Next;
 				}
@@ -1529,7 +1608,7 @@ namespace Conway
 				}
 
 				faceIndices.Add(faceVertices);
-				faceRoles.Add(includeFace ? Roles.Existing : Roles.Ignored);
+				faceRoles.Add(faceRoles[faceIndex]);
 			}
 
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, VertexRoles);
@@ -1564,7 +1643,7 @@ namespace Conway
 					}
 
 					faceIndices.Add(faceVertices);
-					faceRoles.Add(Roles.Existing);
+					faceRoles.Add(FaceRoles[faceIndex]);
 				}
 			}
 

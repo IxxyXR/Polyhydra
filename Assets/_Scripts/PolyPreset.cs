@@ -13,6 +13,7 @@ public class PolyPreset {
 	public PolyTypes PolyType;
 	public bool BypassOps;
 	public bool TwoSided;
+	public string AppearancePresetName;
 	
 	[Serializable]
 	public struct Op {
@@ -27,10 +28,12 @@ public class PolyPreset {
 	public void CreateFromPoly(string presetName, PolyHydra poly)
 	{
 		Name = presetName;
+		AppearancePresetName = poly.APresetName;
 		PolyType = poly.PolyType;
 		BypassOps = poly.BypassOps;
 		TwoSided = poly.TwoSided;
 		Ops = new Op[poly.ConwayOperators.Count];
+		
 		for (var index = 0; index < poly.ConwayOperators.Count; index++)
 		{
 			var polyOp = poly.ConwayOperators[index];
@@ -45,12 +48,15 @@ public class PolyPreset {
 		}
 	}
 
-	public void ApplyToPoly(ref PolyHydra poly)
+	public void ApplyToPoly(ref PolyHydra poly, AppearancePresets aPresets)
 	{
 		poly.PolyType = PolyType;
 		poly.BypassOps = BypassOps;
 		poly.TwoSided = TwoSided;
 		poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();
+		poly.PresetName = Name;
+		aPresets.ApplyPresetToPoly(AppearancePresetName);
+		
 		for (var index = 0; index < Ops.Length; index++)
 		{
 			var presetOp = Ops[index];

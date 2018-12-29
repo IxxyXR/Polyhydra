@@ -1,1 +1,1 @@
-{"Name":"Caltrop","PolyType":"Great_Dodecadodecahedron","BypassOps":false,"TwoSided":true,"Ops":[{"OpType":"Kis","FaceSelections":"All","Amount":1.39,"Disabled":false},{"OpType":"Kis","FaceSelections":"All","Amount":-0.47,"Disabled":false}]}
+{"Name":"Caltrop","PolyType":"Great_Dodecadodecahedron","BypassOps":false,"TwoSided":true,"AppearancePresetName":"Spectrum","Ops":[{"OpType":"Kis","FaceSelections":"All","Amount":1.39,"Disabled":false},{"OpType":"Kis","FaceSelections":"All","Amount":-0.47,"Disabled":false}]}

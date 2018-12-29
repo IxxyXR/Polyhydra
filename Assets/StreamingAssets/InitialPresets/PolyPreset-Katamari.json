@@ -1,0 +1,1 @@
+{"Name":"Katamari","PolyType":"Inverted_Snub_Dodecadodecahedron","BypassOps":false,"TwoSided":true,"AppearancePresetName":"Spectrum","Ops":[{"OpType":"Loft","FaceSelections":"All","Amount":0.58,"Disabled":false},{"OpType":"VertexScale","FaceSelections":"New","Amount":0.2,"Disabled":false}]}
