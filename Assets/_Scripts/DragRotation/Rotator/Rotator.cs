@@ -41,6 +41,11 @@ namespace DragRotation
 		private Vector3 vector3_PreviousDirection;
 		#endregion
 
+		void Start()
+		{
+			rigidbody.angularVelocity = new Vector3(0.1f, 0.2f, 0.3f);
+		}
+
 		#region Update
 		/// <summary>
 		/// Calls our Rotate function every frame that we're dragging the object.

@@ -97,14 +97,14 @@ public class PolyUI : MonoBehaviour {
     
     private void PrevAPresetButtonClicked()
     {
-        currentAPreset++;
+        currentAPreset--;
         currentAPreset = mod(currentAPreset, APresets.Items.Count);
         APresets.ApplyPresetToPoly(APresets.Items[currentAPreset]);  // TODO
     }
 
     private void NextAPresetButtonClicked()
     {
-        currentAPreset--;
+        currentAPreset++;
         currentAPreset = mod(currentAPreset, APresets.Items.Count);
         APresets.ApplyPresetToPoly(APresets.Items[currentAPreset]);  // TODO       
     }

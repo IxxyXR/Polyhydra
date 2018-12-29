@@ -1608,7 +1608,7 @@ namespace Conway
 				}
 
 				faceIndices.Add(faceVertices);
-				faceRoles.Add(faceRoles[faceIndex]);
+				faceRoles.Add(FaceRoles[faceIndex]);
 			}
 
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, VertexRoles);
