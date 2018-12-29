@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.Rendering;
-
+using System;
 
 [RequireComponent(typeof(Renderer))]
 [ExecuteInEditMode]
@@ -33,7 +34,7 @@ public class ClippedRenderer : MonoBehaviour, ISerializationCallbackReceiver {
     // Getters
     public Material clipMaterial {
         get {
-            if (_clipMaterial == null) _standinClipMaterial = new Material(Shader.Find(CLIP_SURFACE_SHADER));            
+            if (_clipMaterial == null && _standinClipMaterial == null) _standinClipMaterial = new Material(Shader.Find(CLIP_SURFACE_SHADER));            
             return _clipMaterial != null ? _clipMaterial : _standinClipMaterial;
         }
 
@@ -140,7 +141,7 @@ public class ClippedRenderer : MonoBehaviour, ISerializationCallbackReceiver {
 #if UNITY_EDITOR
         if (Camera.current.name != "Preview Scene Camera") Draw();
 #else
-        Draw();
+        Draw()
 #endif
     }
     #endregion
