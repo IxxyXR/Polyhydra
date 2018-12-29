@@ -1,1 +1,1 @@
-{"Name":"Quirky Bathroom","PolyType":"Grid","BypassOps":false,"TwoSided":false,"Ops":[{"OpType":"Gyro","FaceSelections":"All","Amount":0.333333343,"Disabled":false},{"OpType":"Lace","FaceSelections":"All","Amount":0.5,"Disabled":false}]}
+{"Name":"Quirky Bathroom","PolyType":"Grid","BypassOps":false,"TwoSided":true,"AppearancePresetName":"Flat","Ops":[{"OpType":"Gyro","FaceSelections":"All","Amount":0.333333343,"Disabled":false},{"OpType":"Lace","FaceSelections":"All","Amount":0.5,"Disabled":false}]}
