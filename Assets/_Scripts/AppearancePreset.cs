@@ -17,15 +17,17 @@ public class AppearancePreset
     public Material PolyhedronMaterial;
     public ColorMethods PolyhedronColorMethod;
     public List<Light> ActiveLights;
+    public Color32 CameraBackgroundColor;
     public Material SkyboxMaterial;
     public Color32 SkyboxColor;
     public Cubemap ReflectionCubemap;
 
-    public void ApplyToPoly(ref PolyHydra poly, GameObject LightsParent)
+    public void ApplyToPoly(ref PolyHydra poly, GameObject LightsParent, Camera CurrentCamera)
     {
         poly.gameObject.GetComponent<MeshRenderer>().material = PolyhedronMaterial;
         poly.ColorMethod = PolyhedronColorMethod;
         poly.APresetName = Name;
+        CurrentCamera.backgroundColor = CameraBackgroundColor;
         if (SkyboxMaterial != null)
         {
             RenderSettings.ambientMode = AmbientMode.Skybox;
