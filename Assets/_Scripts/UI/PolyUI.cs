@@ -39,6 +39,7 @@ public class PolyUI : MonoBehaviour {
     public Button SavePresetButton;
     public Button ResetPresetsButton;
     public Button OpenPresetsFolderButton;
+    public Text AppearancePresetNameText;
     public Button PrevAPresetButton;
     public Button NextAPresetButton;
     public GameObject[] Tabs; 
@@ -100,13 +101,15 @@ public class PolyUI : MonoBehaviour {
         currentAPreset--;
         currentAPreset = mod(currentAPreset, APresets.Items.Count);
         APresets.ApplyPresetToPoly(APresets.Items[currentAPreset]);  // TODO
+        AppearancePresetNameText.text = poly.APresetName;
     }
 
     private void NextAPresetButtonClicked()
     {
         currentAPreset++;
         currentAPreset = mod(currentAPreset, APresets.Items.Count);
-        APresets.ApplyPresetToPoly(APresets.Items[currentAPreset]);  // TODO       
+        APresets.ApplyPresetToPoly(APresets.Items[currentAPreset]);  // TODO 
+        AppearancePresetNameText.text = poly.APresetName;
     }
     
     public void InitUI()
@@ -416,6 +419,7 @@ public class PolyUI : MonoBehaviour {
             _shouldReBuild = false;
             var preset = Presets.ApplyPresetToPoly(buttonIndex);
             PresetNameInput.text = preset.Name;
+            AppearancePresetNameText.text = poly.APresetName;
             InitUI();
             _shouldReBuild = true;
             poly.MakePolyhedron();

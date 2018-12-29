@@ -43,7 +43,7 @@ namespace DragRotation
 
 		void Start()
 		{
-			rigidbody.angularVelocity = new Vector3(0.1f, 0.2f, 0.3f);
+			rigidbody.angularVelocity = new Vector3(0.5f, -0.9f, 0.3f);
 		}
 
 		#region Update

@@ -9,7 +9,6 @@ public class PolyPresets : MonoBehaviour {
 	public PolyHydra _poly;
 	private const string PresetFileNamePrefix = "PolyPreset-";
 	public AppearancePresets APresets; 
-	
 	public List<PolyPreset> Items;
 
 	public PolyPreset ApplyPresetToPoly(int presetIndex)
