@@ -1,0 +1,1 @@
+{"Name":"Multistorey","PolyType":"Small_Ditrigonal_Icosidodecahedron","BypassOps":false,"TwoSided":true,"Ops":[{"OpType":"Lace","FaceSelections":"All","Amount":2.407813,"Disabled":false},{"OpType":"Dual","FaceSelections":"All","Amount":0.0,"Disabled":true},{"OpType":"Canonicalize","FaceSelections":"All","Amount":0.58,"Disabled":false}]}
