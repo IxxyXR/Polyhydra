@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AppearancePresets : MonoBehaviour {
@@ -17,7 +18,6 @@ public class AppearancePresets : MonoBehaviour {
 		{
 			preset = Items[Items.FindIndex(x => x.Name == presetName)];
 			ApplyPresetToPoly(preset);
-			
 		}
 		else
 		{

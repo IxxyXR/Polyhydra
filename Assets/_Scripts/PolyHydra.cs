@@ -98,6 +98,7 @@ public class PolyHydra : MonoBehaviour {
 		public float amountMin = -20;
 		public float amountMax = 20;
 		public bool usesFaces = false;
+		public bool usesRandomize = false;
 		public ConwayPoly.FaceSelections faceSelection = ConwayPoly.FaceSelections.All;	
 	}
 
@@ -107,6 +108,7 @@ public class PolyHydra : MonoBehaviour {
 	public struct ConwayOperator {
 		public Ops opType;
 		public ConwayPoly.FaceSelections faceSelections;
+		public bool randomize;
 		public float amount;
 		public bool disabled;
 	}
@@ -178,17 +180,17 @@ public class PolyHydra : MonoBehaviour {
 		opconfigs = new Dictionary<Ops, OpConfig>()
 		{	
 			{Ops.Identity, new OpConfig {usesAmount=false}},
-			{Ops.Kis, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
+			{Ops.Kis, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Dual, new OpConfig{usesAmount=false}},
 			{Ops.Ambo, new OpConfig{usesAmount=false}},
-			{Ops.Zip, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
+			{Ops.Zip, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Expand, new OpConfig{usesAmount=false}},
-			{Ops.Bevel, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
-			{Ops.Join, new OpConfig{amountMin = -6, amountMax = 6}},
-			{Ops.Needle, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
+			{Ops.Bevel, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.Join, new OpConfig{usesAmount=false}},
+			{Ops.Needle, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Ortho, new OpConfig{usesAmount=false}},
-			{Ops.Meta, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
-			{Ops.Truncate, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
+			{Ops.Meta, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.Truncate, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Gyro, new OpConfig{amountMin = -.5f, amountMax = 0.5f}},
 			{Ops.Snub, new OpConfig{amountMin = -.5f, amountMax = 0.5f}},
 			{Ops.Subdivide, new OpConfig {usesAmount=false}},
@@ -203,16 +205,16 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.Propeller, new OpConfig{amountMin = -4, amountMax = 4}},
 			{Ops.Whirl, new OpConfig{amountMin = -4, amountMax = 4}},
 			{Ops.Volute, new OpConfig{amountMin = -4, amountMax = 4}},
-			{Ops.Exalt, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
-			{Ops.Yank, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
+			{Ops.Exalt, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.Yank, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			//{Ops.Chamfer new OpConfig{}},
-			{Ops.FaceOffset, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
+			{Ops.FaceOffset, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			//{Ops.Ribbon, new OpConfig{}},
-			{Ops.Extrude, new OpConfig{amountMin = -6, amountMax = 6}},
-			{Ops.VertexScale, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
+			{Ops.Extrude, new OpConfig{amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.VertexScale, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			//{Ops.FaceTranslate, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
-			{Ops.FaceScale, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
-			{Ops.FaceRotate, new OpConfig{usesFaces=true, amountMin = -180, amountMax = 180}},
+			{Ops.FaceScale, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.FaceRotate, new OpConfig{usesFaces=true, amountMin = -180, amountMax = 180, usesRandomize=true}},
 //			{Ops.FaceRotateX, new OpConfig{usesFaces=true, amountMin = -180, amountMax = 180}},
 //			{Ops.FaceRotateY, new OpConfig{usesFaces=true, amountMin = -180, amountMax = 180}},
 			//{Ops.Test, new OpConfig{}}
@@ -417,7 +419,7 @@ public class PolyHydra : MonoBehaviour {
 					case Ops.Identity:
 						break;
 					case Ops.Kis:
-						conway = conway.Kis(op.amount, op.faceSelections);
+						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 						break;
 					case Ops.Dual:
 						conway = conway.Dual();
@@ -426,7 +428,7 @@ public class PolyHydra : MonoBehaviour {
 						conway = conway.Ambo();
 						break;
 					case Ops.Zip:
-						conway = conway.Kis(op.amount, op.faceSelections);
+						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 						conway = conway.Dual();
 						break;
 					case Ops.Expand:
@@ -436,7 +438,7 @@ public class PolyHydra : MonoBehaviour {
 					case Ops.Bevel:
 						conway = conway.Ambo();
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount, op.faceSelections);
+						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 						conway = conway.Dual();
 						break;
 					case Ops.Join:
@@ -446,7 +448,7 @@ public class PolyHydra : MonoBehaviour {
 						break;
 					case Ops.Needle:
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount, op.faceSelections);
+						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 						break;
 					case Ops.Ortho:
 						conway = conway.Ambo();
@@ -456,11 +458,11 @@ public class PolyHydra : MonoBehaviour {
 					case Ops.Meta:
 						conway = conway.Ambo();
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount, op.faceSelections);
+						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 						break;
 					case Ops.Truncate:
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount, op.faceSelections);
+						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 						conway = conway.Dual();
 						break;
 					case Ops.Gyro:
@@ -472,14 +474,14 @@ public class PolyHydra : MonoBehaviour {
 						break;
 					case Ops.Exalt:
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount, op.faceSelections);
+						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount, op.faceSelections);
+						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 						break;
 					case Ops.Yank:
-						conway = conway.Kis(op.amount, op.faceSelections);
+						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 						conway = conway.Dual();
-						conway = conway.Kis(op.amount, op.faceSelections);
+						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 						conway = conway.Dual();
 						break;
 					case Ops.Subdivide:
@@ -520,24 +522,24 @@ public class PolyHydra : MonoBehaviour {
 						break;
 					case Ops.Extrude:
 						// Split faces
-						conway = conway.FaceScale(0, 0);
-						conway = conway.Extrude(op.amount, false);
+						conway = conway.FaceScale(0, ConwayPoly.FaceSelections.All, false);
+						conway = conway.Extrude(op.amount, false, op.randomize);
 						break;
 					case Ops.VertexScale:
-						conway = conway.VertexScale(op.amount, op.faceSelections);
+						conway = conway.VertexScale(op.amount, op.faceSelections, op.randomize);
 						break;
 					case Ops.FaceOffset:
 						// Split faces
 						var origRoles = conway.FaceRoles;
-						conway = conway.FaceScale(0, ConwayPoly.FaceSelections.All);
+						conway = conway.FaceScale(0, ConwayPoly.FaceSelections.All, false);
 						conway.FaceRoles = origRoles;
-						conway = conway.Offset(op.amount, op.faceSelections);
+						conway = conway.Offset(op.amount, op.faceSelections, op.randomize);
 						break;
 					case Ops.FaceScale:
-						conway = conway.FaceScale(op.amount, op.faceSelections);
+						conway = conway.FaceScale(op.amount, op.faceSelections, op.randomize);
 						break;
 					case Ops.FaceRotate:
-						conway = conway.FaceRotate(op.amount, op.faceSelections);
+						conway = conway.FaceRotate(op.amount, op.faceSelections, 0, op.randomize);
 						break;
 //					case Ops.Chamfer:
 //						conway = conway.Chamfer();

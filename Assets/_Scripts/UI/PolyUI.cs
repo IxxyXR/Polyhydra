@@ -180,6 +180,7 @@ public class PolyUI : MonoBehaviour {
         var opConfig = poly.opconfigs[opType];
         
         opPrefabManager.FaceSelectionDropdown.gameObject.SetActive(opConfig.usesFaces);
+        opPrefabManager.RandomizeToggle.gameObject.SetActive(opConfig.usesRandomize);
         opPrefabManager.AmountSlider.gameObject.SetActive(opConfig.usesAmount);
         opPrefabManager.AmountInput.gameObject.SetActive(opConfig.usesAmount);
         
@@ -210,6 +211,7 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.FaceSelectionDropdown.value = (int) op.faceSelections;
         opPrefabManager.AmountSlider.value = op.amount;
         opPrefabManager.AmountInput.text = op.amount.ToString();
+        opPrefabManager.RandomizeToggle.isOn = op.randomize;
 
         ConfigureOpControls(opPrefab.GetComponent<OpPrefabManager>());
 
@@ -218,6 +220,8 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.DisabledToggle.onValueChanged.AddListener(delegate{OpsUIToPoly();});
         opPrefabManager.AmountSlider.onValueChanged.AddListener(delegate{AmountSliderChanged();});
         opPrefabManager.AmountInput.onValueChanged.AddListener(delegate{AmountInputChanged();});
+        opPrefabManager.RandomizeToggle.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        
         opPrefabManager.UpButton.onClick.AddListener(MoveOpUp);
         opPrefabManager.DownButton.onClick.AddListener(MoveOpDown);
         opPrefabManager.DeleteButton.onClick.AddListener(DeleteOp);
@@ -283,6 +287,7 @@ public class PolyUI : MonoBehaviour {
             op.faceSelections = (ConwayPoly.FaceSelections) opPrefabManager.FaceSelectionDropdown.value;
             op.disabled = opPrefabManager.DisabledToggle.isOn;
             op.amount = opPrefabManager.AmountSlider.value;
+            op.randomize = opPrefabManager.RandomizeToggle.isOn;
             poly.ConwayOperators[index] = op;
             
         }

@@ -20,6 +20,7 @@ public class PolyPreset {
 		[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.Ops OpType;
 		[JsonConverter(typeof(StringEnumConverter))] public ConwayPoly.FaceSelections FaceSelections;
 		public float Amount;
+		public bool Randomize;
 		public bool Disabled;
 	}
 	
@@ -40,9 +41,10 @@ public class PolyPreset {
 			var op = new Op
 			{
 				OpType = polyOp.opType,
-				Disabled = polyOp.disabled,
+				FaceSelections = polyOp.faceSelections,
 				Amount = polyOp.amount,
-				FaceSelections = polyOp.faceSelections
+				Randomize = polyOp.randomize,
+				Disabled = polyOp.disabled
 			};
 			Ops[index] = op;
 		}
@@ -63,8 +65,9 @@ public class PolyPreset {
 			var op = new PolyHydra.ConwayOperator();
 			op.opType = presetOp.OpType;
 			op.faceSelections = presetOp.FaceSelections;
-			op.disabled = presetOp.Disabled;
 			op.amount = presetOp.Amount;
+			op.randomize = presetOp.Randomize;
+			op.disabled = presetOp.Disabled;
 			poly.ConwayOperators.Add(op);
 		}
 	}

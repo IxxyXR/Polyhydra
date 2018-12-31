@@ -1,0 +1,1 @@
+{"Name":"Candyhedron","PolyType":"Dodecahedron","BypassOps":false,"TwoSided":true,"AppearancePresetName":"Subtle","Ops":[{"OpType":"Yank","FaceSelections":"All","Amount":2.25,"Randomize":false,"Disabled":false},{"OpType":"Exalt","FaceSelections":"All","Amount":0.0,"Randomize":false,"Disabled":false}]}
