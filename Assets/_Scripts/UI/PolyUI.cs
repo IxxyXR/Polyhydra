@@ -42,6 +42,7 @@ public class PolyUI : MonoBehaviour {
     public Text AppearancePresetNameText;
     public Button PrevAPresetButton;
     public Button NextAPresetButton;
+    public Button ObjExportButton;
     public GameObject[] Tabs; 
     public GameObject[] TabButtons;
     
@@ -70,6 +71,7 @@ public class PolyUI : MonoBehaviour {
         OpenPresetsFolderButton.onClick.AddListener(OpenPersistentDataFolder);
         PrevAPresetButton.onClick.AddListener(PrevAPresetButtonClicked);
         NextAPresetButton.onClick.AddListener(NextAPresetButtonClicked);
+        ObjExportButton.onClick.AddListener(ObjExportButtonClicked);
         Presets.LoadAllPresets();
         InitUI();
         CreatePresetButtons();
@@ -80,6 +82,11 @@ public class PolyUI : MonoBehaviour {
     {
         // TODO hook up a signal or something to only set this when the mesh has changed
         InfoText.text = poly.GetInfoText();
+    }
+
+    private void ObjExportButtonClicked()
+    {
+        ObjExport.ExportMesh(poly.gameObject, Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Foo");
     }
 
     private void PrevPolyButtonClicked()
