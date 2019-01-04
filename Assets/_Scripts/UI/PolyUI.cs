@@ -36,6 +36,9 @@ public class PolyUI : MonoBehaviour {
     public Button ButtonTemplate;
     public RectTransform PresetButtonContainer;
     public Dropdown BasePolyDropdown; 
+    public Dropdown GridTypeDropdown;
+    public InputField PrismPInput;
+    public InputField PrismQInput;
     public Button SavePresetButton;
     public Button ResetPresetsButton;
     public Button OpenPresetsFolderButton;
@@ -57,22 +60,45 @@ public class PolyUI : MonoBehaviour {
         opPrefabs = new List<Transform>();
         presetButtons = new List<Button>();
         rotateObject = poly.GetComponent<RotateObject>();
-        PresetNameInput.onValueChanged.AddListener(delegate{PresetNameChanged();});
-        SavePresetButton.onClick.AddListener(SavePresetButtonClicked);
-        XRotateSlider.onValueChanged.AddListener(delegate{XSliderChanged();});
-        YRotateSlider.onValueChanged.AddListener(delegate{YSliderChanged();});
-        ZRotateSlider.onValueChanged.AddListener(delegate{ZSliderChanged();});
+        
+        BasePolyDropdown.ClearOptions();        
+        foreach (var polyType in Enum.GetValues(typeof(PolyTypes))) {
+            var label = new Dropdown.OptionData(polyType.ToString().Replace("_", " "));
+            BasePolyDropdown.options.Add(label);
+        }
+
+        GridTypeDropdown.ClearOptions();        
+        foreach (var gridType in Enum.GetValues(typeof(PolyHydra.GridTypes))) {
+            var label = new Dropdown.OptionData(gridType.ToString());
+            GridTypeDropdown.options.Add(label);
+        }
+        
+        BasePolyDropdown.onValueChanged.AddListener(delegate{BasePolyDropdownChanged(BasePolyDropdown);});
         PrevPolyButton.onClick.AddListener(PrevPolyButtonClicked);
         NextPolyButton.onClick.AddListener(NextPolyButtonClicked);
         TwoSidedToggle.onValueChanged.AddListener(delegate{TwoSidedToggleChanged();});
+        GridTypeDropdown.onValueChanged.AddListener(delegate{GridTypeDropdownChanged(GridTypeDropdown);});
+        PrismPInput.onValueChanged.AddListener(delegate{PrismPInputChanged();});
+        PrismQInput.onValueChanged.AddListener(delegate{PrismQInputChanged();});
         BypassOpsToggle.onValueChanged.AddListener(delegate{BypassOpsToggleChanged();});
         AddOpButton.onClick.AddListener(AddOpButtonClicked);
+        
+        PresetNameInput.onValueChanged.AddListener(delegate{PresetNameChanged();});
+        SavePresetButton.onClick.AddListener(SavePresetButtonClicked);
         ResetPresetsButton.onClick.AddListener(ResetPresetsButtonClicked);
         OpenPresetsFolderButton.onClick.AddListener(OpenPersistentDataFolder);
+        
         PrevAPresetButton.onClick.AddListener(PrevAPresetButtonClicked);
         NextAPresetButton.onClick.AddListener(NextAPresetButtonClicked);
+        
+        XRotateSlider.onValueChanged.AddListener(delegate{XSliderChanged();});
+        YRotateSlider.onValueChanged.AddListener(delegate{YSliderChanged();});
+        ZRotateSlider.onValueChanged.AddListener(delegate{ZSliderChanged();});
+
         ObjExportButton.onClick.AddListener(ObjExportButtonClicked);
+        
         Presets.LoadAllPresets();
+        
         InitUI();
         CreatePresetButtons();
         ShowTab(TabButtons[0].gameObject);
@@ -87,6 +113,26 @@ public class PolyUI : MonoBehaviour {
     private void ObjExportButtonClicked()
     {
         ObjExport.ExportMesh(poly.gameObject, Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Foo");
+    }
+
+    private void PrismPInputChanged()
+    {
+        int p;
+        if (int.TryParse(PrismPInput.text, out p))
+        {
+            poly.PrismP = p;
+        }
+        Rebuild();    
+    }
+
+    private void PrismQInputChanged()
+    {
+        int q;        
+        if (int.TryParse(PrismQInput.text, out q))
+        {
+            poly.PrismQ = q;
+        }
+        Rebuild();    
     }
 
     private void PrevPolyButtonClicked()
@@ -143,8 +189,10 @@ public class PolyUI : MonoBehaviour {
     {
         _shouldReBuild = false;
         TwoSidedToggle.isOn = poly.TwoSided;
-        CreateBasePolyDropdown();
-        BasePolyDropdown.value = (int)poly.PolyType;
+        BasePolyDropdown.value = (int)poly.PolyType;        
+        GridTypeDropdown.value = (int)poly.GridType;
+        PrismPInput.text = poly.PrismP.ToString();
+        PrismQInput.text = poly.PrismQ.ToString();
         _shouldReBuild = true;
     }
 
@@ -331,18 +379,6 @@ public class PolyUI : MonoBehaviour {
         CreateOps();
         Rebuild();
     }
-
-    void CreateBasePolyDropdown()
-    {
-        BasePolyDropdown.ClearOptions();
-        
-        // Uniform Polyhedra
-        foreach (var polyType in Enum.GetValues(typeof(PolyTypes))) {
-            var label = new Dropdown.OptionData(polyType.ToString().Replace("_", " "));
-            BasePolyDropdown.options.Add(label);
-        }
-        BasePolyDropdown.onValueChanged.AddListener(delegate{BasePolyDropdownChanged(BasePolyDropdown);});
-    }
      
     void DestroyPresetButtons()
     {
@@ -386,6 +422,7 @@ public class PolyUI : MonoBehaviour {
     {
         poly.PolyType = (PolyTypes)change.value;
         Rebuild();
+        
         if (poly.WythoffPoly!=null && poly.WythoffPoly.IsOneSided)
         {
             OpsWarning.enabled = true;
@@ -393,22 +430,36 @@ public class PolyUI : MonoBehaviour {
         else
         {
             OpsWarning.enabled = false;
-        }            
+        }
+
+        GridTypeDropdown.gameObject.SetActive(change.value == 0);
+        PrismPInput.gameObject.SetActive(change.value > 0 && change.value < 6);
+        PrismQInput.gameObject.SetActive(change.value > 2 && change.value < 6);
+        
+    }
+    
+    void GridTypeDropdownChanged(Dropdown change)
+    {
+        poly.GridType = (PolyHydra.GridTypes)change.value;
+        Rebuild();        
     }
 
     void XSliderChanged()
     {
-        rotateObject.x = XRotateSlider.value;
+        var r = poly.gameObject.transform.eulerAngles;
+        poly.gameObject.transform.eulerAngles = new Vector3(XRotateSlider.value, r.y, r.z);
     }
 
     void YSliderChanged()
     {
-        rotateObject.y = YRotateSlider.value;
+        var r = poly.gameObject.transform.eulerAngles;
+        poly.gameObject.transform.eulerAngles = new Vector3(r.x, YRotateSlider.value, r.z);
     }
 
     void ZSliderChanged()
     {
-        rotateObject.z = ZRotateSlider.value;
+        var r = poly.gameObject.transform.eulerAngles;
+        poly.gameObject.transform.eulerAngles = new Vector3(r.x, r.y, ZRotateSlider.value);
     }
 
     void TwoSidedToggleChanged()

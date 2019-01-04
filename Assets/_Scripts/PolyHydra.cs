@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Wythoff;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable UnusedMember.Global
@@ -31,7 +32,8 @@ public class PolyHydra : MonoBehaviour {
 	public string APresetName;
 	public bool BypassOps;
 	public bool TwoSided;
-	public bool ReScale;
+	[FormerlySerializedAs("ReScale")]
+	public bool Rescale;
 	
 	// Parameters for prismatic forms
 	public int PrismP = 5;
@@ -270,6 +272,7 @@ public class PolyHydra : MonoBehaviour {
 			else  // Special cases. Currently just a grid
 			{
 				conway = MakeGrid(GridType);
+				FinishedApplyOps();
 				mesh = BuildMeshFromConwayPoly(true);  // Might as well always do two-sided if no ops are applied
 				AssignFinishedMesh(mesh);
 			}
@@ -368,6 +371,11 @@ public class PolyHydra : MonoBehaviour {
 		_faceCount = conway.Faces.Count;
 		_vertexCount = conway.Vertices.Count;
 		
+		if (Rescale)
+		{
+			conway.ScalePolyhedra();			
+		}
+		
 		var mesh = BuildMeshFromConwayPoly(TwoSided);
 		AssignFinishedMesh(mesh);
 	}
@@ -415,7 +423,7 @@ public class PolyHydra : MonoBehaviour {
 	private void ApplyOps()
 	{
 		
-		var cacheKeySource = $"{PolyType} {PrismP} {PrismQ}";
+		var cacheKeySource = $"{PolyType} {PrismP} {PrismQ} {GridType} {TwoSided}";
 		
 		foreach (var op in ConwayOperators.ToList())
 		{
@@ -604,11 +612,6 @@ public class PolyHydra : MonoBehaviour {
 				}
 
 			}
-		}
-
-		if (ReScale)
-		{
-			conway.ScalePolyhedra();			
 		}
 	}
 	

@@ -214,8 +214,8 @@ namespace Conway
 
 			// Create sublist of non-boundary vertices
 			var naked = new Dictionary<string, bool>(Vertices.Count); // vertices (name, boundary?)
-			var hlookup =
-				new Dictionary<string, int>(Halfedges.Count); // boundary halfedges (name, index of point in new mesh)
+			// boundary halfedges (name, index of point in new mesh)
+			var hlookup = new Dictionary<string, int>(Halfedges.Count); 
 
 			foreach (var he in Halfedges)
 			{
