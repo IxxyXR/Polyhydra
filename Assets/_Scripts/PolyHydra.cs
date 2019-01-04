@@ -23,9 +23,9 @@ public class PolyHydra : MonoBehaviour {
 	
 	private int _faceCount;
 	private int _vertexCount;
-
 	
 	public PolyTypes PolyType;
+	public GridTypes GridType;
 	public string WythoffSymbol;
 	public string PresetName;
 	public string APresetName;
@@ -38,6 +38,13 @@ public class PolyHydra : MonoBehaviour {
 	public int PrismQ = 2;
 	
 	public AppearancePreset.ColorMethods ColorMethod;
+
+	public enum GridTypes
+	{
+		Square,
+		Isometric,
+		Hex
+	}
 
 	public enum Ops {
 		Identity,
@@ -231,17 +238,27 @@ public class PolyHydra : MonoBehaviour {
 		meshFilter = gameObject.GetComponent<MeshFilter>();
 	}
 
-	public Mesh GridToMesh()
+	public ConwayPoly MakeGrid(GridTypes gridType)
 	{
-		return new Mesh();
-	}
+		switch (gridType)
+		{
+			case GridTypes.Square:
+				return ConwayPoly.MakeGrid();
+			case GridTypes.Isometric:
+				return ConwayPoly.MakeIsoGrid();
+			case GridTypes.Hex:
+				return ConwayPoly.MakeHexGrid();
+		}
 
+		return null;
+	}
+	
 	public void MakePolyhedron()
 	{
 		Mesh mesh;
-		bool bypassOps = BypassOps || ConwayOperators == null || ConwayOperators.Count < 1;
+		bool noOps = BypassOps || ConwayOperators == null || ConwayOperators.Count < 1;
 		
-		if (bypassOps)
+		if (noOps)
 		{
 			if (PolyType > 0)  // Uniform Polys
 			{
@@ -252,8 +269,8 @@ public class PolyHydra : MonoBehaviour {
 			}
 			else  // Special cases. Currently just a grid
 			{
-				conway = ConwayPoly.MakeGrid();
-				mesh = GridToMesh();
+				conway = MakeGrid(GridType);
+				mesh = BuildMeshFromConwayPoly(true);  // Might as well always do two-sided if no ops are applied
 				AssignFinishedMesh(mesh);
 			}
 			
@@ -267,7 +284,7 @@ public class PolyHydra : MonoBehaviour {
 		}
 		else  // Special cases. Currently just a grid
 		{
-			conway = ConwayPoly.MakeGrid();	
+			conway = MakeGrid(GridType);
 		}
 
 		if (!enableThreading)

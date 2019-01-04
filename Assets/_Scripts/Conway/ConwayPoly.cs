@@ -2043,10 +2043,94 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 
-		public static ConwayPoly MakeIsoGrid(int rows = 5, int cols = 5, float rowScale = .3f, float colScale = .3f)
+ 		public static ConwayPoly MakeIsoGrid(int rows = 5, int cols = 5)
 		{
-			float rowOffset = rows * rowScale * 0.5f;
-			float colOffset = cols * colScale * 0.5f;
+
+			float colScale = 1;
+			float rowScale = Mathf.Sqrt(3)/2;
+			
+			float colOffset = rows * colScale * 0.5f;
+			float rowOffset = cols * rowScale * 0.5f;
+
+			// Count fences not fence poles
+			rows++;
+			cols++;
+			
+			var vertexPoints = new List<Vector3>();
+			var faceIndices = new List<List<int>>();
+
+			for (int row = 0; row < cols; row++)
+			{
+				for (int col = 0; col < rows; col++)
+				{
+					var pos = new Vector3(-colOffset + col * colScale, 0, -rowOffset + row * rowScale);
+					if (row % 2 > 0)
+					{
+						pos.x += colScale/2f;
+					}
+					vertexPoints.Add(pos);
+				}
+			}
+			
+			for (int row = 0; row < rows - 1; row++)
+			{
+				for (int col = 0; col < cols - 1; col++)
+				{
+					int corner = (row * rows) + col;
+					if (row % 2 == 0)
+					{
+						var face1 = new List<int>
+						{
+							corner,
+							corner + 1,
+							corner + rows
+						};
+						faceIndices.Add(face1);
+				
+						var face2 = new List<int>
+						{
+							corner + 1,
+							corner + rows + 1,
+							corner + rows
+						};
+						faceIndices.Add(face2);						
+						
+					}
+					else
+					{
+						var face1 = new List<int>
+						{
+							corner,
+							corner + rows + 1,
+							corner + rows
+						};
+						faceIndices.Add(face1);
+				
+						var face2 = new List<int>
+						{
+							corner,
+							corner + 1,
+							corner + rows + 1,
+						};
+						faceIndices.Add(face2);						
+
+					}
+				}
+			}
+
+			var faceRoles = Enumerable.Repeat(Roles.New, faceIndices.Count);
+			var vertexRoles = Enumerable.Repeat(Roles.New, vertexPoints.Count);
+			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+		}
+		
+		public static ConwayPoly MakeHexGrid(int rows = 10, int cols = 10)
+		{
+			
+			float colScale = 1f;
+			float rowScale = Mathf.Sqrt(3)/2;
+			
+			float colOffset = rows * colScale * 0.5f;
+			float rowOffset = cols * rowScale * 0.5f;
 
 			// Count fences not fence poles
 			rows++;
@@ -2059,26 +2143,45 @@ namespace Conway
 			{
 				for (int col = 0; col < cols; col++)
 				{
-					var pos = new Vector3(-rowOffset + row * rowScale, 0, -colOffset + col * colScale);
+					var pos = new Vector3(-colOffset + col * colScale, 0, -rowOffset + row * rowScale);
+					if (row % 2 > 0)
+					{
+						pos.x -= colScale/2f;
+					}
 					vertexPoints.Add(pos);
 				}
 			}
 			
-			for (int row = 1; row < rows; row++)
+			for (int row = 0; row < rows - 3; row+=2)
 			{
-				for (int col = 1; col < cols; col++)
+				for (int col = 0; col < cols - 3; col+=3)
 				{
 					int corner = (row * rows) + col;
-					var face = new List<int>()
+
+					var hex1 = new List<int>
 					{
 						corner,
-						corner - 1,
-						corner - rows - 1,
-						corner - rows
+						corner + 1,
+						corner + rows + 2,
+						corner + (rows + rows) + 1,
+						corner + (rows + rows),
+						corner + rows
 					};
-					faceIndices.Add(face);
-				}
+					faceIndices.Add(hex1);
 
+					corner += rows + 2;
+					
+					var hex2 = new List<int>
+					{
+						corner,
+						corner + 1,
+						corner + rows + 1,
+						corner + (rows + rows) + 1,
+						corner + (rows + rows),
+						corner + rows - 1
+					};
+					faceIndices.Add(hex2);
+				}
 			}
 
 			var faceRoles = Enumerable.Repeat(Roles.New, faceIndices.Count);
