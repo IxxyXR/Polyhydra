@@ -192,7 +192,15 @@ public class PolyUI : MonoBehaviour {
         int opTypeIndex = Random.Range(1, maxOpIndex - 2); // No canonicalize as it's pretty rough at the moment
         var opType = (PolyHydra.Ops) opTypeIndex;
         var opConfig = poly.opconfigs[opType];
-        var faceSelection =(ConwayPoly.FaceSelections) Random.Range(0, Enum.GetValues(typeof(ConwayPoly.FaceSelections)).Length);
+        
+        ConwayPoly.FaceSelections faceSelection = ConwayPoly.FaceSelections.None;
+        var maxFaceSel = Enum.GetValues(typeof(ConwayPoly.FaceSelections)).Length - 1; // Exclude "None"
+        // Keep picking a random facesel until we get one that will have an effect
+        while (!poly.FaceSelectionIsValid(faceSelection))
+        {
+            faceSelection = (ConwayPoly.FaceSelections) Random.Range(1, maxFaceSel);
+        }
+        // TODO pick another facesel if all faces are chosen
         var newOp = new PolyHydra.ConwayOperator
         {
             opType = opType,
@@ -201,7 +209,6 @@ public class PolyUI : MonoBehaviour {
             amount = Random.value > 0.25f ? opConfig.amountDefault : Random.Range(opConfig.amountMin, opConfig.amountMax),
             disabled = false
         };
-        
         poly.ConwayOperators.Add(newOp);
         AddOpItemToUI(newOp);
         Rebuild();        

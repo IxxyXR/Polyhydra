@@ -829,7 +829,16 @@ public class PolyHydra : MonoBehaviour {
 		}
 
 		return target;
-	}	
+	}
+
+	// Returns true if at least one face matches the facesel rule but all of them
+	public bool FaceSelectionIsValid(ConwayPoly.FaceSelections facesel)
+	{
+		if (ConwayOperators.Count == 0)conway = new ConwayPoly(WythoffPoly);
+		int includedFaceCount = Enumerable.Range(0, conway.Faces.Count).Count(x => conway.IncludeFace(x, facesel));
+		return includedFaceCount > 0 && includedFaceCount < conway.Faces.Count;
+
+	}
 
 	
 #if UNITY_EDITOR

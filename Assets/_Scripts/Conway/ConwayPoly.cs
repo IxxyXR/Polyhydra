@@ -145,7 +145,9 @@ namespace Conway
 			Existing,
 			New,
 			NewAlt,
-			AllNew
+			AllNew,
+			Alternate,
+			None
 		}
 
 		public bool IsValid
@@ -2631,6 +2633,10 @@ namespace Conway
 					return FaceRoles[faceIndex] == Roles.NewAlt;
 				case FaceSelections.AllNew:
 					return FaceRoles[faceIndex] == Roles.New || FaceRoles[faceIndex] == Roles.NewAlt;
+				case FaceSelections.Alternate:
+					return faceIndex % 2 == 0;
+				case FaceSelections.None:
+					return false;
 			}
 
 			return Faces[faceIndex].Sides == FaceSelectionToSides(facesel);
