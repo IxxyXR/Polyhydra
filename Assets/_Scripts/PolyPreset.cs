@@ -13,6 +13,10 @@ public class PolyPreset {
 	public PolyTypes PolyType;
 	public bool BypassOps;
 	public bool TwoSided;
+	[JsonConverter(typeof(StringEnumConverter))]
+	public PolyHydra.GridTypes GridType;
+	public int PrismP;
+	public int PrismQ;
 	public string AppearancePresetName;
 	
 	[Serializable]
@@ -31,7 +35,10 @@ public class PolyPreset {
 		Name = presetName;
 		AppearancePresetName = poly.APresetName;
 		PolyType = poly.PolyType;
+		GridType = poly.GridType;
 		BypassOps = poly.BypassOps;
+		PrismP = poly.PrismP;
+		PrismQ = poly.PrismP;
 		TwoSided = poly.TwoSided;
 		Ops = new Op[poly.ConwayOperators.Count];
 		
@@ -56,18 +63,23 @@ public class PolyPreset {
 		poly.BypassOps = BypassOps;
 		poly.TwoSided = TwoSided;
 		poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();
+		poly.GridType = GridType;
+		poly.PrismP = PrismP;
+		poly.PrismQ = PrismQ;
 		poly.PresetName = Name;
 		aPresets.ApplyPresetToPoly(AppearancePresetName);
 		
 		for (var index = 0; index < Ops.Length; index++)
 		{
 			var presetOp = Ops[index];
-			var op = new PolyHydra.ConwayOperator();
-			op.opType = presetOp.OpType;
-			op.faceSelections = presetOp.FaceSelections;
-			op.amount = presetOp.Amount;
-			op.randomize = presetOp.Randomize;
-			op.disabled = presetOp.Disabled;
+			var op = new PolyHydra.ConwayOperator
+			{
+				opType = presetOp.OpType,
+				faceSelections = presetOp.FaceSelections,
+				amount = presetOp.Amount,
+				randomize = presetOp.Randomize,
+				disabled = presetOp.Disabled
+			};
 			poly.ConwayOperators.Add(op);
 		}
 	}

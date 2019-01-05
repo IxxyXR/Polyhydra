@@ -30,6 +30,7 @@ public class PolyUI : MonoBehaviour {
     public Text InfoText;
     public Text OpsWarning;
     public Button AddOpButton;
+    public Button AddRandomOpButton;
     public Toggle BypassOpsToggle;
     public RectTransform OpContainer;
     public Transform OpTemplate;
