@@ -201,7 +201,7 @@ public class PolyUI : MonoBehaviour {
             amount = Random.value > 0.25f ? opConfig.amountDefault : Random.Range(opConfig.amountMin, opConfig.amountMax),
             disabled = false
         };
-        if poly.con
+        
         poly.ConwayOperators.Add(newOp);
         AddOpItemToUI(newOp);
         Rebuild();        
