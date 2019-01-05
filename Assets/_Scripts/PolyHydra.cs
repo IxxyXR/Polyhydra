@@ -834,7 +834,7 @@ public class PolyHydra : MonoBehaviour {
 	// Returns true if at least one face matches the facesel rule but all of them
 	public bool FaceSelectionIsValid(ConwayPoly.FaceSelections facesel)
 	{
-		if (ConwayOperators.Count == 0)conway = new ConwayPoly(WythoffPoly);
+		if (ConwayOperators.Count == 0 && PolyType > 0) conway = new ConwayPoly(WythoffPoly);  // We need a conway poly
 		int includedFaceCount = Enumerable.Range(0, conway.Faces.Count).Count(x => conway.IncludeFace(x, facesel));
 		return includedFaceCount > 0 && includedFaceCount < conway.Faces.Count;
 

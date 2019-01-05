@@ -2084,37 +2084,38 @@ namespace Conway
 						var face1 = new List<int>
 						{
 							corner,
-							corner + 1,
-							corner + rows
+							corner + rows,
+							corner + 1
 						};
 						faceIndices.Add(face1);
 				
 						var face2 = new List<int>
 						{
 							corner + 1,
-							corner + rows + 1,
-							corner + rows
+							corner + rows,
+							corner + rows + 1
 						};
 						faceIndices.Add(face2);						
 						
 					}
 					else
-					{
+					{				
 						var face1 = new List<int>
 						{
 							corner,
 							corner + rows + 1,
-							corner + rows
+							corner + 1
 						};
 						faceIndices.Add(face1);
-				
+						
 						var face2 = new List<int>
 						{
 							corner,
-							corner + 1,
-							corner + rows + 1,
+							corner + rows,
+							corner + rows + 1
 						};
-						faceIndices.Add(face2);						
+						faceIndices.Add(face2);
+
 
 					}
 				}
@@ -2163,11 +2164,11 @@ namespace Conway
 					var hex1 = new List<int>
 					{
 						corner,
-						corner + 1,
-						corner + rows + 2,
-						corner + (rows + rows) + 1,
-						corner + (rows + rows),
-						corner + rows
+						corner + rows,
+						corner + rows + rows,
+						corner + rows + rows + 1,
+						corner + rows + 2,						
+						corner + 1
 					};
 					faceIndices.Add(hex1);
 
@@ -2176,11 +2177,11 @@ namespace Conway
 					var hex2 = new List<int>
 					{
 						corner,
-						corner + 1,
+						corner + rows - 1,
+						corner + rows + rows,
+						corner + rows + rows + 1,
 						corner + rows + 1,
-						corner + (rows + rows) + 1,
-						corner + (rows + rows),
-						corner + rows - 1
+						corner + 1
 					};
 					faceIndices.Add(hex2);
 				}
