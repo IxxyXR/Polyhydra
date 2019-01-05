@@ -186,7 +186,7 @@ public class PolyHydra : MonoBehaviour {
 
 	void Awake()
 	{		
-		opconfigs = new Dictionary<Ops, OpConfig>()
+		opconfigs = new Dictionary<Ops, OpConfig>
 		{	
 			{Ops.Identity, new OpConfig {usesAmount=false}},
 			{Ops.Kis, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},

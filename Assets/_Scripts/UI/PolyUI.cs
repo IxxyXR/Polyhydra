@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Conway;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
+using Random = UnityEngine.Random;
 #if UNITY_EDITOR
-using UnityEditor;
+    using UnityEditor;
 #endif
 
 
@@ -83,6 +82,7 @@ public class PolyUI : MonoBehaviour {
         PrismQInput.onValueChanged.AddListener(delegate{PrismQInputChanged();});
         BypassOpsToggle.onValueChanged.AddListener(delegate{BypassOpsToggleChanged();});
         AddOpButton.onClick.AddListener(AddOpButtonClicked);
+        AddRandomOpButton.onClick.AddListener(AddRandomOpButtonClicked);
         
         PresetNameInput.onValueChanged.AddListener(delegate{PresetNameChanged();});
         SavePresetButton.onClick.AddListener(SavePresetButtonClicked);
@@ -184,6 +184,26 @@ public class PolyUI : MonoBehaviour {
         poly.ConwayOperators.Add(newOp);
         AddOpItemToUI(newOp);
         Rebuild();
+    }
+
+    void AddRandomOpButtonClicked()
+    {
+        int maxOpIndex = Enum.GetValues(typeof(PolyHydra.Ops)).Length;
+        int opTypeIndex = Random.Range(1, maxOpIndex - 2); // No canonicalize as it's pretty rough at the moment
+        var opType = (PolyHydra.Ops) opTypeIndex;
+        var opConfig = poly.opconfigs[opType];
+        var faceSelection =(ConwayPoly.FaceSelections) Random.Range(0, Enum.GetValues(typeof(ConwayPoly.FaceSelections)).Length);
+        var newOp = new PolyHydra.ConwayOperator
+        {
+            opType = opType,
+            faceSelections = Random.value > 0.7f ? 0: faceSelection,
+            randomize = Random.value > 0.8f,
+            amount = Random.value > 0.5f ? 0 : Random.Range(opConfig.amountMin, opConfig.amountMax),
+            disabled = false
+        };
+        poly.ConwayOperators.Add(newOp);
+        AddOpItemToUI(newOp);
+        Rebuild();        
     }
 
     void UpdatePolyUI()
