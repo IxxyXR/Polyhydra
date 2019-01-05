@@ -104,6 +104,7 @@ public class PolyHydra : MonoBehaviour {
 	public class OpConfig
 	{
 		public bool usesAmount = true;
+		public float amountDefault = 0;
 		public float amountMin = -20;
 		public float amountMax = 20;
 		public bool usesFaces = false;
@@ -189,49 +190,49 @@ public class PolyHydra : MonoBehaviour {
 		opconfigs = new Dictionary<Ops, OpConfig>
 		{	
 			{Ops.Identity, new OpConfig {usesAmount=false}},
-			{Ops.Kis, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.Kis, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Dual, new OpConfig{usesAmount=false}},
 			{Ops.Ambo, new OpConfig{usesAmount=false}},
-			{Ops.Zip, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.Zip, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Expand, new OpConfig{usesAmount=false}},
-			{Ops.Bevel, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.Bevel, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Join, new OpConfig{usesAmount=false}},
-			{Ops.Needle, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.Needle, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Ortho, new OpConfig{usesAmount=false}},
-			{Ops.Meta, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
-			{Ops.Truncate, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
-			{Ops.Gyro, new OpConfig{amountMin = -.5f, amountMax = 0.5f}},
-			{Ops.Snub, new OpConfig{amountMin = -.5f, amountMax = 0.5f}},
+			{Ops.Meta, new OpConfig{usesFaces=true, amountDefault = 0.15f, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.Truncate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.Gyro, new OpConfig{amountDefault = 0.33333333f, amountMin = -.5f, amountMax = 0.5f}},
+			{Ops.Snub, new OpConfig{amountDefault = 0.5f, amountMin = -.5f, amountMax = 0.5f}},
 			{Ops.Subdivide, new OpConfig {usesAmount=false}},
-			{Ops.Loft, new OpConfig {usesFaces=true, amountMin = -4, amountMax = 4}},
-			{Ops.Quinto, new OpConfig{amountMin = -4, amountMax = 4}},
-			{Ops.Lace, new OpConfig{usesFaces=true, amountMin = -4, amountMax = 4}},
-			{Ops.JoinedLace, new OpConfig{amountMin = -4, amountMax = 4}},
-			{Ops.Stake, new OpConfig{usesFaces=true, amountMin = -4, amountMax = 4}},
+			{Ops.Loft, new OpConfig {usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
+			{Ops.Quinto, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
+			{Ops.Lace, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
+			{Ops.JoinedLace, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
+			{Ops.Stake, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
 //			{Ops.Medial, new OpConfig{usesAmount=false}},
-//			{Ops.EdgeMedial, new OpConfig{amountMin = -4, amountMax = 4}},
-//			{Ops.JoinedMedial, new OpConfig{amountMin = -4, amountMax = 4}},
-			{Ops.Propeller, new OpConfig{amountMin = -4, amountMax = 4}},
-			{Ops.Whirl, new OpConfig{amountMin = -4, amountMax = 4}},
-			{Ops.Volute, new OpConfig{amountMin = -4, amountMax = 4}},
-			{Ops.Exalt, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
-			{Ops.Yank, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
+//			{Ops.EdgeMedial, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
+//			{Ops.JoinedMedial, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
+			{Ops.Propeller, new OpConfig{amountDefault = 0.75f, amountMin = -4, amountMax = 4}},
+			{Ops.Whirl, new OpConfig{amountDefault = 0.25f, amountMin = -4, amountMax = 4}},
+			{Ops.Volute, new OpConfig{amountDefault = 0.33333333f, amountMin = -4, amountMax = 4}},
+			{Ops.Exalt, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.Yank, new OpConfig{usesFaces=true, amountDefault = 0.33333333f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			//{Ops.Chamfer new OpConfig{}},
-			{Ops.FaceOffset, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.FaceOffset, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			//{Ops.Ribbon, new OpConfig{}},
-			{Ops.Extrude, new OpConfig{amountMin = -6, amountMax = 6, usesRandomize=true}},
-			{Ops.VertexScale, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
-			//{Ops.FaceTranslate, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6}},
-			{Ops.FaceScale, new OpConfig{usesFaces=true, amountMin = -6, amountMax = 6, usesRandomize=true}},
-			{Ops.FaceRotate, new OpConfig{usesFaces=true, amountMin = -180, amountMax = 180, usesRandomize=true}},
-//			{Ops.FaceRotateX, new OpConfig{usesFaces=true, amountMin = -180, amountMax = 180}},
-//			{Ops.FaceRotateY, new OpConfig{usesFaces=true, amountMin = -180, amountMax = 180}},
+			{Ops.Extrude, new OpConfig{amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.VertexScale, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			//{Ops.FaceTranslate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6}},
+			{Ops.FaceScale, new OpConfig{usesFaces=true, amountDefault = -0.025f, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.FaceRotate, new OpConfig{usesFaces=true, amountDefault = 45f, amountMin = -180, amountMax = 180, usesRandomize=true}},
+//			{Ops.FaceRotateX, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180}},
+//			{Ops.FaceRotateY, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180}},
 			//{Ops.Test, new OpConfig{}}
 			{Ops.FaceRemove, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.FaceKeep, new OpConfig{usesFaces=true, usesAmount=false}},
-			{Ops.AddDual, new OpConfig{amountMin = -6, amountMax = 6}},
-			{Ops.Canonicalize, new OpConfig{amountMin = 0.0001f, amountMax = 1f}},
-			{Ops.CanonicalizeI, new OpConfig{amountMin = 1, amountMax = 400}}
+			{Ops.AddDual, new OpConfig{amountDefault = 1f, amountMin = -6, amountMax = 6}},
+			{Ops.Canonicalize, new OpConfig{amountDefault = 0.1f, amountMin = 0.0001f, amountMax = 1f}},
+			{Ops.CanonicalizeI, new OpConfig{amountDefault = 200, amountMin = 1, amountMax = 400}}
 		};
 	}
 

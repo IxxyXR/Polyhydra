@@ -196,11 +196,12 @@ public class PolyUI : MonoBehaviour {
         var newOp = new PolyHydra.ConwayOperator
         {
             opType = opType,
-            faceSelections = Random.value > 0.7f ? 0: faceSelection,
+            faceSelections = Random.value > 0.25f ? 0: faceSelection,
             randomize = Random.value > 0.8f,
-            amount = Random.value > 0.5f ? 0 : Random.Range(opConfig.amountMin, opConfig.amountMax),
+            amount = Random.value > 0.25f ? opConfig.amountDefault : Random.Range(opConfig.amountMin, opConfig.amountMax),
             disabled = false
         };
+        if poly.con
         poly.ConwayOperators.Add(newOp);
         AddOpItemToUI(newOp);
         Rebuild();        
@@ -262,6 +263,7 @@ public class PolyUI : MonoBehaviour {
         
         opPrefabManager.AmountSlider.minValue = opConfig.amountMin;
         opPrefabManager.AmountSlider.maxValue = opConfig.amountMax;
+        opPrefabManager.AmountSlider.value = opConfig.amountDefault;
 
     }
 
