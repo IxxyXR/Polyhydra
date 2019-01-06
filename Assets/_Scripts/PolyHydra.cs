@@ -136,7 +136,7 @@ public class PolyHydra : MonoBehaviour {
 	private int[] meshFaces;
 	public WythoffPoly WythoffPoly;
 	private Dictionary<string, WythoffPoly> _wythoffCache;
-	private ConwayPoly conway;
+	private ConwayPoly _conwayPoly;
 
 	private MeshFilter meshFilter;
 	private PolyPreset previousState;
@@ -272,7 +272,7 @@ public class PolyHydra : MonoBehaviour {
 			}
 			else  // Special cases. Currently just a grid
 			{
-				conway = MakeGrid(GridType);
+				_conwayPoly = MakeGrid(GridType);
 				FinishedApplyOps();
 				mesh = BuildMeshFromConwayPoly(true);  // Might as well always do two-sided if no ops are applied
 				AssignFinishedMesh(mesh);
@@ -284,11 +284,11 @@ public class PolyHydra : MonoBehaviour {
 		if (PolyType > 0) // Uniform Polys
 		{
 			MakeWythoff();
-			conway = new ConwayPoly(WythoffPoly);			
+			_conwayPoly = new ConwayPoly(WythoffPoly);			
 		}
 		else  // Special cases. Currently just a grid
 		{
-			conway = MakeGrid(GridType);
+			_conwayPoly = MakeGrid(GridType);
 		}
 
 		if (!enableThreading)
@@ -369,12 +369,12 @@ public class PolyHydra : MonoBehaviour {
 	
 	public void FinishedApplyOps()
 	{
-		_faceCount = conway.Faces.Count;
-		_vertexCount = conway.Vertices.Count;
+		_faceCount = _conwayPoly.Faces.Count;
+		_vertexCount = _conwayPoly.Vertices.Count;
 		
 		if (Rescale)
 		{
-			conway.ScalePolyhedra();			
+			_conwayPoly.ScalePolyhedra();			
 		}
 		
 		var mesh = BuildMeshFromConwayPoly(TwoSided);
@@ -421,113 +421,96 @@ public class PolyHydra : MonoBehaviour {
 		callback();
 	}
 
-	private void ApplyOps()
+	public static ConwayPoly ApplyOp(ConwayPoly conway, ConwayOperator op)
 	{
-		
-		var cacheKeySource = $"{PolyType} {PrismP} {PrismQ} {GridType} {TwoSided}";
-		
-		foreach (var op in ConwayOperators.ToList())
+		switch (op.opType)
 		{
-			
-			if (op.disabled) continue;
-			
-			cacheKeySource += JsonConvert.SerializeObject(op);
-			if (_conwayCache == null) _conwayCache = new Dictionary<int, ConwayCacheEntry>();
-			if (enableCaching &&_conwayCache.ContainsKey(cacheKeySource.GetHashCode()))
-			{
-				conway = _conwayCache[cacheKeySource.GetHashCode()].conway;
-			}
-			else
-			{
-	
-				switch (op.opType)
-				{
-					case Ops.Identity:
-						break;
-					case Ops.Kis:
-						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
-						break;
-					case Ops.Dual:
-						conway = conway.Dual();
-						break;
-					case Ops.Ambo:
-						conway = conway.Ambo();
-						break;
-					case Ops.Zip:
-						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
-						conway = conway.Dual();
-						break;
-					case Ops.Expand:
-						conway = conway.Ambo();
-						conway = conway.Ambo();
-						break;
-					case Ops.Bevel:
-						conway = conway.Ambo();
-						conway = conway.Dual();
-						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
-						conway = conway.Dual();
-						break;
-					case Ops.Join:
-						// conway = conway.Join(op.amount);  // Not currently used as it results in non-coplanar faces
-						conway = conway.Ambo();
-						conway = conway.Dual();
-						break;
-					case Ops.Needle:
-						conway = conway.Dual();
-						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
-						break;
-					case Ops.Ortho:
-						conway = conway.Ambo();
-						conway = conway.Ambo();
-						conway = conway.Dual();
-						break;
-					case Ops.Meta:
-						conway = conway.Ambo();
-						conway = conway.Dual();
-						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
-						break;
-					case Ops.Truncate:
-						conway = conway.Dual();
-						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
-						conway = conway.Dual();
-						break;
-					case Ops.Gyro:
-						conway = conway.Gyro(op.amount);
-						break;
-					case Ops.Snub:
-						conway = conway.Gyro(op.amount);
-						conway = conway.Dual();
-						break;
-					case Ops.Exalt:
-						conway = conway.Dual();
-						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
-						conway = conway.Dual();
-						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
-						break;
-					case Ops.Yank:
-						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
-						conway = conway.Dual();
-						conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
-						conway = conway.Dual();
-						break;
-					case Ops.Subdivide:
-						conway = conway.Subdivide();
-						break;
-					case Ops.Loft:
-						conway = conway.Loft(op.amount, op.faceSelections);
-						break;					
-					case Ops.Quinto:
-						conway = conway.Quinto(op.amount);
-						break;
-					case Ops.JoinedLace:
-						conway = conway.JoinedLace(op.amount);
-						break;
-					case Ops.Lace:
-						conway = conway.Lace(op.amount, op.faceSelections);
-						break;
-					case Ops.Stake:
-						conway = conway.Stake(op.amount, op.faceSelections);
-						break;
+			case Ops.Identity:
+				break;
+			case Ops.Kis:
+				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				break;
+			case Ops.Dual:
+				conway = conway.Dual();
+				break;
+			case Ops.Ambo:
+				conway = conway.Ambo();
+				break;
+			case Ops.Zip:
+				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Dual();
+				break;
+			case Ops.Expand:
+				conway = conway.Ambo();
+				conway = conway.Ambo();
+				break;
+			case Ops.Bevel:
+				conway = conway.Ambo();
+				conway = conway.Dual();
+				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Dual();
+				break;
+			case Ops.Join:
+				// conway = conway.Join(op.amount);  // Not currently used as it results in non-coplanar faces
+				conway = conway.Ambo();
+				conway = conway.Dual();
+				break;
+			case Ops.Needle:
+				conway = conway.Dual();
+				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				break;
+			case Ops.Ortho:
+				conway = conway.Ambo();
+				conway = conway.Ambo();
+				conway = conway.Dual();
+				break;
+			case Ops.Meta:
+				conway = conway.Ambo();
+				conway = conway.Dual();
+				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				break;
+			case Ops.Truncate:
+				conway = conway.Dual();
+				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Dual();
+				break;
+			case Ops.Gyro:
+				conway = conway.Gyro(op.amount);
+				break;
+			case Ops.Snub:
+				conway = conway.Gyro(op.amount);
+				conway = conway.Dual();
+				break;
+			case Ops.Exalt:
+				conway = conway.Dual();
+				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Dual();
+				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				break;
+			case Ops.Yank:
+				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Dual();
+				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Dual();
+				break;
+			case Ops.Subdivide:
+				conway = conway.Subdivide();
+				break;
+			case Ops.Loft:
+				conway = conway.Loft(op.amount, op.faceSelections);
+				break;					
+			case Ops.Quinto:
+				conway = conway.Quinto(op.amount);
+				break;
+			case Ops.JoinedLace:
+				conway = conway.JoinedLace(op.amount);
+				break;
+			case Ops.Lace:
+				conway = conway.Lace(op.amount, op.faceSelections);
+				break;
+			case Ops.Stake:
+				conway = conway.Stake(op.amount, op.faceSelections);
+				break;
 //					case Ops.Medial:
 //						conway = conway.Medial((int)op.amount);
 //						break;
@@ -537,36 +520,36 @@ public class PolyHydra : MonoBehaviour {
 //					case Ops.JoinedMedial:
 //						conway = conway.JoinedMedial();
 //						break;
-					case Ops.Propeller:
-						conway = conway.Propeller(op.amount);
-						break;
-					case Ops.Whirl:
-						conway = conway.Whirl(op.amount);
-						break;
-					case Ops.Volute:
-						conway = conway.Volute(op.amount);
-						break;
-					case Ops.Extrude:
-						// Split faces
-						conway = conway.FaceScale(0, ConwayPoly.FaceSelections.All, false);
-						conway = conway.Extrude(op.amount, false, op.randomize);
-						break;
-					case Ops.VertexScale:
-						conway = conway.VertexScale(op.amount, op.faceSelections, op.randomize);
-						break;
-					case Ops.FaceOffset:
-						// Split faces
-						var origRoles = conway.FaceRoles;
-						conway = conway.FaceScale(0, ConwayPoly.FaceSelections.All, false);
-						conway.FaceRoles = origRoles;
-						conway = conway.Offset(op.amount, op.faceSelections, op.randomize);
-						break;
-					case Ops.FaceScale:
-						conway = conway.FaceScale(op.amount, op.faceSelections, op.randomize);
-						break;
-					case Ops.FaceRotate:
-						conway = conway.FaceRotate(op.amount, op.faceSelections, 0, op.randomize);
-						break;
+			case Ops.Propeller:
+				conway = conway.Propeller(op.amount);
+				break;
+			case Ops.Whirl:
+				conway = conway.Whirl(op.amount);
+				break;
+			case Ops.Volute:
+				conway = conway.Volute(op.amount);
+				break;
+			case Ops.Extrude:
+				// Split faces
+				conway = conway.FaceScale(0, ConwayPoly.FaceSelections.All, false);
+				conway = conway.Extrude(op.amount, false, op.randomize);
+				break;
+			case Ops.VertexScale:
+				conway = conway.VertexScale(op.amount, op.faceSelections, op.randomize);
+				break;
+			case Ops.FaceOffset:
+				// Split faces
+				var origRoles = conway.FaceRoles;
+				conway = conway.FaceScale(0, ConwayPoly.FaceSelections.All, false);
+				conway.FaceRoles = origRoles;
+				conway = conway.Offset(op.amount, op.faceSelections, op.randomize);
+				break;
+			case Ops.FaceScale:
+				conway = conway.FaceScale(op.amount, op.faceSelections, op.randomize);
+				break;
+			case Ops.FaceRotate:
+				conway = conway.FaceRotate(op.amount, op.faceSelections, 0, op.randomize);
+				break;
 //					case Ops.Chamfer:
 //						conway = conway.Chamfer();
 //						break;
@@ -582,26 +565,50 @@ public class PolyHydra : MonoBehaviour {
 //					case Ops.FaceRotateY:
 //						conway = conway.FaceRotate(op.amount, op.faceSelections, 2);
 //						break;
-					case Ops.FaceRemove:
-						conway = conway.FaceRemove(op.faceSelections, false);
-						break;
-					case Ops.FaceKeep:
-						conway = conway.FaceRemove(op.faceSelections, true);
-						break;
-					case Ops.AddDual:
-						conway = conway.AddDual(op.amount);
-						break;
-					case Ops.Canonicalize:
-						conway = conway.Canonicalize(op.amount, op.amount);
-						break;
-					case Ops.CanonicalizeI:
-						conway = conway.Canonicalize((int)op.amount, (int)op.amount);
-						break;
-				}
+			case Ops.FaceRemove:
+				conway = conway.FaceRemove(op.faceSelections, false);
+				break;
+			case Ops.FaceKeep:
+				conway = conway.FaceRemove(op.faceSelections, true);
+				break;
+			case Ops.AddDual:
+				conway = conway.AddDual(op.amount);
+				break;
+			case Ops.Canonicalize:
+				conway = conway.Canonicalize(op.amount, op.amount);
+				break;
+			case Ops.CanonicalizeI:
+				conway = conway.Canonicalize((int)op.amount, (int)op.amount);
+				break;
+		}
+
+		return conway;
+	}
+
+	private void ApplyOps()
+	{
+		
+		var cacheKeySource = $"{PolyType} {PrismP} {PrismQ} {GridType} {TwoSided}";
+		
+		foreach (var op in ConwayOperators.ToList())
+		{
+			
+			if (op.disabled) continue;
+			
+			cacheKeySource += JsonConvert.SerializeObject(op);
+			if (_conwayCache == null) _conwayCache = new Dictionary<int, ConwayCacheEntry>();
+			if (enableCaching &&_conwayCache.ContainsKey(cacheKeySource.GetHashCode()))
+			{
+				_conwayPoly = _conwayCache[cacheKeySource.GetHashCode()].conway;
+			}
+			else
+			{
+
+				_conwayPoly = ApplyOp(_conwayPoly, op);
 
 				if (enableCaching)
 				{
-					var cached = new ConwayCacheEntry(conway, DateTime.UtcNow.Ticks);
+					var cached = new ConwayCacheEntry(_conwayPoly, DateTime.UtcNow.Ticks);
 					_conwayCache[cacheKeySource.GetHashCode()] = cached;
 					if (_conwayCache.Count > MAX_CACHE_LENGTH)
 					{
@@ -664,39 +671,39 @@ public class PolyHydra : MonoBehaviour {
 		var faceRoles = new List<ConwayPoly.Roles>();
 		var vertexRoles = new List<ConwayPoly.Roles>();
 		
-		var newVerts = conway.Faces.Select(f => f.Centroid);
-		var vertexPoints = Enumerable.Concat(conway.Vertices.Select(v => v.Position), newVerts);
+		var newVerts = _conwayPoly.Faces.Select(f => f.Centroid);
+		var vertexPoints = Enumerable.Concat(_conwayPoly.Vertices.Select(v => v.Position), newVerts);
 		vertexRoles.Concat(Enumerable.Repeat(ConwayPoly.Roles.Existing, vertexPoints.Count()));
 		var originalFaceSides = new List<int>();
             
 		// vertex lookup
 		var vlookup = new Dictionary<string, int>();
-		int n = conway.Vertices.Count;
+		int n = _conwayPoly.Vertices.Count;
 		for (int i = 0; i < n; i++) {
-			vlookup.Add(conway.Vertices[i].Name, i);
+			vlookup.Add(_conwayPoly.Vertices[i].Name, i);
 		}
 
 		var faceIndices = new List<IEnumerable<int>>(); // faces as vertex indices
-		for (int i = 0; i < conway.Faces.Count; i++)
+		for (int i = 0; i < _conwayPoly.Faces.Count; i++)
 		{
-			int faceSides = conway.Faces[i].Sides;
-			if (conway.Faces[i].Sides <= 3) {
-				faceIndices.Add(conway.ListFacesByVertexIndices()[i]);
+			int faceSides = _conwayPoly.Faces[i].Sides;
+			if (_conwayPoly.Faces[i].Sides <= 3) {
+				faceIndices.Add(_conwayPoly.ListFacesByVertexIndices()[i]);
 				originalFaceSides.Add(faceSides);
-				faceRoles.Add(conway.FaceRoles[i]);
+				faceRoles.Add(_conwayPoly.FaceRoles[i]);
 			} else {
-				foreach (var edge in conway.Faces[i].GetHalfedges()) {
+				foreach (var edge in _conwayPoly.Faces[i].GetHalfedges()) {
 					// create new face from edge start, edge end and centroid
 					faceIndices.Add(
 						new[] {vlookup[edge.Prev.Vertex.Name], vlookup[edge.Vertex.Name], i + n}
 					);
 					originalFaceSides.Add(faceSides);
-					faceRoles.Add(conway.FaceRoles[i]);
+					faceRoles.Add(_conwayPoly.FaceRoles[i]);
 				}
 			}
 		}
 
-		conway = new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+		_conwayPoly = new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		
 		
 		
@@ -713,7 +720,7 @@ public class PolyHydra : MonoBehaviour {
 		var meshNormals = new List<Vector3>();
 		var meshColors = new List<Color32>();
 		
-		var hasNaked = conway.HasNaked();
+		var hasNaked = _conwayPoly.HasNaked();
 		hasNaked = false;  // TODO
 		
 		
@@ -731,8 +738,8 @@ public class PolyHydra : MonoBehaviour {
 		
 		
 		// Strip down to Face-Vertex structure
-		var points = conway.ListVerticesByPoints();
-		var faceIndices = conway.ListFacesByVertexIndices();
+		var points = _conwayPoly.ListVerticesByPoints();
+		var faceIndices = _conwayPoly.ListFacesByVertexIndices();
 
 		// Add faces
 		int index = 0;
@@ -740,14 +747,14 @@ public class PolyHydra : MonoBehaviour {
 		for (var i = 0; i < faceIndices.Length; i++) {
 			
 			var faceIndex = faceIndices[i];
-			var face = conway.Faces[i];
+			var face = _conwayPoly.Faces[i];
 			var faceNormal = face.Normal;
 			
 			Color32 color;
 			switch (ColorMethod)
 			{
 				case AppearancePreset.ColorMethods.ByRole:
-					color = faceColors[(int) conway.FaceRoles[i]];
+					color = faceColors[(int) _conwayPoly.FaceRoles[i]];
 					break;
 				case AppearancePreset.ColorMethods.BySides:
 					color = faceColors[face.Sides % faceColors.Length];
@@ -834,9 +841,9 @@ public class PolyHydra : MonoBehaviour {
 	// Returns true if at least one face matches the facesel rule but all of them
 	public bool FaceSelectionIsValid(ConwayPoly.FaceSelections facesel)
 	{
-		if (ConwayOperators.Count == 0 && PolyType > 0) conway = new ConwayPoly(WythoffPoly);  // We need a conway poly
-		int includedFaceCount = Enumerable.Range(0, conway.Faces.Count).Count(x => conway.IncludeFace(x, facesel));
-		return includedFaceCount > 0 && includedFaceCount < conway.Faces.Count;
+		if (ConwayOperators.Count == 0 && PolyType > 0) _conwayPoly = new ConwayPoly(WythoffPoly);  // We need a conway poly
+		int includedFaceCount = Enumerable.Range(0, _conwayPoly.Faces.Count).Count(x => _conwayPoly.IncludeFace(x, facesel));
+		return includedFaceCount > 0 && includedFaceCount < _conwayPoly.Faces.Count;
 
 	}
 
@@ -871,14 +878,14 @@ public class PolyHydra : MonoBehaviour {
 			}
 		}
 		
-		if (conwayVertexGizmos && conway!=null)
+		if (conwayVertexGizmos && _conwayPoly!=null)
 		{
 			Gizmos.color = Color.white;
-			if (conway.Vertices != null)
+			if (_conwayPoly.Vertices != null)
 			{
-				for (int i = 0; i < conway.Vertices.Count; i++)
+				for (int i = 0; i < _conwayPoly.Vertices.Count; i++)
 				{
-					Vector3 vert = conway.Vertices[i].Position;
+					Vector3 vert = _conwayPoly.Vertices[i].Position;
 					Vector3 pos = transform.TransformPoint(vert);
 					Gizmos.DrawWireSphere(pos, GizmoRadius);
 					Handles.Label(pos + new Vector3(0, .15f, 0), i.ToString());
@@ -888,7 +895,7 @@ public class PolyHydra : MonoBehaviour {
 
 		if (faceCenterGizmos)
 		{
-			if (conway == null)
+			if (_conwayPoly == null)
 			{
 				Gizmos.color = Color.blue;
 				if (WythoffPoly.FaceCenters != null)
@@ -902,7 +909,7 @@ public class PolyHydra : MonoBehaviour {
 			else
 			{
 				Gizmos.color = Color.green;
-				foreach (var f in conway.Faces)
+				foreach (var f in _conwayPoly.Faces)
 				{
 					Gizmos.DrawWireSphere(transform.TransformPoint(f.Centroid), GizmoRadius);
 				}
@@ -927,7 +934,7 @@ public class PolyHydra : MonoBehaviour {
 
 		if (faceGizmos)
 		{
-			if (conway == null)
+			if (_conwayPoly == null)
 			{
 				NonConwayFaceGizmos();
 			}
@@ -954,8 +961,8 @@ public class PolyHydra : MonoBehaviour {
 	private void ConwayFaceGizmos()
 	{
 		int gizmoColor = 0;
-		var faces = conway.Faces;
-		var verts = conway.Vertices;
+		var faces = _conwayPoly.Faces;
+		var verts = _conwayPoly.Vertices;
 		for (int f = 0; f < faces.Count; f++)
 		{
 			if (faceGizmosList.Contains(f) || faceGizmosList.Length==0)
