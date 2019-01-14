@@ -239,6 +239,7 @@ public class PolyHydra : MonoBehaviour {
 	void Start()
 	{
 		meshFilter = gameObject.GetComponent<MeshFilter>();
+		MakePolyhedron();
 	}
 
 	public ConwayPoly MakeGrid(GridTypes gridType)
