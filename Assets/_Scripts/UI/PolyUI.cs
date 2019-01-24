@@ -568,7 +568,8 @@ public class PolyUI : MonoBehaviour {
         public static void OpenPersistentDataFolder()
         {
             string path = Application.persistentDataPath.TrimEnd(new[]{'\\', '/'}); // Mac doesn't like trailing slash
-            Process.Start(path);
+            // TODO Find a way to do this properly at runtime
+            // Process.Start(path);
         } 
     #endif
 
