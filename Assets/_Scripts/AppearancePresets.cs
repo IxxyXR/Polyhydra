@@ -9,8 +9,6 @@ public class AppearancePresets : MonoBehaviour {
 	public GameObject LightsParent;
 	public List<AppearancePreset> Items;
 	
-	private const string PresetFileNamePrefix = "AppearancePreset-";
-	
 	public AppearancePreset ApplyPresetToPoly(string presetName)
 	{
 		AppearancePreset preset;

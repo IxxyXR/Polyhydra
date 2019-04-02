@@ -4,8 +4,6 @@ using UnityEditorInternal;
 using System.Collections.Generic;
 using UnityEditor.AnimatedValues;
 
-[CustomEditor(typeof(UnityEngine.Object), true, isFallback = true)]
-[CanEditMultipleObjects]
 public class CustomEditorBase : Editor
 {
 	private Dictionary<string, ReorderableListProperty> reorderableLists;

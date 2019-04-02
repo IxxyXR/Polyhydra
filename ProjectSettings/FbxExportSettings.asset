@@ -8,7 +8,7 @@
         "launchAfterInstallation": true,
         "HideSendToUnityMenu": true,
         "BakeAnimation": true,
-        "integrationSavePath": "/Users/andybaker/Documents/Unity Projects/Polyhydra",
+        "integrationSavePath": "C:\\Users\\andyb\\Documents\\Unity Projects\\Polyhydra",
         "selectedDCCApp": 0,
         "prefabSavePaths": [
             "."
@@ -18,14 +18,18 @@
         ],
         "selectedFbxPath": 0,
         "selectedPrefabPath": 0,
-        "dccOptionNames": [],
-        "dccOptionPaths": [],
+        "dccOptionNames": [
+            "3ds Max 2019"
+        ],
+        "dccOptionPaths": [
+            "C:/Program Files/Autodesk/3ds Max 2019/3dsmax.exe"
+        ],
         "exportModelSettingsSerialize": {
             "exportFormat": 0,
             "animatedSkinnedMesh": false,
             "mayaCompatibleNaming": true,
-            "include": 2,
-            "lodLevel": 0,
+            "include": 0,
+            "lodLevel": 1,
             "objectPosition": 0,
             "exportUnrendered": true
         }
