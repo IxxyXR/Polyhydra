@@ -78,6 +78,9 @@ public class PolyVFX : MonoBehaviour
     private static float CalcEdgeColor(Halfedge x)
     {
         float edgeColor = 1.0f;
+        return edgeColor;
+        
+        
         try
         {
             edgeColor = (x.Face.Sides + x.Pair.Face.Sides) / 2f;
