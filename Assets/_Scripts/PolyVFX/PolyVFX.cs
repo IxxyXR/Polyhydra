@@ -166,7 +166,7 @@ public class PolyVFX : MonoBehaviour
 
     public void RandomizePolyhedra()
     {
-        _vfx.SetFloat("Thickness", BiasedRandom(0.0015f, 0.02f, -1));
+        _vfx.SetFloat("Thickness", BiasedRandom(0.003f, 0.005f, -1));
         _vfx.SetFloat("Chaos", BiasedRandom(0f, 0.0025f, -1));
         _vfx.SetFloat("Lifetime", BiasedRandom(0.001f, 5f, -1));
         //var validPolys = Enum.GetValues(typeof(PolyTypes)).Cast<PolyTypes>().Except(polyhydra.OrientablePolyTypes);
@@ -176,16 +176,16 @@ public class PolyVFX : MonoBehaviour
         wythoffOnly = true;
         if (!polyhydra.NonOrientablePolyTypes.Contains((int) polyhydra.PolyType)) // Don't add Conway ops to non-orientable polys
         {
-            if (Random.value > 0.3333)
+            if (Random.value > 0.1)
             {
                 wythoffOnly = false;
                 polyhydra.AddRandomOp();
                 Debug.Log($"Random op: {polyhydra.ConwayOperators.Last().opType}");
-                if (Random.value > 0.3333)
+                if (Random.value > 0.2)
                 {
                     polyhydra.AddRandomOp();
                     Debug.Log($"Random op 2: {polyhydra.ConwayOperators.Last().opType}");
-                    if (Random.value > 0.3333)
+                    if (Random.value > 0.3)
                     {
                         polyhydra.AddRandomOp();
                         Debug.Log($"Random op 3: {polyhydra.ConwayOperators.Last().opType}");
