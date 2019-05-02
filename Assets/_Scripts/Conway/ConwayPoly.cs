@@ -13,7 +13,6 @@ namespace Conway
 	/// <summary>
 	/// A class for manifold meshes which uses the Halfedge data structure.
 	/// </summary>
-
 	public class ConwayPoly
 	{
 
@@ -26,7 +25,7 @@ namespace Conway
 			Faces = new MeshFaceList(this);
 		}
 
-		public ConwayPoly(WythoffPoly source) : this()
+		public ConwayPoly(WythoffPoly source, bool abortOnFailure=true) : this()
 		{
 			FaceRoles = new List<Roles>();
 			VertexRoles = new List<Roles>();
@@ -43,23 +42,33 @@ namespace Conway
 			foreach (var face in source.faces)
 			{
 				var v = new Vertex[face.points.Count];
+				
 				for (int i = 0; i < face.points.Count; i++)
 				{
 					v[i] = Vertices[face.points[i]];
 				}
 
+				FaceRoles.Add(Roles.Existing);
+						
 				if (!Faces.Add(v))
 				{
 					// Failed. Let's try flipping the face
 					Array.Reverse(v);
 					if (!Faces.Add(v))
 					{
-						Debug.LogError("Failed even after flipping.");
+						if (abortOnFailure)
+						{
+							throw new System.InvalidOperationException("Failed even after flipping.");							
+						}
+						else
+						{
+							Debug.LogWarning($"Failed even after flipping. ({v.Length} verts)");
+							continue;
+						}
 					}
 				}
-
-				FaceRoles.Add(Roles.Existing);
 			}
+			
 
 			// Find and link halfedge pairs
 			Halfedges.MatchPairs();
@@ -278,7 +287,15 @@ namespace Conway
 				}
 
 				faceIndices.Add(fIndex);
-				faceRoles.Add(VertexRoles[i]);
+				try
+				{
+					faceRoles.Add(VertexRoles[i]);
+				}
+				catch(Exception e)
+				{
+					Debug.LogWarning($"Dual op failed to set face role based on existing vertex role. Faces.Count: {Faces.Count} Verts: {Vertices.Count} old VertexRoles.Count: {VertexRoles.Count} i: {i}");
+					throw;
+				}
 			}
 
 			return new ConwayPoly(vertexPoints, faceIndices.ToArray(), faceRoles, vertexRoles);

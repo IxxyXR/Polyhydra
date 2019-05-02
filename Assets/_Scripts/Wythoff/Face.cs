@@ -34,7 +34,6 @@ namespace Wythoff {
 			}
 			this.configuration = configuration;
 			this.center = center;
-			centerPoint = -1;
 			frax = new Fraction(configuration);
 			points = new List<int>();
 		}

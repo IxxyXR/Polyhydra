@@ -85,7 +85,7 @@ namespace Wythoff {
 
         }
 
-        public void BuildFaces(bool BuildAux=false) {
+        public void BuildFaces() {
         
             faces = new List<Face>();
 
@@ -129,33 +129,6 @@ namespace Wythoff {
                 }
 
                 faces.Add(face);
-            }
-
-            bool auxiliaryNeeded = false;
-
-            foreach (double c in FaceSidesByType) {
-                Fraction frax = new Fraction(c);
-                if (frax.d > 1 && frax.d != frax.n - 1) {
-                    auxiliaryNeeded = true;
-                }
-            }
-            
-            // We only do this if we're not running the Conway transform
-            // That does it's own triangulation which is generally superior.
-            if (auxiliaryNeeded && BuildAux) {
-                // TODO this is awful
-                Debug.Log("auxiliaryNeeded");
-                var tempVerts = new List<Vector>();
-                tempVerts = Vertices.ToList();
-                foreach (Face f in faces) {
-                    if (f.frax.d > 1 && f.frax.d != f.frax.n - 1) {
-                        tempVerts.Add(f.center);
-                        f.SetPoint(tempVerts.Count - 1);
-                        f.centerPoint = tempVerts.Count - 1;
-                    }
-                }
-
-                Vertices = tempVerts.ToArray();
             }
 
         }

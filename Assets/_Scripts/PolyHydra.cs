@@ -9,6 +9,7 @@ using Wythoff;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable UnusedMember.Global
@@ -18,8 +19,8 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(MeshFilter))]
 public class PolyHydra : MonoBehaviour {
 	
-	private const bool enableThreading = true;
-	private const bool enableCaching = true;   
+	private bool enableThreading = true;
+	private bool enableCaching = true;   
 	const int MAX_CACHE_LENGTH = 5000;
 	
 	private int _faceCount;
@@ -95,10 +96,35 @@ public class PolyHydra : MonoBehaviour {
 		CanonicalizeI
 	}
 
+	public readonly int[] NonOrientablePolyTypes = {
+		(int)PolyTypes.Tetrahemihexahedron,
+		(int)PolyTypes.Cubohemioctahedron,
+		(int)PolyTypes.Small_Rhombihexahedron,
+		(int)PolyTypes.Great_Rhombihexahedron,
+		(int)PolyTypes.Small_Rhombidodecahedron,
+		(int)PolyTypes.Small_Icosihemidodecahedron,
+		(int)PolyTypes.Small_Dodecicosahedron,
+		(int)PolyTypes.Small_Dodecahemidodecahedron,
+		(int)PolyTypes.Rhombicosahedron,
+		(int)PolyTypes.Small_Dodecahemicosahedron,
+		(int)PolyTypes.Great_Dodecicosahedron,
+		(int)PolyTypes.Great_Dodecahemicosahedron,
+		(int)PolyTypes.Great_Dodecahemidodecahedron,
+		(int)PolyTypes.Great_Icosihemidodecahedron,
+		(int)PolyTypes.Great_Rhombidodecahedron
+	};
+
 	public string GetInfoText()
 	{
 		string infoText = $"Faces: {_faceCount}\nVertices: {_vertexCount}";
 		return infoText;
+	}
+
+	// Call this if you're *not* using this class via an interactive UI
+	public void DisableInteractiveFlags()
+	{
+		enableCaching = false;
+		enableThreading = false;
 	}
 
 	public class OpConfig
@@ -110,6 +136,11 @@ public class PolyHydra : MonoBehaviour {
 		public bool usesFaces = false;
 		public bool usesRandomize = false;
 		public ConwayPoly.FaceSelections faceSelection = ConwayPoly.FaceSelections.All;	
+	}
+
+	public ConwayPoly GetConwayPoly()
+	{
+		return _conwayPoly;
 	}
 
 	public Dictionary<Ops, OpConfig> opconfigs;
@@ -136,7 +167,7 @@ public class PolyHydra : MonoBehaviour {
 	private int[] meshFaces;
 	public WythoffPoly WythoffPoly;
 	private Dictionary<string, WythoffPoly> _wythoffCache;
-	private ConwayPoly _conwayPoly;
+	public ConwayPoly _conwayPoly;
 
 	private MeshFilter meshFilter;
 	private PolyPreset previousState;
@@ -266,10 +297,22 @@ public class PolyHydra : MonoBehaviour {
 		{
 			if (PolyType > 0)  // Uniform Polys
 			{
-				MakeWythoff();
-				mesh = BuildMeshFromWythoffPoly(WythoffPoly);
-				AssignFinishedMesh(mesh);
-				
+		        MakeWythoff();
+
+				try
+				{
+					_conwayPoly = new ConwayPoly(WythoffPoly, abortOnFailure: false);
+					KisTriangulate();
+					mesh = BuildMeshFromConwayPoly(true);					
+				}
+				catch (Exception e)
+				{
+					// If meshing via conway op fails fall back to our crappy direct way
+					// Usually only needed for the 8 non-orientable polyhedra
+					// TODO The old meshing is broken for some reason
+					mesh = BuildMeshFromWythoffPoly(WythoffPoly);					
+				}
+				AssignFinishedMesh(mesh);				
 			}
 			else  // Special cases. Currently just a grid
 			{
@@ -285,7 +328,15 @@ public class PolyHydra : MonoBehaviour {
 		if (PolyType > 0) // Uniform Polys
 		{
 			MakeWythoff();
-			_conwayPoly = new ConwayPoly(WythoffPoly);			
+			try
+			{
+				_conwayPoly = new ConwayPoly(WythoffPoly, abortOnFailure: false);			
+			}
+			catch (InvalidOperationException e)
+			{
+				Debug.Log($"Failed to build Conway from Wythoff {WythoffPoly.PolyTypeIndex} {WythoffPoly.PolyName}");
+				throw;
+			}
 		}
 		else  // Special cases. Currently just a grid
 		{
@@ -318,6 +369,7 @@ public class PolyHydra : MonoBehaviour {
 		currentState.CreateFromPoly("temp", this);
 		if (previousState != currentState)
 		{
+			MakeWythoff();
 			MakePolyhedron();
 			previousState = currentState;
 		}
@@ -360,9 +412,8 @@ public class PolyHydra : MonoBehaviour {
 				WythoffPoly = new WythoffPoly(symbol);
 				_wythoffCache[symbol] = WythoffPoly;
 			}
-			
 		}
-		WythoffPoly.BuildFaces(BuildAux: BypassOps);
+		WythoffPoly.BuildFaces();
 		
 		//_faceCount = WythoffPoly.FaceCount;
 		//_vertexCount = WythoffPoly.VertexCount;
@@ -713,7 +764,6 @@ public class PolyHydra : MonoBehaviour {
 
 	public Mesh BuildMeshFromConwayPoly(bool forceTwosided)
 	{
-		//var originalFaceSides = KisTriangulate();
 		
 		var target = new Mesh();
 		var meshTriangles = new List<int>();
@@ -797,6 +847,7 @@ public class PolyHydra : MonoBehaviour {
 			
 			if (hasNaked || forceTwosided)
 			{
+
 				if (faceIndex.Count > 3)
 				{
 					for (var edgeIndex = 0; edgeIndex < faceIndex.Count; edgeIndex++)
@@ -842,10 +893,58 @@ public class PolyHydra : MonoBehaviour {
 	// Returns true if at least one face matches the facesel rule but all of them
 	public bool FaceSelectionIsValid(ConwayPoly.FaceSelections facesel)
 	{
-		if (ConwayOperators.Count == 0 && PolyType > 0) _conwayPoly = new ConwayPoly(WythoffPoly);  // We need a conway poly
+		if (ConwayOperators.Count == 0 && PolyType > 0) {
+			_conwayPoly = new ConwayPoly(WythoffPoly);  // We need a conway poly
+		}
 		int includedFaceCount = Enumerable.Range(0, _conwayPoly.Faces.Count).Count(x => _conwayPoly.IncludeFace(x, facesel));
 		return includedFaceCount > 0 && includedFaceCount < _conwayPoly.Faces.Count;
 
+	}
+
+	public ConwayOperator AddRandomOp()
+	{
+		int maxOpIndex = Enum.GetValues(typeof(Ops)).Length;
+		int opTypeIndex = Random.Range(1, maxOpIndex - 2); // No canonicalize as it's pretty rough at the moment
+		var opType = (Ops) opTypeIndex;
+		OpConfig opConfig;
+		try
+		{
+			opConfig = opconfigs[opType];
+		}
+		catch (Exception e)
+		{
+			Debug.Log($"opType: {opType} opconfigs count: {opconfigs.Count}");
+			throw;
+		}
+        
+		ConwayPoly.FaceSelections faceSelection = ConwayPoly.FaceSelections.None;
+		var maxFaceSel = Enum.GetValues(typeof(ConwayPoly.FaceSelections)).Length - 1; // Exclude "None"
+
+		try
+		{
+			// Keep picking a random facesel until we get one that will have an effect
+			while (!FaceSelectionIsValid(faceSelection))
+			{
+				faceSelection = (ConwayPoly.FaceSelections) Random.Range(1, maxFaceSel);
+			}
+		}
+		catch (InvalidOperationException r)
+		{
+			Debug.LogWarning("Failed to pick a random FaceSel as the Wythoff to Conway conversion failed");
+			faceSelection = ConwayPoly.FaceSelections.All;
+		}
+		
+		// TODO pick another facesel if all faces are chosen
+		var newOp = new ConwayOperator
+		{
+			opType = opType,
+			faceSelections = Random.value > 0.25f ? 0: faceSelection,
+			randomize = Random.value > 0.8f,
+			amount = Random.value > 0.25f ? opConfig.amountDefault : Random.Range(opConfig.amountMin, opConfig.amountMax),
+			disabled = false
+		};
+		ConwayOperators.Add(newOp);
+		return newOp;
 	}
 
 	
