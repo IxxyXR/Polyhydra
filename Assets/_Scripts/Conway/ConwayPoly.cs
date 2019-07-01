@@ -2512,6 +2512,20 @@ namespace Conway
 			canonicalized.FaceRoles = previousFaceRoles;
 			return canonicalized;
 		}
+		
+		public ConwayPoly Spherize(float amount)
+		{
+			var vertexPoints = new List<Vector3>();
+			var faceIndices = ListFacesByVertexIndices();
+
+			for (var vertexIndex = 0; vertexIndex < Vertices.Count; vertexIndex++)
+			{
+				var vertex = Vertices[vertexIndex];
+				vertexPoints.Add(vertex.Position.normalized * amount);
+			}
+
+			return new ConwayPoly(vertexPoints, faceIndices, FaceRoles, VertexRoles);
+		}
 
 		#endregion
 
