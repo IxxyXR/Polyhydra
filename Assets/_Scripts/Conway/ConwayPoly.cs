@@ -353,6 +353,108 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 
+		public ConwayPoly Ortho()
+		{
+
+			var existingVerts = new Dictionary<string, int>();
+			var newVerts = new Dictionary<string, int>();
+			var vertexPoints = new List<Vector3>();
+			var faceIndices = new List<IEnumerable<int>>();
+
+			var faceRoles = new List<Roles>();
+			var vertexRoles = new List<Roles>();
+
+			// Loop through old faces
+			for (int i = 0; i < Faces.Count; i++)
+			{
+				var oldFace = Faces[i];
+
+				vertexPoints.Add(oldFace.Centroid);
+				vertexRoles.Add(Roles.New);
+				int centroidIndex = vertexPoints.Count - 1;
+
+				// Loop through each vertex on old face and create a new face for each
+				for (int j = 0; j < oldFace.GetHalfedges().Count; j++)
+				{
+
+					int seedVertexIndex;
+					int midpointIndex;
+					int prevMidpointIndex;
+
+					string keyName;
+
+					var thisFaceIndices = new List<int>();
+					var edges = oldFace.GetHalfedges();
+
+					var seedVertex = edges[j].Vertex;
+					keyName = seedVertex.Name;
+					if (existingVerts.ContainsKey(keyName))
+					{
+						seedVertexIndex = existingVerts[keyName];
+					}
+					else
+					{
+						vertexPoints.Add(seedVertex.Position);
+						vertexRoles.Add(Roles.Existing);
+						seedVertexIndex = vertexPoints.Count - 1;
+						existingVerts[keyName] = seedVertexIndex;
+					}
+
+					var midpointVertex = edges[j].Midpoint;
+					keyName = edges[j].Name;
+					if (newVerts.ContainsKey(keyName))
+					{
+						midpointIndex = newVerts[keyName];
+					}
+					else
+					{
+						vertexPoints.Add(midpointVertex);
+						vertexRoles.Add(Roles.NewAlt);
+						midpointIndex = vertexPoints.Count - 1;
+						newVerts[keyName] = midpointIndex;
+					}
+
+					Vector3 prevMidpointVertex;
+					if (edges[j].Next.Pair != null)
+					{
+						prevMidpointVertex = edges[j].Next.Pair.Midpoint;
+						keyName = edges[j].Next.Pair.Name;						
+					}
+					else
+					{
+						prevMidpointVertex = edges[j].Next.Midpoint;
+						keyName = edges[j].Next.Name + "-Pair";					
+					}
+					
+					if (newVerts.ContainsKey(keyName))
+					{
+						prevMidpointIndex = newVerts[keyName];
+					}
+					else
+					{
+						vertexPoints.Add(prevMidpointVertex);
+						vertexRoles.Add(Roles.NewAlt);
+						prevMidpointIndex = vertexPoints.Count - 1;
+						newVerts[keyName] = prevMidpointIndex;
+					}
+					
+					thisFaceIndices.Add(centroidIndex);
+					thisFaceIndices.Add(midpointIndex);
+					thisFaceIndices.Add(seedVertexIndex);
+					thisFaceIndices.Add(prevMidpointIndex);
+
+					faceIndices.Add(thisFaceIndices);
+					// Alternate roles but only for faces with an even number of sides
+					if (j % 2 == 0 || Faces[j].Sides % 2 != 0){faceRoles.Add(Roles.New);}
+					else {faceRoles.Add(Roles.NewAlt);}
+				}
+			}
+
+			var poly = new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+			return poly;
+		}
+
+		
 		// Not currently used as it results in non-coplanar faces and it's cheaper to do ambo > dual than to follow this with canonicalize
 		public ConwayPoly Join(float offset)
 		{
