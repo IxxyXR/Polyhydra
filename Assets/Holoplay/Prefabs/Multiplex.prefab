@@ -1,0 +1,1147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1365237975065918}
+  m_IsPrefabParent: 1
+--- !u!1 &1026716991246352
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4885092540373916}
+  - component: {fileID: 114215164765954768}
+  - component: {fileID: 20923855250696736}
+  - component: {fileID: 124548104404370378}
+  - component: {fileID: 81534011459816366}
+  m_Layer: 0
+  m_Name: Holoplay Capture 1
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1075046646472536
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4425612465256650}
+  - component: {fileID: 114820462672028224}
+  - component: {fileID: 20242143402209270}
+  - component: {fileID: 124256803286928074}
+  m_Layer: 0
+  m_Name: Holoplay Capture 6
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!1 &1280151807359846
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4068285416405232}
+  - component: {fileID: 114263903210935444}
+  - component: {fileID: 20145801037006490}
+  - component: {fileID: 124583552520534956}
+  m_Layer: 0
+  m_Name: Holoplay Capture 3
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!1 &1325516287955318
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4350960053940244}
+  - component: {fileID: 114963698635024628}
+  - component: {fileID: 20137215932036028}
+  - component: {fileID: 124000163775716628}
+  m_Layer: 0
+  m_Name: Holoplay Capture 2
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1365237975065918
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4595076456079996}
+  - component: {fileID: 114443331185597978}
+  m_Layer: 0
+  m_Name: Multiplex
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1452550042666802
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4421418422628736}
+  - component: {fileID: 114338920332228838}
+  - component: {fileID: 20935029850410622}
+  - component: {fileID: 124543571154866120}
+  m_Layer: 0
+  m_Name: Holoplay Capture 8
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!1 &1612851312269708
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4579827488909668}
+  - component: {fileID: 114672792578752334}
+  - component: {fileID: 20688650926600636}
+  - component: {fileID: 124832863209137074}
+  m_Layer: 0
+  m_Name: Holoplay Capture 5
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!1 &1643962452818782
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4494258797544148}
+  - component: {fileID: 114086725301296576}
+  - component: {fileID: 20001925641667440}
+  - component: {fileID: 124476423822769484}
+  m_Layer: 0
+  m_Name: Holoplay Capture 7
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!1 &1693880924522598
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4343955013678944}
+  - component: {fileID: 114499686359615378}
+  - component: {fileID: 20492127425025366}
+  - component: {fileID: 124530259215085274}
+  m_Layer: 0
+  m_Name: Holoplay Capture 4
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &4068285416405232
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1280151807359846}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.0400004, y: 3.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4595076456079996}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4343955013678944
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1693880924522598}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.0400004, y: 3.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4595076456079996}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4350960053940244
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1325516287955318}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.0400004, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4595076456079996}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4421418422628736
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1452550042666802}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 15.120001, y: 3.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4595076456079996}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4425612465256650
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1075046646472536}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 10.080001, y: 3.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4595076456079996}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4494258797544148
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1643962452818782}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.0400004, y: 3.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4595076456079996}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4579827488909668
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1612851312269708}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4595076456079996}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4595076456079996
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1365237975065918}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4885092540373916}
+  - {fileID: 4350960053940244}
+  - {fileID: 4068285416405232}
+  - {fileID: 4343955013678944}
+  - {fileID: 4579827488909668}
+  - {fileID: 4425612465256650}
+  - {fileID: 4494258797544148}
+  - {fileID: 4421418422628736}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4885092540373916
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1026716991246352}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.0400004, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4595076456079996}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &20001925641667440
+Camera:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1643962452818782}
+  m_Enabled: 0
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 19.933039
+  far clip plane: 36.433037
+  field of view: 14
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_RenderingPath: 0
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!20 &20137215932036028
+Camera:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1325516287955318}
+  m_Enabled: 0
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 19.933039
+  far clip plane: 36.433037
+  field of view: 14
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_RenderingPath: 0
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!20 &20145801037006490
+Camera:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1280151807359846}
+  m_Enabled: 0
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 19.933039
+  far clip plane: 36.433037
+  field of view: 14
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_RenderingPath: 0
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!20 &20242143402209270
+Camera:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1075046646472536}
+  m_Enabled: 0
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 19.933039
+  far clip plane: 36.433037
+  field of view: 14
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_RenderingPath: 0
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!20 &20492127425025366
+Camera:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1693880924522598}
+  m_Enabled: 0
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 19.933039
+  far clip plane: 36.433037
+  field of view: 14
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_RenderingPath: 0
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!20 &20688650926600636
+Camera:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1612851312269708}
+  m_Enabled: 0
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 19.933039
+  far clip plane: 36.433037
+  field of view: 14
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_RenderingPath: 0
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!20 &20923855250696736
+Camera:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1026716991246352}
+  m_Enabled: 0
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 19.933039
+  far clip plane: 36.433037
+  field of view: 14
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 3.07
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_RenderingPath: 0
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!20 &20935029850410622
+Camera:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1452550042666802}
+  m_Enabled: 0
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 19.933039
+  far clip plane: 36.433037
+  field of view: 14
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_RenderingPath: 0
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!81 &81534011459816366
+AudioListener:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1026716991246352}
+  m_Enabled: 1
+--- !u!114 &114086725301296576
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1643962452818782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de313519d88fe64f97b9e99db9c6c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearFlags: 2
+  background: {r: 0, g: 0, b: 0, a: 1}
+  cullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  size: 5
+  depth: 0
+  renderingPath: 0
+  occlusionCulling: 1
+  allowHDR: 1
+  allowMSAA: 1
+  allowDynamicResolution: 0
+  targetDisplay: 0
+  preview2D: 0
+  fov: 14
+  nearClipFactor: 1.5
+  farClipFactor: 4
+  scaleFollowsSize: 0
+  quiltPreset: -1
+  customQuiltSettings:
+    quiltWidth: 4096
+    quiltHeight: 4096
+    viewWidth: 819
+    viewHeight: 455
+    viewRows: 5
+    viewColumns: 9
+    numViews: 45
+    aspect: -1
+    overscan: 0
+  screenshot2DKey: 290
+  screenshotQuiltKey: 291
+  overrideQuilt: {fileID: 0}
+  renderOverrideBehind: 0
+  quiltRT: {fileID: 0}
+  frustumColor: {r: 0, g: 1, b: 0, a: 1}
+  middlePlaneColor: {r: 0.5882353, g: 0.19607843, b: 1, a: 1}
+  handleColor: {r: 0.29411766, g: 0.39215687, b: 1, a: 1}
+  drawHandles: 1
+  onHoloplayReady:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.LoadEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onViewRender:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.Holoplay+ViewRenderEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &114215164765954768
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1026716991246352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de313519d88fe64f97b9e99db9c6c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearFlags: 2
+  background: {r: 0, g: 0, b: 0, a: 1}
+  cullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  size: 5
+  depth: 0
+  renderingPath: 0
+  occlusionCulling: 1
+  allowHDR: 1
+  allowMSAA: 1
+  allowDynamicResolution: 0
+  targetDisplay: 1
+  preview2D: 0
+  fov: 14
+  nearClipFactor: 1.5
+  farClipFactor: 4
+  scaleFollowsSize: 0
+  quiltPreset: 0
+  customQuiltSettings:
+    quiltWidth: 4096
+    quiltHeight: 4096
+    viewWidth: 819
+    viewHeight: 455
+    viewRows: 5
+    viewColumns: 9
+    numViews: 45
+    aspect: -1
+    overscan: 0
+  screenshot2DKey: 290
+  screenshotQuiltKey: 291
+  overrideQuilt: {fileID: 0}
+  renderOverrideBehind: 0
+  quiltRT: {fileID: 0}
+  frustumColor: {r: 0, g: 1, b: 0, a: 1}
+  middlePlaneColor: {r: 0.5882353, g: 0.19607843, b: 1, a: 1}
+  handleColor: {r: 0.29411766, g: 0.39215687, b: 1, a: 1}
+  drawHandles: 1
+  onHoloplayReady:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.LoadEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onViewRender:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.Holoplay+ViewRenderEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &114263903210935444
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1280151807359846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de313519d88fe64f97b9e99db9c6c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearFlags: 2
+  background: {r: 0, g: 0, b: 0, a: 1}
+  cullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  size: 5
+  depth: 0
+  renderingPath: 0
+  occlusionCulling: 1
+  allowHDR: 1
+  allowMSAA: 1
+  allowDynamicResolution: 0
+  targetDisplay: 0
+  preview2D: 0
+  fov: 14
+  nearClipFactor: 1.5
+  farClipFactor: 4
+  scaleFollowsSize: 0
+  quiltPreset: -1
+  customQuiltSettings:
+    quiltWidth: 4096
+    quiltHeight: 4096
+    viewWidth: 819
+    viewHeight: 455
+    viewRows: 5
+    viewColumns: 9
+    numViews: 45
+    aspect: -1
+    overscan: 0
+  screenshot2DKey: 290
+  screenshotQuiltKey: 291
+  overrideQuilt: {fileID: 0}
+  renderOverrideBehind: 0
+  quiltRT: {fileID: 0}
+  frustumColor: {r: 0, g: 1, b: 0, a: 1}
+  middlePlaneColor: {r: 0.5882353, g: 0.19607843, b: 1, a: 1}
+  handleColor: {r: 0.29411766, g: 0.39215687, b: 1, a: 1}
+  drawHandles: 1
+  onHoloplayReady:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.LoadEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onViewRender:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.Holoplay+ViewRenderEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &114338920332228838
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1452550042666802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de313519d88fe64f97b9e99db9c6c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearFlags: 2
+  background: {r: 0, g: 0, b: 0, a: 1}
+  cullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  size: 5
+  depth: 0
+  renderingPath: 0
+  occlusionCulling: 1
+  allowHDR: 1
+  allowMSAA: 1
+  allowDynamicResolution: 0
+  targetDisplay: 0
+  preview2D: 0
+  fov: 14
+  nearClipFactor: 1.5
+  farClipFactor: 4
+  scaleFollowsSize: 0
+  quiltPreset: -1
+  customQuiltSettings:
+    quiltWidth: 4096
+    quiltHeight: 4096
+    viewWidth: 819
+    viewHeight: 455
+    viewRows: 5
+    viewColumns: 9
+    numViews: 45
+    aspect: -1
+    overscan: 0
+  screenshot2DKey: 290
+  screenshotQuiltKey: 291
+  overrideQuilt: {fileID: 0}
+  renderOverrideBehind: 0
+  quiltRT: {fileID: 0}
+  frustumColor: {r: 0, g: 1, b: 0, a: 1}
+  middlePlaneColor: {r: 0.5882353, g: 0.19607843, b: 1, a: 1}
+  handleColor: {r: 0.29411766, g: 0.39215687, b: 1, a: 1}
+  drawHandles: 1
+  onHoloplayReady:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.LoadEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onViewRender:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.Holoplay+ViewRenderEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &114443331185597978
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1365237975065918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49784ef315ec04146a4113a93c6bc041, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  automaticArrangement: 1
+  columns: 2
+  rows: 1
+  size: 5
+  separation: 0.05
+  holoplays:
+  - {fileID: 114215164765954768}
+  - {fileID: 114963698635024628}
+  - {fileID: 114263903210935444}
+  - {fileID: 114499686359615378}
+  - {fileID: 114672792578752334}
+  - {fileID: 114820462672028224}
+  - {fileID: 114086725301296576}
+  - {fileID: 114338920332228838}
+--- !u!114 &114499686359615378
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1693880924522598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de313519d88fe64f97b9e99db9c6c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearFlags: 2
+  background: {r: 0, g: 0, b: 0, a: 1}
+  cullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  size: 5
+  depth: 0
+  renderingPath: 0
+  occlusionCulling: 1
+  allowHDR: 1
+  allowMSAA: 1
+  allowDynamicResolution: 0
+  targetDisplay: 0
+  preview2D: 0
+  fov: 14
+  nearClipFactor: 1.5
+  farClipFactor: 4
+  scaleFollowsSize: 0
+  quiltPreset: -1
+  customQuiltSettings:
+    quiltWidth: 4096
+    quiltHeight: 4096
+    viewWidth: 819
+    viewHeight: 455
+    viewRows: 5
+    viewColumns: 9
+    numViews: 45
+    aspect: -1
+    overscan: 0
+  screenshot2DKey: 290
+  screenshotQuiltKey: 291
+  overrideQuilt: {fileID: 0}
+  renderOverrideBehind: 0
+  quiltRT: {fileID: 0}
+  frustumColor: {r: 0, g: 1, b: 0, a: 1}
+  middlePlaneColor: {r: 0.5882353, g: 0.19607843, b: 1, a: 1}
+  handleColor: {r: 0.29411766, g: 0.39215687, b: 1, a: 1}
+  drawHandles: 1
+  onHoloplayReady:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.LoadEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onViewRender:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.Holoplay+ViewRenderEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &114672792578752334
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1612851312269708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de313519d88fe64f97b9e99db9c6c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearFlags: 2
+  background: {r: 0, g: 0, b: 0, a: 1}
+  cullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  size: 5
+  depth: 0
+  renderingPath: 0
+  occlusionCulling: 1
+  allowHDR: 1
+  allowMSAA: 1
+  allowDynamicResolution: 0
+  targetDisplay: 0
+  preview2D: 0
+  fov: 14
+  nearClipFactor: 1.5
+  farClipFactor: 4
+  scaleFollowsSize: 0
+  quiltPreset: -1
+  customQuiltSettings:
+    quiltWidth: 4096
+    quiltHeight: 4096
+    viewWidth: 819
+    viewHeight: 455
+    viewRows: 5
+    viewColumns: 9
+    numViews: 45
+    aspect: -1
+    overscan: 0
+  screenshot2DKey: 290
+  screenshotQuiltKey: 291
+  overrideQuilt: {fileID: 0}
+  renderOverrideBehind: 0
+  quiltRT: {fileID: 0}
+  frustumColor: {r: 0, g: 1, b: 0, a: 1}
+  middlePlaneColor: {r: 0.5882353, g: 0.19607843, b: 1, a: 1}
+  handleColor: {r: 0.29411766, g: 0.39215687, b: 1, a: 1}
+  drawHandles: 1
+  onHoloplayReady:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.LoadEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onViewRender:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.Holoplay+ViewRenderEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &114820462672028224
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1075046646472536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de313519d88fe64f97b9e99db9c6c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearFlags: 2
+  background: {r: 0, g: 0, b: 0, a: 1}
+  cullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  size: 5
+  depth: 0
+  renderingPath: 0
+  occlusionCulling: 1
+  allowHDR: 1
+  allowMSAA: 1
+  allowDynamicResolution: 0
+  targetDisplay: 0
+  preview2D: 0
+  fov: 14
+  nearClipFactor: 1.5
+  farClipFactor: 4
+  scaleFollowsSize: 0
+  quiltPreset: -1
+  customQuiltSettings:
+    quiltWidth: 4096
+    quiltHeight: 4096
+    viewWidth: 819
+    viewHeight: 455
+    viewRows: 5
+    viewColumns: 9
+    numViews: 45
+    aspect: -1
+    overscan: 0
+  screenshot2DKey: 290
+  screenshotQuiltKey: 291
+  overrideQuilt: {fileID: 0}
+  renderOverrideBehind: 0
+  quiltRT: {fileID: 0}
+  frustumColor: {r: 0, g: 1, b: 0, a: 1}
+  middlePlaneColor: {r: 0.5882353, g: 0.19607843, b: 1, a: 1}
+  handleColor: {r: 0.29411766, g: 0.39215687, b: 1, a: 1}
+  drawHandles: 1
+  onHoloplayReady:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.LoadEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onViewRender:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.Holoplay+ViewRenderEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &114963698635024628
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1325516287955318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de313519d88fe64f97b9e99db9c6c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clearFlags: 2
+  background: {r: 0, g: 0, b: 0, a: 1}
+  cullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  size: 5
+  depth: 0
+  renderingPath: 0
+  occlusionCulling: 1
+  allowHDR: 1
+  allowMSAA: 1
+  allowDynamicResolution: 0
+  targetDisplay: 2
+  preview2D: 0
+  fov: 14
+  nearClipFactor: 1.5
+  farClipFactor: 4
+  scaleFollowsSize: 0
+  quiltPreset: -1
+  customQuiltSettings:
+    quiltWidth: 4096
+    quiltHeight: 4096
+    viewWidth: 819
+    viewHeight: 455
+    viewRows: 5
+    viewColumns: 9
+    numViews: 45
+    aspect: -1
+    overscan: 0
+  screenshot2DKey: 290
+  screenshotQuiltKey: 291
+  overrideQuilt: {fileID: 0}
+  renderOverrideBehind: 0
+  quiltRT: {fileID: 0}
+  frustumColor: {r: 0, g: 1, b: 0, a: 1}
+  middlePlaneColor: {r: 0.5882353, g: 0.19607843, b: 1, a: 1}
+  handleColor: {r: 0.29411766, g: 0.39215687, b: 1, a: 1}
+  drawHandles: 1
+  onHoloplayReady:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.LoadEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onViewRender:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: LookingGlass.Holoplay+ViewRenderEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!124 &124000163775716628
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1325516287955318}
+  m_Enabled: 1
+--- !u!124 &124256803286928074
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1075046646472536}
+  m_Enabled: 1
+--- !u!124 &124476423822769484
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1643962452818782}
+  m_Enabled: 1
+--- !u!124 &124530259215085274
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1693880924522598}
+  m_Enabled: 1
+--- !u!124 &124543571154866120
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1452550042666802}
+  m_Enabled: 1
+--- !u!124 &124548104404370378
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1026716991246352}
+  m_Enabled: 1
+--- !u!124 &124583552520534956
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1280151807359846}
+  m_Enabled: 1
+--- !u!124 &124832863209137074
+Behaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1612851312269708}
+  m_Enabled: 1
