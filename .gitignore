@@ -44,3 +44,4 @@ Assets/Plugins/Editor/JetBrains*
 Assets/3rd Party Optional*
 ProjectSettings\FbxExportSettings.asset
 *.log
+Assets/Oculus/
