@@ -29,6 +29,9 @@ public class LookingGlassUI : MonoBehaviour {
             NextPreset();
         if (LookingGlass.ButtonManager.GetButtonDown(LookingGlass.ButtonType.CIRCLE))
             RandomizePolyhedra();
+        if (Input.GetKey ("escape"))
+            Application.Quit();
+        
     }
 
 
