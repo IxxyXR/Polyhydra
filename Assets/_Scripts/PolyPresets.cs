@@ -32,7 +32,7 @@ public class PolyPresets : MonoBehaviour {
 		Items.Add(preset);
 	}
 
-	public void AddPresetsFromPath(string path, bool overwrite=false)
+	public void AddPresetsFromPath(string path, bool overwrite)
 	{
 		var existingPresets = Items.Select(x => x.Name);
 		var dirInfo = new DirectoryInfo(path);
@@ -49,14 +49,31 @@ public class PolyPresets : MonoBehaviour {
 				Items.Add(preset);
 			}
 		}
+	}
 
+	public void AddPresetsFromResources()
+	{
+		var existingPresets = Items.Select(x => x.Name);
+		var initialPresets = Resources.LoadAll("InitialPresets", typeof(TextAsset));
+		foreach (var presetResource in initialPresets) {
+			var preset = new PolyPreset();
+			preset = JsonConvert.DeserializeObject<PolyPreset>(presetResource.ToString());
+			if (string.IsNullOrEmpty(preset.Name))
+			{
+				preset.Name = presetResource.name.Replace(PresetFileNamePrefix, "").Replace(".json", "");
+			}
+			if (!existingPresets.Contains(preset.Name))
+			{
+				Items.Add(preset);
+			}
+		}
 	}
 	
 	public void LoadAllPresets()
 	{
 		Items.Clear();
-		AddPresetsFromPath(Application.persistentDataPath);
-		AddPresetsFromPath(Path.Combine(Application.streamingAssetsPath, "InitialPresets"));
+		AddPresetsFromPath(Application.persistentDataPath, overwrite: false);
+		AddPresetsFromResources();
 		SaveAllPresets();
 	}
 	
@@ -72,7 +89,7 @@ public class PolyPresets : MonoBehaviour {
 	public void ResetPresets()
 	{
 		Items.Clear();
-		AddPresetsFromPath(Path.Combine(Application.streamingAssetsPath, "InitialPresets"));
+		AddPresetsFromResources();
 		AddPresetsFromPath(Application.persistentDataPath, overwrite:true);
 		SaveAllPresets();
 	}

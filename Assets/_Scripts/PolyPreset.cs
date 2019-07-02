@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Conway;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using UnityEngine;
+using UnityEngine.Animations;
+using Vector3 = System.Numerics.Vector3;
 
 
 [Serializable]
