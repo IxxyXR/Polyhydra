@@ -18,7 +18,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshFilter))]
 public class PolyHydra : MonoBehaviour {
-	
+
 	private bool enableThreading = true;
 	private bool enableCaching = true;   
 	const int MAX_CACHE_LENGTH = 5000;
@@ -93,7 +93,8 @@ public class PolyHydra : MonoBehaviour {
 		FaceKeep,
 		AddDual,
 		Canonicalize,
-		CanonicalizeI
+		CanonicalizeI,
+		Spherize
 	}
 
 	public readonly int[] NonOrientablePolyTypes = {
@@ -263,7 +264,9 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.FaceKeep, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.AddDual, new OpConfig{amountDefault = 1f, amountMin = -6, amountMax = 6}},
 			{Ops.Canonicalize, new OpConfig{amountDefault = 0.1f, amountMin = 0.0001f, amountMax = 1f}},
-			{Ops.CanonicalizeI, new OpConfig{amountDefault = 200, amountMin = 1, amountMax = 400}}
+			{Ops.CanonicalizeI, new OpConfig{amountDefault = 200, amountMin = 1, amountMax = 400}},
+			{Ops.Spherize, new OpConfig{amountDefault = 1.0f, amountMin = 0, amountMax = 1}}
+
 		};
 	}
 
@@ -512,9 +515,13 @@ public class PolyHydra : MonoBehaviour {
 				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.Ortho:
-				conway = conway.Ambo();
-				conway = conway.Ambo();
-				conway = conway.Dual();
+
+				conway = conway.Ortho();
+
+//				conway = conway.Ambo();
+//				conway = conway.Ambo();
+//				conway = conway.Dual();
+
 				break;
 			case Ops.Meta:
 				conway = conway.Ambo();
@@ -631,6 +638,9 @@ public class PolyHydra : MonoBehaviour {
 				break;
 			case Ops.CanonicalizeI:
 				conway = conway.Canonicalize((int)op.amount, (int)op.amount);
+				break;
+			case Ops.Spherize:
+				conway = conway.Spherize(op.amount);
 				break;
 		}
 
