@@ -403,6 +403,9 @@ namespace Conway
 					var thisFaceIndices = new List<int>();
 					var edges = oldFace.GetHalfedges();
 
+					
+					
+					
 					var seedVertex = edges[j].Vertex;
 					keyName = seedVertex.Name;
 					if (existingVerts.ContainsKey(keyName))
@@ -417,8 +420,11 @@ namespace Conway
 						existingVerts[keyName] = seedVertexIndex;
 					}
 
+					
+					
+					
 					var midpointVertex = edges[j].Midpoint;
-					keyName = edges[j].Name;
+					keyName = edges[j].PairedName;
 					if (newVerts.ContainsKey(keyName))
 					{
 						midpointIndex = newVerts[keyName];
@@ -431,18 +437,12 @@ namespace Conway
 						newVerts[keyName] = midpointIndex;
 					}
 
-					Vector3 prevMidpointVertex;
-					if (edges[j].Next.Pair != null)
-					{
-						prevMidpointVertex = edges[j].Next.Pair.Midpoint;
-						keyName = edges[j].Next.Pair.Name;						
-					}
-					else
-					{
-						prevMidpointVertex = edges[j].Next.Midpoint;
-						keyName = edges[j].Next.Name + "-Pair";					
-					}
 					
+					
+					
+					var prevMidpointVertex = edges[j].Next.Midpoint;
+					keyName = edges[j].Next.PairedName;
+
 					if (newVerts.ContainsKey(keyName))
 					{
 						prevMidpointIndex = newVerts[keyName];
@@ -2617,16 +2617,20 @@ namespace Conway
 		
 		public ConwayPoly Spherize(float amount)
 		{
+			
+			// TODO - preserve planar faces
+			
 			var vertexPoints = new List<Vector3>();
 			var faceIndices = ListFacesByVertexIndices();
 
 			for (var vertexIndex = 0; vertexIndex < Vertices.Count; vertexIndex++)
 			{
 				var vertex = Vertices[vertexIndex];
-				vertexPoints.Add(vertex.Position.normalized * amount);
+				vertexPoints.Add(Vector3.LerpUnclamped(vertex.Position, vertex.Position.normalized, amount));
 			}
 
-			return new ConwayPoly(vertexPoints, faceIndices, FaceRoles, VertexRoles);
+			var conway = new ConwayPoly(vertexPoints, faceIndices, FaceRoles, VertexRoles);
+			return conway;
 		}
 
 		#endregion
