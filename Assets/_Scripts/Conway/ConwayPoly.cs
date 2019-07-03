@@ -1914,11 +1914,15 @@ namespace Conway
 					else
 					{
 						// internal condition: offset each edge in the plane of the shared face and create a new vertex where they intersect eachother
-						// TODO
-						Line l1 = new Line(new Vertex(edge.Vertex.Position + o1.Position),
-							new Vertex(edge.Prev.Vertex.Position + o1.Position));
-						Line l2 = new Line(new Vertex(edge2.Vertex.Position + o2.Position),
-							new Vertex(edge2.Prev.Vertex.Position + o2.Position));
+						
+						Vector3 start1 = edge.Vertex.Position + o1.Position;
+						Vector3 end1 = edge.Prev.Vertex.Position + o1.Position;
+						Line l1 = new Line(start1, end1);
+						
+						Vector3 start2 = edge2.Vertex.Position + o2.Position;
+						Vector3 end2 = edge2.Prev.Vertex.Position + o2.Position;
+						Line l2 = new Line(start2, end2);
+						
 						Vector3 intersection;
 						l1.Intersect(out intersection, l2);
 						ribbon.Vertices.Add(new Vertex(intersection));
