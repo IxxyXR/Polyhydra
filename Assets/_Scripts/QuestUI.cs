@@ -29,6 +29,7 @@ public class QuestUI : MonoBehaviour {
     
     void Update ()
     {
+        #if OCULUS_VR_ENABLED
         if (OVRInput.GetDown(OVRInput.RawButton.X))
             NextPreset();
         else if (OVRInput.GetDown(OVRInput.RawButton.Y))
@@ -57,6 +58,7 @@ public class QuestUI : MonoBehaviour {
             var amount = OVRInput.Get(OVRInput.RawAxis2D.RThumbstick);
             polyRigidbody.angularVelocity = new Vector3(amount.x, amount.y, 0);
         }
+        #endif
         
     }
                                     
