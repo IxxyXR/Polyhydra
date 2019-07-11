@@ -372,7 +372,6 @@ public class PolyHydra : MonoBehaviour {
 		currentState.CreateFromPoly("temp", this);
 		if (previousState != currentState)
 		{
-			MakeWythoff();
 			MakePolyhedron();
 			previousState = currentState;
 		}
