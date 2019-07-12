@@ -2627,30 +2627,32 @@ namespace Conway
 				{
 					if (e.Pair != null)  // This edge is connected
 					{
-						if (hinge != null)
-						{
-							// Face has more than 1 connected edge
-							hinge = null;
-							break;
-						}
-						else
+						if (hinge == null)  // Our first connected edge
 						{
 							// Record the first connected edge and keep looking
 							hinge = e;
+							
+						}
+						else  // We already found a hinge for this face
+						{
+							// Therefore this Face has more than 1 connected edge
+							hinge = null;
+							break;
 						}
 					}
 				}
 				
-				if (hinge != null)
+				if (hinge != null)  // We found a single hinge for this face
 				{
-					var axis = (hinge.Pair.Vector - hinge.Vector).normalized;
+					var axis = hinge.Vector;
 					var rotation = Quaternion.AngleAxis(amount, axis);
 					
 					foreach (var v in f.GetVertices())
 					{
+						// Only rotate vertices that aren't part of the hinge
 						if (v != hinge.Vertex && v != hinge.Pair.Vertex)
 						{
-							v.Position = (rotation * v.Position);
+							v.Position = rotation * v.Position;
 						}
 					}
 				}
