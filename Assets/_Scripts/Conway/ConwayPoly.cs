@@ -1741,37 +1741,32 @@ namespace Conway
 		public ConwayPoly FaceRemove(FaceSelections facesel, bool invertLogic)
 		{
 
-			var vertexPoints = new List<Vector3>();
-			var faceIndices = new List<IEnumerable<int>>();
-
-			var faceRoles = new List<Roles>();
-			var vertexRoles = new List<Roles>();
-
+			var newFaceRoles = new List<Roles>();
+			var facesToRemove = new List<Face>();
+			var newPoly = Duplicate();
+			
 			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
 			{
-				var face = Faces[faceIndex];
 				var includeFace = IncludeFace(faceIndex, facesel);
 				includeFace = invertLogic ? includeFace : !includeFace;
 				if (includeFace)
 				{
-					int c = vertexPoints.Count;
-					var faceVertices = new List<int>();
-
-					c = vertexPoints.Count;
-					vertexPoints.AddRange(face.GetVertices().Select(v => v.Position));
-					faceVertices = new List<int>();
-					for (int ii = 0; ii < face.GetVertices().Count; ii++)
-					{
-						faceVertices.Add(c + ii);
-						vertexRoles.Add(Roles.Existing);
-					}
-
-					faceIndices.Add(faceVertices);
-					faceRoles.Add(FaceRoles[faceIndex]);
+					newFaceRoles.Add(FaceRoles[faceIndex]);
+				}
+				else
+				{
+					facesToRemove.Add(newPoly.Faces[faceIndex]);
 				}
 			}
 
-			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+			foreach (var face in facesToRemove)
+			{
+				newPoly.Faces.Remove(face);
+			}
+
+			newPoly.Vertices.CullUnused();
+			newPoly.FaceRoles = newFaceRoles;
+			return newPoly;
 		}
 
 		/// <summary>
@@ -2617,6 +2612,51 @@ namespace Conway
 			if (thresholdPlanarize > 0) Planarize(canonicalized, thresholdPlanarize);
 			canonicalized.FaceRoles = previousFaceRoles;
 			return canonicalized;
+		}
+
+		public ConwayPoly Hinge(float amount)
+		{
+			
+			// Rotate singly connected faces around the connected edge
+			foreach (var f in Faces)
+			{
+				Halfedge hinge = null;
+				
+				// Find a single connected edge
+				foreach (var e in f.GetHalfedges())
+				{
+					if (e.Pair != null)  // This edge is connected
+					{
+						if (hinge != null)
+						{
+							// Face has more than 1 connected edge
+							hinge = null;
+							break;
+						}
+						else
+						{
+							// Record the first connected edge and keep looking
+							hinge = e;
+						}
+					}
+				}
+				
+				if (hinge != null)
+				{
+					var axis = (hinge.Pair.Vector - hinge.Vector).normalized;
+					var rotation = Quaternion.AngleAxis(amount, axis);
+					
+					foreach (var v in f.GetVertices())
+					{
+						if (v != hinge.Vertex && v != hinge.Pair.Vertex)
+						{
+							v.Position = (rotation * v.Position);
+						}
+					}
+				}
+			}
+
+			return this;
 		}
 		
 		public ConwayPoly Spherize(float amount)
