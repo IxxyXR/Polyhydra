@@ -2618,12 +2618,12 @@ namespace Conway
 		{
 			
 			// Rotate singly connected faces around the connected edge
-			foreach (var f in Faces)
+			foreach (Face f in Faces)
 			{
 				Halfedge hinge = null;
 				
 				// Find a single connected edge
-				foreach (var e in f.GetHalfedges())
+				foreach (Halfedge e in f.GetHalfedges())
 				{
 					if (e.Pair != null)  // This edge is connected
 					{
@@ -2644,15 +2644,17 @@ namespace Conway
 				
 				if (hinge != null)  // We found a single hinge for this face
 				{
-					var axis = hinge.Vector;
-					var rotation = Quaternion.AngleAxis(amount, axis);
+					Vector3 axis = hinge.Vector;
+					Quaternion rotation = Quaternion.AngleAxis(amount, axis);
 					
-					foreach (var v in f.GetVertices())
+					foreach (Vertex v in f.GetVertices())
 					{
 						// Only rotate vertices that aren't part of the hinge
 						if (v != hinge.Vertex && v != hinge.Pair.Vertex)
 						{
+							v.Position -= hinge.Vertex.Position;
 							v.Position = rotation * v.Position;
+							v.Position += hinge.Vertex.Position;
 						}
 					}
 				}

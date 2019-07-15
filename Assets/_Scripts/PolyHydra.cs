@@ -91,6 +91,7 @@ public class PolyHydra : MonoBehaviour {
 //		FaceRotateY,
 		FaceRemove,
 		FaceKeep,
+		Hinge,
 		AddDual,
 		Canonicalize,
 		CanonicalizeI,
@@ -262,6 +263,7 @@ public class PolyHydra : MonoBehaviour {
 			//{Ops.Test, new OpConfig{}}
 			{Ops.FaceRemove, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.FaceKeep, new OpConfig{usesFaces=true, usesAmount=false}},
+			{Ops.Hinge, new OpConfig{amountDefault = 15f, amountMin = -180, amountMax = 180}},
 			{Ops.AddDual, new OpConfig{amountDefault = 1f, amountMin = -6, amountMax = 6}},
 			{Ops.Canonicalize, new OpConfig{amountDefault = 0.1f, amountMin = 0.0001f, amountMax = 1f}},
 			{Ops.CanonicalizeI, new OpConfig{amountDefault = 200, amountMin = 1, amountMax = 400}},
@@ -628,6 +630,9 @@ public class PolyHydra : MonoBehaviour {
 				break;
 			case Ops.FaceKeep:
 				conway = conway.FaceRemove(op.faceSelections, true);
+				break;
+			case Ops.Hinge:
+				conway = conway.Hinge(op.amount);
 				break;
 			case Ops.AddDual:
 				conway = conway.AddDual(op.amount);
