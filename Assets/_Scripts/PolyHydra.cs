@@ -70,9 +70,9 @@ public class PolyHydra : MonoBehaviour {
 		Lace,
 		JoinedLace,
 		Stake,
-//		Medial,
-//		EdgeMedial,
-//		JoinedMedial,
+		Medial,
+		EdgeMedial,
+		JoinedMedial,
 		Propeller,
 		Whirl,
 		Volute,
@@ -242,9 +242,9 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.Lace, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
 			{Ops.JoinedLace, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
 			{Ops.Stake, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
-//			{Ops.Medial, new OpConfig{usesAmount=false}},
-//			{Ops.EdgeMedial, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
-//			{Ops.JoinedMedial, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
+			{Ops.Medial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8}},
+			{Ops.EdgeMedial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8}},
+			{Ops.JoinedMedial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8}},
 			{Ops.Propeller, new OpConfig{amountDefault = 0.75f, amountMin = -4, amountMax = 4}},
 			{Ops.Whirl, new OpConfig{amountDefault = 0.25f, amountMin = -4, amountMax = 4}},
 			{Ops.Volute, new OpConfig{amountDefault = 0.33333333f, amountMin = -4, amountMax = 4}},
@@ -516,13 +516,7 @@ public class PolyHydra : MonoBehaviour {
 				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.Ortho:
-
 				conway = conway.Ortho();
-
-//				conway = conway.Ambo();
-//				conway = conway.Ambo();
-//				conway = conway.Dual();
-
 				break;
 			case Ops.Meta:
 				conway = conway.Ambo();
@@ -571,15 +565,15 @@ public class PolyHydra : MonoBehaviour {
 			case Ops.Stake:
 				conway = conway.Stake(op.amount, op.faceSelections);
 				break;
-//					case Ops.Medial:
-//						conway = conway.Medial((int)op.amount);
-//						break;
-//					case Ops.EdgeMedial:
-//						conway = conway.EdgeMedial((int)op.amount);
-//						break;
-//					case Ops.JoinedMedial:
-//						conway = conway.JoinedMedial();
-//						break;
+			case Ops.Medial:
+				conway = conway.Medial((int)op.amount);
+				break;
+			case Ops.EdgeMedial:
+				conway = conway.EdgeMedial((int)op.amount);
+				break;
+			case Ops.JoinedMedial:
+				conway = conway.JoinedMedial();
+				break;
 			case Ops.Propeller:
 				conway = conway.Propeller(op.amount);
 				break;

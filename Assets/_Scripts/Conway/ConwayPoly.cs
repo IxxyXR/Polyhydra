@@ -1239,21 +1239,22 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 
-		// TODO Fix
 		public ConwayPoly Medial(int subdivisions)
 		{
 			return _Medial(subdivisions);
 		}
 
-		// TODO Fix
 		public ConwayPoly EdgeMedial(int subdivisions)
 		{
 			return _Medial(subdivisions, true);
 		}
 
-		// TODO Fix
 		private ConwayPoly _Medial(int subdivisions, bool edgeMedial = false)
 		{
+			
+			// Some nasty hacks in here
+			// due to face.GetHalfedges seemingly returning edges in an
+			// inconsistent order. I might be missing something obvious.
 
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
@@ -1262,8 +1263,7 @@ namespace Conway
 			var newCentroidVertices = new Dictionary<string, int>();
 			var faceRoles = new List<Roles>();
 			var vertexRoles = new List<Roles>();
-
-
+			
 			for (var i = 0; i < Vertices.Count; i++)
 			{
 				vertexPoints.Add(Vertices[i].Position);
@@ -1274,86 +1274,133 @@ namespace Conway
 			int vertexIndex = vertexPoints.Count();
 
 			// Create new edge vertices
-			foreach (var edge in Halfedges)
-			{
-				for (int i = 0; i < subdivisions; i++)
-				{
-					vertexPoints.Add(edge.Midpoint);
-					vertexRoles.Add(Roles.New);
-					newEdgeVertices[edge.Name][i] = vertexIndex++;
-				}
-			}
-
 			foreach (var face in Faces)
 			{
-
 				vertexPoints.Add(face.Centroid);
 				vertexRoles.Add(Roles.New);
+				int centroidIndex = vertexIndex;
 				newCentroidVertices[face.Name] = vertexIndex++;
 
-				var edge = face.Halfedge;
-				var centroid = face.Centroid;
-
-				vertexPoints.Add(centroid);
-				vertexRoles.Add(Roles.New);
-				int centroidIndex = vertexIndex++;
-
-				for (int i = 0; i < face.Sides; i++)
+				foreach (var edge in face.GetHalfedges())
+				{
+					if (!newEdgeVertices.ContainsKey(edge.PairedName))
+					{
+						newEdgeVertices[edge.PairedName] = new int[subdivisions];
+						for (int i = 0; i < subdivisions; i++)
+						{
+							vertexPoints.Add(edge.PointAlongEdge((1f / (subdivisions + 1)) * (i + 1)));
+							vertexRoles.Add(Roles.New);
+							newEdgeVertices[edge.PairedName][i] = vertexIndex++;
+						}
+					}
+				}
+				
+				foreach (var edge in face.GetHalfedges())
 				{
 
-					var currNewVerts = newEdgeVertices[edge.Name];
-					var prevLastVert = newEdgeVertices[edge.Name][subdivisions - 2];
+					var currNewVerts = newEdgeVertices[edge.PairedName];
+
+					//Figure out which point is nearest to our existing vert.
+					// Another symptom of inconsistent edge order. 
+					// If we fix that we can remove this and the normal flipping later on.
+					int nearestVertexIndex;
+					int furthestVertexIndex;
+					var distance1 = (vertexPoints[currNewVerts[0]] - edge.Vertex.Position).sqrMagnitude;
+					var distance2 = (vertexPoints[currNewVerts.Last()] - edge.Vertex.Position).sqrMagnitude;
+					if (distance1 < distance2)
+					{
+						nearestVertexIndex = currNewVerts[0];
+						furthestVertexIndex = currNewVerts.Last();
+					}
+					else
+					{
+						nearestVertexIndex = currNewVerts.Last();
+						furthestVertexIndex = currNewVerts[0];
+					}
 
 					if (edgeMedial)
 					{
+						int otherNearestVertexIndex;
+						var otherNewVerts = newEdgeVertices[edge.Next.PairedName];
+						
+						var d1 = (vertexPoints[otherNewVerts[0]] - edge.Vertex.Position).sqrMagnitude;
+						var d2 = (vertexPoints[otherNewVerts.Last()] - edge.Vertex.Position).sqrMagnitude;
+						otherNearestVertexIndex = d1 < d2 ? otherNewVerts[0] : otherNewVerts.Last();
+						
 						// One quadrilateral face
 						var quad = new[]
 						{
-							existingVertices[edge.Vertex.Position],
-							currNewVerts[0],
 							centroidIndex,
-							prevLastVert
+							nearestVertexIndex,
+							existingVertices[edge.Vertex.Position],
+							otherNearestVertexIndex
 						};
-						//faceIndices.Add(quad);
+						faceIndices.Add(quad);
 						faceRoles.Add(Roles.New);
 					}
 					else
 					{
 						// Two triangular faces
-
 						var triangle1 = new[]
 						{
-							existingVertices[edge.Vertex.Position],
-							currNewVerts[0],
-							centroidIndex
+							centroidIndex,
+							nearestVertexIndex,
+							existingVertices[edge.Vertex.Position]
 						};
-						//faceIndices.Add(triangle1);
+						faceIndices.Add(triangle1);
 						faceRoles.Add(Roles.New);
 
 						var triangle2 = new[]
 						{
 							centroidIndex,
-							prevLastVert,
-							existingVertices[edge.Vertex.Position]
+							existingVertices[edge.Pair.Vertex.Position],
+							furthestVertexIndex
 						};
-						//faceIndices.Add(triangle2);
+						faceIndices.Add(triangle2);
 						faceRoles.Add(Roles.New);
 					}
 
 					// Create new triangular faces at edges
-					for (int j = 0; j < currNewVerts.Count() - 1; j++)
+					for (int j = 0; j < subdivisions - 1; j++)
 					{
+						int edgeVertIndex;
+						int edgeNextVertIndex;
+						
+						// Flip new vertex array if this isn't the primary edge
+						if (edge.PairedName.StartsWith(edge.Vertex.Name))
+						{
+							edgeVertIndex = j;
+							edgeNextVertIndex = j + 1;
+						}
+						else
+						{
+							edgeVertIndex = currNewVerts.Length - j - 1;
+							edgeNextVertIndex = currNewVerts.Length - j - 2;
+						}
 						var edgeTriangle = new[]
 						{
 							centroidIndex,
-							currNewVerts[j],
-							currNewVerts[j + 1]
+							currNewVerts[edgeVertIndex],
+							currNewVerts[edgeNextVertIndex]
 						};
-						//faceIndices.Add(edgeTriangle);
+						
+						// Can't seem to get the edge points to be in a consistent order
+						// So need to fix normals by comparing with face normal and flipping if different
+						var side1 = vertexPoints[edgeTriangle[1]] - vertexPoints[edgeTriangle[0]];
+						var side2 = vertexPoints[edgeTriangle[2]] - vertexPoints[edgeTriangle[1]];
+						var normal = Vector3.Cross(side1, side2).normalized;
+						if (face.Normal != normal)
+						{
+							var temp = edgeTriangle[1];
+							edgeTriangle[1] = edgeTriangle[2];
+							edgeTriangle[2] = temp;
+						}
+						faceIndices.Add(edgeTriangle);
 						faceRoles.Add(Roles.New);
+						
+						
+						
 					}
-
-					edge = edge.Next;
 
 				}
 			}
