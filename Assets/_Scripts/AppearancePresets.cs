@@ -8,6 +8,7 @@ public class AppearancePresets : MonoBehaviour {
 	public Camera CurrentCamera;
 	public GameObject LightsParent;
 	public List<AppearancePreset> Items;
+	public int editorPresetIndex;
 	
 	private const string PresetFileNamePrefix = "AppearancePreset-";
 	
@@ -38,6 +39,12 @@ public class AppearancePresets : MonoBehaviour {
 		preset.ApplyToPoly(ref _poly, LightsParent, CurrentCamera);
 	}
 
-
-
+	[ContextMenu("Next preset")]
+	public void CyclePresetAtRuntime()
+	{
+		ApplyPresetToPoly(editorPresetIndex);
+		editorPresetIndex++;
+		editorPresetIndex %= Items.Count;
+	}
+	
 }
