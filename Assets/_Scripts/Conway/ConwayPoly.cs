@@ -1357,7 +1357,7 @@ namespace Conway
 							furthestVertexIndex
 						};
 						faceIndices.Add(triangle2);
-						faceRoles.Add(Roles.New);
+						faceRoles.Add(Roles.NewAlt);
 					}
 
 					// Create new triangular faces at edges
@@ -1396,10 +1396,7 @@ namespace Conway
 							edgeTriangle[2] = temp;
 						}
 						faceIndices.Add(edgeTriangle);
-						faceRoles.Add(Roles.New);
-						
-						
-						
+						faceRoles.Add(Roles.Existing);
 					}
 
 				}
