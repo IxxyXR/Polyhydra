@@ -1336,7 +1336,7 @@ namespace Conway
 							otherNearestVertexIndex
 						};
 						faceIndices.Add(quad);
-						faceRoles.Add(Roles.New);
+						faceRoles.Add(Roles.Existing);
 					}
 					else
 					{
@@ -1348,7 +1348,7 @@ namespace Conway
 							existingVertices[edge.Vertex.Position]
 						};
 						faceIndices.Add(triangle1);
-						faceRoles.Add(Roles.New);
+						faceRoles.Add(Roles.Existing);
 
 						var triangle2 = new[]
 						{
@@ -1357,7 +1357,7 @@ namespace Conway
 							furthestVertexIndex
 						};
 						faceIndices.Add(triangle2);
-						faceRoles.Add(Roles.NewAlt);
+						faceRoles.Add(Roles.Existing);
 					}
 
 					// Create new triangular faces at edges
@@ -1396,14 +1396,13 @@ namespace Conway
 							edgeTriangle[2] = temp;
 						}
 						faceIndices.Add(edgeTriangle);
-						faceRoles.Add(Roles.Existing);
+						faceRoles.Add(Roles.New);
 					}
 
 				}
 			}
-
-			//medialPolyhedron.setVertexNormalsToFaceNormals();
-			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, VertexRoles);
+			
+			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 
 		// TODO Fix
