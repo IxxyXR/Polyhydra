@@ -8,7 +8,13 @@ You start by choosing a uniform polyhedron: https://en.wikipedia.org/wiki/Unifor
 
 You can then stack up Conway Operators on top to create much more complex shapes: https://en.wikipedia.org/wiki/Conway_polyhedron_notation
 
+# Documentation
+
+See the [Wiki](https://github.com/IxxyXR/Polyhydra/wiki)
+
 # Credits
+
+Obviously the original work by Willem Wythoff and John Conway. And also countless other mathematicians who have formed a base for, contributed to and extended the work in this area. A special shout out to George Hart who is often co-credited with Conway due to the large amount of work he did exploring and extending Conway's original operators. 
 
 Partly based on https://github.com/kaonasi (which in turn is based on the work of Zvi Har’El: http://www.math.technion.ac.il/S/rl/kaleido/ ).
 
@@ -22,16 +28,6 @@ My original inspiration was 3DS Max's Hedra plugin which kept me entertained for
 
 # TODO
 
-1. Allow face selection on all ops by checking that all faces sharing an edge match the rule
-2. Code all ops as primitive ops so we can preserve face roles
-3. Animation: truncation and stellation? P/Q animation similar to 3DS Max's Hedra?
-3. VR controls
-4. UI for choosing materials
-5. Augmentation
-6. Stellation
-7. Undo
-8. More base polys - Johnson Solids etc
-9. More ops. 
-10. slow-motion generation, more shaders etc etc
+Lots. Again, see the [Wiki](https://github.com/IxxyXR/Polyhydra/wiki)
 
 ![Screenshot](https://github.com/Ixxy-Open-Source/wythoff-polyhedra/blob/master/wythoff.png)
