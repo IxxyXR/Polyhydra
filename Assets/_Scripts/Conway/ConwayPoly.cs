@@ -1404,15 +1404,14 @@ namespace Conway
 			
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
-
-		// TODO Fix
-		public ConwayPoly JoinedMedial()
+		
+		public ConwayPoly JoinedMedial(int subdivisions)
 		{
 
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
-			var newEdgeVertices = new Dictionary<string, int>();
+			var newEdgeVertices = new Dictionary<string, int[]>();
 
 			var faceRoles = new List<Roles>();
 			var vertexRoles = new List<Roles>();
@@ -1426,20 +1425,40 @@ namespace Conway
 
 			int vertexIndex = vertexPoints.Count();
 
+			foreach (var face in Faces)
+			{
+				foreach (var edge in face.GetHalfedges())
+				{
+					if (!newEdgeVertices.ContainsKey(edge.PairedName))
+					{
+						newEdgeVertices[edge.PairedName] = new int[subdivisions];
+						for (int i = 0; i < subdivisions; i++)
+						{
+							vertexPoints.Add(edge.PointAlongEdge((1f / (subdivisions + 1)) * (i + 1)));
+							vertexRoles.Add(Roles.New);
+							newEdgeVertices[edge.PairedName][i] = vertexIndex++;
+						}
+					}
+				}
+			}
+
 			// Create rhombic faces
 			foreach (var edge in Halfedges)
 			{
-				int v0 = newEdgeVertices[edge.PairedName];
-				int v2 = newEdgeVertices[edge.PairedName];
-				var rhombus = new[]
+				for (int i=0; i < subdivisions; i++)
 				{
-					v0,
-					existingVertices[edge.Vertex.Position],
-					v2,
-					existingVertices[edge.Next.Vertex.Position]
-				};
-				faceIndices.Add(rhombus);
-				faceRoles.Add(Roles.New);
+					int v0 = newEdgeVertices[edge.PairedName][i];
+					int v2 = newEdgeVertices[edge.PairedName][i];
+					var rhombus = new[]
+					{
+						v0,
+						existingVertices[edge.Vertex.Position],
+						v2,
+						existingVertices[edge.Next.Vertex.Position]
+					};
+					faceIndices.Add(rhombus);
+					faceRoles.Add(Roles.New);
+				}
 			}
 
 			// Generate triangular faces
@@ -1451,37 +1470,39 @@ namespace Conway
 
 				var edges = face.GetHalfedges();
 				var prevEnds = edges[face.Sides - 1].getEnds();
-				int prevVertex = newEdgeVertices[edges[0].PairedName];
-
-				for (var i = 0; i < edges.Count; i++)
+				for (int i = 0; i < subdivisions; i++)
 				{
-					Halfedge edge = edges[i];
-					var ends = edge.getEnds();
-					int currVertex = newEdgeVertices[edge.PairedName];
+					int prevVertex = newEdgeVertices[edges[0].PairedName][i];
 
-					var triangle1 = new int[]
+					for (var j = 0; i < edges.Count; j++)
 					{
-						vertexIndex,
-						existingVertices[edges[i].Vertex.Position],
-						currVertex
-					};
-					var triangle2 = new int[]
-					{
-						vertexIndex,
-						prevVertex,
-						existingVertices[edges[i].Vertex.Position]
-					};
+						Halfedge edge = edges[j];
+						var ends = edge.getEnds();
+						int currVertex = newEdgeVertices[edge.PairedName][i];
 
-					faceIndices.Add(triangle1);
-					faceRoles.Add(Roles.New);
-					faceIndices.Add(triangle2);
-					faceRoles.Add(Roles.New);
+						var triangle1 = new int[]
+						{
+							vertexIndex,
+							existingVertices[edges[j].Vertex.Position],
+							currVertex
+						};
+						var triangle2 = new int[]
+						{
+							vertexIndex,
+							prevVertex,
+							existingVertices[edges[j].Vertex.Position]
+						};
 
-					prevVertex = currVertex;
-					edge = edge.Next;
+						faceIndices.Add(triangle1);
+						faceRoles.Add(Roles.New);
+						faceIndices.Add(triangle2);
+						faceRoles.Add(Roles.New);
+
+						prevVertex = currVertex;
+						edge = edge.Next;
+					}
+					vertexIndex++;
 				}
-
-				vertexIndex++;
 			}
 
 			//medialPolyhedron.setVertexNormalsToFaceNormals();

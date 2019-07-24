@@ -21,12 +21,13 @@ public class AppearancePreset
     public Material SkyboxMaterial;
     public Color32 SkyboxColor;
     public Cubemap ReflectionCubemap;
+    public VolumeComponent ActiveVolume;
 
-    public void ApplyToPoly(ref PolyHydra poly, GameObject LightsParent, Camera CurrentCamera)
+    public void ApplyToPoly(ref PolyHydra poly, GameObject LightsParent, GameObject VolumesParent, Camera CurrentCamera)
     {
+        poly.APresetName = Name;
         poly.gameObject.GetComponent<MeshRenderer>().material = PolyhedronMaterial;
         poly.ColorMethod = PolyhedronColorMethod;
-        poly.APresetName = Name;
         CurrentCamera.backgroundColor = CameraBackgroundColor;
         if (SkyboxMaterial != null)
         {

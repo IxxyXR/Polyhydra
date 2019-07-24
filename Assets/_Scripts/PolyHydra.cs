@@ -572,7 +572,7 @@ public class PolyHydra : MonoBehaviour {
 				conway = conway.EdgeMedial((int)op.amount);
 				break;
 			case Ops.JoinedMedial:
-				conway = conway.JoinedMedial();
+				conway = conway.JoinedMedial((int)op.amount);
 				break;
 			case Ops.Propeller:
 				conway = conway.Propeller(op.amount);

@@ -7,6 +7,7 @@ public class AppearancePresets : MonoBehaviour {
 	public PolyHydra _poly;
 	public Camera CurrentCamera;
 	public GameObject LightsParent;
+	public GameObject VolumesParent;
 	public List<AppearancePreset> Items;
 	public int editorPresetIndex;
 	
@@ -36,7 +37,7 @@ public class AppearancePresets : MonoBehaviour {
 
 	public void ApplyPresetToPoly(AppearancePreset preset)
 	{
-		preset.ApplyToPoly(ref _poly, LightsParent, CurrentCamera);
+		preset.ApplyToPoly(ref _poly, LightsParent, VolumesParent, CurrentCamera);
 	}
 
 	[ContextMenu("Next preset")]
