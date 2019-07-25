@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Main.unity
+    path: Assets/_Scenes/Main.unity
     guid: ae3b8738f409d473c988551aa425c4d4
   - enabled: 0
     path: Assets/_Scenes/Holoplay.unity
