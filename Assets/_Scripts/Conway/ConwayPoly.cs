@@ -1251,6 +1251,8 @@ namespace Conway
 
 		private ConwayPoly _Medial(int subdivisions, bool edgeMedial = false)
 		{
+
+			subdivisions = subdivisions < 1 ? 1 : subdivisions;
 			
 			// Some nasty hacks in here
 			// due to face.GetHalfedges seemingly returning edges in an
