@@ -23,8 +23,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   exposure:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.65
   multiplier:
     m_OverrideState: 0
     m_Value: 1
@@ -48,25 +48,25 @@ MonoBehaviour:
     m_Value: 0
   top:
     m_OverrideState: 1
-    m_Value: {r: 0.103773594, g: 0.103773594, b: 0.103773594, a: 1}
+    m_Value: {r: 0.7830189, g: 0.7497775, b: 0.7497775, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
   middle:
     m_OverrideState: 1
-    m_Value: {r: 0.047169805, g: 0.047169805, b: 0.047169805, a: 1}
+    m_Value: {r: 0.24528301, g: 0.244126, b: 0.244126, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
   bottom:
     m_OverrideState: 1
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    m_Value: {r: 0.18867922, g: 0.18778922, b: 0.18778922, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
   gradientDiffusion:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 2.23
 --- !u!114 &-8611407152092164732
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -298,7 +298,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.37
+    m_Value: 0.2
     min: 0
     max: 1
   smoothness:
@@ -430,7 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6b00fcf518bb94a90b408492e07b44, type: 3}
   m_Name: FilmGrain
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   type:
     m_OverrideState: 1
@@ -507,7 +507,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: Smudgy
+  m_Name: Gray
   m_EditorClassIdentifier: 
   components:
   - {fileID: -5794843637904384887}
@@ -536,7 +536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d08ce26990eb1a4a9177b860541e702, type: 3}
   m_Name: Exposure
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   mode:
     m_OverrideState: 1
@@ -612,7 +612,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   skyType:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 3
   skyAmbientMode:
     m_OverrideState: 0
     m_Value: 0
@@ -636,4 +636,4 @@ MonoBehaviour:
   diffusionProfiles:
     m_OverrideState: 1
     m_Value:
-    - {fileID: 11400000, guid: 92119388ece825647ba5039062efc187, type: 2}
+    - {fileID: 0}

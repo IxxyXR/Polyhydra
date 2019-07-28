@@ -690,6 +690,7 @@ public class PolyHydra : MonoBehaviour {
 		var meshTriangles = new List<int>();
 		var MeshVertexToVertex = new List<int>(); // Mapping of mesh vertices to poly vertices (one to many as we duplicate verts)
 		var meshColors = new List<Color>();
+		var meshUVs = new List<Vector2>();
 		
 		var mesh = new Mesh();
 		int meshVertexIndex = 0;
@@ -700,13 +701,27 @@ public class PolyHydra : MonoBehaviour {
 
 		for (int faceType = 0; faceType < source.FaceTypeCount; faceType++) {
 			foreach (Wythoff.Face face in source.faces) {
-				if (face.configuration == source.FaceSidesByType[faceType]) {
+				if (face.configuration == source.FaceSidesByType[faceType])
+				{
+					var v0 = source.Vertices[face.points[0]].getVector3();
+					var v1 = source.Vertices[face.points[1]].getVector3();
+					var v2 = source.Vertices[face.points[2]].getVector3();
+					var normal = Vector3.Cross(v1 - v0, v2 - v0);
+					var c = face.center.getVector3();
+					var yAxis = c - v0;
+					var xAxis = Vector3.Cross(yAxis, normal);
+					
 					var faceColor = faceColors[(int) ((face.configuration + 2) % faceColors.Length)];
 					// Vertices
 					for (int i = 0; i < face.triangles.Length; i++) {
-						Vector v = source.Vertices[face.triangles[i]];
-						meshVertices.Add(v.getVector3());
+						Vector3 vcoords = source.Vertices[face.triangles[i]].getVector3();
+						meshVertices.Add(vcoords);
 						meshColors.Add(faceColor);
+
+						var u = Vector3.Project(vcoords, xAxis).magnitude;
+						var v = Vector3.Project(vcoords, yAxis).magnitude;
+						meshUVs.Add(new Vector2(u, v));
+						
 						meshTriangles.Add(meshVertexIndex);
 						MeshVertexToVertex.Add(face.triangles[i]);
 						meshVertexIndex++;
@@ -718,6 +733,7 @@ public class PolyHydra : MonoBehaviour {
 		mesh.vertices = meshVertices.ToArray();
 		mesh.triangles = meshTriangles.ToArray();
 		mesh.colors = meshColors.ToArray();
+		mesh.uv = meshUVs.ToArray();
 		mesh.RecalculateNormals();
 		return mesh;
 
@@ -778,23 +794,11 @@ public class PolyHydra : MonoBehaviour {
 		var meshVertices = new List<Vector3>();
 		var meshNormals = new List<Vector3>();
 		var meshColors = new List<Color32>();
+		var meshUVs = new List<Vector2>();
+		var edgeUVs = new List<Vector2>();
 		
 		var hasNaked = _conwayPoly.HasNaked();
 		hasNaked = false;  // TODO
-		
-		
-		
-		
-//		for (int i = 0; i < conway.Faces.Count; i++)
-//		{
-//			if (conway.Faces[i].Sides > 3)
-//			{
-//				conway.Faces.Triangulate(i, false);
-//			}
-//		}
-		
-		
-		
 		
 		// Strip down to Face-Vertex structure
 		var points = _conwayPoly.ListVerticesByPoints();
@@ -808,6 +812,10 @@ public class PolyHydra : MonoBehaviour {
 			var faceIndex = faceIndices[i];
 			var face = _conwayPoly.Faces[i];
 			var faceNormal = face.Normal;
+
+			// Axes for UV mapping
+			var xAxis = face.Halfedge.Vector;
+			var yAxis = Vector3.Cross(xAxis, faceNormal);
 			
 			Color32 color;
 			switch (ColorMethod)
@@ -823,17 +831,37 @@ public class PolyHydra : MonoBehaviour {
 					break;
 			}
 
+			Vector2 calcUV(Vector3 point)
+			{
+				float u, v;
+				u = Vector3.Project(point, xAxis).magnitude;
+				u *= Vector3.Dot(point, xAxis) > 0 ? 1 : -1;
+				v = Vector3.Project(point, yAxis).magnitude;
+				v *= Vector3.Dot(point, yAxis) > 0  ? 1 : -1;
+				return new Vector2(u, v);
+			}
+
 			if (face.Sides > 3)
 			{
 				for (var edgeIndex = 0; edgeIndex < faceIndex.Count; edgeIndex++)
 				{
 					
 					meshVertices.Add(face.Centroid);
+					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
+					edgeUVs.Add(new Vector2(0, 0));
+					
 					meshVertices.Add(points[faceIndex[edgeIndex]]);
+					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
+					edgeUVs.Add(new Vector2(1, 1));					
+
+					
 					meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
+					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
+					edgeUVs.Add(new Vector2(1, 1));					
+
 
 					meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
 					meshColors.AddRange(Enumerable.Repeat(color, 3));
@@ -841,13 +869,20 @@ public class PolyHydra : MonoBehaviour {
 			}
 			else
 			{
+				
 				meshVertices.Add(points[faceIndex[0]]);
-				meshTriangles.Add(index++);
-				meshVertices.Add(points[faceIndex[1]]);
-				meshTriangles.Add(index++);
-				meshVertices.Add(points[faceIndex[2]]);
+				meshUVs.Add(calcUV(meshVertices[index]));
 				meshTriangles.Add(index++);
 				
+				meshVertices.Add(points[faceIndex[1]]);
+				meshUVs.Add(calcUV(meshVertices[index]));
+				meshTriangles.Add(index++);
+				
+				meshVertices.Add(points[faceIndex[2]]);
+				meshUVs.Add(calcUV(meshVertices[index]));
+				meshTriangles.Add(index++);
+				
+				edgeUVs.AddRange(Enumerable.Repeat(new Vector2(1, 1), 3));
 				meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
 				meshColors.AddRange(Enumerable.Repeat(color, 3));
 			}
@@ -859,13 +894,21 @@ public class PolyHydra : MonoBehaviour {
 				if (faceIndex.Count > 3)
 				{
 					for (var edgeIndex = 0; edgeIndex < faceIndex.Count; edgeIndex++)
-					{					
+					{
 						meshVertices.Add(face.Centroid);
+						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
+						edgeUVs.Add(new Vector2(0, 0));					
+						
 						meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
+						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
+						edgeUVs.Add(new Vector2(1, 1));					
+						
 						meshVertices.Add(points[faceIndex[edgeIndex]]);
+						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
+						edgeUVs.Add(new Vector2(1, 1));					
 
 						meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
 						meshColors.AddRange(Enumerable.Repeat(color, 3));
@@ -874,22 +917,30 @@ public class PolyHydra : MonoBehaviour {
 				else
 				{
 					meshVertices.Add(points[faceIndex[0]]);
-					meshTriangles.Add(index++);
-					meshVertices.Add(points[faceIndex[2]]);
-					meshTriangles.Add(index++);
-					meshVertices.Add(points[faceIndex[1]]);
+					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					
+					meshVertices.Add(points[faceIndex[2]]);
+					meshUVs.Add(calcUV(meshVertices[index]));
+					meshTriangles.Add(index++);
+					
+					meshVertices.Add(points[faceIndex[1]]);
+					meshUVs.Add(calcUV(meshVertices[index]));
+					meshTriangles.Add(index++);
+					
+					edgeUVs.AddRange(Enumerable.Repeat(new Vector2(1, 1), faceIndex.Count));
 					meshNormals.AddRange(Enumerable.Repeat(-faceNormal, faceIndex.Count));
 					meshColors.AddRange(Enumerable.Repeat(color, faceIndex.Count));
 				}
 			}		
 		}
-
+		
 		target.vertices = meshVertices.ToArray();
 		target.normals = meshNormals.ToArray();
 		target.triangles = meshTriangles.ToArray();
 		target.colors32 = meshColors.ToArray();
+		target.uv = meshUVs.ToArray();
+		target.uv2 = edgeUVs.ToArray();
 		
 		if (hasNaked || forceTwosided) {
 			target.RecalculateNormals();

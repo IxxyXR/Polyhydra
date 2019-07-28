@@ -41,6 +41,12 @@ public class AppearancePresets : MonoBehaviour {
 		preset.ApplyToPoly(ref _poly, LightsParent, Volume, CurrentCamera);
 	}
 
+	[ContextMenu("Current preset")]
+	public void ApplyPresetAtRuntime()
+	{
+		ApplyPresetToPoly(editorPresetIndex);
+	}
+	
 	[ContextMenu("Next preset")]
 	public void CyclePresetAtRuntime()
 	{
@@ -48,5 +54,4 @@ public class AppearancePresets : MonoBehaviour {
 		editorPresetIndex++;
 		editorPresetIndex %= Items.Count;
 	}
-	
 }
