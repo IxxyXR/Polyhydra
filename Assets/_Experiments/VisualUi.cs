@@ -55,7 +55,7 @@ public class VisualUi : MonoBehaviour
             copy.transform.localScale = Vector3.one / 2f;
             var copyPoly = copy.GetComponent<PolyHydra>();
             //copyPoly.ConwayOperators.Clear();
-            copyPoly.PolyType = (PolyTypes) i;
+            copyPoly.UniformPolyType = (PolyTypes) i;
             var uniform = Uniform.Uniforms[i];
             if (uniform.Wythoff == "-") continue;
             var wythoff = new WythoffPoly(uniform.Wythoff);

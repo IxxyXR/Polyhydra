@@ -197,7 +197,7 @@ public class PolyUI : MonoBehaviour {
     {
         _shouldReBuild = false;
         TwoSidedToggle.isOn = poly.TwoSided;
-        BasePolyDropdown.value = (int)poly.PolyType;        
+        BasePolyDropdown.value = (int)poly.UniformPolyType;        
         GridTypeDropdown.value = (int)poly.GridType;
         PrismPInput.text = poly.PrismP.ToString();
         PrismQInput.text = poly.PrismQ.ToString();
@@ -429,7 +429,7 @@ public class PolyUI : MonoBehaviour {
 
     void BasePolyDropdownChanged(Dropdown change)
     {
-        poly.PolyType = (PolyTypes)change.value;
+        poly.UniformPolyType = (PolyTypes)change.value;
         Rebuild();
         
         if (poly.WythoffPoly!=null && poly.WythoffPoly.IsOneSided)

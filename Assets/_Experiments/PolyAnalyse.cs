@@ -34,7 +34,7 @@ public class PolyAnalyse : MonoBehaviour
 
     public void NewPoly()
     {
-        poly.PolyType = currentPolyType;
+        poly.UniformPolyType = currentPolyType;
         poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();
         poly.MakePolyhedron();
         Debug.Log($"{currentPolyType}: {poly.WythoffPoly.faces.Count} faces");

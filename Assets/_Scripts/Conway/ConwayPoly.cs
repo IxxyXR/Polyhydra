@@ -545,7 +545,7 @@ namespace Conway
 			var faceIndices = new List<IEnumerable<int>>(); // faces as vertex indices
 			for (int i = 0; i < Faces.Count; i++)
 			{
-				if (IncludeFace(i, facesel))
+				if (i==0 || i==1) // IncludeFace(i, facesel)
 				{
 					var list = Faces[i].GetHalfedges();
 					for (var edgeIndex = 0; edgeIndex < list.Count; edgeIndex++)

@@ -109,9 +109,9 @@ public class QuestUI : MonoBehaviour {
 
     public void RandomizePolyhedra()
     {
-        poly.PolyType = (PolyTypes)Random.Range(1, Enum.GetValues(typeof(PolyTypes)).Length);
+        poly.UniformPolyType = (PolyTypes)Random.Range(1, Enum.GetValues(typeof(PolyTypes)).Length);
         poly.ConwayOperators.Clear();
-        if (!((IList) poly.NonOrientablePolyTypes).Contains((int) poly.PolyType)) // Don't add Conway ops to non-orientable polys
+        if (!((IList) poly.NonOrientablePolyTypes).Contains((int) poly.UniformPolyType)) // Don't add Conway ops to non-orientable polys
         {
             if (Random.value > 0.1)
             {

@@ -37,7 +37,7 @@ public class PolyPreset {
 	{
 		Name = presetName;
 		AppearancePresetName = poly.APresetName;
-		PolyType = poly.PolyType;
+		PolyType = poly.UniformPolyType;
 		GridType = poly.GridType;
 		BypassOps = poly.BypassOps;
 		PrismP = poly.PrismP;
@@ -62,7 +62,7 @@ public class PolyPreset {
 
 	public void ApplyToPoly(ref PolyHydra poly, AppearancePresets aPresets)
 	{
-		poly.PolyType = PolyType;
+		poly.UniformPolyType = PolyType;
 		poly.BypassOps = BypassOps;
 		poly.TwoSided = TwoSided;
 		poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();

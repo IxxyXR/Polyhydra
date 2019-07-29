@@ -26,7 +26,9 @@ public class PolyHydra : MonoBehaviour {
 	private int _faceCount;
 	private int _vertexCount;
 	
-	public PolyTypes PolyType;
+	[FormerlySerializedAs("PolyType")]
+	public ShapeTypes ShapeType;
+	public PolyTypes UniformPolyType;
 	public GridTypes GridType;
 	public string WythoffSymbol;
 	public string PresetName;
@@ -41,6 +43,13 @@ public class PolyHydra : MonoBehaviour {
 	public int PrismQ = 2;
 	
 	public AppearancePreset.ColorMethods ColorMethod;
+
+	public enum ShapeTypes
+	{
+		Uniform,
+		Grid,
+		Johnson
+	}
 
 	public enum GridTypes
 	{
@@ -295,42 +304,7 @@ public class PolyHydra : MonoBehaviour {
 	
 	public void MakePolyhedron()
 	{
-		Mesh mesh;
-		bool noOps = BypassOps || ConwayOperators == null || ConwayOperators.Count < 1;
-		
-		if (noOps)
-		{
-			if (PolyType > 0)  // Uniform Polys
-			{
-		        MakeWythoff();
-
-				try
-				{
-					_conwayPoly = new ConwayPoly(WythoffPoly, abortOnFailure: false);
-					KisTriangulate();
-					mesh = BuildMeshFromConwayPoly(true);					
-				}
-				catch (Exception e)
-				{
-					// If meshing via conway op fails fall back to our crappy direct way
-					// Usually only needed for the 8 non-orientable polyhedra
-					// TODO The old meshing is broken for some reason
-					mesh = BuildMeshFromWythoffPoly(WythoffPoly);					
-				}
-				AssignFinishedMesh(mesh);				
-			}
-			else  // Special cases. Currently just a grid
-			{
-				_conwayPoly = MakeGrid(GridType);
-				FinishedApplyOps();
-				mesh = BuildMeshFromConwayPoly(true);  // Might as well always do two-sided if no ops are applied
-				AssignFinishedMesh(mesh);
-			}
-			
-			return;
-		}
-		
-		if (PolyType > 0) // Uniform Polys
+		if (ShapeType == ShapeTypes.Uniform && UniformPolyType != PolyTypes.Grid)
 		{
 			MakeWythoff();
 			try
@@ -343,11 +317,16 @@ public class PolyHydra : MonoBehaviour {
 				throw;
 			}
 		}
-		else  // Special cases. Currently just a grid
+		else if (ShapeType == ShapeTypes.Grid || UniformPolyType == PolyTypes.Grid)
 		{
 			_conwayPoly = MakeGrid(GridType);
 		}
-
+		
+		else if (ShapeType == ShapeTypes.Johnson)
+		{
+			_conwayPoly = JohnsonPoly.MakeDipyramid(5);  // WIP
+		}
+		
 		if (!enableThreading)
 		{
 			ApplyOps();
@@ -388,7 +367,7 @@ public class PolyHydra : MonoBehaviour {
 		}
 		else
 		{
-			MakeWythoff((int)PolyType);
+			MakeWythoff((int)UniformPolyType);
 		}
 
 	}
@@ -648,7 +627,7 @@ public class PolyHydra : MonoBehaviour {
 	private void ApplyOps()
 	{
 		
-		var cacheKeySource = $"{PolyType} {PrismP} {PrismQ} {GridType} {TwoSided}";
+		var cacheKeySource = $"{UniformPolyType} {PrismP} {PrismQ} {GridType} {TwoSided}";
 		
 		foreach (var op in ConwayOperators.ToList())
 		{
@@ -898,7 +877,7 @@ public class PolyHydra : MonoBehaviour {
 						meshVertices.Add(face.Centroid);
 						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
-						edgeUVs.Add(new Vector2(0, 0));					
+						edgeUVs.Add(new Vector2(0, 0));
 						
 						meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
 						meshUVs.Add(calcUV(meshVertices[index]));
@@ -952,7 +931,7 @@ public class PolyHydra : MonoBehaviour {
 	// Returns true if at least one face matches the facesel rule but all of them
 	public bool FaceSelectionIsValid(ConwayPoly.FaceSelections facesel)
 	{
-		if (ConwayOperators.Count == 0 && PolyType > 0) {
+		if (ConwayOperators.Count == 0 && UniformPolyType > 0) {
 			_conwayPoly = new ConwayPoly(WythoffPoly);  // We need a conway poly
 		}
 		int includedFaceCount = Enumerable.Range(0, _conwayPoly.Faces.Count).Count(x => _conwayPoly.IncludeFace(x, facesel));
