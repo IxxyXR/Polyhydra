@@ -545,7 +545,7 @@ namespace Conway
 			var faceIndices = new List<IEnumerable<int>>(); // faces as vertex indices
 			for (int i = 0; i < Faces.Count; i++)
 			{
-				if (i==0 || i==1) // IncludeFace(i, facesel)
+				if (IncludeFace(i, facesel))
 				{
 					var list = Faces[i].GetHalfedges();
 					for (var edgeIndex = 0; edgeIndex < list.Count; edgeIndex++)
@@ -1125,10 +1125,12 @@ namespace Conway
 
 			// Create Rhombus faces
 			// TODO Make planar
+			
 			if (joined)
 			{
 				foreach (var edge in Halfedges)
 				{
+					
 					if (!rhombusFlags.ContainsKey(edge.PairedName))
 					{
 						var rhombus = new int[]

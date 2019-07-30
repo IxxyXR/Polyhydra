@@ -29,6 +29,7 @@ namespace Conway {
             Vertex[] array = vertices.ToArray();
 
             if (array.Length < 3) {
+                Debug.LogError("Too few vertices");
                 return false;
             }
 
@@ -49,6 +50,7 @@ namespace Conway {
                 new_edges[i].Next = new_edges[(i + 1) % n];
                 new_edges[i].Prev = new_edges[(i + n - 1) % n];
                 if (_mConwayPoly.Halfedges.Contains(new_edges[i].Name)) {
+                    Debug.LogError("Duplicate Halfedge");
                     return false;
                 }
             }

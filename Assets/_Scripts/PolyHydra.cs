@@ -29,6 +29,7 @@ public class PolyHydra : MonoBehaviour {
 	[FormerlySerializedAs("PolyType")]
 	public ShapeTypes ShapeType;
 	public PolyTypes UniformPolyType;
+	public JohnsonPolyTypes JohnsonPolyType;
 	public GridTypes GridType;
 	public string WythoffSymbol;
 	public string PresetName;
@@ -58,6 +59,16 @@ public class PolyHydra : MonoBehaviour {
 		Hex
 	}
 
+	public enum JohnsonPolyTypes
+	{
+		Prism,
+		Antiprism,
+		Pyramid,
+		Dipyramid,
+		Cupola,
+		Bicupola,
+	}
+
 	public enum Ops {
 		Identity,
 		Kis,
@@ -81,7 +92,7 @@ public class PolyHydra : MonoBehaviour {
 		Stake,
 		Medial,
 		EdgeMedial,
-		JoinedMedial,
+//		JoinedMedial,
 		Propeller,
 		Whirl,
 		Volute,
@@ -253,7 +264,7 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.Stake, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
 			{Ops.Medial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8}},
 			{Ops.EdgeMedial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8}},
-			{Ops.JoinedMedial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8}},
+//			{Ops.JoinedMedial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8}},
 			{Ops.Propeller, new OpConfig{amountDefault = 0.75f, amountMin = -4, amountMax = 4}},
 			{Ops.Whirl, new OpConfig{amountDefault = 0.25f, amountMin = -4, amountMax = 4}},
 			{Ops.Volute, new OpConfig{amountDefault = 0.33333333f, amountMin = -4, amountMax = 4}},
@@ -301,6 +312,23 @@ public class PolyHydra : MonoBehaviour {
 
 		return null;
 	}
+
+	public ConwayPoly MakeJohnsonPoly(JohnsonPolyTypes johnsonPolyType)
+	{
+		switch (johnsonPolyType)
+		{
+			case JohnsonPolyTypes.Dipyramid:
+				return JohnsonPoly.MakeDipyramid(PrismP);
+			case JohnsonPolyTypes.Pyramid:
+				return JohnsonPoly.MakePyramid(PrismP);
+			case JohnsonPolyTypes.Antiprism:
+				return JohnsonPoly.MakeAntiprism(PrismP);
+			case JohnsonPolyTypes.Cupola:
+				return JohnsonPoly.MakeCupola(PrismP);
+		}
+
+		return null;
+	}
 	
 	public void MakePolyhedron()
 	{
@@ -324,7 +352,7 @@ public class PolyHydra : MonoBehaviour {
 		
 		else if (ShapeType == ShapeTypes.Johnson)
 		{
-			_conwayPoly = JohnsonPoly.MakeDipyramid(5);  // WIP
+			_conwayPoly = MakeJohnsonPoly(JohnsonPolyType);
 		}
 		
 		if (!enableThreading)
@@ -458,6 +486,7 @@ public class PolyHydra : MonoBehaviour {
 
 	public static ConwayPoly ApplyOp(ConwayPoly conway, ConwayOperator op)
 	{
+
 		switch (op.opType)
 		{
 			case Ops.Identity:
@@ -550,9 +579,9 @@ public class PolyHydra : MonoBehaviour {
 			case Ops.EdgeMedial:
 				conway = conway.EdgeMedial((int)op.amount);
 				break;
-			case Ops.JoinedMedial:
-				conway = conway.JoinedMedial((int)op.amount);
-				break;
+//			case Ops.JoinedMedial:
+//				conway = conway.JoinedMedial((int)op.amount);
+//				break;
 			case Ops.Propeller:
 				conway = conway.Propeller(op.amount);
 				break;
@@ -996,26 +1025,25 @@ public class PolyHydra : MonoBehaviour {
 		
 		var transform = this.transform;
 
-		if (WythoffPoly == null)
+		if (WythoffPoly != null)
 		{
 			return;
-		}
-
-		if (wythoffVertexGizmos)
-		{
-			Gizmos.color = Color.white;
-			if (WythoffPoly.Vertices != null)
+			if (wythoffVertexGizmos)
 			{
-				for (int i = 0; i < WythoffPoly.Vertices.Length; i++)
+				Gizmos.color = Color.white;
+				if (WythoffPoly.Vertices != null)
 				{
-					Vector3 vert = WythoffPoly.Vertices[i].getVector3();
-					Vector3 pos = transform.TransformPoint(vert);
-					Gizmos.DrawWireSphere(pos, GizmoRadius);
-					Handles.Label(pos + new Vector3(0, .15f, 0), i.ToString());
+					for (int i = 0; i < WythoffPoly.Vertices.Length; i++)
+					{
+						Vector3 vert = WythoffPoly.Vertices[i].getVector3();
+						Vector3 pos = transform.TransformPoint(vert);
+						Gizmos.DrawWireSphere(pos, GizmoRadius);
+						Handles.Label(pos + new Vector3(0, .15f, 0), i.ToString());
+					}
 				}
 			}
 		}
-		
+
 		if (conwayVertexGizmos && _conwayPoly!=null)
 		{
 			Gizmos.color = Color.white;
