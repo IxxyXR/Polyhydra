@@ -162,15 +162,14 @@ namespace Conway
         public static ConwayPoly MakeDipyramid(int sides)
         {
             float sideLength = 2 * Mathf.Sin(Mathf.PI / sides);
-            float capHeight = 0.4f;  // TODO find height to create equilateral triangles
-            return MakeDipyramid(sides, sideLength, capHeight);
+            return MakeDipyramid(sides, sideLength);
         }
         
-        public static ConwayPoly MakeDipyramid(int sides, float height, float capHeight)
+        public static ConwayPoly MakeDipyramid(int sides, float height)
         {
-            ConwayPoly polygon = MakePolygon(sides);
-            polygon = polygon.Extrude(height, false, false);
-            return polygon.Kis(capHeight, ConwayPoly.FaceSelections.All, false);
+            ConwayPoly poly = MakePyramid(sides, height);
+            poly = poly.Kis(height, ConwayPoly.FaceSelections.Existing, false);
+            return poly;
         }
         
     }
