@@ -63,10 +63,27 @@ public class PolyHydra : MonoBehaviour {
 	{
 		Prism,
 		Antiprism,
+
 		Pyramid,
+		//ElongatedPyramid,
+		//GyroelongatedPyramid,
+
 		Dipyramid,
+		//ElongatedDipyramid,
+		//GyroelongatedDipyramid,
+
 		Cupola,
+		//ElongatedCupola,
+		//GyroelongatedCupola,
+
 		Bicupola,
+		//ElongatedBicupola,
+		//GyroelongatedBicupola,
+
+		//Rotunda,
+		//ElongatedRotunda,
+		//GyroelongatedRotunda,
+
 	}
 
 	public enum Ops {
@@ -325,6 +342,8 @@ public class PolyHydra : MonoBehaviour {
 				return JohnsonPoly.MakeAntiprism(PrismP);
 			case JohnsonPolyTypes.Cupola:
 				return JohnsonPoly.MakeCupola(PrismP);
+			case JohnsonPolyTypes.Bicupola:
+				return JohnsonPoly.MakeBicupola(PrismP);
 		}
 
 		return null;
@@ -1084,7 +1103,7 @@ public class PolyHydra : MonoBehaviour {
 		}
 
 
-		if (edgeGizmos)
+		if (edgeGizmos && WythoffPoly != null)
 		{
 			for (int i = 0; i < WythoffPoly.EdgeCount; i++)
 			{
@@ -1094,6 +1113,18 @@ public class PolyHydra : MonoBehaviour {
 				Gizmos.DrawLine(
 					transform.TransformPoint(WythoffPoly.Vertices[edgeStart].getVector3()),
 					transform.TransformPoint(WythoffPoly.Vertices[edgeEnd].getVector3())
+				);
+			}
+		}
+		else if (edgeGizmos && WythoffPoly == null)
+		{
+			for (int i = 0; i < _conwayPoly.Halfedges.Count; i++)
+			{
+				Gizmos.color = Color.yellow;
+				var edge = _conwayPoly.Halfedges[i];
+				Gizmos.DrawLine(
+					transform.TransformPoint(edge.Vertex.Position),
+					transform.TransformPoint(edge.Next.Vertex.Position)
 				);
 			}
 		}

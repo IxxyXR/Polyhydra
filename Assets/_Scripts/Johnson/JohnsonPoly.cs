@@ -54,14 +54,23 @@ namespace Conway
             return MakeCupola(sides, height);
         }
 
-        public static ConwayPoly MakeCupola(int sides, float height)
+        static int ActualMod(int x, int m) // Fuck C# deciding that mod isn't actually mod
         {
+            return (x % m + m) % m;
+        }
+
+        public static ConwayPoly MakeCupola(int sides, float height, bool bi=false)
+        {
+
             if (sides < 6) sides = 6;
-            ConwayPoly poly = MakePolygon(sides, false);
-            ConwayPoly top = MakePolygon(sides/2, true, 0.25f, height,0.5f);
-            poly.Append(top);
-            
+
+            ConwayPoly poly = MakePolygon(sides);
+            Face bottom = poly.Faces[0];
+            ConwayPoly top1 = MakePolygon(sides/2, true, 0.25f, height,0.5f);
+            poly.Append(top1);
+
             int i = 0;
+            var squareSideFaces = new List<Face>();
             var edge1 = poly.Halfedges[0];
             var edge2 = poly.Halfedges[sides];
             while (true)
@@ -83,14 +92,54 @@ namespace Conway
                     edge2.Prev.Vertex
                 };
                 poly.Faces.Add(side2);
+                squareSideFaces.Add(poly.Faces.Last());
                 poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
 
                 i++;
                 edge1 = edge1.Next.Next;
                 edge2 = edge2.Prev;
                 if (i == sides/2) break;
+            }
+
+            if (bi)
+            {
+                ConwayPoly top2 = MakePolygon(sides/2, false, 0.75f, -height, 0.5f);
+                poly.Append(top2);
+
+                i = 0;
+                var middleVerts = bottom.GetVertices();
+                poly.Faces.Remove(bottom);
+                edge2 = poly.Faces.Last().Halfedge.Prev;
+                while (true)
+                {
+                    var side1 = new List<Vertex>
+                    {
+                        middleVerts[ActualMod(i * 2 - 1, sides)],
+                        middleVerts[ActualMod(i * 2, sides)],
+                        edge2.Vertex
+                    };
+                    poly.Faces.Add(side1);
+                    poly.FaceRoles.Add(ConwayPoly.Roles.New);
+
+                    var side2 = new List<Vertex>
+                    {
+                        middleVerts[ActualMod(i * 2, sides)],
+                        middleVerts[ActualMod(i * 2 + 1, sides)],
+                        edge2.Next.Vertex,
+                        edge2.Vertex,
+                    };
+                    poly.Faces.Add(side2);
+                    poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
+
+                    i++;
+                    edge2 = edge2.Next;
+
+                    if (i == sides/2) break;
+
+                }
 
             }
+
             poly.Halfedges.MatchPairs();
             return poly;
         }
@@ -103,7 +152,7 @@ namespace Conway
 
         public static ConwayPoly MakeAntiprism(int sides, float height)
         {
-            ConwayPoly poly = MakePolygon(sides, false);
+            ConwayPoly poly = MakePolygon(sides);
             ConwayPoly top = MakePolygon(sides, true, 0.5f, height);
             poly.Append(top);
             
@@ -133,6 +182,7 @@ namespace Conway
                 i++;
                 edge1 = edge1.Next;
                 edge2 = edge2.Prev;
+
                 if (i == sides) break;
 
             }
@@ -169,6 +219,20 @@ namespace Conway
         {
             ConwayPoly poly = MakePyramid(sides, height);
             poly = poly.Kis(height, ConwayPoly.FaceSelections.Existing, false);
+            return poly;
+        }
+
+        public static ConwayPoly MakeBicupola(int sides)
+        {
+            float height = 1; // TODO
+            return MakeBicupola(sides, height);
+        }
+
+        public static ConwayPoly MakeBicupola(int sides, float height)
+        {
+            if (sides < 6) sides = 6;
+            ConwayPoly poly = MakePolygon(sides);
+            poly = MakeCupola(sides, height/2, true);
             return poly;
         }
         
