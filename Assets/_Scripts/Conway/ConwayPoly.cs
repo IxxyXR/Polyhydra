@@ -471,6 +471,81 @@ namespace Conway
 			return poly;
 		}
 
+		public ConwayPoly Expand(float ratio = 0.33333333f)
+		{
+
+			var faceIndices = new List<int[]>();
+			var vertexPoints = new List<Vector3>();
+			var newVertices = new Dictionary<string, int>();
+			var edgeFaceFlags = new Dictionary<string, bool>();
+			
+
+			var faceRoles = new List<Roles>();
+			var vertexRoles = new List<Roles>();
+
+			int vertexIndex = 0;
+
+			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
+			{
+				var face = Faces[faceIndex];
+				
+				var edge = face.Halfedge;
+				var centroid = face.Centroid;
+
+				// Create a new face for each existing face
+				var newInsetFace = new int[face.Sides];
+
+				for (int i = 0; i < face.Sides; i++)
+				{
+					var vertex = edge.Vertex.Position;
+					var newVertex = Vector3.LerpUnclamped(vertex, centroid, ratio);
+					vertexPoints.Add(newVertex);
+					vertexRoles.Add(Roles.New);
+					newInsetFace[i] = vertexIndex;
+					newVertices[edge.Name] = vertexIndex++;
+					edge = edge.Next;
+				}
+
+				faceIndices.Add(newInsetFace);
+				faceRoles.Add(Roles.Existing);
+
+			}
+			
+			// Add edge faces
+			foreach (var edge in Halfedges)
+			{
+				if (!edgeFaceFlags.ContainsKey(edge.PairedName))
+				{
+					var edgeFace = new int[]
+					{
+						newVertices[edge.Name],
+						newVertices[edge.Prev.Name],
+						newVertices[edge.Pair.Name],
+						newVertices[edge.Pair.Prev.Name],
+					};
+					faceIndices.Add(edgeFace);
+					faceRoles.Add(Roles.New);
+					edgeFaceFlags[edge.PairedName] = true;
+				}
+			}
+
+			for (var i = 0; i < Vertices.Count; i++)
+			{
+				var vert = Vertices[i];
+				var vertexFace = new List<int>();
+				for (var j = 0; j < vert.Halfedges.Count; j++)
+				{
+					var edge = vert.Halfedges[j];
+					vertexFace.Add(newVertices[edge.Name]);
+				}
+
+				faceIndices.Add(vertexFace.ToArray());
+				faceRoles.Add(Roles.NewAlt);
+			}
+
+			var poly = new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+			return poly;
+		}
 		
 		// Not currently used as it results in non-coplanar faces and it's cheaper to do ambo > dual than to follow this with canonicalize
 		public ConwayPoly Join(float offset)

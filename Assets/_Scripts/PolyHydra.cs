@@ -524,8 +524,7 @@ public class PolyHydra : MonoBehaviour {
 				conway = conway.Dual();
 				break;
 			case Ops.Expand:
-				conway = conway.Ambo();
-				conway = conway.Ambo();
+				conway = conway.Expand(op.amount);
 				break;
 			case Ops.Bevel:
 				conway = conway.Ambo();
