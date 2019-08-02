@@ -334,19 +334,22 @@ public class PolyHydra : MonoBehaviour {
 	{
 		switch (johnsonPolyType)
 		{
-			case JohnsonPolyTypes.Dipyramid:
-				return JohnsonPoly.MakeDipyramid(PrismP);
-			case JohnsonPolyTypes.Pyramid:
-				return JohnsonPoly.MakePyramid(PrismP);
+			case JohnsonPolyTypes.Prism:
+				return JohnsonPoly.MakePrism(PrismP);
 			case JohnsonPolyTypes.Antiprism:
 				return JohnsonPoly.MakeAntiprism(PrismP);
+			case JohnsonPolyTypes.Pyramid:
+				return JohnsonPoly.MakePyramid(PrismP);
+			case JohnsonPolyTypes.Dipyramid:
+				return JohnsonPoly.MakeDipyramid(PrismP);
 			case JohnsonPolyTypes.Cupola:
 				return JohnsonPoly.MakeCupola(PrismP);
 			case JohnsonPolyTypes.Bicupola:
 				return JohnsonPoly.MakeBicupola(PrismP);
+			default:
+				Debug.LogError("Unknown Johnson Poly Type");
+				return null;
 		}
-
-		return null;
 	}
 	
 	public void MakePolyhedron()
@@ -675,7 +678,7 @@ public class PolyHydra : MonoBehaviour {
 	private void ApplyOps()
 	{
 		
-		var cacheKeySource = $"{UniformPolyType} {PrismP} {PrismQ} {GridType} {TwoSided}";
+		var cacheKeySource = $"{ShapeType} {JohnsonPolyType} {UniformPolyType} {PrismP} {PrismQ} {GridType} {TwoSided}";
 		
 		foreach (var op in ConwayOperators.ToList())
 		{

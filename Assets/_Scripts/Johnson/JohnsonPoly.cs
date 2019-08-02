@@ -10,8 +10,8 @@ namespace Conway
         {
             var faceIndices = new List<int[]>();
             var vertexPoints = new List<Vector3>();
-            var faceRoles = Enumerable.Repeat(ConwayPoly.Roles.New, 1);
-            var vertexRoles = Enumerable.Repeat(ConwayPoly.Roles.New, sides);
+            var faceRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, 1);
+            var vertexRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, sides);
             
             faceIndices.Add(new int[sides]);
             
@@ -41,18 +41,6 @@ namespace Conway
             
             return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
         }
-        
-        public static ConwayPoly MakePrism(int sides, float height)
-        {
-            ConwayPoly polygon = MakePolygon(sides);
-            return polygon.Extrude(height, false, false);
-        }
-
-        public static ConwayPoly MakeCupola(int sides)
-        {
-            float height = 0.5f; // TODO
-            return MakeCupola(sides, height);
-        }
 
         static int ActualMod(int x, int m) // Fuck C# deciding that mod isn't actually mod
         {
@@ -62,17 +50,17 @@ namespace Conway
         public static ConwayPoly MakeCupola(int sides, float height, bool bi=false)
         {
 
-            if (sides < 6) sides = 6;
+            if (sides < 3) sides = 3;
 
-            ConwayPoly poly = MakePolygon(sides);
+            ConwayPoly poly = MakePolygon(sides * 2);
             Face bottom = poly.Faces[0];
-            ConwayPoly top1 = MakePolygon(sides/2, true, 0.25f, height,0.5f);
+            ConwayPoly top1 = MakePolygon(sides, true, 0.25f, height,0.5f);
             poly.Append(top1);
 
             int i = 0;
             var squareSideFaces = new List<Face>();
             var edge1 = poly.Halfedges[0];
-            var edge2 = poly.Halfedges[sides];
+            var edge2 = poly.Halfedges[sides * 2];
             while (true)
             {
                 var side1 = new List<Vertex>
@@ -98,12 +86,12 @@ namespace Conway
                 i++;
                 edge1 = edge1.Next.Next;
                 edge2 = edge2.Prev;
-                if (i == sides/2) break;
+                if (i == sides) break;
             }
 
             if (bi)
             {
-                ConwayPoly top2 = MakePolygon(sides/2, false, 0.75f, -height, 0.5f);
+                ConwayPoly top2 = MakePolygon(sides, false, 0.75f, -height, 0.5f);
                 poly.Append(top2);
 
                 i = 0;
@@ -114,8 +102,8 @@ namespace Conway
                 {
                     var side1 = new List<Vertex>
                     {
-                        middleVerts[ActualMod(i * 2 - 1, sides)],
-                        middleVerts[ActualMod(i * 2, sides)],
+                        middleVerts[ActualMod(i * 2 - 1, sides * 2)],
+                        middleVerts[ActualMod(i * 2, sides * 2)],
                         edge2.Vertex
                     };
                     poly.Faces.Add(side1);
@@ -123,8 +111,8 @@ namespace Conway
 
                     var side2 = new List<Vertex>
                     {
-                        middleVerts[ActualMod(i * 2, sides)],
-                        middleVerts[ActualMod(i * 2 + 1, sides)],
+                        middleVerts[ActualMod(i * 2, sides * 2)],
+                        middleVerts[ActualMod(i * 2 + 1, sides * 2)],
                         edge2.Next.Vertex,
                         edge2.Vertex,
                     };
@@ -134,26 +122,31 @@ namespace Conway
                     i++;
                     edge2 = edge2.Next;
 
-                    if (i == sides/2) break;
+                    if (i == sides) break;
 
                 }
-
             }
 
             poly.Halfedges.MatchPairs();
             return poly;
         }
         
-        public static ConwayPoly MakeAntiprism(int sides)
+        public static ConwayPoly MakePrism(int sides)
         {
-            float height = 1; // TODO
-            return MakeAntiprism(sides, height);
+            float height = SideLength(sides);
+            return MakePrism(sides, height);
         }
 
-        public static ConwayPoly MakeAntiprism(int sides, float height)
+        public static ConwayPoly MakeAntiprism(int sides)
+        {
+            float height = SideLength(sides) * Mathf.Sqrt(0.75f);
+            return MakePrism(sides, height, true);
+        }
+
+        public static ConwayPoly MakePrism(int sides, float height, bool anti=false)
         {
             ConwayPoly poly = MakePolygon(sides);
-            ConwayPoly top = MakePolygon(sides, true, 0.5f, height);
+            ConwayPoly top = MakePolygon(sides, true, anti?0.5f:0, height);
             poly.Append(top);
             
             int i = 0;
@@ -161,23 +154,40 @@ namespace Conway
             var edge2 = poly.Halfedges[sides];
             while (true)
             {
-                var side1 = new List<Vertex>
+
+                if (anti)
                 {
-                    edge1.Vertex,
-                    edge1.Prev.Vertex,
-                    edge2.Vertex
-                };
-                poly.Faces.Add(side1);
-                poly.FaceRoles.Add(ConwayPoly.Roles.New);
-                
-                var side2 = new List<Vertex>
+                    var side1 = new List<Vertex>
+                    {
+                        edge1.Vertex,
+                        edge1.Prev.Vertex,
+                        edge2.Vertex
+                    };
+                    poly.Faces.Add(side1);
+                    poly.FaceRoles.Add(ConwayPoly.Roles.New);
+
+                    var side2 = new List<Vertex>
+                    {
+                        edge1.Vertex,
+                        edge2.Vertex,
+                        edge2.Prev.Vertex
+                    };
+                    poly.Faces.Add(side2);
+                    poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
+                }
+                else
                 {
-                    edge1.Vertex,
-                    edge2.Vertex,
-                    edge2.Prev.Vertex
-                };
-                poly.Faces.Add(side2);
-                poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
+                    var side = new List<Vertex>
+                    {
+                        edge1.Vertex,
+                        edge1.Prev.Vertex,
+                        edge2.Vertex,
+                        edge2.Prev.Vertex
+                    };
+                    poly.Faces.Add(side);
+                    poly.FaceRoles.Add(ConwayPoly.Roles.New);
+
+                }
 
                 i++;
                 edge1 = edge1.Next;
@@ -191,9 +201,26 @@ namespace Conway
             return poly;
         }
 
+        public static float CalcPyramidHeight(float sides)
+        {
+            float sideLength = SideLength(sides);
+            float height;
+
+            // Try and make equilateral sides if we can
+            if (sides >= 3 && sides <= 5)
+            {
+                height = Mathf.Sqrt(Mathf.Pow(sideLength, 2) - 1f);
+            }
+            else
+            {
+                height = 1f;
+            }
+
+            return height;
+        }
         public static ConwayPoly MakePyramid(int sides)
         {
-            float height = 1f; // TODO calculate correct height
+            var height = CalcPyramidHeight(sides);
             return MakePyramid(sides, height);
         }
         
@@ -209,10 +236,15 @@ namespace Conway
             return poly;
         }
 
+        public static float SideLength(float sides)
+        {
+            return 2 * Mathf.Sin(Mathf.PI / sides);
+        }
+
         public static ConwayPoly MakeDipyramid(int sides)
         {
-            float sideLength = 2 * Mathf.Sin(Mathf.PI / sides);
-            return MakeDipyramid(sides, sideLength);
+            float height = CalcPyramidHeight(sides);
+            return MakeDipyramid(sides, height);
         }
         
         public static ConwayPoly MakeDipyramid(int sides, float height)
@@ -222,9 +254,15 @@ namespace Conway
             return poly;
         }
 
+        public static ConwayPoly MakeCupola(int sides)
+        {
+            float height = CalcPyramidHeight(sides) / 2f;
+            return MakeCupola(sides, height);
+        }
+
         public static ConwayPoly MakeBicupola(int sides)
         {
-            float height = 1; // TODO
+            float height = CalcPyramidHeight(sides);
             return MakeBicupola(sides, height);
         }
 
