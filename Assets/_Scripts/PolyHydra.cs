@@ -103,6 +103,7 @@ public class PolyHydra : MonoBehaviour {
 		Snub,
 		Subdivide,
 		Loft,
+		Chamfer,
 		Quinto,
 		Lace,
 		JoinedLace,
@@ -264,7 +265,7 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.Dual, new OpConfig{usesAmount=false}},
 			{Ops.Ambo, new OpConfig{usesAmount=false}},
 			{Ops.Zip, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, usesRandomize=true}},
-			{Ops.Expand, new OpConfig{usesAmount=false}},
+			{Ops.Expand, new OpConfig{usesAmount=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
 			{Ops.Bevel, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Join, new OpConfig{usesAmount=false}},
 			{Ops.Needle, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
@@ -275,6 +276,7 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.Snub, new OpConfig{amountDefault = 0.5f, amountMin = -.5f, amountMax = 0.5f}},
 			{Ops.Subdivide, new OpConfig {usesAmount=false}},
 			{Ops.Loft, new OpConfig {usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
+			{Ops.Chamfer, new OpConfig {amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
 			{Ops.Quinto, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
 			{Ops.Lace, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
 			{Ops.JoinedLace, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
@@ -527,8 +529,7 @@ public class PolyHydra : MonoBehaviour {
 				conway = conway.Dual();
 				break;
 			case Ops.Expand:
-				conway = conway.Ambo();
-				conway = conway.Ambo();
+				conway = conway.Expand(op.amount);
 				break;
 			case Ops.Bevel:
 				conway = conway.Ambo();
@@ -582,6 +583,9 @@ public class PolyHydra : MonoBehaviour {
 				break;
 			case Ops.Loft:
 				conway = conway.Loft(op.amount, op.faceSelections);
+				break;					
+			case Ops.Chamfer:
+				conway = conway.Chamfer(op.amount);
 				break;					
 			case Ops.Quinto:
 				conway = conway.Quinto(op.amount);

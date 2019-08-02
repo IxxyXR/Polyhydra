@@ -471,6 +471,183 @@ namespace Conway
 			return poly;
 		}
 
+		public ConwayPoly Expand(float ratio = 0.33333333f)
+		{
+
+			var faceIndices = new List<int[]>();
+			var vertexPoints = new List<Vector3>();
+			var newVertices = new Dictionary<string, int>();
+			var edgeFaceFlags = new Dictionary<string, bool>();
+			
+
+			var faceRoles = new List<Roles>();
+			var vertexRoles = new List<Roles>();
+
+			int vertexIndex = 0;
+
+			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
+			{
+				var face = Faces[faceIndex];
+				
+				var edge = face.Halfedge;
+				var centroid = face.Centroid;
+
+				// Create a new face for each existing face
+				var newInsetFace = new int[face.Sides];
+
+				for (int i = 0; i < face.Sides; i++)
+				{
+					var vertex = edge.Vertex.Position;
+					var newVertex = Vector3.LerpUnclamped(vertex, centroid, ratio);
+					vertexPoints.Add(newVertex);
+					vertexRoles.Add(Roles.New);
+					newInsetFace[i] = vertexIndex;
+					newVertices[edge.Name] = vertexIndex++;
+					edge = edge.Next;
+				}
+
+				faceIndices.Add(newInsetFace);
+				faceRoles.Add(Roles.Existing);
+
+			}
+			
+			// Add edge faces
+			foreach (var edge in Halfedges)
+			{
+				if (!edgeFaceFlags.ContainsKey(edge.PairedName))
+				{
+					var edgeFace = new int[]
+					{
+						newVertices[edge.Name],
+						newVertices[edge.Prev.Name],
+						newVertices[edge.Pair.Name],
+						newVertices[edge.Pair.Prev.Name],
+					};
+					faceIndices.Add(edgeFace);
+					faceRoles.Add(Roles.New);
+					edgeFaceFlags[edge.PairedName] = true;
+				}
+			}
+
+			for (var i = 0; i < Vertices.Count; i++)
+			{
+				var vert = Vertices[i];
+				var vertexFace = new List<int>();
+				for (var j = 0; j < vert.Halfedges.Count; j++)
+				{
+					var edge = vert.Halfedges[j];
+					vertexFace.Add(newVertices[edge.Name]);
+				}
+
+				faceIndices.Add(vertexFace.ToArray());
+				faceRoles.Add(Roles.NewAlt);
+			}
+
+			var poly = new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+			return poly;
+		}
+		
+		public ConwayPoly Chamfer(float ratio = 0.33333333f)
+		{
+
+			var faceIndices = new List<int[]>();
+			var vertexPoints = new List<Vector3>();
+			var existingVertices = new Dictionary<Vector3, int>();
+			var newVertices = new Dictionary<string, int>();
+			var edgeFaceFlags = new Dictionary<string, bool>();
+		
+			var faceRoles = new List<Roles>();
+			var vertexRoles = new List<Roles>();
+			
+			for (var i = 0; i < Vertices.Count; i++)
+			{
+				vertexPoints.Add(Vertices[i].Position);
+				vertexRoles.Add(Roles.Existing);
+				existingVertices[vertexPoints[i]] = i;
+			}
+			
+			int vertexIndex = existingVertices.Count;
+
+			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
+			{
+				var face = Faces[faceIndex];
+				
+				var edge = face.Halfedge;
+				var centroid = face.Centroid;
+
+				// Create a new face for each existing face
+				var newInsetFace = new int[face.Sides];
+
+				for (int i = 0; i < face.Sides; i++)
+				{
+					var vertex = edge.Vertex.Position;
+					var newVertex = Vector3.LerpUnclamped(vertex, centroid, ratio);
+					vertexPoints.Add(newVertex);
+					vertexRoles.Add(Roles.New);
+					newInsetFace[i] = vertexIndex;
+					newVertices[edge.Name] = vertexIndex++;
+					edge = edge.Next;
+				}
+
+				faceIndices.Add(newInsetFace);
+				faceRoles.Add(Roles.Existing);
+
+			}
+			
+			// Add edge faces
+			foreach (var edge in Halfedges)
+			{
+				if (!edgeFaceFlags.ContainsKey(edge.PairedName))
+				{
+					edgeFaceFlags[edge.PairedName] = true;
+
+					var edgeFace = new int[]
+					{
+						existingVertices[edge.Vertex.Position],
+						newVertices[edge.Name],
+						newVertices[edge.Prev.Name],
+						existingVertices[edge.Pair.Vertex.Position],
+						newVertices[edge.Pair.Name],
+						newVertices[edge.Pair.Prev.Name],
+					};
+					faceIndices.Add(edgeFace);
+					faceRoles.Add(Roles.New);
+				}
+			}
+			
+			// Planarize new edge faces
+			// TODO needs fixing
+			edgeFaceFlags = new Dictionary<string, bool>();
+			foreach (var edge in Halfedges)
+			{
+				if (!edgeFaceFlags.ContainsKey(edge.PairedName))
+				{
+					
+					edgeFaceFlags[edge.PairedName] = true;
+					
+					float distance;
+
+					var plane = new Plane();
+					plane.Set3Points(
+						vertexPoints[newVertices[edge.Name]],
+						vertexPoints[newVertices[edge.Prev.Name]],
+						vertexPoints[newVertices[edge.Pair.Name]]
+					);
+					
+					var ray1 = new Ray(Vector3.zero, edge.Vertex.Position);
+					bool result1 = plane.Raycast(ray1, out distance);
+//					Debug.Log($"{result1} {distance}: v1={vertexPoints[existingVertices[edge.Vertex.Position]]} v2={edge.Vertex.Position} r={ray1.GetPoint(distance)}");
+					vertexPoints[existingVertices[edge.Vertex.Position]] = ray1.GetPoint(distance);
+					
+					var ray2 = new Ray(Vector3.zero, edge.Pair.Vertex.Position);
+					bool result2 = plane.Raycast(ray2, out distance);
+					vertexPoints[existingVertices[edge.Pair.Vertex.Position]] = ray2.GetPoint(distance);
+				}
+			}
+			
+			var poly = new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+			return poly;
+		}
 		
 		// Not currently used as it results in non-coplanar faces and it's cheaper to do ambo > dual than to follow this with canonicalize
 		public ConwayPoly Join(float offset)
