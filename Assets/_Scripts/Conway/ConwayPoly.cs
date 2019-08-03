@@ -616,15 +616,15 @@ namespace Conway
 			}
 			
 			// Planarize new edge faces
-			// TODO needs fixing
+			// TODO not perfect - we need an iterative algorithm
 			edgeFaceFlags = new Dictionary<string, bool>();
 			foreach (var edge in Halfedges)
 			{
 				if (!edgeFaceFlags.ContainsKey(edge.PairedName))
 				{
-					
+
 					edgeFaceFlags[edge.PairedName] = true;
-					
+
 					float distance;
 
 					var plane = new Plane();
@@ -633,14 +633,14 @@ namespace Conway
 						vertexPoints[newVertices[edge.Prev.Name]],
 						vertexPoints[newVertices[edge.Pair.Name]]
 					);
-					
-					var ray1 = new Ray(Vector3.zero, edge.Vertex.Position);
-					bool result1 = plane.Raycast(ray1, out distance);
-//					Debug.Log($"{result1} {distance}: v1={vertexPoints[existingVertices[edge.Vertex.Position]]} v2={edge.Vertex.Position} r={ray1.GetPoint(distance)}");
+
+
+					var ray1 = new Ray(edge.Vertex.Position, edge.Vertex.Normal);
+					plane.Raycast(ray1, out distance);
 					vertexPoints[existingVertices[edge.Vertex.Position]] = ray1.GetPoint(distance);
-					
-					var ray2 = new Ray(Vector3.zero, edge.Pair.Vertex.Position);
-					bool result2 = plane.Raycast(ray2, out distance);
+
+					var ray2 = new Ray(edge.Pair.Vertex.Position, edge.Pair.Vertex.Normal);
+					plane.Raycast(ray2, out distance);
 					vertexPoints[existingVertices[edge.Pair.Vertex.Position]] = ray2.GetPoint(distance);
 				}
 			}
