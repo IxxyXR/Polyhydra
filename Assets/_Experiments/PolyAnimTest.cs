@@ -7,49 +7,99 @@ using UnityEngine;
 public class PolyAnimTest : MonoBehaviour
 {
 
-    public MeshFilter poly1;
-    public MeshFilter poly2;
-    public float amount1;
-    public float amount2;
-    
+    private MeshFilter[] polyList;
+    [Range(0.0001f, 0.2f)] public float speed = 0.001f;
+
+    private List<Mesh> meshList;
+    private float currentMorphAmount;
     private SkinnedMeshRenderer sm;
+    private int currentMorphTarget = 1;
+    private int currentMesh;
+
 
 
     void Start()
     {
-        Debug.Log(poly1.sharedMesh.vertexCount);
-        Debug.Log(poly2.sharedMesh.vertexCount);
-        sm = gameObject.GetComponent<SkinnedMeshRenderer>();
-        sm.sharedMesh = poly1.mesh;
-        
-//        var v = new Vector3[vertexCount];
-//        var n = new Vector3[vertexCount];
-//        var t = new Vector3[vertexCount];
-//        poly1.sharedMesh.GetBlendShapeFrameVertices(0, 0, v, n, t);
-//        sm.sharedMesh.AddBlendShapeFrame("b1",1, v, n, t);
-//        poly2.sharedMesh.GetBlendShapeFrameVertices(0, 0, v, n, t);
-//        sm.sharedMesh.AddBlendShapeFrame("b2",1, v, n, t);
-        
-        sm.sharedMesh.AddBlendShapeFrame(
-            "start",
-            0,
-            poly1.mesh.vertices.Select((val, index) => Vector3.zero).ToArray(),
-            poly1.mesh.normals.Select((val, index) => Vector3.zero).ToArray(),
-            poly1.mesh.tangents.Select((val, index) => Vector3.zero).ToArray()
-        );
 
-        sm.sharedMesh.AddBlendShapeFrame(
-            "end",
-            1,
-            poly2.mesh.vertices.Select((val, index) => val - sm.sharedMesh.vertices[index]).ToArray(),
-            poly2.mesh.normals.Select((val, index) => val - sm.sharedMesh.normals[index]).ToArray(),
-            poly2.mesh.tangents.Select((val, index) => (Vector3) val - (Vector3) sm.sharedMesh.tangents[index]).ToArray()
+        polyList = gameObject.GetComponentsInChildren<MeshFilter>();
+
+        Debug.Log(polyList.Length);
+
+        sm = gameObject.GetComponent<SkinnedMeshRenderer>();
+
+        Mesh mesh;
+        meshList = new List<Mesh>();
+
+        mesh = polyList[0].mesh;
+        mesh.AddBlendShapeFrame(
+            "0",
+            0,
+            polyList[0].mesh.vertices.Select((val, index) => Vector3.zero).ToArray(),
+            polyList[0].mesh.normals.Select((val, index) => Vector3.zero).ToArray(),
+            polyList[0].mesh.tangents.Select((val, index) => Vector3.zero).ToArray()
         );
+        mesh.AddBlendShapeFrame(
+            "1",
+            1,
+            polyList[1].mesh.vertices.Select((val, index) => val - polyList[0].mesh.vertices[index]).ToArray(),
+            polyList[1].mesh.normals.Select((val, index) => val - polyList[0].mesh.normals[index]).ToArray(),
+            polyList[1].mesh.tangents.Select((val, index) => (Vector3) val - (Vector3) polyList[0].mesh.tangents[index]).ToArray()
+        );
+        meshList.Add(mesh);
+
+        mesh = polyList[2].mesh;
+        mesh.AddBlendShapeFrame(
+            "0",
+            0,
+            polyList[2].mesh.vertices.Select((val, index) => Vector3.zero).ToArray(),
+            polyList[2].mesh.normals.Select((val, index) => Vector3.zero).ToArray(),
+            polyList[2].mesh.tangents.Select((val, index) => Vector3.zero).ToArray()
+        );
+        mesh.AddBlendShapeFrame(
+            "1",
+            1,
+            polyList[3].mesh.vertices.Select((val, index) => val - polyList[2].mesh.vertices[index]).ToArray(),
+            polyList[3].mesh.normals.Select((val, index) => val - polyList[2].mesh.normals[index]).ToArray(),
+            polyList[3].mesh.tangents.Select((val, index) => (Vector3) val - (Vector3) polyList[2].mesh.tangents[index]).ToArray()
+        );
+        meshList.Add(mesh);
+
+
+
+        sm.sharedMesh = meshList[0];
+        sm.SetBlendShapeWeight(0, 1);
+
     }
-    
+
     void Update()
     {
-        sm.SetBlendShapeWeight(0, amount1);
-        sm.SetBlendShapeWeight(1, amount2);
+        //Debug.Log($"currentMesh: {currentMesh} currentMorphTarget: {currentMorphTarget} currentMorphAmount: {currentMorphAmount}");
+
+        if (currentMorphAmount >= 1)
+        {
+            currentMorphAmount = 0;
+            currentMorphTarget += 1;
+            if (currentMorphTarget >= meshList[currentMesh].blendShapeCount)
+            {
+                currentMesh += 1;
+                currentMorphTarget = 1;
+
+                if (currentMesh >= meshList.Count)
+                {
+                    currentMesh = 0;
+                }
+                sm.sharedMesh = meshList[currentMesh];
+            }
+            sm.SetBlendShapeWeight(currentMorphTarget - 1, 1);
+            sm.SetBlendShapeWeight(currentMorphTarget, 0);
+        }
+        else
+        {
+            sm.SetBlendShapeWeight(currentMorphTarget - 1, 1 - currentMorphAmount);
+            sm.SetBlendShapeWeight(currentMorphTarget, currentMorphAmount);
+            currentMorphAmount += speed;
+        }
+
+
     }
 }
