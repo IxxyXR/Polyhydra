@@ -1,1 +1,35 @@
-{"Name":"Dodecapinwheel","PolyType":"Small_Ditrigonal_Icosidodecahedron","BypassOps":false,"TwoSided":true,"GridType":"Square","PrismP":0,"PrismQ":0,"AppearancePresetName":"Spectrum","Ops":[{"OpType":"Dual","FaceSelections":"All","Amount":1.0,"Randomize":false,"Disabled":true},{"OpType":"Gyro","FaceSelections":"All","Amount":0.3333333,"Randomize":false,"Disabled":false},{"OpType":"Canonicalize","FaceSelections":"All","Amount":0.01,"Randomize":false,"Disabled":false}]}
+{
+  "Name": "Dodecapinwheel",
+  "ShapeType": "Uniform",
+  "PolyType": 35,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Spectrum",
+  "Ops": [
+    {
+      "OpType": "Dual",
+      "FaceSelections": "All",
+      "Amount": 1.0,
+      "Randomize": false,
+      "Disabled": true
+    },
+    {
+      "OpType": "Gyro",
+      "FaceSelections": "All",
+      "Amount": 0.3333333,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Canonicalize",
+      "FaceSelections": "All",
+      "Amount": 0.01,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

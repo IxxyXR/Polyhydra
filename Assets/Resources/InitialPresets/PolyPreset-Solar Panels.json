@@ -1,1 +1,42 @@
-{"Name":"Solar Panels","PolyType":"Truncated_Icosahedron","BypassOps":false,"TwoSided":true,"GridType":"Square","PrismP":5,"PrismQ":2,"AppearancePresetName":"RGB","Ops":[{"OpType":"Loft","FaceSelections":"All","Amount":0.58,"Randomize":false,"Disabled":false},{"OpType":"VertexScale","FaceSelections":"New","Amount":0.2,"Randomize":false,"Disabled":false},{"OpType":"Loft","FaceSelections":"FiveSided","Amount":1.25,"Randomize":false,"Disabled":false},{"OpType":"VertexScale","FaceSelections":"ThreeSided","Amount":-0.1875,"Randomize":false,"Disabled":false}]}
+{
+  "Name": "Solar Panels",
+  "ShapeType": "Uniform",
+  "PolyType": 30,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 5,
+  "PrismQ": 2,
+  "AppearancePresetName": "RGB",
+  "Ops": [
+    {
+      "OpType": "Loft",
+      "FaceSelections": "All",
+      "Amount": 0.58,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "VertexScale",
+      "FaceSelections": "New",
+      "Amount": 0.2,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Loft",
+      "FaceSelections": "FiveSided",
+      "Amount": 1.25,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "VertexScale",
+      "FaceSelections": "ThreeSided",
+      "Amount": -0.1875,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

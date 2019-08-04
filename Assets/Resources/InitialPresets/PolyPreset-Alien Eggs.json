@@ -1,1 +1,42 @@
-{"Name":"Alien Eggs","PolyType":"Grid","BypassOps":false,"TwoSided":false,"GridType":"Square","PrismP":0,"PrismQ":0,"AppearancePresetName":"RGB","Ops":[{"OpType":"FaceScale","FaceSelections":"All","Amount":-0.2,"Randomize":false,"Disabled":true},{"OpType":"Extrude","FaceSelections":"All","Amount":0.8750002,"Randomize":true,"Disabled":false},{"OpType":"Yank","FaceSelections":"All","Amount":0.25625,"Randomize":false,"Disabled":false},{"OpType":"Zip","FaceSelections":"All","Amount":0.0,"Randomize":false,"Disabled":false}]}
+{
+  "Name": "Alien Eggs",
+  "ShapeType": "Uniform",
+  "PolyType": 0,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": false,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "RGB",
+  "Ops": [
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "All",
+      "Amount": -0.2,
+      "Randomize": false,
+      "Disabled": true
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "All",
+      "Amount": 0.8750002,
+      "Randomize": true,
+      "Disabled": false
+    },
+    {
+      "OpType": "Yank",
+      "FaceSelections": "All",
+      "Amount": 0.25625,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Zip",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

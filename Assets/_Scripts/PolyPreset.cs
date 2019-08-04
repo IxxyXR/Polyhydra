@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using Conway;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using UnityEngine;
-using UnityEngine.Animations;
-using Vector3 = System.Numerics.Vector3;
 
 
 [Serializable]
 public class PolyPreset {
 
 	public string Name;
+
 	[JsonConverter(typeof(StringEnumConverter))]
+	public PolyHydra.ShapeTypes ShapeType;
 	public PolyTypes PolyType;
+	public PolyHydra.JohnsonPolyTypes JohnsonPolyType;
 	public bool BypassOps;
 	public bool TwoSided;
 	[JsonConverter(typeof(StringEnumConverter))]
@@ -37,7 +37,9 @@ public class PolyPreset {
 	{
 		Name = presetName;
 		AppearancePresetName = poly.APresetName;
+		ShapeType = poly.ShapeType;
 		PolyType = poly.UniformPolyType;
+		JohnsonPolyType = poly.JohnsonPolyType;
 		GridType = poly.GridType;
 		BypassOps = poly.BypassOps;
 		PrismP = poly.PrismP;
@@ -60,9 +62,11 @@ public class PolyPreset {
 		}
 	}
 
-	public void ApplyToPoly(ref PolyHydra poly, AppearancePresets aPresets)
+	public void ApplyToPoly(PolyHydra poly, AppearancePresets aPresets)
 	{
+		poly.ShapeType = ShapeType;
 		poly.UniformPolyType = PolyType;
+		poly.JohnsonPolyType = JohnsonPolyType;
 		poly.BypassOps = BypassOps;
 		poly.TwoSided = TwoSided;
 		poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();
@@ -70,8 +74,7 @@ public class PolyPreset {
 		poly.PrismP = PrismP;
 		poly.PrismQ = PrismQ;
 		poly.PresetName = Name;
-		aPresets.ApplyPresetToPoly(AppearancePresetName);
-		
+
 		for (var index = 0; index < Ops.Length; index++)
 		{
 			var presetOp = Ops[index];
@@ -85,6 +88,9 @@ public class PolyPreset {
 			};
 			poly.ConwayOperators.Add(op);
 		}
+
+		aPresets.ApplyPresetToPoly(AppearancePresetName);
+
 	}
-    
+
 }

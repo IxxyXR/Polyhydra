@@ -1,28 +1,28 @@
 {
-  "Name": "Quirky Bathroom",
+  "Name": "Artifact",
   "ShapeType": "Uniform",
-  "PolyType": 0,
+  "PolyType": 12,
   "JohnsonPolyType": 0,
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",
-  "PrismP": 0,
-  "PrismQ": 0,
-  "AppearancePresetName": "Flat",
+  "PrismP": 10,
+  "PrismQ": 10,
+  "AppearancePresetName": "Posterized",
   "Ops": [
     {
-      "OpType": "Gyro",
+      "OpType": "JoinedLace",
       "FaceSelections": "All",
-      "Amount": 0.333333343,
+      "Amount": 0.6,
       "Randomize": false,
       "Disabled": false
     },
     {
-      "OpType": "Lace",
-      "FaceSelections": "All",
+      "OpType": "FaceRemove",
+      "FaceSelections": "Existing",
       "Amount": 0.5,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": true
     }
   ]
 }

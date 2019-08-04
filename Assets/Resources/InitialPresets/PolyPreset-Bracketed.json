@@ -1,1 +1,42 @@
-{"Name":"Bracketed","PolyType":"Pentagonal_Prism","BypassOps":false,"TwoSided":true,"GridType":"Square","PrismP":5,"PrismQ":3,"AppearancePresetName":"Spectrum","Ops":[{"OpType":"Extrude","FaceSelections":"All","Amount":1.125,"Randomize":false,"Disabled":false},{"OpType":"FaceScale","FaceSelections":"All","Amount":-0.1875,"Randomize":false,"Disabled":false},{"OpType":"FaceRotate","FaceSelections":"All","Amount":70.62501,"Randomize":false,"Disabled":true},{"OpType":"Extrude","FaceSelections":"All","Amount":0.375,"Randomize":false,"Disabled":false}]}
+{
+  "Name": "Bracketed",
+  "ShapeType": "Uniform",
+  "PolyType": 1,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 5,
+  "PrismQ": 3,
+  "AppearancePresetName": "Spectrum",
+  "Ops": [
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "All",
+      "Amount": 1.125,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "All",
+      "Amount": -0.1875,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceRotate",
+      "FaceSelections": "All",
+      "Amount": 70.62501,
+      "Randomize": false,
+      "Disabled": true
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "All",
+      "Amount": 0.375,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

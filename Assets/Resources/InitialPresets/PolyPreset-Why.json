@@ -1,1 +1,28 @@
-{"Name":"Why","PolyType":"Grid","BypassOps":false,"TwoSided":true,"GridType":"Hex","PrismP":0,"PrismQ":0,"AppearancePresetName":"Subtle","Ops":[{"OpType":"Ambo","FaceSelections":"All","Amount":0.3,"Randomize":false,"Disabled":false},{"OpType":"Stake","FaceSelections":"All","Amount":0.75,"Randomize":false,"Disabled":false}]}
+{
+  "Name": "Why",
+  "ShapeType": "Uniform",
+  "PolyType": 0,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Hex",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Subtle",
+  "Ops": [
+    {
+      "OpType": "Ambo",
+      "FaceSelections": "All",
+      "Amount": 0.3,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Stake",
+      "FaceSelections": "All",
+      "Amount": 0.75,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

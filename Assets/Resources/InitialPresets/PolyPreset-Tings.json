@@ -1,1 +1,28 @@
-{"Name":"Tings","PolyType":"Great_Dodecahedron","BypassOps":false,"TwoSided":true,"GridType":"Square","PrismP":0,"PrismQ":0,"AppearancePresetName":"Spectrum","Ops":[{"OpType":"Quinto","FaceSelections":"All","Amount":0.333333,"Randomize":false,"Disabled":false},{"OpType":"Canonicalize","FaceSelections":"All","Amount":0.0001,"Randomize":false,"Disabled":false}]}
+{
+  "Name": "Tings",
+  "ShapeType": "Uniform",
+  "PolyType": 40,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Spectrum",
+  "Ops": [
+    {
+      "OpType": "Quinto",
+      "FaceSelections": "All",
+      "Amount": 0.333333,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Canonicalize",
+      "FaceSelections": "All",
+      "Amount": 0.0001,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

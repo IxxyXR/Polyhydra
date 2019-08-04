@@ -1,1 +1,35 @@
-{"Name":"Sphube","PolyType":"Cube","BypassOps":false,"TwoSided":false,"GridType":"Square","PrismP":5,"PrismQ":5,"AppearancePresetName":"Subtle","Ops":[{"OpType":"Exalt","FaceSelections":"All","Amount":0.33333,"Randomize":false,"Disabled":false},{"OpType":"EdgeMedial","FaceSelections":"All","Amount":2.0,"Randomize":false,"Disabled":false},{"OpType":"Spherize","FaceSelections":"All","Amount":0.5,"Randomize":false,"Disabled":false}]}
+{
+  "Name": "Sphube",
+  "ShapeType": "Uniform",
+  "PolyType": 11,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": false,
+  "GridType": "Square",
+  "PrismP": 5,
+  "PrismQ": 5,
+  "AppearancePresetName": "Subtle",
+  "Ops": [
+    {
+      "OpType": "Exalt",
+      "FaceSelections": "All",
+      "Amount": 0.33333,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "EdgeMedial",
+      "FaceSelections": "All",
+      "Amount": 2.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Spherize",
+      "FaceSelections": "All",
+      "Amount": 0.5,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

@@ -1,1 +1,28 @@
-{"Name":"Dice","PolyType":"Truncated_Cube","BypassOps":false,"TwoSided":true,"GridType":"Square","PrismP":0,"PrismQ":0,"AppearancePresetName":"Spectrum","Ops":[{"OpType":"Kis","FaceSelections":"All","Amount":-0.05,"Randomize":false,"Disabled":false},{"OpType":"Kis","FaceSelections":"All","Amount":0.01,"Randomize":false,"Disabled":false}]}
+{
+  "Name": "Dice",
+  "ShapeType": "Uniform",
+  "PolyType": 14,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Spectrum",
+  "Ops": [
+    {
+      "OpType": "Kis",
+      "FaceSelections": "All",
+      "Amount": -0.05,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "All",
+      "Amount": 0.01,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

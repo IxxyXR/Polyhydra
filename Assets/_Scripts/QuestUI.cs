@@ -75,7 +75,7 @@ public class QuestUI : MonoBehaviour {
     {
         presetIndex += 1;
         presetIndex %= presets.Items.Count;
-        presets.Items[presetIndex].ApplyToPoly(ref poly, aPresets);
+        presets.Items[presetIndex].ApplyToPoly(poly, aPresets);
         poly.MakePolyhedron();
     }
     
@@ -83,7 +83,7 @@ public class QuestUI : MonoBehaviour {
     {
         presetIndex -= 1;
         if (presetIndex < 0) presetIndex = presets.Items.Count - 1;
-        presets.Items[presetIndex].ApplyToPoly(ref poly, aPresets);
+        presets.Items[presetIndex].ApplyToPoly(poly, aPresets);
         poly.MakePolyhedron();
     }
     

@@ -1,1 +1,35 @@
-{"Name":"City Block","PolyType":"Grid","BypassOps":false,"TwoSided":false,"GridType":"Square","PrismP":0,"PrismQ":0,"AppearancePresetName":"Subtle","Ops":[{"OpType":"Whirl","FaceSelections":"All","Amount":0.25625,"Randomize":false,"Disabled":false},{"OpType":"FaceScale","FaceSelections":"All","Amount":-0.2,"Randomize":false,"Disabled":false},{"OpType":"Extrude","FaceSelections":"All","Amount":0.5,"Randomize":true,"Disabled":false}]}
+{
+  "Name": "City Block",
+  "ShapeType": "Uniform",
+  "PolyType": 0,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": false,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Subtle",
+  "Ops": [
+    {
+      "OpType": "Whirl",
+      "FaceSelections": "All",
+      "Amount": 0.25625,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "All",
+      "Amount": -0.2,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "All",
+      "Amount": 0.5,
+      "Randomize": true,
+      "Disabled": false
+    }
+  ]
+}

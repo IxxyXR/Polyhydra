@@ -1,1 +1,35 @@
-{"Name":"Smooth","PolyType":"Snub_Cube","BypassOps":false,"TwoSided":true,"GridType":"Square","PrismP":0,"PrismQ":0,"AppearancePresetName":"Spectrum","Ops":[{"OpType":"Kis","FaceSelections":"ThreeSided","Amount":-0.21,"Randomize":false,"Disabled":false},{"OpType":"Ortho","FaceSelections":"All","Amount":-3.25,"Randomize":false,"Disabled":false},{"OpType":"Bevel","FaceSelections":"All","Amount":0.0,"Randomize":false,"Disabled":false}]}
+{
+  "Name": "Smooth",
+  "ShapeType": "Uniform",
+  "PolyType": 17,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Spectrum",
+  "Ops": [
+    {
+      "OpType": "Kis",
+      "FaceSelections": "ThreeSided",
+      "Amount": -0.21,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Ortho",
+      "FaceSelections": "All",
+      "Amount": -3.25,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Bevel",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

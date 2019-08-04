@@ -1,1 +1,35 @@
-{"Name":"Snowball","PolyType":"Small_Ditrigonal_Icosidodecahedron","BypassOps":false,"TwoSided":true,"GridType":"Square","PrismP":0,"PrismQ":0,"AppearancePresetName":"Subtle","Ops":[{"OpType":"Lace","FaceSelections":"All","Amount":0.0078125,"Randomize":false,"Disabled":false},{"OpType":"Dual","FaceSelections":"All","Amount":0.0,"Randomize":false,"Disabled":false},{"OpType":"Canonicalize","FaceSelections":"All","Amount":0.58,"Randomize":false,"Disabled":true}]}
+{
+  "Name": "Snowball",
+  "ShapeType": "Uniform",
+  "PolyType": 35,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Subtle",
+  "Ops": [
+    {
+      "OpType": "Lace",
+      "FaceSelections": "All",
+      "Amount": 0.0078125,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Dual",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Canonicalize",
+      "FaceSelections": "All",
+      "Amount": 0.58,
+      "Randomize": false,
+      "Disabled": true
+    }
+  ]
+}

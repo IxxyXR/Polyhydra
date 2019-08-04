@@ -1,1 +1,35 @@
-{"Name":"Nemesis","PolyType":"Great_Dodecahedron","BypassOps":false,"TwoSided":true,"GridType":"Square","PrismP":0,"PrismQ":0,"AppearancePresetName":"Spectrum","Ops":[{"OpType":"Kis","FaceSelections":"FiveSided","Amount":-2.98548985,"Randomize":false,"Disabled":false},{"OpType":"Zip","FaceSelections":"All","Amount":-1.61049128,"Randomize":false,"Disabled":true},{"OpType":"Exalt","FaceSelections":"All","Amount":2.47488856,"Randomize":false,"Disabled":false}]}
+{
+  "Name": "Nemesis",
+  "ShapeType": "Uniform",
+  "PolyType": 40,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Spectrum",
+  "Ops": [
+    {
+      "OpType": "Kis",
+      "FaceSelections": "FiveSided",
+      "Amount": -2.98548985,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Zip",
+      "FaceSelections": "All",
+      "Amount": -1.61049128,
+      "Randomize": false,
+      "Disabled": true
+    },
+    {
+      "OpType": "Exalt",
+      "FaceSelections": "All",
+      "Amount": 2.47488856,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

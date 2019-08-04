@@ -132,7 +132,7 @@ public class PolyHydra : MonoBehaviour {
 		Hinge,
 		AddDual,
 		Canonicalize,
-		CanonicalizeI,
+//		CanonicalizeI,
 		Spherize
 	}
 
@@ -159,6 +159,26 @@ public class PolyHydra : MonoBehaviour {
 		string infoText = $"Faces: {_faceCount}\nVertices: {_vertexCount}";
 		return infoText;
 	}
+
+	[ContextMenu("Copy to clipboard")]
+	public void CopyPresetToClipboard()
+	{
+		var preset = new PolyPreset();
+		preset.CreateFromPoly("Temp", this);
+		var polyJson = JsonConvert.SerializeObject(preset, Formatting.Indented);
+		GUIUtility.systemCopyBuffer = polyJson;
+	}
+
+	[ContextMenu("Paste from clipboard")]
+	public void AddPresetFromClipboard()
+	{
+		var preset = new PolyPreset();
+		preset.Name = "Temp";
+		preset = JsonConvert.DeserializeObject<PolyPreset>(GUIUtility.systemCopyBuffer);
+		preset.ApplyToPoly(this, FindObjectOfType<AppearancePresets>());
+		Rebuild();
+	}
+
 
 	// Call this if you're *not* using this class via an interactive UI
 	public void DisableInteractiveFlags()
@@ -305,7 +325,7 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.Hinge, new OpConfig{amountDefault = 15f, amountMin = -180, amountMax = 180}},
 			{Ops.AddDual, new OpConfig{amountDefault = 1f, amountMin = -6, amountMax = 6}},
 			{Ops.Canonicalize, new OpConfig{amountDefault = 0.1f, amountMin = 0.0001f, amountMax = 1f}},
-			{Ops.CanonicalizeI, new OpConfig{amountDefault = 200, amountMin = 1, amountMax = 400}},
+//			{Ops.CanonicalizeI, new OpConfig{amountDefault = 200, amountMin = 1, amountMax = 400}},
 			{Ops.Spherize, new OpConfig{amountDefault = 1.0f, amountMin = 0, amountMax = 1}}
 
 		};
@@ -400,7 +420,11 @@ public class PolyHydra : MonoBehaviour {
 		if (PrismP > 16) PrismP = 16;
 		if (PrismQ > PrismP - 2) PrismQ = PrismP - 2;
 		if (PrismQ < 2) PrismQ = 2;
-		
+		Rebuild();
+	}
+
+	private void Rebuild()
+	{
 		var currentState = new PolyPreset();
 		currentState.CreateFromPoly("temp", this);
 		if (previousState != currentState)
@@ -408,7 +432,6 @@ public class PolyHydra : MonoBehaviour {
 			MakePolyhedron();
 			previousState = currentState;
 		}
-
 	}
 
 	public void MakeWythoff() {
@@ -668,9 +691,9 @@ public class PolyHydra : MonoBehaviour {
 			case Ops.Canonicalize:
 				conway = conway.Canonicalize(op.amount, op.amount);
 				break;
-			case Ops.CanonicalizeI:
-				conway = conway.Canonicalize((int)op.amount, (int)op.amount);
-				break;
+//			case Ops.CanonicalizeI:
+//				conway = conway.Canonicalize((int)op.amount, (int)op.amount);
+//				break;
 			case Ops.Spherize:
 				conway = conway.Spherize(op.amount);
 				break;

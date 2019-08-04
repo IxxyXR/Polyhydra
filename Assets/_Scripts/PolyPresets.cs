@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 public class PolyPresets : MonoBehaviour {
@@ -20,7 +21,7 @@ public class PolyPresets : MonoBehaviour {
 
 	public void ApplyPresetToPoly(PolyPreset preset)
 	{
-		preset.ApplyToPoly(ref _poly, APresets);
+		preset.ApplyToPoly(_poly, APresets);
 	}
 
 	public void AddPresetFromPoly(string presetName)
@@ -29,6 +30,43 @@ public class PolyPresets : MonoBehaviour {
 		Items.Remove(existingPreset);
 		var preset = new PolyPreset();
 		preset.CreateFromPoly(presetName, _poly);
+		Items.Add(preset);
+	}
+
+	[ContextMenu("Copy to clipboard")]
+	public void CopyPresetToClipboard()
+	{
+		var preset = new PolyPreset();
+		preset.CreateFromPoly("Temp", _poly);
+		var polyJson = JsonConvert.SerializeObject(preset, Formatting.Indented);
+		GUIUtility.systemCopyBuffer = polyJson;
+	}
+
+	[ContextMenu("Paste from clipboard")]
+	public void AddPresetFromClipboard()
+	{
+		name = GenerateUniquePresetName();
+		AddPresetFromString(name, GUIUtility.systemCopyBuffer);
+	}
+
+	private string GenerateUniquePresetName()
+	{
+		var existingPresets = Items.Select(x => x.Name);
+		int index = existingPresets.Count();
+		name = $"New Preset {index}";
+		while (existingPresets.Contains(name))
+		{
+			index++;
+			name = $"New Preset {index}";
+		}
+		return name;
+	}
+
+	public void AddPresetFromString(string name, string data)
+	{
+		var preset = new PolyPreset();
+		preset.Name = name;
+		preset = JsonConvert.DeserializeObject<PolyPreset>(data);
 		Items.Add(preset);
 	}
 
@@ -81,7 +119,7 @@ public class PolyPresets : MonoBehaviour {
 	{
 		foreach (var preset in Items) {
 			var fileName = Path.Combine(Application.persistentDataPath, PresetFileNamePrefix + preset.Name + ".json");
-			var polyJson = JsonConvert.SerializeObject(preset);
+			var polyJson = JsonConvert.SerializeObject(preset, Formatting.Indented);
 			File.WriteAllText(fileName, polyJson);
 		}
 	}

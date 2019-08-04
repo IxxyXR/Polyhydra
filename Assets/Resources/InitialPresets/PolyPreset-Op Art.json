@@ -1,1 +1,49 @@
-{"Name":"Op Art","PolyType":"Dodecahedron","BypassOps":false,"TwoSided":true,"GridType":"Square","PrismP":0,"PrismQ":0,"AppearancePresetName":"Subtle","Ops":[{"OpType":"Snub","FaceSelections":"All","Amount":0.3792,"Randomize":false,"Disabled":false},{"OpType":"Expand","FaceSelections":"All","Amount":-0.3333,"Randomize":false,"Disabled":false},{"OpType":"Expand","FaceSelections":"All","Amount":-0.1,"Randomize":false,"Disabled":false}]}
+{
+  "Name": "Op Art",
+  "ShapeType": "Uniform",
+  "PolyType": 28,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Subtle",
+  "Ops": [
+    {
+      "OpType": "Snub",
+      "FaceSelections": "All",
+      "Amount": 0.5,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Ambo",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Ambo",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Ambo",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Ambo",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

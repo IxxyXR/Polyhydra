@@ -1,1 +1,35 @@
-{"Name":"An Album Cover","PolyType":"Cube","BypassOps":false,"TwoSided":true,"GridType":"Square","PrismP":0,"PrismQ":0,"AppearancePresetName":"Subtle","Ops":[{"OpType":"Loft","FaceSelections":"All","Amount":0.4849997,"Randomize":false,"Disabled":false},{"OpType":"Kis","FaceSelections":"New","Amount":0.1,"Randomize":false,"Disabled":true},{"OpType":"Kis","FaceSelections":"Existing","Amount":-1.59999955,"Randomize":false,"Disabled":false}]}
+{
+  "Name": "An Album Cover",
+  "ShapeType": "Uniform",
+  "PolyType": 11,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Subtle",
+  "Ops": [
+    {
+      "OpType": "Loft",
+      "FaceSelections": "All",
+      "Amount": 0.4849997,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "New",
+      "Amount": 0.1,
+      "Randomize": false,
+      "Disabled": true
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "Existing",
+      "Amount": -1.59999955,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

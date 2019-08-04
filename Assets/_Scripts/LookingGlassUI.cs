@@ -38,14 +38,14 @@ public class LookingGlassUI : MonoBehaviour {
     public void NextPreset()
     {
         presetIndex = (presetIndex + 1) % presets.Items.Count;
-        presets.Items[presetIndex].ApplyToPoly(ref poly, aPresets);
+        presets.Items[presetIndex].ApplyToPoly(poly, aPresets);
         poly.MakePolyhedron();
     }
     
     public void PrevPreset()
     {
         presetIndex = (presetIndex - 1) % presets.Items.Count;
-        presets.Items[presetIndex].ApplyToPoly(ref poly, aPresets);
+        presets.Items[presetIndex].ApplyToPoly(poly, aPresets);
         poly.MakePolyhedron();
     }
 
