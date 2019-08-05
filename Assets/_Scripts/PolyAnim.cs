@@ -57,6 +57,7 @@ public class PolyAnim : MonoBehaviour
                         .Select((val, index) => (Vector3) val - (Vector3) polyList[i-1].mesh.tangents[index]).ToArray()
                 );
             }
+            polyList[i].gameObject.SetActive(false);
         }
         meshList.Add(mesh);  // Add the final finished mesh
         sm.sharedMesh = meshList[0];
