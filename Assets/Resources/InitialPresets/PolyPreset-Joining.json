@@ -1,0 +1,21 @@
+{
+  "Name": "Joining",
+  "ShapeType": "Uniform",
+  "PolyType": 27,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 10,
+  "PrismQ": 10,
+  "AppearancePresetName": "Rich",
+  "Ops": [
+    {
+      "OpType": "Chamfer",
+      "FaceSelections": "All",
+      "Amount": 0.333333343,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}
