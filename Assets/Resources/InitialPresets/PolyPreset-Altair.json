@@ -4,7 +4,7 @@
   "PolyType": 0,
   "JohnsonPolyType": 0,
   "BypassOps": false,
-  "TwoSided": false,
+  "TwoSided": true,
   "GridType": "Square",
   "PrismP": 0,
   "PrismQ": 0,

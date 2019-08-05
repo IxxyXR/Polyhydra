@@ -7,8 +7,8 @@
   "TwoSided": true,
   "GridType": "Square",
   "PrismP": 5,
-  "PrismQ": 3,
-  "AppearancePresetName": "Spectrum",
+  "PrismQ": 5,
+  "AppearancePresetName": "Gray and Colorful",
   "Ops": [
     {
       "OpType": "Extrude",
