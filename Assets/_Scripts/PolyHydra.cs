@@ -702,7 +702,7 @@ public class PolyHydra : MonoBehaviour {
 		return conway;
 	}
 
-	private void ApplyOps()
+	public void ApplyOps()
 	{
 		
 		var cacheKeySource = $"{ShapeType} {JohnsonPolyType} {UniformPolyType} {PrismP} {PrismQ} {GridType} {TwoSided}";
@@ -998,7 +998,8 @@ public class PolyHydra : MonoBehaviour {
 		target.colors32 = meshColors.ToArray();
 		target.uv = meshUVs.ToArray();
 		target.uv2 = edgeUVs.ToArray();
-		
+		target.uv3 = Enumerable.Range(0, meshVertices.Count).Select(i => new Vector2((float)i/meshVertices.Count, meshVertices.Count)).ToArray();
+
 		if (hasNaked || forceTwosided) {
 			target.RecalculateNormals();
 		}
