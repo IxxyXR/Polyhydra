@@ -12,16 +12,16 @@ public class PolyPresets : MonoBehaviour {
 	public AppearancePresets APresets; 
 	public List<PolyPreset> Items;
 
-	public PolyPreset ApplyPresetToPoly(int presetIndex)
+	public PolyPreset ApplyPresetToPoly(int presetIndex, bool loadMatchingAppearance)
 	{
 		var preset = Items[presetIndex];
-		ApplyPresetToPoly(preset);
+		ApplyPresetToPoly(preset, loadMatchingAppearance);
 		return preset;
 	}
 
-	public void ApplyPresetToPoly(PolyPreset preset)
+	public void ApplyPresetToPoly(PolyPreset preset, bool loadMatchingAppearance)
 	{
-		preset.ApplyToPoly(_poly, APresets);
+		preset.ApplyToPoly(_poly, APresets, loadMatchingAppearance);
 	}
 
 	public void AddPresetFromPoly(string presetName)

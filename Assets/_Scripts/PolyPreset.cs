@@ -62,7 +62,7 @@ public class PolyPreset {
 		}
 	}
 
-	public void ApplyToPoly(PolyHydra poly, AppearancePresets aPresets)
+	public void ApplyToPoly(PolyHydra poly, AppearancePresets aPresets, bool loadMatchingAppearance=true)
 	{
 		poly.ShapeType = ShapeType;
 		poly.UniformPolyType = PolyType;
@@ -88,8 +88,8 @@ public class PolyPreset {
 			};
 			poly.ConwayOperators.Add(op);
 		}
-
-		aPresets.ApplyPresetToPoly(AppearancePresetName);
+		
+		if (loadMatchingAppearance) aPresets.ApplyPresetToPoly(AppearancePresetName);
 
 	}
 

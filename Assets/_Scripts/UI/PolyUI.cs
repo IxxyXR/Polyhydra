@@ -39,6 +39,7 @@ public class PolyUI : MonoBehaviour {
     public Dropdown GridTypeDropdown;
     public InputField PrismPInput;
     public InputField PrismQInput;
+    public Toggle LoadMatchingAppearanceToggle;
     public Button SavePresetButton;
     public Button ResetPresetsButton;
     public Button OpenPresetsFolderButton;
@@ -489,7 +490,7 @@ public class PolyUI : MonoBehaviour {
         if (Int32.TryParse(EventSystem.current.currentSelectedGameObject.name, out buttonIndex))
         {
             _shouldReBuild = false;
-            var preset = Presets.ApplyPresetToPoly(buttonIndex);
+            var preset = Presets.ApplyPresetToPoly(buttonIndex, LoadMatchingAppearanceToggle.isOn);
             PresetNameInput.text = preset.Name;
             AppearancePresetNameText.text = poly.APresetName;
             InitUI();
