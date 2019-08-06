@@ -16,6 +16,8 @@ namespace DragRotation
 		/// </summary>
 		public new UnityEngine.Rigidbody rigidbody;
 
+		public Vector3 InitialAngularVelocity = new Vector3(0.2f, -0.3f, 0.1f);
+
 		/// <summary>
 		/// The input state of the object, when true this item is being dragged
 		/// </summary>
@@ -44,7 +46,7 @@ namespace DragRotation
 
 		void Start()
 		{
-			rigidbody.angularVelocity = new Vector3(0.2f, -0.3f, 0.1f);
+			rigidbody.angularVelocity = InitialAngularVelocity;
 		}
 
 		#region Update

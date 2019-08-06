@@ -25,14 +25,17 @@ public class PolyVFX : MonoBehaviour
     
     public bool wythoffOnly;
     public PolyHydra polyhydra;
+    public Transform RotationParent;
     
     void Start()
     {
+        _vfx = gameObject.GetComponent<VisualEffect>();
         UpdatePolyVFX();
     }
 
     void Update()
     {
+        _vfx.SetVector3("Rotation Angle", RotationParent.localEulerAngles);
         if (ContinuousUpdate)
         {
             UpdatePolyVFX();
@@ -104,7 +107,6 @@ public class PolyVFX : MonoBehaviour
 
     public void UpdateConwayVFX()
     {
-        _vfx = gameObject.GetComponent<VisualEffect>();
         polyhydra.DisableInteractiveFlags();
         polyhydra.MakePolyhedron();
         
