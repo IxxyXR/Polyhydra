@@ -1,0 +1,42 @@
+{
+  "Name": "Lampwork",
+  "ShapeType": "Uniform",
+  "PolyType": 18,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Spectrum",
+  "Ops": [
+    {
+      "OpType": "Gyro",
+      "FaceSelections": "All",
+      "Amount": 0.3333333,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Loft",
+      "FaceSelections": "All",
+      "Amount": 0.5,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "All",
+      "Amount": -0.08,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "All",
+      "Amount": -0.03,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

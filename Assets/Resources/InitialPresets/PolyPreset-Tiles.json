@@ -1,0 +1,35 @@
+{
+  "Name": "Tiles",
+  "ShapeType": "Uniform",
+  "PolyType": 11,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Grooves",
+  "Ops": [
+    {
+      "OpType": "Stake",
+      "FaceSelections": "All",
+      "Amount": 0.33,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Lace",
+      "FaceSelections": "All",
+      "Amount": 0.33,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceRotate",
+      "FaceSelections": "All",
+      "Amount": 1.0,
+      "Randomize": false,
+      "Disabled": true
+    }
+  ]
+}

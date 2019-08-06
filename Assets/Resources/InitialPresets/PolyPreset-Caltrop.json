@@ -1,0 +1,28 @@
+{
+  "Name": "Caltrop",
+  "ShapeType": "Uniform",
+  "PolyType": 41,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 5,
+  "PrismQ": 3,
+  "AppearancePresetName": "Subtle",
+  "Ops": [
+    {
+      "OpType": "Kis",
+      "FaceSelections": "All",
+      "Amount": 1.39,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "All",
+      "Amount": -0.47,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

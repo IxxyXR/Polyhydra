@@ -1,0 +1,49 @@
+{
+  "Name": "Devi",
+  "ShapeType": "Uniform",
+  "PolyType": 49,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Gray and Colorful",
+  "Ops": [
+    {
+      "OpType": "Loft",
+      "FaceSelections": "All",
+      "Amount": 0.725,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Dual",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": true
+    },
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "All",
+      "Amount": -0.1,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceRotate",
+      "FaceSelections": "ThreeSided",
+      "Amount": 20.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "All",
+      "Amount": 0.1,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

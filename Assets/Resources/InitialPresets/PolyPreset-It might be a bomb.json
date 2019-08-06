@@ -1,0 +1,35 @@
+{
+  "Name": "It might be a bomb",
+  "ShapeType": "Uniform",
+  "PolyType": 18,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "RGB",
+  "Ops": [
+    {
+      "OpType": "Kis",
+      "FaceSelections": "ThreeSided",
+      "Amount": 3.78180861,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Ortho",
+      "FaceSelections": "All",
+      "Amount": -3.25,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Bevel",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

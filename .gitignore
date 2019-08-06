@@ -44,3 +44,9 @@ Assets/Plugins/Editor/JetBrains*
 Assets/3rd Party Optional*
 ProjectSettings\FbxExportSettings.asset
 *.log
+Assets/Oculus/
+Assets/Holoplay/
+Assets/Oculus.meta
+Assets/HDRP Sample Content*
+Assets/Samples/*
+Assets/_Exported Meshes*

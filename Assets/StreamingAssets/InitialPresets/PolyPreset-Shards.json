@@ -1,1 +1,0 @@
-{"Name":"Shards","PolyType":"Grid","BypassOps":false,"TwoSided":true,"GridType":"Hex","PrismP":0,"PrismQ":0,"AppearancePresetName":"Subtle","Ops":[{"OpType":"Expand","FaceSelections":"All","Amount":0.3,"Randomize":false,"Disabled":false},{"OpType":"Snub","FaceSelections":"SixSided","Amount":-0.40625,"Randomize":false,"Disabled":false}]}

@@ -1,0 +1,42 @@
+{
+  "Name": "Bismuth",
+  "ShapeType": "Uniform",
+  "PolyType": 19,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Gray and Colorful",
+  "Ops": [
+    {
+      "OpType": "Propeller",
+      "FaceSelections": "All",
+      "Amount": 0.3333333,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Dual",
+      "FaceSelections": "All",
+      "Amount": 0.1,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Canonicalize",
+      "FaceSelections": "All",
+      "Amount": 0.06,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "All",
+      "Amount": -0.06,
+      "Randomize": false,
+      "Disabled": true
+    }
+  ]
+}

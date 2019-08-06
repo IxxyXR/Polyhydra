@@ -1,0 +1,28 @@
+{
+  "Name": "Candyhedron",
+  "ShapeType": "Uniform",
+  "PolyType": 28,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Subtle",
+  "Ops": [
+    {
+      "OpType": "Yank",
+      "FaceSelections": "All",
+      "Amount": 2.25,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Exalt",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

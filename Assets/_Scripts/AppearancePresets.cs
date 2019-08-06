@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class AppearancePresets : MonoBehaviour {
 	
 	public PolyHydra _poly;
 	public Camera CurrentCamera;
 	public GameObject LightsParent;
+	public Volume Volume;
 	public List<AppearancePreset> Items;
+	public int editorPresetIndex;
 	
 	private const string PresetFileNamePrefix = "AppearancePreset-";
 	
@@ -35,9 +38,20 @@ public class AppearancePresets : MonoBehaviour {
 
 	public void ApplyPresetToPoly(AppearancePreset preset)
 	{
-		preset.ApplyToPoly(ref _poly, LightsParent, CurrentCamera);
+		preset.ApplyToPoly(ref _poly, LightsParent, Volume, CurrentCamera);
 	}
 
-
-
+	[ContextMenu("Current preset")]
+	public void ApplyPresetAtRuntime()
+	{
+		ApplyPresetToPoly(editorPresetIndex);
+	}
+	
+	[ContextMenu("Next preset")]
+	public void CyclePresetAtRuntime()
+	{
+		ApplyPresetToPoly(editorPresetIndex);
+		editorPresetIndex++;
+		editorPresetIndex %= Items.Count;
+	}
 }

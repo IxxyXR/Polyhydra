@@ -1,0 +1,49 @@
+{
+  "Name": "Pentalattice",
+  "ShapeType": "Uniform",
+  "PolyType": 39,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Spectrum",
+  "Ops": [
+    {
+      "OpType": "Dual",
+      "FaceSelections": "All",
+      "Amount": 1.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Gyro",
+      "FaceSelections": "All",
+      "Amount": 0.5,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Canonicalize",
+      "FaceSelections": "All",
+      "Amount": 0.0001,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Loft",
+      "FaceSelections": "All",
+      "Amount": 0.34375,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceRemove",
+      "FaceSelections": "FiveSided",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

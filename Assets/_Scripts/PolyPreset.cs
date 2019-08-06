@@ -9,8 +9,11 @@ using Newtonsoft.Json.Converters;
 public class PolyPreset {
 
 	public string Name;
+
 	[JsonConverter(typeof(StringEnumConverter))]
+	public PolyHydra.ShapeTypes ShapeType;
 	public PolyTypes PolyType;
+	public PolyHydra.JohnsonPolyTypes JohnsonPolyType;
 	public bool BypassOps;
 	public bool TwoSided;
 	[JsonConverter(typeof(StringEnumConverter))]
@@ -34,7 +37,9 @@ public class PolyPreset {
 	{
 		Name = presetName;
 		AppearancePresetName = poly.APresetName;
-		PolyType = poly.PolyType;
+		ShapeType = poly.ShapeType;
+		PolyType = poly.UniformPolyType;
+		JohnsonPolyType = poly.JohnsonPolyType;
 		GridType = poly.GridType;
 		BypassOps = poly.BypassOps;
 		PrismP = poly.PrismP;
@@ -57,9 +62,11 @@ public class PolyPreset {
 		}
 	}
 
-	public void ApplyToPoly(ref PolyHydra poly, AppearancePresets aPresets)
+	public void ApplyToPoly(PolyHydra poly, AppearancePresets aPresets, bool loadMatchingAppearance=true)
 	{
-		poly.PolyType = PolyType;
+		poly.ShapeType = ShapeType;
+		poly.UniformPolyType = PolyType;
+		poly.JohnsonPolyType = JohnsonPolyType;
 		poly.BypassOps = BypassOps;
 		poly.TwoSided = TwoSided;
 		poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();
@@ -67,8 +74,7 @@ public class PolyPreset {
 		poly.PrismP = PrismP;
 		poly.PrismQ = PrismQ;
 		poly.PresetName = Name;
-		aPresets.ApplyPresetToPoly(AppearancePresetName);
-		
+
 		for (var index = 0; index < Ops.Length; index++)
 		{
 			var presetOp = Ops[index];
@@ -82,6 +88,9 @@ public class PolyPreset {
 			};
 			poly.ConwayOperators.Add(op);
 		}
+		
+		if (loadMatchingAppearance) aPresets.ApplyPresetToPoly(AppearancePresetName);
+
 	}
-    
+
 }

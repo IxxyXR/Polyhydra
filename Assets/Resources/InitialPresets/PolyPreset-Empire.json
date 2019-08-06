@@ -1,0 +1,28 @@
+{
+  "Name": "Empire",
+  "ShapeType": "Uniform",
+  "PolyType": 14,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 5,
+  "PrismQ": 5,
+  "AppearancePresetName": "Gray and Colorful",
+  "Ops": [
+    {
+      "OpType": "EdgeMedial",
+      "FaceSelections": "All",
+      "Amount": 2.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceRemove",
+      "FaceSelections": "New",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

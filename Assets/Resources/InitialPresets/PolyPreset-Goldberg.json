@@ -1,0 +1,63 @@
+{
+  "Name": "Goldberg",
+  "ShapeType": "Uniform",
+  "PolyType": 0,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 5,
+  "PrismQ": 2,
+  "AppearancePresetName": "Gem",
+  "Ops": [
+    {
+      "OpType": "Subdivide",
+      "FaceSelections": "All",
+      "Amount": 0.05,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Dual",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "All",
+      "Amount": 0.0001,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Truncate",
+      "FaceSelections": "All",
+      "Amount": 1.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "SixSided",
+      "Amount": -0.1,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "EightSided",
+      "Amount": -0.05,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "FourSided",
+      "Amount": -0.05,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

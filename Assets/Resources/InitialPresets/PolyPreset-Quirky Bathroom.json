@@ -1,0 +1,28 @@
+{
+  "Name": "Quirky Bathroom",
+  "ShapeType": "Uniform",
+  "PolyType": 0,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Flat",
+  "Ops": [
+    {
+      "OpType": "Gyro",
+      "FaceSelections": "All",
+      "Amount": 0.333333343,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Lace",
+      "FaceSelections": "All",
+      "Amount": 0.5,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

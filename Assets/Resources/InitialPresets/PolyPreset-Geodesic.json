@@ -1,0 +1,35 @@
+{
+  "Name": "Geodesic",
+  "ShapeType": "Uniform",
+  "PolyType": 28,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": false,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Gem",
+  "Ops": [
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "All",
+      "Amount": -0.2,
+      "Randomize": false,
+      "Disabled": true
+    },
+    {
+      "OpType": "Yank",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Zip",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

@@ -8,6 +8,7 @@
         "launchAfterInstallation": true,
         "HideSendToUnityMenu": true,
         "BakeAnimation": true,
+        "showConvertToPrefabDialog": true,
         "integrationSavePath": "/Users/andybaker/Documents/Unity Projects/Polyhydra",
         "selectedDCCApp": 0,
         "prefabSavePaths": [
@@ -21,13 +22,18 @@
         "dccOptionNames": [],
         "dccOptionPaths": [],
         "exportModelSettingsSerialize": {
-            "exportFormat": 0,
+            "exportFormat": 1,
             "animatedSkinnedMesh": false,
             "mayaCompatibleNaming": true,
-            "include": 2,
+            "include": 0,
             "lodLevel": 0,
             "objectPosition": 0,
             "exportUnrendered": true
+        },
+        "convertToPrefabSettingsSerialize": {
+            "exportFormat": 0,
+            "animatedSkinnedMesh": false,
+            "mayaCompatibleNaming": true
         }
     }
 }

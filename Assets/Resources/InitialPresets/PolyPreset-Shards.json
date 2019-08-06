@@ -1,0 +1,28 @@
+{
+  "Name": "Shards",
+  "ShapeType": "Uniform",
+  "PolyType": 0,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Hex",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Subtle",
+  "Ops": [
+    {
+      "OpType": "Ambo",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Snub",
+      "FaceSelections": "SixSided",
+      "Amount": 0.5,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

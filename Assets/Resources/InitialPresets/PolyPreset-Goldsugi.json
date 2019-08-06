@@ -1,0 +1,63 @@
+{
+  "Name": "Goldsugi",
+  "ShapeType": "Uniform",
+  "PolyType": 28,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": false,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Gem",
+  "Ops": [
+    {
+      "OpType": "Subdivide",
+      "FaceSelections": "All",
+      "Amount": 0.05,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Dual",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "All",
+      "Amount": 0.0001,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Truncate",
+      "FaceSelections": "All",
+      "Amount": 1.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "SixSided",
+      "Amount": 0.01,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "EightSided",
+      "Amount": -0.05,
+      "Randomize": false,
+      "Disabled": true
+    },
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "FourSided",
+      "Amount": -0.05,
+      "Randomize": false,
+      "Disabled": true
+    }
+  ]
+}

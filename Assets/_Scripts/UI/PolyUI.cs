@@ -39,6 +39,7 @@ public class PolyUI : MonoBehaviour {
     public Dropdown GridTypeDropdown;
     public InputField PrismPInput;
     public InputField PrismQInput;
+    public Toggle LoadMatchingAppearanceToggle;
     public Button SavePresetButton;
     public Button ResetPresetsButton;
     public Button OpenPresetsFolderButton;
@@ -188,28 +189,7 @@ public class PolyUI : MonoBehaviour {
 
     void AddRandomOpButtonClicked()
     {
-        int maxOpIndex = Enum.GetValues(typeof(PolyHydra.Ops)).Length;
-        int opTypeIndex = Random.Range(1, maxOpIndex - 2); // No canonicalize as it's pretty rough at the moment
-        var opType = (PolyHydra.Ops) opTypeIndex;
-        var opConfig = poly.opconfigs[opType];
-        
-        ConwayPoly.FaceSelections faceSelection = ConwayPoly.FaceSelections.None;
-        var maxFaceSel = Enum.GetValues(typeof(ConwayPoly.FaceSelections)).Length - 1; // Exclude "None"
-        // Keep picking a random facesel until we get one that will have an effect
-        while (!poly.FaceSelectionIsValid(faceSelection))
-        {
-            faceSelection = (ConwayPoly.FaceSelections) Random.Range(1, maxFaceSel);
-        }
-        // TODO pick another facesel if all faces are chosen
-        var newOp = new PolyHydra.ConwayOperator
-        {
-            opType = opType,
-            faceSelections = Random.value > 0.25f ? 0: faceSelection,
-            randomize = Random.value > 0.8f,
-            amount = Random.value > 0.25f ? opConfig.amountDefault : Random.Range(opConfig.amountMin, opConfig.amountMax),
-            disabled = false
-        };
-        poly.ConwayOperators.Add(newOp);
+        var newOp = poly.AddRandomOp();
         AddOpItemToUI(newOp);
         Rebuild();        
     }
@@ -218,7 +198,7 @@ public class PolyUI : MonoBehaviour {
     {
         _shouldReBuild = false;
         TwoSidedToggle.isOn = poly.TwoSided;
-        BasePolyDropdown.value = (int)poly.PolyType;        
+        BasePolyDropdown.value = (int)poly.UniformPolyType;        
         GridTypeDropdown.value = (int)poly.GridType;
         PrismPInput.text = poly.PrismP.ToString();
         PrismQInput.text = poly.PrismQ.ToString();
@@ -450,7 +430,7 @@ public class PolyUI : MonoBehaviour {
 
     void BasePolyDropdownChanged(Dropdown change)
     {
-        poly.PolyType = (PolyTypes)change.value;
+        poly.UniformPolyType = (PolyTypes)change.value;
         Rebuild();
         
         if (poly.WythoffPoly!=null && poly.WythoffPoly.IsOneSided)
@@ -510,7 +490,7 @@ public class PolyUI : MonoBehaviour {
         if (Int32.TryParse(EventSystem.current.currentSelectedGameObject.name, out buttonIndex))
         {
             _shouldReBuild = false;
-            var preset = Presets.ApplyPresetToPoly(buttonIndex);
+            var preset = Presets.ApplyPresetToPoly(buttonIndex, LoadMatchingAppearanceToggle.isOn);
             PresetNameInput.text = preset.Name;
             AppearancePresetNameText.text = poly.APresetName;
             InitUI();
@@ -568,7 +548,8 @@ public class PolyUI : MonoBehaviour {
         public static void OpenPersistentDataFolder()
         {
             string path = Application.persistentDataPath.TrimEnd(new[]{'\\', '/'}); // Mac doesn't like trailing slash
-            Process.Start(path);
+            // TODO
+            //Process.Start(path);
         } 
     #endif
 

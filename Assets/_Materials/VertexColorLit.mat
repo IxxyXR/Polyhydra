@@ -8,14 +8,17 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: VertexColorLit
-  m_Shader: {fileID: 4800000, guid: a14e4e83bd62fde409676462e5ba2872, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 835f094342c084a17a3e0c56c06e5dd2,
+    type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    MotionVector: User
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:

@@ -1,0 +1,42 @@
+{
+  "Name": "Altair",
+  "ShapeType": "Uniform",
+  "PolyType": 0,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 0,
+  "PrismQ": 0,
+  "AppearancePresetName": "Flat",
+  "Ops": [
+    {
+      "OpType": "Truncate",
+      "FaceSelections": "FourSided",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "SixSided",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Quinto",
+      "FaceSelections": "All",
+      "Amount": 0.1,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Lace",
+      "FaceSelections": "All",
+      "Amount": 0.5,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}
