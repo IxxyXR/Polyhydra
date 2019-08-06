@@ -13,6 +13,8 @@ public class PolyVFX : MonoBehaviour
     private VisualEffect _vfx;    
     private Texture2D texture;
 
+    public bool ContinuousUpdate;
+
     public bool Randomize;
     public float RandomChangeFrequency = 5f;
 
@@ -27,6 +29,14 @@ public class PolyVFX : MonoBehaviour
     void Start()
     {
         UpdatePolyVFX();
+    }
+
+    void Update()
+    {
+        if (ContinuousUpdate)
+        {
+            UpdatePolyVFX();
+        }
     }
     
     public void UpdatePolyVFX()
