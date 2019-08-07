@@ -29,6 +29,7 @@ public class PolyHydra : MonoBehaviour {
 	[FormerlySerializedAs("PolyType")]
 	public ShapeTypes ShapeType;
 	public PolyTypes UniformPolyType;
+	public ColorMethods ColorMethod;
 	public JohnsonPolyTypes JohnsonPolyType;
 	public GridTypes GridType;
 	public string WythoffSymbol;
@@ -43,7 +44,11 @@ public class PolyHydra : MonoBehaviour {
 	public int PrismP = 5;
 	public int PrismQ = 2;
 	
-	public AppearancePreset.ColorMethods ColorMethod;
+	public enum ColorMethods
+	{
+		BySides,
+		ByRole
+	}
 
 	public enum ShapeTypes
 	{
@@ -232,6 +237,7 @@ public class PolyHydra : MonoBehaviour {
 	private MeshFilter meshFilter;
 	private PolyPreset previousState;
 
+	// TODO this is only needed to allow the editor script to get a reference to the UI method
 	public PolyUI polyUI;
 
 	private bool finishedOpsThread = true;
@@ -877,10 +883,10 @@ public class PolyHydra : MonoBehaviour {
 			Color32 color;
 			switch (ColorMethod)
 			{
-				case AppearancePreset.ColorMethods.ByRole:
+				case ColorMethods.ByRole:
 					color = faceColors[(int) _conwayPoly.FaceRoles[i]];
 					break;
-				case AppearancePreset.ColorMethods.BySides:
+				case ColorMethods.BySides:
 					color = faceColors[face.Sides % faceColors.Length];
 					break;
 				default:

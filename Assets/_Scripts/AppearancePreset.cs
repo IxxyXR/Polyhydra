@@ -8,15 +8,10 @@ using UnityEngine.Rendering.HighDefinition;
 [Serializable]
 public class AppearancePreset
 {
-    public enum ColorMethods
-    {
-        BySides,
-        ByRole
-    }
 
     public string Name;
     public Material PolyhedronMaterial;
-    public ColorMethods PolyhedronColorMethod;
+    public PolyHydra.ColorMethods PolyhedronColorMethod;
     public List<Light> ActiveLights;
     public VolumeProfile ActiveVolumeProfile;
     public HDAdditionalCameraData.ClearColorMode CameraClearColorMode;

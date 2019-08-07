@@ -1,0 +1,14 @@
+{
+    "name": "Conway",
+    "references": [
+        "GUID:2966947d9da5e4bd9bf8866de2387b85"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
