@@ -298,7 +298,7 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.Ortho, new OpConfig{usesAmount=false}},
 			{Ops.Meta, new OpConfig{usesFaces=true, amountDefault = 0.15f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Truncate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
-			{Ops.Gyro, new OpConfig{amountDefault = 0.33333333f, amountMin = -.5f, amountMax = 0.5f}},
+			{Ops.Gyro, new OpConfig{amountDefault = 0.33f, amountMin = -.5f, amountMax = 0.5f}},
 			{Ops.Snub, new OpConfig{amountDefault = 0.5f, amountMin = -.5f, amountMax = 0.5f}},
 			{Ops.Subdivide, new OpConfig {usesAmount=false}},
 			{Ops.Loft, new OpConfig {usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
@@ -312,16 +312,16 @@ public class PolyHydra : MonoBehaviour {
 //			{Ops.JoinedMedial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8}},
 			{Ops.Propeller, new OpConfig{amountDefault = 0.75f, amountMin = -4, amountMax = 4}},
 			{Ops.Whirl, new OpConfig{amountDefault = 0.25f, amountMin = -4, amountMax = 4}},
-			{Ops.Volute, new OpConfig{amountDefault = 0.33333333f, amountMin = -4, amountMax = 4}},
+			{Ops.Volute, new OpConfig{amountDefault = 0.33f, amountMin = -4, amountMax = 4}},
 			{Ops.Exalt, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
-			{Ops.Yank, new OpConfig{usesFaces=true, amountDefault = 0.33333333f, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.Yank, new OpConfig{usesFaces=true, amountDefault = 0.33f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			//{Ops.Chamfer new OpConfig{}},
 			{Ops.FaceOffset, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			//{Ops.Ribbon, new OpConfig{}},
 			{Ops.Extrude, new OpConfig{amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.VertexScale, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			//{Ops.FaceTranslate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6}},
-			{Ops.FaceScale, new OpConfig{usesFaces=true, amountDefault = -0.025f, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.FaceScale, new OpConfig{usesFaces=true, amountDefault = -0.03f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.FaceRotate, new OpConfig{usesFaces=true, amountDefault = 45f, amountMin = -180, amountMax = 180, usesRandomize=true}},
 //			{Ops.FaceRotateX, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180}},
 //			{Ops.FaceRotateY, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180}},
@@ -421,18 +421,33 @@ public class PolyHydra : MonoBehaviour {
 		#if UNITY_EDITOR
 			if (EditorApplication.isPlayingOrWillChangePlaymode) return;
 		#endif
-
-		for (var i = 0; i < ConwayOperators.Count; i++)
-		{
-			var op = ConwayOperators[i];
-			op.amount = Mathf.Round(op.amount * 100) / 100f;
-		}
-
-		if (PrismP < 3) PrismP = 3;
+		
+		if (PrismP < 3) {PrismP = 3;}
 		if (PrismP > 16) PrismP = 16;
 		if (PrismQ > PrismP - 2) PrismQ = PrismP - 2;
 		if (PrismQ < 2) PrismQ = 2;
+		
+		// Control the amount variables to some degree
+		for (var i = 0; i < ConwayOperators.Count; i++)
+		{
+			if (opconfigs == null) continue;
+			var op = ConwayOperators[i];
+			if (opconfigs[op.opType].usesAmount)
+			{
+				op.amount = Mathf.Round(op.amount * 100) / 100f;
+				float opMin = opconfigs[op.opType].amountMin;
+				float opMax = opconfigs[op.opType].amountMax;
+				if (op.amount < opMin) op.amount = opMin;
+				if (op.amount > opMax) op.amount = opMax;
+			}
+			else
+			{
+				op.amount = 0;
+			}
+		}
+		
 		Rebuild();
+
 	}
 
 	private void Rebuild()
