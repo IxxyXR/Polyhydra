@@ -251,7 +251,6 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.AmountSlider.minValue = opConfig.amountMin;
         opPrefabManager.AmountSlider.maxValue = opConfig.amountMax;
         opPrefabManager.AmountSlider.value = opConfig.amountDefault;
-
     }
 
     void AddOpItemToUI(PolyHydra.ConwayOperator op)
@@ -320,6 +319,7 @@ public class PolyUI : MonoBehaviour {
         //if (!poly.disableThreading && !poly.done) return;
         var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountSlider;
         var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountInput;
+        slider.value = Mathf.Round(slider.value * 100) / 100f;
         input.text = slider.value.ToString();
         // Not needed if we also modify the text field
         // OpsUIToPoly();
