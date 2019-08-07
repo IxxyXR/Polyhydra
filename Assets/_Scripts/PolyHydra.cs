@@ -419,7 +419,9 @@ public class PolyHydra : MonoBehaviour {
 	private void OnValidate()
 	{
 		#if UNITY_EDITOR
-			if (EditorApplication.isPlayingOrWillChangePlaymode) return;
+			// To prevent values getting out of sync
+			// ignore the inspector UI if we're showing the runtime UI
+			if (polyUI != null && EditorApplication.isPlayingOrWillChangePlaymode) return;
 		#endif
 		
 		if (PrismP < 3) {PrismP = 3;}
@@ -731,7 +733,7 @@ public class PolyHydra : MonoBehaviour {
 
 	public void ApplyOps()
 	{
-		
+
 		var cacheKeySource = $"{ShapeType} {JohnsonPolyType} {UniformPolyType} {PrismP} {PrismQ} {GridType} {TwoSided}";
 		
 		foreach (var op in ConwayOperators.ToList())

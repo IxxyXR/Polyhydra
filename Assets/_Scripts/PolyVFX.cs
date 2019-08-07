@@ -3,7 +3,6 @@ using System.Linq;
 using Conway;
 using UnityEngine;
 using UnityEngine.VFX;
-using static Conway.ConwayPoly;
 using Random = UnityEngine.Random;
 
 
@@ -57,8 +56,7 @@ public class PolyVFX : MonoBehaviour
     public void UpdateWythoffVFX()
     {
         _vfx = gameObject.GetComponent<VisualEffect>();
-        polyhydra.MakePolyhedron();
-        
+        //polyhydra.MakePolyhedron();
         var edges = polyhydra.WythoffPoly.Edges;
         texture = new Texture2D(edges.Length, 2, TextureFormat.RGBAFloat, false);
         texture.wrapMode = TextureWrapMode.Clamp;
@@ -107,8 +105,8 @@ public class PolyVFX : MonoBehaviour
 
     public void UpdateConwayVFX()
     {
-        polyhydra.DisableInteractiveFlags();
-        polyhydra.MakePolyhedron();
+        //polyhydra.DisableInteractiveFlags();
+        //polyhydra.MakePolyhedron();
         
         //var conwayPoly = new ConwayPoly(polyhydra.WythoffPoly).Stake(.3f, FaceSelections.All).Lace(.3f, FaceSelections.All);
         //edges = conwayPoly.Halfedges.GetUnique().ToArray();
