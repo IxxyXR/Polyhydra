@@ -421,7 +421,13 @@ public class PolyHydra : MonoBehaviour {
 		#if UNITY_EDITOR
 			if (EditorApplication.isPlayingOrWillChangePlaymode) return;
 		#endif
-		
+
+		for (var i = 0; i < ConwayOperators.Count; i++)
+		{
+			var op = ConwayOperators[i];
+			op.amount = Mathf.Round(op.amount * 100) / 100f;
+		}
+
 		if (PrismP < 3) PrismP = 3;
 		if (PrismP > 16) PrismP = 16;
 		if (PrismQ > PrismP - 2) PrismQ = PrismP - 2;
