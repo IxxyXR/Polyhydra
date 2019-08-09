@@ -1,19 +1,25 @@
 ﻿using System;
+using System.Linq;
 using Conway;
+using UnityEditor;
 using UnityEngine;
 using Wythoff;
 
 public class VisualUi : MonoBehaviour
 {
     public PolyHydra PolyPrefab;
-    public GameObject Centerpoint;
-    private int CurrentPage = 0;
+    public PolyHydra MasterPoly;
+    private int CurrentPolyPage = 0;
+    private int CurrentOpPage = 0;
     private int NumPolyPages;
     private int NumOpPages;
-    private int LastPolyIndex;
-    private int LastOpIndex;
     public float radius = 2.2f;
     public int ItemsPerPage = 12;
+
+    public int FirstValidPoly;
+    public int LastValidPoly;
+    public int FirstValidOp;
+    public int LastValidOp;
 
     public enum Menus
     {
@@ -27,11 +33,9 @@ public class VisualUi : MonoBehaviour
 
     void Start()
     {
-        LastPolyIndex = Uniform.Uniforms.Length;
-        LastOpIndex = Enum.GetValues(typeof(PolyHydra.Ops)).Length;
-        NumPolyPages = LastPolyIndex / ItemsPerPage;
-        NumOpPages = LastOpIndex / ItemsPerPage;
-        RecreatePivot();
+        NumPolyPages = Mathf.CeilToInt((LastValidPoly - FirstValidPoly) / (float)ItemsPerPage);
+        NumOpPages = Mathf.CeilToInt((LastValidOp - FirstValidOp) / (float)ItemsPerPage);
+        ShowUniformMenu();
     }
 
     void RecreatePivot()
@@ -41,7 +45,7 @@ public class VisualUi : MonoBehaviour
             Destroy(_pivot);
         }
         _pivot = new GameObject();
-        _pivot.transform.parent = Centerpoint.transform;
+        _pivot.transform.parent = MasterPoly.transform;
         _pivot.name = "MenuPivot";
     }
 
@@ -54,22 +58,19 @@ public class VisualUi : MonoBehaviour
     {
         ClearMenu();
 
-        int firstIndex = CurrentPage * ItemsPerPage;
+        int firstIndex = CurrentOpPage * ItemsPerPage + FirstValidOp;
         int lastIndex = firstIndex + ItemsPerPage - 1;
-        lastIndex = Math.Min(lastIndex, LastOpIndex);
-        Debug.Log($"Page: {CurrentPage} firstIndex: {firstIndex} lastIndex: {lastIndex}");
+        lastIndex = Math.Min(lastIndex, LastValidOp);
         for (int i = firstIndex; i <= lastIndex; i++)
         {
             float x = Mathf.Sin(((i - firstIndex) / (float)ItemsPerPage) * Mathf.PI * 2) * radius;
             float y = Mathf.Cos(((i - firstIndex) / (float)ItemsPerPage) * Mathf.PI * 2) * radius;
-//            Debug.Log($"{i}: {x},{y}");
             GameObject copy = Instantiate(PolyPrefab.gameObject, new Vector3(x, y, 0), Quaternion.identity, _pivot.transform);
             copy.transform.localScale = Vector3.one / 2f;
             var copyPoly = copy.GetComponent<PolyHydra>();
             //copyPoly.ConwayOperators.Clear();
             var opType = (PolyHydra.Ops) i;
-
-            var newOp = new PolyHydra.ConwayOperator()
+            var newOp = new PolyHydra.ConwayOperator
             {
                 opType = opType,
                 faceSelections = ConwayPoly.FaceSelections.All,
@@ -85,10 +86,9 @@ public class VisualUi : MonoBehaviour
     void ShowUniformMenu()
     {
         ClearMenu();
-        int firstIndex = CurrentPage * ItemsPerPage;
+        int firstIndex = (CurrentPolyPage * ItemsPerPage) + FirstValidPoly;
         int lastIndex = firstIndex + ItemsPerPage - 1;
-        lastIndex = Math.Min(lastIndex, LastPolyIndex);
-        Debug.Log($"Page: {CurrentPage} firstIndex: {firstIndex} lastIndex: {lastIndex}");
+        lastIndex = Math.Min(lastIndex, LastValidPoly);
         for (int i = firstIndex; i <= lastIndex; i++)
         {
             float x = Mathf.Sin(((i - firstIndex) / (float)ItemsPerPage) * Mathf.PI * 2) * radius;
@@ -109,7 +109,7 @@ public class VisualUi : MonoBehaviour
 
     void Update()
     {
-        if (_pivot != null) _pivot.transform.Rotate(0, .1f, 0);
+        if (_pivot != null) _pivot.transform.Rotate(0, 0, .1f);
         if (Input.GetKeyDown(KeyCode.P))
         {
             ChangeMenu(-1);
@@ -145,17 +145,59 @@ public class VisualUi : MonoBehaviour
 
     private void ChangePage(int direction)
     {
-        CurrentPage += direction;
         switch (CurrentMenu)
         {
             case Menus.Ops:
-                CurrentPage %= NumOpPages;
+                CurrentOpPage += direction;
+                CurrentOpPage %= NumOpPages;
                 ShowConwayMenu();
                 break;
             case Menus.Polys:
-                CurrentPage %= NumPolyPages;
+                CurrentPolyPage += direction;
+                CurrentPolyPage %= NumPolyPages;
                 ShowUniformMenu();
                 break;
         }
     }
+
+    public void MenuItemClicked(PolyHydra clickedPoly)
+    {
+        switch (CurrentMenu)
+        {
+            case Menus.Ops:
+                MasterPoly.ConwayOperators.Add(clickedPoly.ConwayOperators.Last());
+                MasterPoly.MakePolyhedron();
+                break;
+            case Menus.Polys:
+                MasterPoly.UniformPolyType = clickedPoly.UniformPolyType;
+                MasterPoly.MakePolyhedron();
+                break;
+        }
+    }
+
+    public void MenuItemMouseEnter()
+    {
+        Cursor.SetCursor(Texture2D.whiteTexture, Vector2.zero, CursorMode.Auto);
+    }
+
+    public void MenuItemMouseExit()
+    {
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+    }
+
+    #if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if (_pivot == null) return;
+        foreach (Transform child in _pivot.transform)
+        {
+            var poly = child.gameObject.GetComponent<PolyHydra>();
+            Handles.Label(child.position + new Vector3(0, .15f, 0), poly.UniformPolyType.ToString());
+            if (poly.ConwayOperators.Count==0) continue;
+            var lastOp = poly.ConwayOperators.Last();
+            Handles.Label(child.position + new Vector3(0, -.15f, 0), lastOp.opType.ToString());
+        }
+    }
+    #endif
+
 }

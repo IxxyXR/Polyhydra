@@ -121,7 +121,6 @@ public class PolyHydra : MonoBehaviour {
 		Volute,
 		Exalt,
 		Yank,
-		Offset,
 		Extrude,
 		VertexScale,
 		FaceOffset,

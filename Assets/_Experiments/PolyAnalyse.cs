@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using UnityEngine;
-using Wythoff;
 
 public class PolyDataItem 
 {
@@ -76,7 +73,7 @@ public class PolyAnalyse : MonoBehaviour
         }
         
         currentOpType++;
-        if (currentOpType == PolyHydra.Ops.Offset)
+        if (currentOpType == PolyHydra.Ops.Extrude)
         {
             CancelInvoke();
         }
