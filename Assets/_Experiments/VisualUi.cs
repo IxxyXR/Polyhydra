@@ -25,8 +25,6 @@ public class VisualUi : MonoBehaviour
     private int NumPolyPages;
     private int NumOpPages;
 
-
-
     public enum Menus
     {
         Polys,
@@ -103,8 +101,9 @@ public class VisualUi : MonoBehaviour
 
         for (int i = firstIndex; i <= lastIndex; i++)
         {
-            float x = Mathf.Sin(((i - firstIndex) / (float)ItemsPerPage) * Mathf.PI * 2) * radius;
-            float z = Mathf.Cos(((i - firstIndex) / (float)ItemsPerPage) * Mathf.PI * 2) * radius;
+            var offset = _pivot.transform.eulerAngles.y * Mathf.Deg2Rad;
+            float x = Mathf.Sin((i - firstIndex + offset) / ItemsPerPage * Mathf.PI * 2) * radius;
+            float z = Mathf.Cos((i - firstIndex + offset) / ItemsPerPage * Mathf.PI * 2) * radius;
             GameObject copy = Instantiate(PolyPrefab.gameObject, new Vector3(x, 0, z), Quaternion.identity, _pivot.transform);
             copy.transform.localScale = Vector3.one * scale;
             var copyPoly = copy.GetComponent<PolyHydra>();
@@ -138,8 +137,9 @@ public class VisualUi : MonoBehaviour
 
         for (int i = firstIndex; i <= lastIndex; i++)
         {
-            float x = Mathf.Sin(((i - firstIndex) / (float)ItemsPerPage) * Mathf.PI * 2) * radius;
-            float z = Mathf.Cos(((i - firstIndex) / (float)ItemsPerPage) * Mathf.PI * 2) * radius;
+            var offset = _pivot.transform.eulerAngles.y * Mathf.Deg2Rad;
+            float x = Mathf.Sin((i - firstIndex + offset) / ItemsPerPage * Mathf.PI * 2) * radius;
+            float z = Mathf.Cos((i - firstIndex + offset) / ItemsPerPage * Mathf.PI * 2) * radius;
             GameObject copy = Instantiate(PolyPrefab.gameObject, new Vector3(x, 0, z), Quaternion.identity, _pivot.transform);
             copy.transform.localScale = Vector3.one / 2f;
             var copyPoly = copy.GetComponent<PolyHydra>();
