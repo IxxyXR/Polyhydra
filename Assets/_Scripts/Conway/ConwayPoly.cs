@@ -745,7 +745,7 @@ namespace Conway
 				}
 			}
 
-			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);;
 		}
 
 		public ConwayPoly Gyro(float ratio = 0.3333f)

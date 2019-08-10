@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
-using Random = UnityEngine.Random;
 #if UNITY_EDITOR
     using UnityEditor;
 #endif
@@ -176,7 +175,7 @@ public class PolyUI : MonoBehaviour {
 
     void Rebuild()
     {
-        if (_shouldReBuild) poly.MakePolyhedron();
+        if (_shouldReBuild) poly.Rebuild();
     }
 
     void AddOpButtonClicked()
@@ -495,7 +494,7 @@ public class PolyUI : MonoBehaviour {
             AppearancePresetNameText.text = poly.APresetName;
             InitUI();
             _shouldReBuild = true;
-            poly.MakePolyhedron();
+            poly.Rebuild();
         }
         else
         {

@@ -38,21 +38,21 @@ public class LookingGlassUI : MonoBehaviour {
     public void NextPreset()
     {
         presetIndex = (presetIndex + 1) % presets.Items.Count;
-        presets.Items[presetIndex].ApplyToPoly(poly, aPresets);
-        poly.MakePolyhedron();
+        presets.Items[presetIndex].ApplyToPoly(poly, aPresets, true);
+        poly.Rebuild();
     }
     
     public void PrevPreset()
     {
         presetIndex = (presetIndex - 1) % presets.Items.Count;
-        presets.Items[presetIndex].ApplyToPoly(poly, aPresets);
-        poly.MakePolyhedron();
+        presets.Items[presetIndex].ApplyToPoly(poly, aPresets, true);
+        poly.Rebuild();
     }
 
     public void ClearOps()
     {
         poly.ConwayOperators.Clear();
-        poly.MakePolyhedron();
+        poly.Rebuild();
     }
 
     public void RandomizePolyhedra()
@@ -74,7 +74,7 @@ public class LookingGlassUI : MonoBehaviour {
                 }
             }
         }
-        poly.MakePolyhedron();
+        poly.Rebuild();
         aPresets.ApplyPresetToPoly(Random.Range(0, aPresets.Items.Count));
     }   
 }

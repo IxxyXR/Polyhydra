@@ -114,7 +114,7 @@ public class PolyVFX : MonoBehaviour
         if (polyhydra._conwayPoly == null || polyhydra.ConwayOperators.Count < 1)
         {
             polyhydra.ConwayOperators.Add(new PolyHydra.ConwayOperator(){opType = PolyHydra.Ops.Identity});
-            polyhydra.MakePolyhedron();
+            polyhydra.Rebuild();
         }
         var edges = polyhydra._conwayPoly.Halfedges.GetUnique().ToArray();
         

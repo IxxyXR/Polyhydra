@@ -42,10 +42,7 @@ namespace Conway
             return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
         }
 
-        static int ActualMod(int x, int m) // Fuck C# deciding that mod isn't actually mod
-        {
-            return (x % m + m) % m;
-        }
+
 
         public static ConwayPoly MakeCupola(int sides, float height, bool bi=false)
         {
@@ -102,8 +99,8 @@ namespace Conway
                 {
                     var side1 = new List<Vertex>
                     {
-                        middleVerts[ActualMod(i * 2 - 1, sides * 2)],
-                        middleVerts[ActualMod(i * 2, sides * 2)],
+                        middleVerts[PolyUtils.ActualMod(i * 2 - 1, sides * 2)],
+                        middleVerts[PolyUtils.ActualMod(i * 2, sides * 2)],
                         edge2.Vertex
                     };
                     poly.Faces.Add(side1);
@@ -111,8 +108,8 @@ namespace Conway
 
                     var side2 = new List<Vertex>
                     {
-                        middleVerts[ActualMod(i * 2, sides * 2)],
-                        middleVerts[ActualMod(i * 2 + 1, sides * 2)],
+                        middleVerts[PolyUtils.ActualMod(i * 2, sides * 2)],
+                        middleVerts[PolyUtils.ActualMod(i * 2 + 1, sides * 2)],
                         edge2.Next.Vertex,
                         edge2.Vertex,
                     };

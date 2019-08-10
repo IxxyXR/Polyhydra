@@ -1,25 +1,31 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using Conway;
 using UnityEditor;
 using UnityEngine;
-using Wythoff;
 
 public class VisualUi : MonoBehaviour
 {
     public PolyHydra PolyPrefab;
     public PolyHydra MasterPoly;
-    private int CurrentPolyPage = 0;
-    private int CurrentOpPage = 0;
-    private int NumPolyPages;
-    private int NumOpPages;
+    public Transform CenterPivot;
     public float radius = 2.2f;
+    public float scale = 0.5f;
     public int ItemsPerPage = 12;
-
     public int FirstValidPoly;
     public int LastValidPoly;
     public int FirstValidOp;
     public int LastValidOp;
+    public Material TransitionMaterial;
+    public float transitionSpeed = 0.2f;
+
+    private int CurrentPolyPage;
+    private int CurrentOpPage;
+    private int NumPolyPages;
+    private int NumOpPages;
+
+
 
     public enum Menus
     {
@@ -35,23 +41,54 @@ public class VisualUi : MonoBehaviour
     {
         NumPolyPages = Mathf.CeilToInt((LastValidPoly - FirstValidPoly) / (float)ItemsPerPage);
         NumOpPages = Mathf.CeilToInt((LastValidOp - FirstValidOp) / (float)ItemsPerPage);
+        CreatePivot();
         ShowUniformMenu();
     }
 
-    void RecreatePivot()
+    void CreatePivot()
     {
         if (_pivot != null)
         {
             Destroy(_pivot);
         }
         _pivot = new GameObject();
-        _pivot.transform.parent = MasterPoly.transform;
+        _pivot.transform.parent = CenterPivot;
         _pivot.name = "MenuPivot";
     }
 
     void ClearMenu()
     {
-        RecreatePivot();
+        if (_pivot == null) return;
+        foreach (Transform child in _pivot.transform)
+        {
+            var mr = child.gameObject.GetComponent<MeshRenderer>();
+            mr.material = TransitionMaterial;
+            IEnumerator coroutine = TransitionOut(mr, 10, transitionSpeed);
+            StartCoroutine(coroutine);
+        }
+//        RecreatePivot();
+    }
+
+    IEnumerator TransitionIn(MeshRenderer mr, float limit, float step, Material originalMaterial)
+    {
+        for (float i = limit; i > 0; i -= step)
+        {
+            mr.material.SetFloat("_amount", i);
+            yield return null;
+        }
+        mr.gameObject.SetActive(false);
+        mr.material = originalMaterial;
+    }
+
+    IEnumerator TransitionOut(MeshRenderer mr, float limit, float step)
+    {
+        for (float i = 0; i < limit; i += step)
+        {
+            mr.material.SetFloat("_amount", i);
+            yield return null;
+        }
+        mr.gameObject.SetActive(false);
+        Destroy(mr.gameObject);
     }
 
     void ShowConwayMenu()
@@ -61,14 +98,17 @@ public class VisualUi : MonoBehaviour
         int firstIndex = CurrentOpPage * ItemsPerPage + FirstValidOp;
         int lastIndex = firstIndex + ItemsPerPage - 1;
         lastIndex = Math.Min(lastIndex, LastValidOp);
+
+        string polyJson = MasterPoly.PolyToJson();
+
         for (int i = firstIndex; i <= lastIndex; i++)
         {
             float x = Mathf.Sin(((i - firstIndex) / (float)ItemsPerPage) * Mathf.PI * 2) * radius;
-            float y = Mathf.Cos(((i - firstIndex) / (float)ItemsPerPage) * Mathf.PI * 2) * radius;
-            GameObject copy = Instantiate(PolyPrefab.gameObject, new Vector3(x, y, 0), Quaternion.identity, _pivot.transform);
-            copy.transform.localScale = Vector3.one / 2f;
+            float z = Mathf.Cos(((i - firstIndex) / (float)ItemsPerPage) * Mathf.PI * 2) * radius;
+            GameObject copy = Instantiate(PolyPrefab.gameObject, new Vector3(x, 0, z), Quaternion.identity, _pivot.transform);
+            copy.transform.localScale = Vector3.one * scale;
             var copyPoly = copy.GetComponent<PolyHydra>();
-            //copyPoly.ConwayOperators.Clear();
+            copyPoly.PolyFromJson(polyJson, false);
             var opType = (PolyHydra.Ops) i;
             var newOp = new PolyHydra.ConwayOperator
             {
@@ -79,7 +119,11 @@ public class VisualUi : MonoBehaviour
                 disabled = false
             };
             copyPoly.ConwayOperators.Add(newOp);
-            copyPoly.MakePolyhedron();
+            copyPoly.Rebuild();
+            var mr = copyPoly.GetComponent<MeshRenderer>();
+            var originalMaterial = mr.material;
+            mr.material = TransitionMaterial;
+            TransitionIn(mr, 8, transitionSpeed, originalMaterial);
         }
     }
 
@@ -89,27 +133,31 @@ public class VisualUi : MonoBehaviour
         int firstIndex = (CurrentPolyPage * ItemsPerPage) + FirstValidPoly;
         int lastIndex = firstIndex + ItemsPerPage - 1;
         lastIndex = Math.Min(lastIndex, LastValidPoly);
+
+        string polyJson = MasterPoly.PolyToJson();
+
         for (int i = firstIndex; i <= lastIndex; i++)
         {
             float x = Mathf.Sin(((i - firstIndex) / (float)ItemsPerPage) * Mathf.PI * 2) * radius;
-            float y = Mathf.Cos(((i - firstIndex) / (float)ItemsPerPage) * Mathf.PI * 2) * radius;
-            GameObject copy = Instantiate(PolyPrefab.gameObject, new Vector3(x, y, 0), Quaternion.identity, _pivot.transform);
+            float z = Mathf.Cos(((i - firstIndex) / (float)ItemsPerPage) * Mathf.PI * 2) * radius;
+            GameObject copy = Instantiate(PolyPrefab.gameObject, new Vector3(x, 0, z), Quaternion.identity, _pivot.transform);
             copy.transform.localScale = Vector3.one / 2f;
             var copyPoly = copy.GetComponent<PolyHydra>();
-            //copyPoly.ConwayOperators.Clear();
+            copyPoly.PolyFromJson(polyJson, false);
             copyPoly.UniformPolyType = (PolyTypes) i;
-            var uniform = Uniform.Uniforms[i];
-            if (uniform.Wythoff == "-") continue;
-            var wythoff = new WythoffPoly(uniform.Wythoff.Replace("p", "5").Replace("q", "2"));
-            // Which types to create? Example:
-            //if (wythoff.SymmetryType != 3) continue;
-            copyPoly.MakePolyhedron();
+//            var uniform = Uniform.Uniforms[i];
+//            var wythoff = new WythoffPoly(uniform.Wythoff.Replace("p", "5").Replace("q", "2"));
+            copyPoly.Rebuild();
+            var mr = copyPoly.GetComponent<MeshRenderer>();
+            var originalMaterial = mr.material;
+            mr.material = TransitionMaterial;
+            TransitionIn(mr, 8, transitionSpeed, originalMaterial);
         }
     }
 
     void Update()
     {
-        if (_pivot != null) _pivot.transform.Rotate(0, 0, .1f);
+        if (_pivot != null) _pivot.transform.Rotate(0, .1f, 0);
         if (Input.GetKeyDown(KeyCode.P))
         {
             ChangeMenu(-1);
@@ -131,7 +179,7 @@ public class VisualUi : MonoBehaviour
     private void ChangeMenu(int direction)
     {
         CurrentMenu += direction;
-        CurrentMenu = (Menus)((int)CurrentMenu % Enum.GetValues(typeof(Menus)).Length);
+        CurrentMenu = (Menus)PolyUtils.ActualMod((int)CurrentMenu, Enum.GetValues(typeof(Menus)).Length);
         switch (CurrentMenu)
         {
             case Menus.Ops:
@@ -149,12 +197,12 @@ public class VisualUi : MonoBehaviour
         {
             case Menus.Ops:
                 CurrentOpPage += direction;
-                CurrentOpPage %= NumOpPages;
+                CurrentOpPage = PolyUtils.ActualMod(CurrentOpPage, NumOpPages);
                 ShowConwayMenu();
                 break;
             case Menus.Polys:
                 CurrentPolyPage += direction;
-                CurrentPolyPage %= NumPolyPages;
+                CurrentPolyPage = PolyUtils.ActualMod(CurrentPolyPage, NumPolyPages);
                 ShowUniformMenu();
                 break;
         }
@@ -166,13 +214,13 @@ public class VisualUi : MonoBehaviour
         {
             case Menus.Ops:
                 MasterPoly.ConwayOperators.Add(clickedPoly.ConwayOperators.Last());
-                MasterPoly.MakePolyhedron();
                 break;
             case Menus.Polys:
                 MasterPoly.UniformPolyType = clickedPoly.UniformPolyType;
-                MasterPoly.MakePolyhedron();
                 break;
         }
+        MasterPoly.Rebuild();
+        ChangeMenu(0);
     }
 
     public void MenuItemMouseEnter()

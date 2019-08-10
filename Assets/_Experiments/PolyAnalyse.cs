@@ -33,7 +33,7 @@ public class PolyAnalyse : MonoBehaviour
     {
         poly.UniformPolyType = currentPolyType;
         poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();
-        poly.MakePolyhedron();
+        poly.Rebuild();
         Debug.Log($"{currentPolyType}: {poly.WythoffPoly.faces.Count} faces");
         currentPolyType++;
         if ((int) currentPolyType >= Enum.GetValues(typeof(PolyTypes)).Length - 1)
@@ -52,7 +52,7 @@ public class PolyAnalyse : MonoBehaviour
             opType = currentOpType,
             amount = defaults.amountDefault
         });
-        poly.MakePolyhedron();
+        poly.Rebuild();
         var item = new PolyDataItem();
         item.OpName = currentOpType;
         item.Faces = poly._conwayPoly.Faces.Count;

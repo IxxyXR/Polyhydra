@@ -164,25 +164,33 @@ public class PolyHydra : MonoBehaviour {
 		return infoText;
 	}
 
-	[ContextMenu("Copy to clipboard")]
-	public void CopyPresetToClipboard()
+	public string PolyToJson()
 	{
 		var preset = new PolyPreset();
 		preset.CreateFromPoly("Temp", this);
-		var polyJson = JsonConvert.SerializeObject(preset, Formatting.Indented);
-		GUIUtility.systemCopyBuffer = polyJson;
+		return JsonConvert.SerializeObject(preset, Formatting.Indented);
+	}
+
+	[ContextMenu("Copy to clipboard")]
+	public void CopyPresetToClipboard()
+	{
+		GUIUtility.systemCopyBuffer = PolyToJson();
+	}
+
+	public void PolyFromJson(string json, bool loadMatchingAppearance)
+	{
+		var preset = new PolyPreset();
+		preset.Name = "Temp";
+		preset = JsonConvert.DeserializeObject<PolyPreset>(json);
+		preset.ApplyToPoly(this, FindObjectOfType<AppearancePresets>(), loadMatchingAppearance);
 	}
 
 	[ContextMenu("Paste from clipboard")]
 	public void AddPresetFromClipboard()
 	{
-		var preset = new PolyPreset();
-		preset.Name = "Temp";
-		preset = JsonConvert.DeserializeObject<PolyPreset>(GUIUtility.systemCopyBuffer);
-		preset.ApplyToPoly(this, FindObjectOfType<AppearancePresets>());
+		PolyFromJson(GUIUtility.systemCopyBuffer, true);
 		Rebuild();
 	}
-
 
 	// Call this if you're *not* using this class via an interactive UI
 	public void DisableInteractiveFlags()
@@ -379,7 +387,7 @@ public class PolyHydra : MonoBehaviour {
 		}
 	}
 	
-	public void MakePolyhedron()
+	private void MakePolyhedron()
 	{
 		if (ShapeType == ShapeTypes.Uniform && UniformPolyType != PolyTypes.Grid)
 		{
@@ -447,11 +455,12 @@ public class PolyHydra : MonoBehaviour {
 			}
 		}
 		
+		if (!gameObject.active) return;
 		Rebuild();
 
 	}
 
-	private void Rebuild()
+	public void Rebuild()
 	{
 		var currentState = new PolyPreset();
 		currentState.CreateFromPoly("temp", this);

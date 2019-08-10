@@ -43,7 +43,7 @@ public class PolyPreset {
 		GridType = poly.GridType;
 		BypassOps = poly.BypassOps;
 		PrismP = poly.PrismP;
-		PrismQ = poly.PrismP;
+		PrismQ = poly.PrismQ;
 		TwoSided = poly.TwoSided;
 		Ops = new Op[poly.ConwayOperators.Count];
 		
@@ -62,7 +62,7 @@ public class PolyPreset {
 		}
 	}
 
-	public void ApplyToPoly(PolyHydra poly, AppearancePresets aPresets, bool loadMatchingAppearance=true)
+	public void ApplyToPoly(PolyHydra poly, AppearancePresets aPresets, bool loadMatchingAppearance)
 	{
 		poly.ShapeType = ShapeType;
 		poly.UniformPolyType = PolyType;

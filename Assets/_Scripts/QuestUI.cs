@@ -75,16 +75,16 @@ public class QuestUI : MonoBehaviour {
     {
         presetIndex += 1;
         presetIndex %= presets.Items.Count;
-        presets.Items[presetIndex].ApplyToPoly(poly, aPresets);
-        poly.MakePolyhedron();
+        presets.Items[presetIndex].ApplyToPoly(poly, aPresets, true);
+        poly.Rebuild();
     }
     
     public void PrevPreset()
     {
         presetIndex -= 1;
         if (presetIndex < 0) presetIndex = presets.Items.Count - 1;
-        presets.Items[presetIndex].ApplyToPoly(poly, aPresets);
-        poly.MakePolyhedron();
+        presets.Items[presetIndex].ApplyToPoly(poly, aPresets, true);
+        poly.Rebuild();
     }
     
     public void NextAPreset()
@@ -104,7 +104,7 @@ public class QuestUI : MonoBehaviour {
     public void ClearOps()
     {
         poly.ConwayOperators.Clear();
-        poly.MakePolyhedron();
+        poly.Rebuild();
     }
 
     public void RandomizePolyhedra()
@@ -126,7 +126,7 @@ public class QuestUI : MonoBehaviour {
                 }
             }
         }
-        poly.MakePolyhedron();
+        poly.Rebuild();
         aPresets.ApplyPresetToPoly(Random.Range(0, aPresets.Items.Count));
     }   
 }
