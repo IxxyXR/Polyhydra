@@ -20,12 +20,11 @@ using Random = UnityEngine.Random;
 public class PolyHydra : MonoBehaviour {
 
 	private bool enableThreading = true;
-	private bool enableCaching = true;   
-	const int MAX_CACHE_LENGTH = 5000;
-	
+	private bool enableCaching = true;
+
 	private int _faceCount;
 	private int _vertexCount;
-	
+
 	[FormerlySerializedAs("PolyType")]
 	public ShapeTypes ShapeType;
 	public PolyTypes UniformPolyType;
@@ -39,7 +38,8 @@ public class PolyHydra : MonoBehaviour {
 	public bool TwoSided;
 	[FormerlySerializedAs("ReScale")]
 	public bool Rescale;
-	
+	private PolyCache polyCache;
+
 	// Parameters for prismatic forms
 	public int PrismP = 5;
 	public int PrismQ = 2;
@@ -238,7 +238,6 @@ public class PolyHydra : MonoBehaviour {
 	
 	private int[] meshFaces;
 	public WythoffPoly WythoffPoly;
-	private Dictionary<string, WythoffPoly> _wythoffCache;
 	public ConwayPoly _conwayPoly;
 
 	private MeshFilter meshFilter;
@@ -250,19 +249,6 @@ public class PolyHydra : MonoBehaviour {
 	private bool finishedOpsThread = true;
 	private Thread thread;
 
-	private struct ConwayCacheEntry
-	{
-		public ConwayPoly conway;
-		public long timestamp;
-
-		public ConwayCacheEntry(ConwayPoly c, long t)
-		{
-			conway = c;
-			timestamp = t;
-		}
-	}
-	private Dictionary<int, ConwayCacheEntry> _conwayCache;
-	
 	public Color[] gizmoPallette =
 	{
 		Color.red,
@@ -346,8 +332,14 @@ public class PolyHydra : MonoBehaviour {
 
 	void Start()
 	{
+		InitCacheIfNeeded();
 		meshFilter = gameObject.GetComponent<MeshFilter>();
 		MakePolyhedron();
+	}
+
+	void InitCacheIfNeeded()
+	{
+		if (!polyCache) polyCache = FindObjectOfType<PolyCache>();
 	}
 
 	public ConwayPoly MakeGrid(GridTypes gridType)
@@ -394,7 +386,7 @@ public class PolyHydra : MonoBehaviour {
 			MakeWythoff();
 			try
 			{
-				_conwayPoly = new ConwayPoly(WythoffPoly, abortOnFailure: false);			
+				_conwayPoly = new ConwayPoly(WythoffPoly, abortOnFailure: false);
 			}
 			catch (InvalidOperationException e)
 			{
@@ -428,7 +420,7 @@ public class PolyHydra : MonoBehaviour {
 		#if UNITY_EDITOR
 			// To prevent values getting out of sync
 			// ignore the inspector UI if we're showing the runtime UI
-			if (polyUI != null && EditorApplication.isPlayingOrWillChangePlaymode) return;
+			if (polyUI != null || EditorApplication.isPlayingOrWillChangePlaymode) return;
 		#endif
 		
 		if (PrismP < 3) {PrismP = 3;}
@@ -455,13 +447,14 @@ public class PolyHydra : MonoBehaviour {
 			}
 		}
 		
-		if (!gameObject.active) return;
+		if (!gameObject.activeInHierarchy) return;
 		Rebuild();
 
 	}
 
 	public void Rebuild()
 	{
+		InitCacheIfNeeded();
 		var currentState = new PolyPreset();
 		currentState.CreateFromPoly("temp", this);
 		if (previousState != currentState)
@@ -494,22 +487,23 @@ public class PolyHydra : MonoBehaviour {
 		
 		symbol = symbol.Replace("p", PrismP.ToString());
 		symbol = symbol.Replace("q", PrismQ.ToString());
-		
+
 		if (WythoffPoly == null || WythoffPoly.WythoffSymbol != symbol)
 		{
-			if (_wythoffCache==null) _wythoffCache = new Dictionary<string, WythoffPoly>();
-			if (_wythoffCache.ContainsKey(symbol))
-			{
-				WythoffPoly = _wythoffCache[symbol];
-			}
-			else
+			WythoffPoly = polyCache.Get(symbol);
+			if (WythoffPoly == null)
 			{
 				WythoffPoly = new WythoffPoly(symbol);
-				_wythoffCache[symbol] = WythoffPoly;
+				WythoffPoly.BuildFaces();
+				polyCache.Set(symbol, WythoffPoly);
+			}
+
+			if (WythoffPoly == null)
+			{
+				throw new Exception("Fuck");
 			}
 		}
-		WythoffPoly.BuildFaces();
-		
+
 		//_faceCount = WythoffPoly.FaceCount;
 		//_vertexCount = WythoffPoly.VertexCount;
 	}
@@ -748,31 +742,22 @@ public class PolyHydra : MonoBehaviour {
 		{
 			
 			if (op.disabled) continue;
-			
-			cacheKeySource += JsonConvert.SerializeObject(op);
-			if (_conwayCache == null) _conwayCache = new Dictionary<int, ConwayCacheEntry>();
-			if (enableCaching &&_conwayCache.ContainsKey(cacheKeySource.GetHashCode()))
+
+			if (enableCaching)
 			{
-				_conwayPoly = _conwayCache[cacheKeySource.GetHashCode()].conway;
+				cacheKeySource += JsonConvert.SerializeObject(op);
+				int key = cacheKeySource.GetHashCode();
+				var nextOpResult = polyCache.Get(key);
+				if (nextOpResult == null)
+				{
+					nextOpResult = ApplyOp(_conwayPoly, op);
+					polyCache.Set(key, nextOpResult);
+				}
+				_conwayPoly = nextOpResult;
 			}
 			else
 			{
-
 				_conwayPoly = ApplyOp(_conwayPoly, op);
-
-				if (enableCaching)
-				{
-					var cached = new ConwayCacheEntry(_conwayPoly, DateTime.UtcNow.Ticks);
-					_conwayCache[cacheKeySource.GetHashCode()] = cached;
-					if (_conwayCache.Count > MAX_CACHE_LENGTH)
-					{
-						// Cull half the cache
-						var ordered = _conwayCache.OrderBy(kv => kv.Key);
-						var half = _conwayCache.Count/2;
-						_conwayCache = ordered.Skip(half).ToDictionary(kv => kv.Key, kv => kv.Value);
-					}					
-				}
-
 			}
 		}
 	}

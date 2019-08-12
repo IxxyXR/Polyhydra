@@ -4,7 +4,8 @@
 Preset:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: PolyComponent
   m_TargetType:
     m_NativeTypeID: 114
@@ -21,19 +22,39 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: m_Name
-    value: 
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
     propertyPath: m_EditorClassIdentifier
     value: 
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: PolyType
-    value: 39
+    propertyPath: ShapeType
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: UniformPolyType
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ColorMethod
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: JohnsonPolyType
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: GridType
+    value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
     propertyPath: WythoffSymbol
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: PresetName
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: APresetName
     value: 
     objectReference: {fileID: 0}
   - target: {fileID: 0}
@@ -45,71 +66,27 @@ Preset:
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.size
+    propertyPath: Rescale
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: PrismP
     value: 5
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[0].opType
+    propertyPath: PrismQ
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: ConwayOperators.Array.size
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[0].amount
-    value: 1.2
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[0].disabled
+    propertyPath: wythoffVertexGizmos
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[1].opType
-    value: 0
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[1].amount
-    value: 0.9
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[1].disabled
-    value: 0
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[2].opType
-    value: 0
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[2].amount
-    value: 0.89
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[2].disabled
-    value: 0
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[3].opType
-    value: 0
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[3].amount
-    value: 0.06
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[3].disabled
-    value: 1
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[4].opType
-    value: 0
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[4].amount
-    value: 0.13
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: ConwayOperators.Array.data[4].disabled
-    value: 0
-    objectReference: {fileID: 0}
-  - target: {fileID: 0}
-    propertyPath: vertexGizmos
+    propertyPath: conwayVertexGizmos
     value: 0
     objectReference: {fileID: 0}
   - target: {fileID: 0}
