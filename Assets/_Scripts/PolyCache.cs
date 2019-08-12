@@ -24,14 +24,16 @@ public class PolyCache : MonoBehaviour
     private Dictionary<string, WythoffPoly> WythoffCache;
     private Dictionary<int, ConwayCacheEntry> ConwayCache;
 
-    void Awake()
+    void InitCacheIfNeeded()
     {
-        WythoffCache = new Dictionary<string, WythoffPoly>();
-        ConwayCache = new Dictionary<int, ConwayCacheEntry>();
+        if (WythoffCache==null) WythoffCache = new Dictionary<string, WythoffPoly>();
+        if (ConwayCache==null) ConwayCache = new Dictionary<int, ConwayCacheEntry>();
     }
 
     public WythoffPoly Get(string key)
     {
+        InitCacheIfNeeded();
+
         WythoffPoly value = null;
         if (WythoffCache.ContainsKey(key))
         {
@@ -47,6 +49,8 @@ public class PolyCache : MonoBehaviour
 
     public ConwayPoly Get(int key)
     {
+        InitCacheIfNeeded();
+
         ConwayPoly value = null;
         if (ConwayCache.ContainsKey(key))
         {

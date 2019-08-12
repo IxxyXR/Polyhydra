@@ -420,9 +420,11 @@ public class PolyHydra : MonoBehaviour {
 		#if UNITY_EDITOR
 			// To prevent values getting out of sync
 			// ignore the inspector UI if we're showing the runtime UI
-			if (polyUI != null || EditorApplication.isPlayingOrWillChangePlaymode) return;
+			if (polyUI == null || (polyUI != null && EditorApplication.isPlayingOrWillChangePlaymode)) return;
 		#endif
-		
+
+		InitCacheIfNeeded();
+
 		if (PrismP < 3) {PrismP = 3;}
 		if (PrismP > 16) PrismP = 16;
 		if (PrismQ > PrismP - 2) PrismQ = PrismP - 2;
