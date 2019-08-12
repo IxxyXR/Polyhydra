@@ -9839,6 +9839,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShapeType: 0
   UniformPolyType: 27
+  ColorMethod: 1
   JohnsonPolyType: 0
   GridType: 0
   WythoffSymbol: 
@@ -9849,7 +9850,6 @@ MonoBehaviour:
   Rescale: 1
   PrismP: 10
   PrismQ: 7
-  ColorMethod: 1
   ConwayOperators:
   - opType: 16
     faceSelections: 0
@@ -10506,6 +10506,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1576539912}
   m_CullTransparentMesh: 0
+--- !u!1001 &1581239962
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2545771522188983788, guid: d699dbbf7287dc045b06e629eb9cdb43,
+        type: 3}
+      propertyPath: m_Name
+      value: PolyCache
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373970636203422417, guid: d699dbbf7287dc045b06e629eb9cdb43,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.3419404
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373970636203422417, guid: d699dbbf7287dc045b06e629eb9cdb43,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.1269531
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373970636203422417, guid: d699dbbf7287dc045b06e629eb9cdb43,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.2744751
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373970636203422417, guid: d699dbbf7287dc045b06e629eb9cdb43,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373970636203422417, guid: d699dbbf7287dc045b06e629eb9cdb43,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373970636203422417, guid: d699dbbf7287dc045b06e629eb9cdb43,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373970636203422417, guid: d699dbbf7287dc045b06e629eb9cdb43,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373970636203422417, guid: d699dbbf7287dc045b06e629eb9cdb43,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373970636203422417, guid: d699dbbf7287dc045b06e629eb9cdb43,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373970636203422417, guid: d699dbbf7287dc045b06e629eb9cdb43,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1373970636203422417, guid: d699dbbf7287dc045b06e629eb9cdb43,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d699dbbf7287dc045b06e629eb9cdb43, type: 3}
 --- !u!1 &1625282073
 GameObject:
   m_ObjectHideFlags: 0
@@ -11005,6 +11074,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 1674659711}
+  InitialAngularVelocity: {x: 0.2, y: -0.3, z: 0.1}
 --- !u!114 &1674659713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11022,8 +11092,8 @@ MonoBehaviour:
   event_OnMouseOver:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.Events.BooleanEvent, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.BooleanEvent, DragRotation, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   bool_OnMouseInput: 1
   event_OnMouseInput:
     m_PersistentCalls:
@@ -11039,8 +11109,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: UnityEngine.Events.BooleanEvent, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    m_TypeName: UnityEngine.Events.BooleanEvent, DragRotation, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!4 &1674659714
 Transform:
   m_ObjectHideFlags: 0
