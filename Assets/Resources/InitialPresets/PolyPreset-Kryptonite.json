@@ -8,7 +8,7 @@
   "GridType": "Square",
   "PrismP": 5,
   "PrismQ": 2,
-  "AppearancePresetName": "RGB",
+  "AppearancePresetName": "Rich",
   "Ops": [
     {
       "OpType": "Yank",

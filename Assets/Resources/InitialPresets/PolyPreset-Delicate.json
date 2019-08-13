@@ -8,33 +8,26 @@
   "GridType": "Square",
   "PrismP": 0,
   "PrismQ": 0,
-  "AppearancePresetName": "RGB",
+  "AppearancePresetName": "Subtle",
   "Ops": [
     {
       "OpType": "Lace",
       "FaceSelections": "All",
-      "Amount": 0.33,
+      "Amount": 0.5,
       "Randomize": false,
       "Disabled": false
     },
     {
       "OpType": "Lace",
       "FaceSelections": "All",
-      "Amount": 0.33,
+      "Amount": 0.5,
       "Randomize": false,
       "Disabled": false
     },
     {
       "OpType": "FaceOffset",
       "FaceSelections": "NewAlt",
-      "Amount": -0.003,
-      "Randomize": false,
-      "Disabled": false
-    },
-    {
-      "OpType": "FaceOffset",
-      "FaceSelections": "New",
-      "Amount": 0.006,
+      "Amount": 0.01,
       "Randomize": false,
       "Disabled": false
     }

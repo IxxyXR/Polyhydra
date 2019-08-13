@@ -1,26 +1,33 @@
 {
-  "Name": "Xmas Star",
+  "Name": "Chocolate Slabs",
   "ShapeType": "Uniform",
-  "PolyType": 46,
+  "PolyType": 77,
   "JohnsonPolyType": 0,
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",
   "PrismP": 0,
   "PrismQ": 0,
-  "AppearancePresetName": "RGB",
+  "AppearancePresetName": "Monolith",
   "Ops": [
     {
-      "OpType": "Kis",
-      "FaceSelections": "All",
-      "Amount": -0.05,
+      "OpType": "FaceRemove",
+      "FaceSelections": "ThreeSided",
+      "Amount": 0.0,
       "Randomize": false,
       "Disabled": false
     },
     {
-      "OpType": "Kis",
+      "OpType": "FaceScale",
       "FaceSelections": "All",
-      "Amount": 0.01,
+      "Amount": -0.68,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "All",
+      "Amount": -0.05,
       "Randomize": false,
       "Disabled": false
     }
