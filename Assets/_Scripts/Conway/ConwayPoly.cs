@@ -297,9 +297,13 @@ namespace Conway
 				catch(Exception e)
 				{
 					Debug.LogWarning($"Dual op failed to set face role based on existing vertex role. Faces.Count: {Faces.Count} Verts: {Vertices.Count} old VertexRoles.Count: {VertexRoles.Count} i: {i}");
-					throw;
+//					throw;
 				}
 			}
+
+			// If we're ended up with an invalid number of roles then just set them all to 'New'
+			if (faceRoles.Count!=faceIndices.Count) faceRoles = Enumerable.Repeat(Roles.New, faceIndices.Count()).ToList();
+			if (vertexRoles.Count!=vertexPoints.Count) vertexRoles = Enumerable.Repeat(Roles.New, vertexPoints.Count()).ToList();
 
 			return new ConwayPoly(vertexPoints, faceIndices.ToArray(), faceRoles, vertexRoles);
 		}
