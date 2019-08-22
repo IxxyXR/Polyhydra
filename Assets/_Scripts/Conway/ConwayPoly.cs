@@ -150,6 +150,9 @@ namespace Conway
 			SixSided,
 			SevenSided,
 			EightSided,
+			FacingUp,
+			FacingLevel,
+			FacingDown,
 			Ignored,
 			Existing,
 			New,
@@ -3128,6 +3131,12 @@ namespace Conway
 			{
 				case FaceSelections.All:
 					return true;
+				case FaceSelections.FacingUp:
+					return Faces[faceIndex].Normal.y > 0;
+				case FaceSelections.FacingLevel:
+					return Faces[faceIndex].Normal.y == 0;
+				case FaceSelections.FacingDown:
+					return Faces[faceIndex].Normal.y < 0;
 				case FaceSelections.Existing:
 					return FaceRoles[faceIndex] == Roles.Existing;
 				case FaceSelections.Ignored:

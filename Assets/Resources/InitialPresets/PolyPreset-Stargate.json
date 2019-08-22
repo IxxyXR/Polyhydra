@@ -1,0 +1,42 @@
+{
+  "Name": "Stargate",
+  "ShapeType": "Uniform",
+  "PolyType": 11,
+  "JohnsonPolyType": 3,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 5,
+  "PrismQ": 2,
+  "AppearancePresetName": "Gem",
+  "Ops": [
+    {
+      "OpType": "FaceRemove",
+      "FaceSelections": "FacingLevel",
+      "Amount": 0.26,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Shell",
+      "FaceSelections": "All",
+      "Amount": 1.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Propeller",
+      "FaceSelections": "All",
+      "Amount": 4.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Spherize",
+      "FaceSelections": "All",
+      "Amount": -0.31,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}
