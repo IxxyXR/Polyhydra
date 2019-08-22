@@ -1,0 +1,42 @@
+{
+  "Name": "Bipod",
+  "ShapeType": "Uniform",
+  "PolyType": 11,
+  "JohnsonPolyType": 3,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Hex",
+  "PrismP": 5,
+  "PrismQ": 2,
+  "AppearancePresetName": "Grooves",
+  "Ops": [
+    {
+      "OpType": "FaceRemove",
+      "FaceSelections": "FacingLevel",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceRemove",
+      "FaceSelections": "FacingDown",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Shell",
+      "FaceSelections": "All",
+      "Amount": 1.5,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Chamfer",
+      "FaceSelections": "All",
+      "Amount": 0.7,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}
