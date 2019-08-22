@@ -122,6 +122,7 @@ public class PolyHydra : MonoBehaviour {
 		Exalt,
 		Yank,
 		Extrude,
+		Shell,
 		VertexScale,
 		FaceOffset,
 		FaceScale,
@@ -137,7 +138,7 @@ public class PolyHydra : MonoBehaviour {
 		AddDual,
 		Canonicalize,
 //		CanonicalizeI,
-		Spherize
+		Spherize,
 	}
 
 	public readonly int[] NonOrientablePolyTypes = {
@@ -311,7 +312,8 @@ public class PolyHydra : MonoBehaviour {
 			//{Ops.Chamfer new OpConfig{}},
 			{Ops.FaceOffset, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			//{Ops.Ribbon, new OpConfig{}},
-			{Ops.Extrude, new OpConfig{amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.Extrude, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.Shell, new OpConfig{amountDefault = 0.1f, amountMin = -6, amountMax = 6}},
 			{Ops.VertexScale, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			//{Ops.FaceTranslate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6}},
 			{Ops.FaceScale, new OpConfig{usesFaces=true, amountDefault = -0.03f, amountMin = -6, amountMax = 6, usesRandomize=true}},
@@ -611,9 +613,7 @@ public class PolyHydra : MonoBehaviour {
 				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.Truncate:
-				conway = conway.Dual();
-				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
-				conway = conway.Dual();
+				conway = conway.Truncate(op.amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.Gyro:
 				conway = conway.Gyro(op.amount);
@@ -673,10 +673,25 @@ public class PolyHydra : MonoBehaviour {
 			case Ops.Volute:
 				conway = conway.Volute(op.amount);
 				break;
-			case Ops.Extrude:
-				// Split faces
-				conway = conway.FaceScale(0, ConwayPoly.FaceSelections.All, false);
+			case Ops.Shell:
+				// TODO do this properly with shared edges/vertices
 				conway = conway.Extrude(op.amount, false, op.randomize);
+				break;
+			case Ops.Extrude:
+				if (op.faceSelections == ConwayPoly.FaceSelections.All)
+				{
+					conway = conway.FaceScale(0f, ConwayPoly.FaceSelections.All, false);
+					conway = conway.Extrude(op.amount, false, op.randomize);
+				}
+				else
+				{
+					// TODO do this properly with shared edges/vertices
+					var included = conway.FaceRemove(op.faceSelections, true);
+					included = included.FaceScale(0, ConwayPoly.FaceSelections.All, false);
+					var excluded = conway.FaceRemove(op.faceSelections, false);
+					conway = included.Extrude(op.amount, false, op.randomize);
+					conway.Append(excluded);
+				}
 				break;
 			case Ops.VertexScale:
 				conway = conway.VertexScale(op.amount, op.faceSelections, op.randomize);
@@ -1231,6 +1246,7 @@ public class PolyHydra : MonoBehaviour {
 						transform.TransformPoint(edgeEnd.Position)
 					);
 				}
+				Handles.Label(face.Centroid + new Vector3(0, .15f, 0), f.ToString());
 			}
 		}
 	}

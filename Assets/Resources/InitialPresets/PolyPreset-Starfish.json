@@ -1,0 +1,49 @@
+{
+  "Name": "Starfish",
+  "ShapeType": "Johnson",
+  "PolyType": 11,
+  "JohnsonPolyType": 3,
+  "BypassOps": false,
+  "TwoSided": false,
+  "GridType": "Hex",
+  "PrismP": 5,
+  "PrismQ": 2,
+  "AppearancePresetName": "Rich",
+  "Ops": [
+    {
+      "OpType": "Truncate",
+      "FaceSelections": "FourSided",
+      "Amount": 0.25,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "New",
+      "Amount": 1.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "AllNew",
+      "Amount": 0.25,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Quinto",
+      "FaceSelections": "All",
+      "Amount": 0.25,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Volute",
+      "FaceSelections": "All",
+      "Amount": 0.6,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

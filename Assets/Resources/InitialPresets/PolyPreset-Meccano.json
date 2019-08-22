@@ -1,0 +1,49 @@
+{
+  "Name": "Meccano",
+  "ShapeType": "Uniform",
+  "PolyType": 30,
+  "JohnsonPolyType": 4,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 5,
+  "PrismQ": 2,
+  "AppearancePresetName": "Monolith",
+  "Ops": [
+    {
+      "OpType": "Loft",
+      "FaceSelections": "All",
+      "Amount": 0.2,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceRemove",
+      "FaceSelections": "Existing",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Shell",
+      "FaceSelections": "All",
+      "Amount": 0.2,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Whirl",
+      "FaceSelections": "All",
+      "Amount": 0.3,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceRemove",
+      "FaceSelections": "Existing",
+      "Amount": 0.3,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "Name": "Flux",
+  "ShapeType": "Grid",
+  "PolyType": 14,
+  "JohnsonPolyType": 4,
+  "BypassOps": false,
+  "TwoSided": false,
+  "GridType": "Isometric",
+  "PrismP": 3,
+  "PrismQ": 2,
+  "AppearancePresetName": "Posterized",
+  "Ops": [
+    {
+      "OpType": "Loft",
+      "FaceSelections": "All",
+      "Amount": 0.4,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Loft",
+      "FaceSelections": "All",
+      "Amount": 0.4,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Loft",
+      "FaceSelections": "All",
+      "Amount": 0.4,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Subdivide",
+      "FaceSelections": "All",
+      "Amount": 0.3,
+      "Randomize": false,
+      "Disabled": true
+    },
+    {
+      "OpType": "Subdivide",
+      "FaceSelections": "All",
+      "Amount": 0.3,
+      "Randomize": false,
+      "Disabled": true
+    }
+  ]
+}

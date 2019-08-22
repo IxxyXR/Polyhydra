@@ -1,0 +1,42 @@
+{
+  "Name": "Some Assembly Required",
+  "ShapeType": "Uniform",
+  "PolyType": 13,
+  "JohnsonPolyType": 4,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Hex",
+  "PrismP": 3,
+  "PrismQ": 2,
+  "AppearancePresetName": "Rich",
+  "Ops": [
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "All",
+      "Amount": 0.46,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "All",
+      "Amount": -0.68,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "All",
+      "Amount": 0.12,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Dual",
+      "FaceSelections": "All",
+      "Amount": 0.12,
+      "Randomize": false,
+      "Disabled": true
+    }
+  ]
+}

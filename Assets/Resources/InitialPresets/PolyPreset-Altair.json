@@ -11,7 +11,21 @@
   "AppearancePresetName": "Flat",
   "Ops": [
     {
-      "OpType": "Truncate",
+      "OpType": "Dual",
+      "FaceSelections": "FourSided",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "FourSided",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Dual",
       "FaceSelections": "FourSided",
       "Amount": 0.0,
       "Randomize": false,

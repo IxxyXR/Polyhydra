@@ -370,6 +370,80 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 
+		public ConwayPoly Truncate(float amount, FaceSelections vertexsel, bool randomize)
+		{
+
+			// TODO Fix split edges when using vertexsel
+
+			amount = 1 - amount;
+
+			var faceRoles = new List<Roles>();
+			var vertexRoles = new List<Roles>();
+
+			var vertexPoints = new List<Vector3>(); // vertices as points
+			var hlookup = new Dictionary<string, int>();
+			var vlookup = new Dictionary<string, int>();
+			int count = 0;
+
+			foreach (var edge in Halfedges)
+			{
+//				if (IncludeVertex(Vertices.FindIndex(a => a == edge.Vertex), vertexsel) || IncludeVertex(Vertices.FindIndex(a => a == edge.Pair.Vertex), vertexsel))
+//				{
+					hlookup.Add(edge.Name, count++);
+					if (randomize) amount = 1 - UnityEngine.Random.value/2f;
+					vertexPoints.Add(edge.PointAlongEdge(amount));
+					vertexRoles.Add(Roles.New);
+//				}
+//				else
+//				{
+					vlookup[edge.Vertex.Name] = count++;
+					vertexPoints.Add(edge.Vertex.Position);
+					vertexRoles.Add(Roles.New);
+//				}
+
+			}
+
+			var faceIndices = new List<IEnumerable<int>>(); // faces as vertex indices
+
+			// faces to faces
+			foreach (var face in Faces)
+			{
+				var newFace = new List<int>();
+				foreach (var edge in face.GetHalfedges())
+				{
+					if (IncludeVertex(Vertices.FindIndex(a => a == edge.Vertex), vertexsel))
+					{
+						newFace.Add(hlookup[edge.Name]);
+						newFace.Add(hlookup[edge.Pair.Name]);
+					}
+					else
+					{
+						newFace.Add(hlookup[edge.Name]);
+						newFace.Add(vlookup[edge.Vertex.Name]);
+					}
+				}
+				faceIndices.Add(newFace);
+				faceRoles.Add(Roles.Existing);
+			}
+
+			// vertices to faces
+			foreach (var vertex in Vertices)
+			{
+				if (!IncludeVertex(Vertices.FindIndex(a => a == vertex), vertexsel)) continue;
+
+				var edges = vertex.Halfedges;
+				var list = new List<int>();
+				foreach (var edge in edges)
+				{
+					list.Add(hlookup[edge.Pair.Name]);
+				}
+				faceIndices.Add(list);
+				faceRoles.Add(Roles.New);
+			}
+
+			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+		}
+
 		public ConwayPoly Ortho()
 		{
 
@@ -699,7 +773,7 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 
-		public ConwayPoly Kis(float offset, FaceSelections facesel, bool randomize)
+		public ConwayPoly Kis(float offset, FaceSelections facesel, bool randomize, List<int> selectedFaces=null)
 		{
 			var random = new Random();
 			// vertices and faces to vertices
@@ -722,7 +796,7 @@ namespace Conway
 			var faceIndices = new List<IEnumerable<int>>(); // faces as vertex indices
 			for (int i = 0; i < Faces.Count; i++)
 			{
-				if (IncludeFace(i, facesel))
+				if (selectedFaces==null && IncludeFace(i, facesel) || selectedFaces!=null && selectedFaces.Contains(i))
 				{
 					var list = Faces[i].GetHalfedges();
 					for (var edgeIndex = 0; edgeIndex < list.Count; edgeIndex++)

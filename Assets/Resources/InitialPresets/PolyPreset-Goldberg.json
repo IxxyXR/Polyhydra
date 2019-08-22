@@ -32,7 +32,21 @@
       "Disabled": false
     },
     {
-      "OpType": "Truncate",
+      "OpType": "Dual",
+      "FaceSelections": "All",
+      "Amount": 1.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "All",
+      "Amount": 1.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Dual",
       "FaceSelections": "All",
       "Amount": 1.0,
       "Randomize": false,
