@@ -724,10 +724,11 @@ VisualEffectResource:
       float tmp_bk = tmp_bj / uniform_d;\n            float2 tmp_bl = float2(tmp_bk,
       (float)0);\n            float4 tmp_bm = SampleTexture(VFX_SAMPLER(texture_b),tmp_bl,(float)0);\n           
       float tmp_bn = tmp_bm[3];\n            float tmp_bo = tmp_bn / uniform_f;\n           
-      float tmp_bp = saturate(tmp_bo);\n            float4 tmp_bq = SampleGradient(uniform_e,tmp_bp);\n           
-      float tmp_br = tmp_bq[0];\n            float tmp_bs = tmp_bq[1];\n           
-      float tmp_bt = tmp_bq[2];\n            float3 tmp_bu = float3(tmp_br, tmp_bs,
-      tmp_bt);\n            SetAttribute_FDD06EC7( /*inout */color, tmp_bu);\n       
+      float tmp_bp = max(tmp_bo, (float)0);\n            float tmp_br = min(tmp_bp,
+      (float)1);\n            float4 tmp_bs = SampleGradient(uniform_e,tmp_br);\n           
+      float tmp_bt = tmp_bs[0];\n            float tmp_bu = tmp_bs[1];\n           
+      float tmp_bv = tmp_bs[2];\n            float3 tmp_bw = float3(tmp_bt, tmp_bu,
+      tmp_bv);\n            SetAttribute_FDD06EC7( /*inout */color, tmp_bw);\n       
       }\n        SetAttribute_F0142CB9( /*inout */lifetime, Lifetime_d);\n       
       SetAttribute_3278B22F( /*inout */size, Size_e);\n        {\n            float3
       tmp_bf = position * position;\n            float tmp_bg = tmp_bf[2];\n           
@@ -752,7 +753,7 @@ VisualEffectResource:
       * 0x8 + 0x7) << 2,asuint(age));\n            \n\n        }\n    }\n}\n"
   - compute: 0
     name: '[System 1]Quad Output'
-    source: "Shader \"Hidden/VFX/Vector Lines VFX/System 1/Quad Output\"\n{\n\tSubShader\n\t{\t\n\t\tCull
+    source: "Shader \"Hidden/VFX/Vector Lines 1 VFX/System 1/Quad Output\"\n{\n\tSubShader\n\t{\t\n\t\tCull
       Off\n\t\t\n\t\tTags { \"Queue\"=\"Transparent+0\" \"IgnoreProjector\"=\"True\"
       \"RenderType\"=\"Transparent\" }\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\tBlend
       SrcAlpha One \n\t\tZTest LEqual\n\t\tZWrite Off\n\t\tCull Off\n\t\t\n\t\n\t\t\t\n\t\tHLSLINCLUDE\n\t\t#if
@@ -1103,42 +1104,42 @@ VisualEffectResource:
         data[1]: -1
         data[2]: -1
         data[3]: 6
-      - op: 62
-        valueIndex: 4
-        data[0]: 3
-        data[1]: 2
-        data[2]: -1
-        data[3]: 6
       - op: 1
-        valueIndex: 5
+        valueIndex: 4
         data[0]: -1
         data[1]: -1
         data[2]: -1
         data[3]: 1
       - op: 65
-        valueIndex: 6
+        valueIndex: 5
         data[0]: 0
         data[1]: -1
         data[2]: -1
         data[3]: -1
       - op: 1
-        valueIndex: 7
+        valueIndex: 6
         data[0]: -1
         data[1]: -1
         data[2]: -1
         data[3]: 1
-      - op: 6
+      - op: 62
+        valueIndex: 7
+        data[0]: 3
+        data[1]: 2
+        data[2]: -1
+        data[3]: 6
+      - op: 29
         valueIndex: 8
+        data[0]: 5
+        data[1]: 4
+        data[2]: -1
+        data[3]: 1
+      - op: 6
+        valueIndex: 9
         data[0]: -1
         data[1]: -1
         data[2]: -1
         data[3]: -1
-      - op: 29
-        valueIndex: 9
-        data[0]: 6
-        data[1]: 5
-        data[2]: -1
-        data[3]: 1
       - op: 7
         valueIndex: 10
         data[0]: -1
@@ -1150,13 +1151,13 @@ VisualEffectResource:
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 1
+        data[3]: 7
       - op: 1
         valueIndex: 12
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 5
+        data[3]: 1
       - op: 1
         valueIndex: 13
         data[0]: -1
@@ -1168,7 +1169,7 @@ VisualEffectResource:
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 7
+        data[3]: 5
       - op: 1
         valueIndex: 17
         data[0]: -1
@@ -1195,8 +1196,8 @@ VisualEffectResource:
         data[3]: 1
       - op: 26
         valueIndex: 21
-        data[0]: 17
-        data[1]: 16
+        data[0]: 18
+        data[1]: 17
         data[2]: -1
         data[3]: 1
       - op: 1
@@ -1219,7 +1220,7 @@ VisualEffectResource:
         data[3]: 3
       - op: 29
         valueIndex: 27
-        data[0]: 16
+        data[0]: 17
         data[1]: 19
         data[2]: -1
         data[3]: 1
@@ -1273,8 +1274,8 @@ VisualEffectResource:
         data[3]: 3
       - op: 31
         valueIndex: 61
-        data[0]: 6
-        data[1]: 7
+        data[0]: 5
+        data[1]: 6
         data[2]: -1
         data[3]: 1
       - op: 56
@@ -1337,20 +1338,20 @@ VisualEffectResource:
     m_PropertySheet:
       m_Float:
         m_Array:
-        - m_ExpressionIndex: 5
+        - m_ExpressionIndex: 4
           m_Value: 1
-        - m_ExpressionIndex: 7
+        - m_ExpressionIndex: 6
           m_Value: 0
-        - m_ExpressionIndex: 11
+        - m_ExpressionIndex: 12
           m_Value: 0.5
         - m_ExpressionIndex: 15
           m_Value: 1.58
         - m_ExpressionIndex: 16
-          m_Value: 0.001
-        - m_ExpressionIndex: 17
-          m_Value: -1
-        - m_ExpressionIndex: 18
           m_Value: 2
+        - m_ExpressionIndex: 17
+          m_Value: 0.001
+        - m_ExpressionIndex: 18
+          m_Value: -1
         - m_ExpressionIndex: 20
           m_Value: 2
         - m_ExpressionIndex: 35
@@ -1393,7 +1394,7 @@ VisualEffectResource:
         m_Array:
         - m_ExpressionIndex: 0
           m_Value: 6
-        - m_ExpressionIndex: 12
+        - m_ExpressionIndex: 14
           m_Value: 2
       m_Matrix4x4f:
         m_Array: []
@@ -1476,7 +1477,7 @@ VisualEffectResource:
             m_NumAlphaKeys: 2
       m_NamedObject:
         m_Array:
-        - m_ExpressionIndex: 14
+        - m_ExpressionIndex: 11
           m_Value: {fileID: 0}
         - m_ExpressionIndex: 34
           m_Value: {fileID: 0}
@@ -1484,15 +1485,15 @@ VisualEffectResource:
         m_Array: []
     m_ExposedExpressions:
     - nameId: Chaos
-      index: 16
+      index: 17
     - nameId: Color Scale
-      index: 18
+      index: 16
     - nameId: Count
       index: 0
     - nameId: Lifetime
       index: 35
     - nameId: Positions
-      index: 14
+      index: 11
     - nameId: Rotation Angle
       index: 26
     - nameId: Rotation Speed
@@ -1729,17 +1730,17 @@ VisualEffectResource:
       - nameId: uniform_c
         index: 1
       - nameId: uniform_d
-        index: 9
+        index: 8
       - nameId: uniform_e
         index: 24
       - nameId: uniform_f
-        index: 18
+        index: 16
       - nameId: Lifetime_d
         index: 35
       - nameId: Size_e
         index: 36
       - nameId: texture_b
-        index: 14
+        index: 11
       params:
       - nameId: bounds_center
         index: 39
@@ -1760,9 +1761,9 @@ VisualEffectResource:
       - nameId: uniform_c
         index: 10
       - nameId: uniform_d
-        index: 8
+        index: 9
       - nameId: uniform_e
-        index: 4
+        index: 7
       - nameId: uniform_f
         index: 23
       params: []
