@@ -69,10 +69,9 @@ public class VisualUi : MonoBehaviour
             IEnumerator coroutine = TransitionOut(mr, transitionDistance, transitionSpeed);
             StartCoroutine(coroutine);
         }
-
     }
 
-    IEnumerator TransitionIn(MeshRenderer mr, float limit, float step)
+    IEnumerator TransitionIn(MeshRenderer mr, float limit, float step, bool addHighlight=false)
     {
         var originalMaterial = mr.material;
         mr.material = TransitionMaterial;
@@ -82,6 +81,8 @@ public class VisualUi : MonoBehaviour
             yield return null;
         }
         mr.material = originalMaterial;
+        if (addHighlight) AddHighlight(mr.transform);
+
     }
 
     IEnumerator TransitionOut(MeshRenderer mr, float limit, float step)
@@ -102,9 +103,6 @@ public class VisualUi : MonoBehaviour
 
         coroutine = ScrollMenu(indexDelta, speed);
         StartCoroutine(coroutine);
-        currentMenuItems[menuIndex].GetComponent<MeshRenderer>().material.SetColor("_Tint", Color.white);
-        menuIndex = PolyUtils.ActualMod(menuIndex + indexDelta, ItemsPerPage);
-        currentMenuItems[menuIndex].GetComponent<MeshRenderer>().material.SetColor("_Tint", Color.yellow);
     }
 
     IEnumerator ScrollMenu(int indexDelta, float speed)
@@ -122,6 +120,24 @@ public class VisualUi : MonoBehaviour
         }
         // Correct any over/undershoot
         _pivot.transform.rotation = Quaternion.Euler(currentRot.x, currentRot.y + angleToTurn, currentRot.z);
+
+        RemoveHighlight(currentMenuItems[menuIndex]);
+        menuIndex = PolyUtils.ActualMod(menuIndex + indexDelta, ItemsPerPage);
+        AddHighlight(currentMenuItems[menuIndex]);
+
+
+    }
+
+    public void AddHighlight(Transform t)
+    {
+        t.GetComponent<MeshRenderer>().material.SetColor("_Tint", Color.yellow);
+        t.GetComponentInChildren<TextMeshPro>().color = Color.yellow;
+    }
+
+    public void RemoveHighlight(Transform t)
+    {
+        t.GetComponent<MeshRenderer>().material.SetColor("_Tint", Color.white);
+        t.GetComponentInChildren<TextMeshPro>().color = Color.white;
     }
 
     void ShowConwayMenu()
@@ -155,11 +171,10 @@ public class VisualUi : MonoBehaviour
             copyPoly.Rebuild();
 
             var mr = copyPoly.GetComponent<MeshRenderer>();
-            IEnumerator coroutine = TransitionIn(mr, transitionDistance, transitionSpeed * 2);
+            IEnumerator coroutine = TransitionIn(mr, transitionDistance, transitionSpeed * 2, i==0);
             StartCoroutine(coroutine);
             currentMenuItems[i - firstIndex] = copyPoly.transform;
         }
-        currentMenuItems[0].GetComponent<MeshRenderer>().material.SetColor("_Tint", Color.yellow);
     }
 
     void ShowUniformMenu()
@@ -183,11 +198,10 @@ public class VisualUi : MonoBehaviour
             copy.GetComponentInChildren<TextMeshPro>().text = copyPoly.UniformPolyType.ToString().Replace("_", " ");
             copyPoly.Rebuild();
             var mr = copyPoly.GetComponent<MeshRenderer>();
-            IEnumerator coroutine = TransitionIn(mr, transitionDistance, transitionSpeed * 2);
+            IEnumerator coroutine = TransitionIn(mr, transitionDistance, transitionSpeed * 2, i==0);
             StartCoroutine(coroutine);
             currentMenuItems[i - firstIndex] = copyPoly.transform;
         }
-        currentMenuItems[0].GetComponent<MeshRenderer>().material.SetColor("_Tint", Color.yellow);
     }
 
     void Update()
@@ -202,11 +216,11 @@ public class VisualUi : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            ChangePage(-1);
+            ChangePage(1);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            ChangePage(1);
+            ChangePage(-1);
         }
         else if (Input.GetKeyDown(KeyCode.O) && CurrentMenu != Menus.Ops)
         {

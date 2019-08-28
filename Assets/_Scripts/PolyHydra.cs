@@ -892,6 +892,7 @@ public class PolyHydra : MonoBehaviour {
 		var meshColors = new List<Color32>();
 		var meshUVs = new List<Vector2>();
 		var edgeUVs = new List<Vector2>();
+		var barycentricUVs = new List<Vector3>();
 		
 		var hasNaked = _conwayPoly.HasNaked();
 		hasNaked = false;  // TODO
@@ -946,17 +947,19 @@ public class PolyHydra : MonoBehaviour {
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					edgeUVs.Add(new Vector2(0, 0));
-					
+					barycentricUVs.Add(new Vector3(0, 0, 1));
+
 					meshVertices.Add(points[faceIndex[edgeIndex]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					edgeUVs.Add(new Vector2(1, 1));					
+					barycentricUVs.Add(new Vector3(0, 1, 0));
 
-					
 					meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					edgeUVs.Add(new Vector2(1, 1));					
+					barycentricUVs.Add(new Vector3(1, 0, 0));
 
 
 					meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
@@ -969,21 +972,24 @@ public class PolyHydra : MonoBehaviour {
 				meshVertices.Add(points[faceIndex[0]]);
 				meshUVs.Add(calcUV(meshVertices[index]));
 				meshTriangles.Add(index++);
-				
+				barycentricUVs.Add(new Vector3(0, 0, 1));
+
 				meshVertices.Add(points[faceIndex[1]]);
 				meshUVs.Add(calcUV(meshVertices[index]));
 				meshTriangles.Add(index++);
-				
+				barycentricUVs.Add(new Vector3(0, 1, 0));
+
 				meshVertices.Add(points[faceIndex[2]]);
 				meshUVs.Add(calcUV(meshVertices[index]));
 				meshTriangles.Add(index++);
-				
+				barycentricUVs.Add(new Vector3(1, 0, 0));
+
 				edgeUVs.AddRange(Enumerable.Repeat(new Vector2(1, 1), 3));
 				meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
 				meshColors.AddRange(Enumerable.Repeat(color, 3));
 			}
-			
-			
+
+
 			if (hasNaked || forceTwosided)
 			{
 
@@ -995,16 +1001,19 @@ public class PolyHydra : MonoBehaviour {
 						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
 						edgeUVs.Add(new Vector2(0, 0));
-						
+						barycentricUVs.Add(new Vector3(0, 0, 1));
+
 						meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
 						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
-						edgeUVs.Add(new Vector2(1, 1));					
-						
+						edgeUVs.Add(new Vector2(1, 1));
+						barycentricUVs.Add(new Vector3(0, 1, 0));
+
 						meshVertices.Add(points[faceIndex[edgeIndex]]);
 						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
 						edgeUVs.Add(new Vector2(1, 1));					
+						barycentricUVs.Add(new Vector3(1, 0, 0));
 
 						meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
 						meshColors.AddRange(Enumerable.Repeat(color, 3));
@@ -1015,15 +1024,18 @@ public class PolyHydra : MonoBehaviour {
 					meshVertices.Add(points[faceIndex[0]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
-					
+					barycentricUVs.Add(new Vector3(0, 0, 1));
+
 					meshVertices.Add(points[faceIndex[2]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
-					
+					barycentricUVs.Add(new Vector3(0, 1, 0));
+
 					meshVertices.Add(points[faceIndex[1]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
-					
+					barycentricUVs.Add(new Vector3(1, 0, 0));
+
 					edgeUVs.AddRange(Enumerable.Repeat(new Vector2(1, 1), faceIndex.Count));
 					meshNormals.AddRange(Enumerable.Repeat(-faceNormal, faceIndex.Count));
 					meshColors.AddRange(Enumerable.Repeat(color, faceIndex.Count));
@@ -1035,9 +1047,10 @@ public class PolyHydra : MonoBehaviour {
 		target.normals = meshNormals.ToArray();
 		target.triangles = meshTriangles.ToArray();
 		target.colors32 = meshColors.ToArray();
-		target.uv = meshUVs.ToArray();
-		target.uv2 = edgeUVs.ToArray();
-		target.uv3 = Enumerable.Range(0, meshVertices.Count).Select(i => new Vector2((float)i/meshVertices.Count, meshVertices.Count)).ToArray();
+		target.SetUVs(0, meshUVs);
+		target.SetUVs(1, edgeUVs);
+		target.SetUVs(2, barycentricUVs);
+		target.SetUVs(3, Enumerable.Range(0, meshVertices.Count).Select(i => new Vector2((float)i/meshVertices.Count, meshVertices.Count)).ToList());
 
 		if (hasNaked || forceTwosided) {
 			target.RecalculateNormals();

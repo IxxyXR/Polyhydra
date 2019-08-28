@@ -153,13 +153,16 @@ namespace Conway
 			FacingUp,
 			FacingLevel,
 			FacingDown,
+			FacingCenter,
+			FacingIn,
+			FacingOut,
 			Ignored,
 			Existing,
 			New,
 			NewAlt,
 			AllNew,
 			Alternate,
-			None
+			None,
 		}
 
 		public bool IsValid
@@ -3138,9 +3141,18 @@ namespace Conway
 				case FaceSelections.FacingUp:
 					return Faces[faceIndex].Normal.y > 0;
 				case FaceSelections.FacingLevel:
-					return Faces[faceIndex].Normal.y == 0;
+					return Math.Abs(Faces[faceIndex].Normal.y) < 0.1f;
 				case FaceSelections.FacingDown:
 					return Faces[faceIndex].Normal.y < 0;
+				case FaceSelections.FacingCenter:
+					float TOLERANCE = 0.02f;
+					float angle = Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid);
+					Debug.Log(Math.Abs(angle - 180));
+					return Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE;
+				case FaceSelections.FacingIn:
+					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) % 180 < 90;
+				case FaceSelections.FacingOut:
+					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) % 180 > 90;
 				case FaceSelections.Existing:
 					return FaceRoles[faceIndex] == Roles.Existing;
 				case FaceSelections.Ignored:

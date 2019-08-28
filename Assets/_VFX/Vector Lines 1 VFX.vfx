@@ -117,7 +117,7 @@ MonoBehaviour:
     x: -1293
     y: -155
     width: 2428
-    height: 2568
+    height: 2581
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d4c867f6b72b714dbb5fd1780afe208, type: 3}
-  m_Name: Vector Lines VFX
+  m_Name: Vector Lines 1 VFX
   m_EditorClassIdentifier: 
   m_Parent: {fileID: 0}
   m_Children:
@@ -629,7 +629,7 @@ VisualEffectResource:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Vector Lines VFX
+  m_Name: Vector Lines 1 VFX
   m_Graph: {fileID: 114350483966674976}
   m_ShaderSources:
   - compute: 1
@@ -1452,14 +1452,14 @@ VisualEffectResource:
             key1: {r: 0.79879856, g: 0, b: 1, a: 1}
             key2: {r: 1, g: 0, b: 0.030630589, a: 0}
             key3: {r: 0.990566, g: 0.93369895, b: 0, a: 0}
-            key4: {r: 0.8206897, g: 1, b: 0, a: 0}
+            key4: {r: 0.04830408, g: 1, b: 0, a: 0}
             key5: {r: 0, g: 0, b: 0, a: 0}
             key6: {r: 0, g: 0, b: 0, a: 0}
             key7: {r: 0, g: 0, b: 0, a: 0}
             ctime0: 0
             ctime1: 17733
             ctime2: 34695
-            ctime3: 56085
+            ctime3: 48766
             ctime4: 65535
             ctime5: 0
             ctime6: 0
@@ -2470,7 +2470,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"colorKeys":[{"color":{"r":0.02799190953373909,"g":0.1764705777168274,"b":0.0,"a":1.0},"time":0.0},{"color":{"r":0.7987985610961914,"g":0.0,"b":1.0,"a":1.0},"time":0.2705882489681244},{"color":{"r":1.0,"g":0.0,"b":0.03063058853149414,"a":1.0},"time":0.529411792755127},{"color":{"r":0.9905660152435303,"g":0.9336989521980286,"b":0.0,"a":1.0},"time":0.8558022379875183},{"color":{"r":0.8206896781921387,"g":1.0,"b":0.0,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}],"gradientMode":0}'
+      m_SerializableObject: '{"colorKeys":[{"color":{"r":0.02799190953373909,"g":0.1764705777168274,"b":0.0,"a":1.0},"time":0.0},{"color":{"r":0.7987985610961914,"g":0.0,"b":1.0,"a":1.0},"time":0.2705882489681244},{"color":{"r":1.0,"g":0.0,"b":0.03063058853149414,"a":1.0},"time":0.529411792755127},{"color":{"r":0.9905660152435303,"g":0.9336989521980286,"b":0.0,"a":1.0},"time":0.7441214323043823},{"color":{"r":0.048304080963134769,"g":1.0,"b":0.0,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}],"gradientMode":0}'
     m_Space: 2147483647
   m_Property:
     name: gradient
