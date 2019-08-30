@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Polar Barycentric Triangles
+  m_Name: Pink Spirals
   m_Shader: {fileID: -6465566751694194690, guid: af96ca552cfa046408b11a690a743832,
     type: 3}
   m_ShaderKeywords: 
