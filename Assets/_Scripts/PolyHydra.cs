@@ -893,6 +893,7 @@ public class PolyHydra : MonoBehaviour {
 		var meshUVs = new List<Vector2>();
 		var edgeUVs = new List<Vector2>();
 		var barycentricUVs = new List<Vector3>();
+		var miscUVs = new List<Vector3>();
 		
 		var hasNaked = _conwayPoly.HasNaked();
 		hasNaked = false;  // TODO
@@ -948,19 +949,21 @@ public class PolyHydra : MonoBehaviour {
 					meshTriangles.Add(index++);
 					edgeUVs.Add(new Vector2(0, 0));
 					barycentricUVs.Add(new Vector3(0, 0, 1));
+					miscUVs.Add(new Vector4(i, face.Sides, _conwayPoly.FaceRoles[faceIndex]));
 
 					meshVertices.Add(points[faceIndex[edgeIndex]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					edgeUVs.Add(new Vector2(1, 1));					
 					barycentricUVs.Add(new Vector3(0, 1, 0));
+					miscUVs.Add(new Vector4(i, face.Sides, _conwayPoly.FaceRoles[faceIndex]));
 
 					meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					edgeUVs.Add(new Vector2(1, 1));					
 					barycentricUVs.Add(new Vector3(1, 0, 0));
-
+					miscUVs.Add(new Vector4(i, face.Sides, _conwayPoly.FaceRoles[faceIndex]));
 
 					meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
 					meshColors.AddRange(Enumerable.Repeat(color, 3));
@@ -973,16 +976,19 @@ public class PolyHydra : MonoBehaviour {
 				meshUVs.Add(calcUV(meshVertices[index]));
 				meshTriangles.Add(index++);
 				barycentricUVs.Add(new Vector3(0, 0, 1));
+				miscUVs.Add(new Vector4(i, face.Sides, _conwayPoly.FaceRoles[faceIndex]));
 
 				meshVertices.Add(points[faceIndex[1]]);
 				meshUVs.Add(calcUV(meshVertices[index]));
 				meshTriangles.Add(index++);
 				barycentricUVs.Add(new Vector3(0, 1, 0));
+				miscUVs.Add(new Vector4(i, face.Sides, _conwayPoly.FaceRoles[faceIndex]));
 
 				meshVertices.Add(points[faceIndex[2]]);
 				meshUVs.Add(calcUV(meshVertices[index]));
 				meshTriangles.Add(index++);
 				barycentricUVs.Add(new Vector3(1, 0, 0));
+				miscUVs.Add(new Vector4(i, face.Sides, _conwayPoly.FaceRoles[faceIndex]));
 
 				edgeUVs.AddRange(Enumerable.Repeat(new Vector2(1, 1), 3));
 				meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
@@ -1002,18 +1008,21 @@ public class PolyHydra : MonoBehaviour {
 						meshTriangles.Add(index++);
 						edgeUVs.Add(new Vector2(0, 0));
 						barycentricUVs.Add(new Vector3(0, 0, 1));
+						miscUVs.Add(new Vector4(i, face.Sides, _conwayPoly.FaceRoles[faceIndex]));
 
 						meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
 						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
 						edgeUVs.Add(new Vector2(1, 1));
 						barycentricUVs.Add(new Vector3(0, 1, 0));
+						miscUVs.Add(new Vector4(i, face.Sides, _conwayPoly.FaceRoles[faceIndex]));
 
 						meshVertices.Add(points[faceIndex[edgeIndex]]);
 						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
 						edgeUVs.Add(new Vector2(1, 1));					
 						barycentricUVs.Add(new Vector3(1, 0, 0));
+						miscUVs.Add(new Vector4(i, face.Sides, _conwayPoly.FaceRoles[faceIndex]));
 
 						meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
 						meshColors.AddRange(Enumerable.Repeat(color, 3));
@@ -1025,16 +1034,19 @@ public class PolyHydra : MonoBehaviour {
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					barycentricUVs.Add(new Vector3(0, 0, 1));
+					miscUVs.Add(new Vector4(i, face.Sides, _conwayPoly.FaceRoles[faceIndex]));
 
 					meshVertices.Add(points[faceIndex[2]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					barycentricUVs.Add(new Vector3(0, 1, 0));
+					miscUVs.Add(new Vector4(i, face.Sides, _conwayPoly.FaceRoles[faceIndex]));
 
 					meshVertices.Add(points[faceIndex[1]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					barycentricUVs.Add(new Vector3(1, 0, 0));
+					miscUVs.Add(new Vector4(i, face.Sides, _conwayPoly.FaceRoles[faceIndex]));
 
 					edgeUVs.AddRange(Enumerable.Repeat(new Vector2(1, 1), faceIndex.Count));
 					meshNormals.AddRange(Enumerable.Repeat(-faceNormal, faceIndex.Count));
@@ -1050,7 +1062,7 @@ public class PolyHydra : MonoBehaviour {
 		target.SetUVs(0, meshUVs);
 		target.SetUVs(1, edgeUVs);
 		target.SetUVs(2, barycentricUVs);
-		target.SetUVs(3, Enumerable.Range(0, meshVertices.Count).Select(i => new Vector2((float)i/meshVertices.Count, meshVertices.Count)).ToList());
+		target.SetUVs(3, miscUVs);
 
 		if (hasNaked || forceTwosided) {
 			target.RecalculateNormals();
