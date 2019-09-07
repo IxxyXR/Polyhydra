@@ -51,3 +51,6 @@ Assets/HDRP Sample Content*
 Assets/Samples/*
 Assets/_Exported Meshes*
 Old Builds/*
+Assets/_3rdParty/Measured Materials Library/HDRP/Materials*
+Assets/_3rdParty/Measured Materials Library/HDRP/Sample Scenes*
+Assets/_3rdParty/Measured Materials Library/HDRP/Subgraphs*
