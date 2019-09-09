@@ -65,6 +65,7 @@ public class PolyMorph : MonoBehaviour
         for (var i = 0; i < PolyMorphItems.Count; i++) {
             var item = PolyMorphItems[i];
             var x = Time.time * item.frequency;
+            //var val = Mathf.SmoothStep(-0.5f, 0.5f, Mathf.Sin(x)) * 2 - 1;
             var val = Mathf.Pow(Mathf.Abs(Mathf.Cos(x)) , 1f/2f) * Mathf.Sign(Mathf.Cos(x));
             //var val = 1 - Mathf.Pow(25, -1 * Mathf.Sin(Time.time * item.frequency)) / 25f;
             //var val = (Mathf.Sin(Time.time * item.frequency) + 1f) / 2f;
