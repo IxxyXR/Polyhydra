@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -59,13 +60,16 @@ public class PolyMorph : MonoBehaviour
         initialized = true;
     }
 
-    private void Update()
-    {
+    private void Update() {
         if (!initialized) return;
-        foreach (var item in PolyMorphItems)
-        {
-            var sine = (Mathf.Sin(Time.time * item.frequency) + 1f) / 2f;
-            sm.SetBlendShapeWeight(item.opIndex, sine * item.amount + item.offset);
+        for (var i = 0; i < PolyMorphItems.Count; i++) {
+            var item = PolyMorphItems[i];
+            var x = Time.time * item.frequency;
+            var val = Mathf.Pow(Mathf.Abs(Mathf.Cos(x)) , 1f/2f) * Mathf.Sign(Mathf.Cos(x));
+            //var val = 1 - Mathf.Pow(25, -1 * Mathf.Sin(Time.time * item.frequency)) / 25f;
+            //var val = (Mathf.Sin(Time.time * item.frequency) + 1f) / 2f;
+            //var val = Mathf.PerlinNoise(Time.time * item.frequency, i * 10f);
+            sm.SetBlendShapeWeight(item.opIndex, val * item.amount + item.offset);
         }
     }
 }
