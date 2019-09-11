@@ -28,13 +28,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Faces: 252
-    - Speed: 0.8
+    - Distance: 2
+    - Faces: 102
+    - Speed: 0.5
     - Vector1_2839B9D9: 1
     - Vector1_5CE02FC7: 75
     - Vector1_66865F88: 150
     - Vector1_92FA097A: 1
-    - Vector1_BA4D5A57: 10
+    - Vector1_BA4D5A57: 0.1
     - Vector1_F9A7A804: 1.1
     - _AlphaCutoff: 0.5
     - _AlphaCutoffEnable: 0

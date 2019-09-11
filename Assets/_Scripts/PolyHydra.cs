@@ -940,7 +940,7 @@ public class PolyHydra : MonoBehaviour {
 				return new Vector2(u, v);
 			}
 
-			var miscUV = new Vector4(face.Centroid.x, face.Centroid.y, face.Centroid.z, i);
+			var miscUV = new Vector4(face.Centroid.x, face.Centroid.y, face.Centroid.z, ((float)i)/faceIndices.Length);
 
 			if (face.Sides > 3)
 			{
