@@ -17,6 +17,6 @@ public class PolyToShader : MonoBehaviour
 
     void Update()
     {
-        mr.sharedMaterial.SetFloat("Faces", poly._conwayPoly.Faces.Count - 1);
+        mr.sharedMaterial.SetFloat("Faces", poly._conwayPoly.Faces.Count);
     }
 }

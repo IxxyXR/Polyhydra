@@ -28,13 +28,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Faces: 751
-    - Speed: 0.4
+    - Faces: 252
+    - Speed: 0.8
     - Vector1_2839B9D9: 1
     - Vector1_5CE02FC7: 75
     - Vector1_66865F88: 150
-    - Vector1_92FA097A: 12
-    - Vector1_BA4D5A57: 20
+    - Vector1_92FA097A: 1
+    - Vector1_BA4D5A57: 10
     - Vector1_F9A7A804: 1.1
     - _AlphaCutoff: 0.5
     - _AlphaCutoffEnable: 0
@@ -46,19 +46,19 @@ Material:
     - _DoubleSidedEnable: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 0
-    - _ReceivesSSR: 0
+    - _ReceivesSSR: 1
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
     - _SrcBlend: 1
-    - _StencilRef: 0
-    - _StencilRefDepth: 32
+    - _StencilRef: 2
+    - _StencilRefDepth: 0
     - _StencilRefDistortionVec: 64
     - _StencilRefGBuffer: 2
-    - _StencilRefMV: 160
+    - _StencilRefMV: 128
     - _StencilWriteMask: 3
     - _StencilWriteMaskDepth: 48
     - _StencilWriteMaskDistortionVec: 64
-    - _StencilWriteMaskGBuffer: 3
+    - _StencilWriteMaskGBuffer: 51
     - _StencilWriteMaskMV: 176
     - _SurfaceType: 0
     - _TransparentBackfaceEnable: 0
