@@ -1159,9 +1159,6 @@ namespace Conway
 						edge = edge.Next;
 					}
 
-					faceIndices.Add(newInsetFace);
-					faceRoles.Add(Roles.Existing);
-
 					// Add the final missing new edge face
 
 					var lastEdge = face.Halfedge.Prev;
@@ -1174,6 +1171,11 @@ namespace Conway
 					};
 					faceIndices.Add(finalFace);
 					faceRoles.Add(Roles.New);
+
+					// Inner face
+					faceIndices.Add(newInsetFace);
+					faceRoles.Add(Roles.Existing);
+
 				}
 				else
 				{

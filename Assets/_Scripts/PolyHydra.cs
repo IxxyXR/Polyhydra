@@ -893,7 +893,7 @@ public class PolyHydra : MonoBehaviour {
 		var meshUVs = new List<Vector2>();
 		var edgeUVs = new List<Vector2>();
 		var barycentricUVs = new List<Vector3>();
-		var miscUVs = new List<Vector3>();
+		var miscUVs = new List<Vector4>();
 		
 		var hasNaked = _conwayPoly.HasNaked();
 		hasNaked = false;  // TODO
@@ -905,8 +905,9 @@ public class PolyHydra : MonoBehaviour {
 		// Add faces
 		int index = 0;
 		
-		for (var i = 0; i < faceIndices.Length; i++) {
-			
+		for (var i = 0; i < faceIndices.Length; i++)
+		{
+
 			var faceIndex = faceIndices[i];
 			var face = _conwayPoly.Faces[i];
 			var faceNormal = face.Normal;
@@ -939,6 +940,8 @@ public class PolyHydra : MonoBehaviour {
 				return new Vector2(u, v);
 			}
 
+			var miscUV = new Vector4(face.Centroid.x, face.Centroid.y, face.Centroid.z, i);
+
 			if (face.Sides > 3)
 			{
 				for (var edgeIndex = 0; edgeIndex < faceIndex.Count; edgeIndex++)
@@ -949,24 +952,22 @@ public class PolyHydra : MonoBehaviour {
 					meshTriangles.Add(index++);
 					edgeUVs.Add(new Vector2(0, 0));
 					barycentricUVs.Add(new Vector3(0, 0, 1));
-					miscUVs.Add(new Vector4(i, face.Sides, 0));
 
 					meshVertices.Add(points[faceIndex[edgeIndex]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					edgeUVs.Add(new Vector2(1, 1));					
 					barycentricUVs.Add(new Vector3(0, 1, 0));
-					miscUVs.Add(new Vector4(i, face.Sides, 0));
 
 					meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					edgeUVs.Add(new Vector2(1, 1));					
 					barycentricUVs.Add(new Vector3(1, 0, 0));
-					miscUVs.Add(new Vector4(i, face.Sides, 0));
 
 					meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
 					meshColors.AddRange(Enumerable.Repeat(color, 3));
+					miscUVs.AddRange(Enumerable.Repeat(miscUV, 3));
 				}
 			}
 			else
@@ -976,23 +977,21 @@ public class PolyHydra : MonoBehaviour {
 				meshUVs.Add(calcUV(meshVertices[index]));
 				meshTriangles.Add(index++);
 				barycentricUVs.Add(new Vector3(0, 0, 1));
-				miscUVs.Add(new Vector4(i, face.Sides, 0));
 
 				meshVertices.Add(points[faceIndex[1]]);
 				meshUVs.Add(calcUV(meshVertices[index]));
 				meshTriangles.Add(index++);
 				barycentricUVs.Add(new Vector3(0, 1, 0));
-				miscUVs.Add(new Vector4(i, face.Sides, 0));
 
 				meshVertices.Add(points[faceIndex[2]]);
 				meshUVs.Add(calcUV(meshVertices[index]));
 				meshTriangles.Add(index++);
 				barycentricUVs.Add(new Vector3(1, 0, 0));
-				miscUVs.Add(new Vector4(i, face.Sides, 0));
 
 				edgeUVs.AddRange(Enumerable.Repeat(new Vector2(1, 1), 3));
 				meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
 				meshColors.AddRange(Enumerable.Repeat(color, 3));
+				miscUVs.AddRange(Enumerable.Repeat(miscUV, 3));
 			}
 
 
@@ -1008,25 +1007,23 @@ public class PolyHydra : MonoBehaviour {
 						meshTriangles.Add(index++);
 						edgeUVs.Add(new Vector2(0, 0));
 						barycentricUVs.Add(new Vector3(0, 0, 1));
-						miscUVs.Add(new Vector4(i, face.Sides, 0));
 
 						meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
 						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
 						edgeUVs.Add(new Vector2(1, 1));
 						barycentricUVs.Add(new Vector3(0, 1, 0));
-						miscUVs.Add(new Vector4(i, face.Sides, 0));
 
 						meshVertices.Add(points[faceIndex[edgeIndex]]);
 						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
 						edgeUVs.Add(new Vector2(1, 1));					
 						barycentricUVs.Add(new Vector3(1, 0, 0));
-						miscUVs.Add(new Vector4(i, face.Sides, 0));
 
 						meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
 						meshColors.AddRange(Enumerable.Repeat(color, 3));
-					}					
+						miscUVs.AddRange(Enumerable.Repeat(miscUV, 3));
+					}
 				}
 				else
 				{
@@ -1034,23 +1031,21 @@ public class PolyHydra : MonoBehaviour {
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					barycentricUVs.Add(new Vector3(0, 0, 1));
-					miscUVs.Add(new Vector4(i, face.Sides, 0));
 
 					meshVertices.Add(points[faceIndex[2]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					barycentricUVs.Add(new Vector3(0, 1, 0));
-					miscUVs.Add(new Vector4(i, face.Sides, 0));
 
 					meshVertices.Add(points[faceIndex[1]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					barycentricUVs.Add(new Vector3(1, 0, 0));
-					miscUVs.Add(new Vector4(i, face.Sides, 0));
 
-					edgeUVs.AddRange(Enumerable.Repeat(new Vector2(1, 1), faceIndex.Count));
-					meshNormals.AddRange(Enumerable.Repeat(-faceNormal, faceIndex.Count));
-					meshColors.AddRange(Enumerable.Repeat(color, faceIndex.Count));
+					edgeUVs.AddRange(Enumerable.Repeat(new Vector2(1, 1), 3));
+					meshNormals.AddRange(Enumerable.Repeat(-faceNormal, 3));
+					meshColors.AddRange(Enumerable.Repeat(color, 3));
+					miscUVs.AddRange(Enumerable.Repeat(miscUV, 3));
 				}
 			}		
 		}
