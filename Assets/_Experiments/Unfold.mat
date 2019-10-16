@@ -29,12 +29,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Distance: 2
-    - Faces: 102
+    - Faces: 758
     - Speed: 0.5
     - Vector1_2839B9D9: 1
     - Vector1_5CE02FC7: 75
     - Vector1_66865F88: 150
-    - Vector1_92FA097A: 1
+    - Vector1_92FA097A: 3
     - Vector1_BA4D5A57: 0.1
     - Vector1_F9A7A804: 1.1
     - _AlphaCutoff: 0.5
@@ -73,3 +73,16 @@ Material:
     m_Colors:
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &6531976040632903445
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 0

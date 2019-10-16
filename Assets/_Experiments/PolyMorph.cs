@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class PolyMorph : MonoBehaviour
 {
     [System.Serializable]
@@ -24,11 +25,13 @@ public class PolyMorph : MonoBehaviour
 
     void Start()
     {
-        Invoke(nameof(Initialise), 0);
+        Invoke(nameof(Initialize), 0);
     }
 
-    public void Initialise()
+    public void Initialize()
     {
+        if (initialized) return;
+
         polyList = gameObject.GetComponentsInChildren<MeshFilter>();
         sm = gameObject.GetComponent<SkinnedMeshRenderer>();
         Mesh mesh = new Mesh();
@@ -45,7 +48,6 @@ public class PolyMorph : MonoBehaviour
 
         for (var i = 1; i < polyList.Length; i++)
         {
-            //Debug.Log($"{i}: {polyList[i].mesh.vertexCount}");
             mesh.AddBlendShapeFrame(
                 i.ToString(),
                 i,
