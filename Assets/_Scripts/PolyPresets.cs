@@ -107,6 +107,7 @@ public class PolyPresets : MonoBehaviour {
 		}
 	}
 	
+	[ContextMenu("Load All Presets")]
 	public void LoadAllPresets()
 	{
 		Items.Clear();

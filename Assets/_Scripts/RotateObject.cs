@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+
 public class RotateObject : MonoBehaviour {
 	
 	public float x = 1;
