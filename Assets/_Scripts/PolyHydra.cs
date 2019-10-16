@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Conway;
@@ -9,6 +10,7 @@ using Wythoff;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 // ReSharper disable InconsistentNaming
@@ -36,7 +38,6 @@ public class PolyHydra : MonoBehaviour {
 	public string APresetName;
 	public bool BypassOps;
 	public bool TwoSided;
-	[FormerlySerializedAs("ReScale")]
 	public bool Rescale;
 	private PolyCache polyCache;
 
@@ -381,7 +382,7 @@ public class PolyHydra : MonoBehaviour {
 		}
 	}
 	
-	private void MakePolyhedron()
+	private void MakePolyhedron(bool disableThreading=false)
 	{
 		if (ShapeType == ShapeTypes.Uniform && UniformPolyType != PolyTypes.Grid)
 		{
@@ -405,8 +406,8 @@ public class PolyHydra : MonoBehaviour {
 		{
 			_conwayPoly = MakeJohnsonPoly(JohnsonPolyType);
 		}
-		
-		if (!enableThreading)
+
+		if (!enableThreading || disableThreading)  // TODO fix confusing flags
 		{
 			ApplyOps();
 			FinishedApplyOps();
@@ -439,7 +440,7 @@ public class PolyHydra : MonoBehaviour {
 			var op = ConwayOperators[i];
 			if (opconfigs[op.opType].usesAmount)
 			{
-				op.amount = Mathf.Round(op.amount * 100) / 100f;
+				op.amount = Mathf.Round(op.amount * 1000) / 1000f;
 				float opMin = opconfigs[op.opType].amountMin;
 				float opMax = opconfigs[op.opType].amountMax;
 				if (op.amount < opMin) op.amount = opMin;
@@ -456,16 +457,16 @@ public class PolyHydra : MonoBehaviour {
 
 	}
 
-	public void Rebuild()
+	public void Rebuild(bool disableThreading = false)
 	{
-		InitCacheIfNeeded();
-		var currentState = new PolyPreset();
-		currentState.CreateFromPoly("temp", this);
-		if (previousState != currentState)
-		{
-			MakePolyhedron();
-			previousState = currentState;
-		}
+//		InitCacheIfNeeded();
+//		var currentState = new PolyPreset();
+//		currentState.CreateFromPoly("temp", this);
+//		if (previousState != currentState)
+//		{
+			MakePolyhedron(disableThreading);
+//			previousState = currentState;
+//		}
 	}
 
 	public void MakeWythoff() {
@@ -494,12 +495,12 @@ public class PolyHydra : MonoBehaviour {
 
 		if (WythoffPoly == null || WythoffPoly.WythoffSymbol != symbol)
 		{
-			WythoffPoly = polyCache.Get(symbol);
+			WythoffPoly = polyCache.GetWythoff(symbol);
 			if (WythoffPoly == null)
 			{
 				WythoffPoly = new WythoffPoly(symbol);
 				WythoffPoly.BuildFaces();
-				polyCache.Set(symbol, WythoffPoly);
+				polyCache.SetWythoff(symbol, WythoffPoly);
 			}
 
 			if (WythoffPoly == null)
@@ -517,20 +518,36 @@ public class PolyHydra : MonoBehaviour {
 		_faceCount = _conwayPoly.Faces.Count;
 		_vertexCount = _conwayPoly.Vertices.Count;
 		
-		if (Rescale)
+		if (enableCaching)
 		{
-			_conwayPoly.ScalePolyhedra();			
+			var cacheKeySource = PolyToJson();
+			int key = cacheKeySource.GetHashCode();
+			var mesh = polyCache.GetMesh(key);
+			if (mesh == null)
+			{
+				mesh = BuildMeshFromConwayPoly(TwoSided);
+				polyCache.SetMesh(key, mesh);
+			}
+			AssignFinishedMesh(mesh);
 		}
-		
-		var mesh = BuildMeshFromConwayPoly(TwoSided);
-		AssignFinishedMesh(mesh);
+		else
+		{
+			var mesh = BuildMeshFromConwayPoly(TwoSided);
+			AssignFinishedMesh(mesh);
+		}
 	}
 
 	public void AssignFinishedMesh(Mesh mesh)
 	{
-		mesh.RecalculateTangents();
-		mesh.RecalculateBounds();
-		
+
+		if (Rescale)
+		{
+			var size = mesh.bounds.size;
+			var maxDimension = Mathf.Max(size.x, size.y, size.z);
+			var scale = (1f / maxDimension) * 2f;
+			transform.localScale = new Vector3(scale, scale, scale);
+		}
+
 		if (meshFilter != null)
 		{
 			if (Application.isEditor)
@@ -764,11 +781,11 @@ public class PolyHydra : MonoBehaviour {
 			{
 				cacheKeySource += JsonConvert.SerializeObject(op);
 				int key = cacheKeySource.GetHashCode();
-				var nextOpResult = polyCache.Get(key);
+				var nextOpResult = polyCache.GetConway(key);
 				if (nextOpResult == null)
 				{
 					nextOpResult = ApplyOp(_conwayPoly, op);
-					polyCache.Set(key, nextOpResult);
+					polyCache.SetConway(key, nextOpResult);
 				}
 				_conwayPoly = nextOpResult;
 			}
@@ -831,6 +848,8 @@ public class PolyHydra : MonoBehaviour {
 		mesh.colors = meshColors.ToArray();
 		mesh.uv = meshUVs.ToArray();
 		mesh.RecalculateNormals();
+		mesh.RecalculateTangents();
+		mesh.RecalculateBounds();
 		return mesh;
 
 	}
