@@ -140,6 +140,8 @@ public class PolyHydra : MonoBehaviour {
 		Canonicalize,
 //		CanonicalizeI,
 		Spherize,
+		SitLevel,
+		Stretch
 	}
 
 	public readonly int[] NonOrientablePolyTypes = {
@@ -328,7 +330,9 @@ public class PolyHydra : MonoBehaviour {
 			{Ops.AddDual, new OpConfig{amountDefault = 1f, amountMin = -6, amountMax = 6}},
 			{Ops.Canonicalize, new OpConfig{amountDefault = 0.1f, amountMin = 0.0001f, amountMax = 1f}},
 //			{Ops.CanonicalizeI, new OpConfig{amountDefault = 200, amountMin = 1, amountMax = 400}},
-			{Ops.Spherize, new OpConfig{amountDefault = 1.0f, amountMin = 0, amountMax = 1}}
+			{Ops.Spherize, new OpConfig{amountDefault = 1.0f, amountMin = 0, amountMax = 1}},
+			{Ops.Stretch, new OpConfig{amountDefault = 1.0f, amountMin = 0, amountMax = 3f}},
+			{Ops.SitLevel, new OpConfig{}}
 
 		};
 	}
@@ -761,6 +765,12 @@ public class PolyHydra : MonoBehaviour {
 //				break;
 			case Ops.Spherize:
 				conway = conway.Spherize(op.amount);
+				break;
+			case Ops.SitLevel:
+				conway = conway.SitLevel();
+				break;
+			case Ops.Stretch:
+				conway = conway.Stretch(op.amount);
 				break;
 		}
 

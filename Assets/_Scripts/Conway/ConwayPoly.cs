@@ -162,6 +162,8 @@ namespace Conway
 			NewAlt,
 			AllNew,
 			Alternate,
+			OnlyFirst,
+			ExceptFirst,
 			None,
 		}
 
@@ -319,6 +321,53 @@ namespace Conway
 			newPoly.ScalePolyhedra(scale);
 			oldPoly.Append(newPoly);
 			return oldPoly;
+		}
+
+		public ConwayPoly SitLevel()
+		{
+			var vertexPoints = new List<Vector3>();
+			var faceIndices = ListFacesByVertexIndices();
+
+			for (var vertexIndex = 0; vertexIndex < Vertices.Count; vertexIndex++)
+			{
+				var rot = Quaternion.LookRotation(Faces[0].Normal);
+				var rotForwardToDown = Quaternion.FromToRotation(Vector3.down, Vector3.forward);
+				vertexPoints.Add(Quaternion.Inverse(rot * rotForwardToDown) * Vertices[vertexIndex].Position);
+			}
+
+			var conway = new ConwayPoly(vertexPoints, faceIndices, FaceRoles, VertexRoles);
+			return conway;
+		}
+
+		public ConwayPoly Stretch(float amount)
+		{
+			var vertexPoints = new List<Vector3>();
+			var faceIndices = ListFacesByVertexIndices();
+
+			for (var vertexIndex = 0; vertexIndex < Vertices.Count; vertexIndex++)
+			{
+				var vertex = Vertices[vertexIndex];
+				float y;
+				if (vertex.Position.y < 0.1)
+				{
+					y = vertex.Position.y - amount;
+				}
+				else if (vertex.Position.y > -0.1)
+				{
+					y = vertex.Position.y + amount;
+				}
+				else
+				{
+					y = vertex.Position.y;
+				}
+
+
+				var newPos = new Vector3(vertex.Position.x, y, vertex.Position.z);
+				vertexPoints.Add(newPos);
+			}
+
+			var conway = new ConwayPoly(vertexPoints, faceIndices, FaceRoles, VertexRoles);
+			return conway;
 		}
 
 		/// <summary>
@@ -3136,25 +3185,25 @@ namespace Conway
 
 		public bool IncludeFace(int faceIndex, FaceSelections facesel)
 		{
+			float TOLERANCE = 0.02f;
 			switch (facesel)
 			{
 				case FaceSelections.All:
 					return true;
 				case FaceSelections.FacingUp:
-					return Faces[faceIndex].Normal.y > 0;
+					return Faces[faceIndex].Normal.y > TOLERANCE;
 				case FaceSelections.FacingLevel:
-					return Math.Abs(Faces[faceIndex].Normal.y) < 0.1f;
+					return Math.Abs(Faces[faceIndex].Normal.y) < TOLERANCE;
 				case FaceSelections.FacingDown:
-					return Faces[faceIndex].Normal.y < 0;
+					return Faces[faceIndex].Normal.y < -TOLERANCE;
 				case FaceSelections.FacingCenter:
-					float TOLERANCE = 0.02f;
 					float angle = Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid);
 					Debug.Log(Math.Abs(angle - 180));
 					return Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE;
 				case FaceSelections.FacingIn:
-					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) % 180 < 90;
+					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) % 180 < 90 - TOLERANCE;
 				case FaceSelections.FacingOut:
-					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) % 180 > 90;
+					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) % 180 > 90 + TOLERANCE;
 				case FaceSelections.Existing:
 					return FaceRoles[faceIndex] == Roles.Existing;
 				case FaceSelections.Ignored:
@@ -3167,6 +3216,10 @@ namespace Conway
 					return FaceRoles[faceIndex] == Roles.New || FaceRoles[faceIndex] == Roles.NewAlt;
 				case FaceSelections.Alternate:
 					return faceIndex % 2 == 0;
+				case FaceSelections.OnlyFirst:
+					return faceIndex == 0;
+				case FaceSelections.ExceptFirst:
+					return faceIndex != 0;
 				case FaceSelections.None:
 					return false;
 			}
