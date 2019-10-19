@@ -27,7 +27,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Cubemap_5EE2B0FE:
-        m_Texture: {fileID: 8900000, guid: 70ea72b7d4215b34b92492cfc249f2c7, type: 3}
+        m_Texture: {fileID: 8900000, guid: 68330db246c840b4199330ce4a7f428a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -82,7 +82,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Vector2_E53EDB49: {r: 1, g: 1, b: 0, a: 0}
+    - Vector2_E53EDB49: {r: 2, g: 2, b: 0, a: 0}
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

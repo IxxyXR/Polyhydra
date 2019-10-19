@@ -88,7 +88,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - Vector2_1994A79E: {r: 1, g: 1, b: 0, a: 0}
-    - Vector2_E53EDB49: {r: 22, g: 22, b: 3, a: 0}
+    - Vector2_E53EDB49: {r: 9, g: 9, b: 3, a: 0}
     - Vector3_2041C2E5: {r: -1, g: -1, b: 1, a: 0}
     - Vector3_77D7EADB: {r: 0, g: 0, b: 0, a: 0}
     - Vector3_A1F6708C: {r: -1, g: -1, b: 1, a: 0}
