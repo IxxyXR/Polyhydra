@@ -268,15 +268,18 @@ public class PolyUI : MonoBehaviour {
             var label = new Dropdown.OptionData(item.ToString());
             opPrefabManager.FaceSelectionDropdown.options.Add(label);
         }
-        
+
+
+
+        opPrefabManager.OpTypeDropdown.value = (int)op.opType;
+        ConfigureOpControls(opPrefab.GetComponent<OpPrefabManager>());
+
         opPrefabManager.DisabledToggle.isOn = op.disabled;
-        opPrefabManager.OpTypeDropdown.value = (int) op.opType;
         opPrefabManager.FaceSelectionDropdown.value = (int) op.faceSelections;
         opPrefabManager.AmountSlider.value = op.amount;
         opPrefabManager.AmountInput.text = op.amount.ToString();
         opPrefabManager.RandomizeToggle.isOn = op.randomize;
 
-        ConfigureOpControls(opPrefab.GetComponent<OpPrefabManager>());
 
         opPrefabManager.OpTypeDropdown.onValueChanged.AddListener(delegate{OpTypeChanged();});
         opPrefabManager.FaceSelectionDropdown.onValueChanged.AddListener(delegate{OpsUIToPoly();});
@@ -332,7 +335,7 @@ public class PolyUI : MonoBehaviour {
         if (float.TryParse(input.text, out value))
         {
             slider.value = value;
-        }        
+        }
         OpsUIToPoly();
     }
 
@@ -353,7 +356,7 @@ public class PolyUI : MonoBehaviour {
             op.amount = opPrefabManager.AmountSlider.value;
             op.randomize = opPrefabManager.RandomizeToggle.isOn;
             poly.ConwayOperators[index] = op;
-            
+
         }
         Rebuild();
     }
