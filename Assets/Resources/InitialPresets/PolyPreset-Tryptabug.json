@@ -1,7 +1,7 @@
 {
-  "Name": "An Album Cover",
+  "Name": "Tryptabug",
   "ShapeType": "Uniform",
-  "PolyType": 11,
+  "PolyType": 32,
   "JohnsonPolyType": 0,
   "BypassOps": false,
   "TwoSided": true,
@@ -11,16 +11,23 @@
   "AppearancePresetName": "Rich",
   "Ops": [
     {
-      "OpType": "Loft",
+      "OpType": "SitLevel",
       "FaceSelections": "All",
-      "Amount": 0.4849997,
+      "Amount": 0.0,
       "Randomize": false,
       "Disabled": false
     },
     {
-      "OpType": "Kis",
-      "FaceSelections": "Existing",
-      "Amount": -1.59999955,
+      "OpType": "Yank",
+      "FaceSelections": "FacingLevel",
+      "Amount": 0.3,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Exalt",
+      "FaceSelections": "FacingUp",
+      "Amount": -0.6,
       "Randomize": false,
       "Disabled": false
     }

@@ -54,7 +54,7 @@ MonoBehaviour:
     showEyeDropper: 1
   middle:
     m_OverrideState: 1
-    m_Value: {r: 0.24528301, g: 0.244126, b: 0.244126, a: 1}
+    m_Value: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
@@ -213,6 +213,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 0
   m_AdvancedMode: 0
+  quality:
+    m_OverrideState: 0
+    m_Value: 3
   spectralLut:
     m_OverrideState: 0
     m_Value: {fileID: 0}
@@ -221,7 +224,7 @@ MonoBehaviour:
     m_Value: 0.7
     min: 0
     max: 1
-  maxSamples:
+  m_MaxSamples:
     m_OverrideState: 0
     m_Value: 8
     min: 3
@@ -462,6 +465,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 0
   m_AdvancedMode: 0
+  quality:
+    m_OverrideState: 0
+    m_Value: 3
   intensity:
     m_OverrideState: 1
     m_Value: 0.3
@@ -485,16 +491,16 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
     min: 0
-  highQualityFiltering:
-    m_OverrideState: 0
-    m_Value: 1
-  resolution:
-    m_OverrideState: 0
-    m_Value: 2
   prefilter:
     m_OverrideState: 0
     m_Value: 0
   anamorphic:
+    m_OverrideState: 0
+    m_Value: 1
+  m_Resolution:
+    m_OverrideState: 0
+    m_Value: 2
+  m_HighQualityFiltering:
     m_OverrideState: 0
     m_Value: 1
 --- !u!114 &11400000

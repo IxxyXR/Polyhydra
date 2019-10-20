@@ -64,7 +64,8 @@ public class CustomEditorBase : Editor
 			EditorGUILayout.LabelField(string.Format("size: {0}", property.arraySize));
 			EditorGUILayout.EndHorizontal();
 		}
-		else {
+		else
+		{
 			if (EditorGUILayout.BeginFadeGroup(listData.IsExpanded.faded))
 				listData.List.DoLayoutList();
 			EditorGUILayout.EndFadeGroup();

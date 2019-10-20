@@ -8,16 +8,16 @@ using UnityEngine.Rendering.HighDefinition;
 [Serializable]
 public class AppearancePreset
 {
-
     public string Name;
     public Material PolyhedronMaterial;
     public PolyHydra.ColorMethods PolyhedronColorMethod;
+    public List<GameObject> ActiveProps;
     public List<Light> ActiveLights;
     public VolumeProfile ActiveVolumeProfile;
     public HDAdditionalCameraData.ClearColorMode CameraClearColorMode;
     public Color CameraBackgroundColor;
 
-    public void ApplyToPoly(ref PolyHydra poly, GameObject LightsParent, Volume activeVolume, Camera CurrentCamera)
+    public void ApplyToPoly(ref PolyHydra poly, GameObject LightsParent, GameObject PropsParent, Volume activeVolume, Camera CurrentCamera)
     {
         
         var hdCamData = CurrentCamera.gameObject.GetComponent<HDAdditionalCameraData>();
@@ -28,11 +28,20 @@ public class AppearancePreset
         hdCamData.clearColorMode = CameraClearColorMode;
         hdCamData.backgroundColorHDR = CameraBackgroundColor;
         activeVolume.profile = ActiveVolumeProfile;
+
         var lights = LightsParent.GetComponentsInChildren<Light>(includeInactive: true);
         foreach (var light in lights)
         {
             if (ActiveLights.Contains(light)) {light.gameObject.SetActive(true);}
             else {light.gameObject.SetActive(false);}
         }
+
+        var props = PropsParent.GetComponentsInChildren<Transform>(includeInactive: true);
+        foreach (var prop in props)
+        {
+            if (ActiveProps.Contains(prop.gameObject)) {prop.gameObject.SetActive(true);}
+            else {prop.gameObject.SetActive(false);}
+        }
+
     }
 }

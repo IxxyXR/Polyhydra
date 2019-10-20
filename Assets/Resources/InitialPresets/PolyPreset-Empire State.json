@@ -1,0 +1,35 @@
+{
+  "Name": "Empire State",
+  "ShapeType": "Uniform",
+  "PolyType": 42,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Hex",
+  "PrismP": 5,
+  "PrismQ": 2,
+  "AppearancePresetName": "RGB",
+  "Ops": [
+    {
+      "OpType": "SitLevel",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Stretch",
+      "FaceSelections": "ExceptFirst",
+      "Amount": 2.74,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "FacingUp",
+      "Amount": 1.0,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

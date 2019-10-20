@@ -1,0 +1,49 @@
+{
+  "Name": "Orrery",
+  "ShapeType": "Uniform",
+  "PolyType": 1,
+  "JohnsonPolyType": 0,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Hex",
+  "PrismP": 11,
+  "PrismQ": 2,
+  "AppearancePresetName": "Subtle",
+  "Ops": [
+    {
+      "OpType": "SitLevel",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Stretch",
+      "FaceSelections": "ExceptFirst",
+      "Amount": 1.0,
+      "Randomize": false,
+      "Disabled": true
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "FacingUp",
+      "Amount": 0.55,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Loft",
+      "FaceSelections": "FacingLevel",
+      "Amount": 0.5,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "FacingLevel",
+      "Amount": 0.02,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}
