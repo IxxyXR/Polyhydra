@@ -1,14 +1,14 @@
 {
-  "Name": "Orrery",
+  "Name": "Ashtray",
   "ShapeType": "Uniform",
-  "PolyType": 1,
+  "PolyType": 28,
   "JohnsonPolyType": 0,
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Hex",
-  "PrismP": 11,
+  "PrismP": 5,
   "PrismQ": 2,
-  "AppearancePresetName": "Dirty Metal",
+  "AppearancePresetName": "Subtle",
   "Ops": [
     {
       "OpType": "SitLevel",
@@ -18,30 +18,37 @@
       "Disabled": false
     },
     {
-      "OpType": "Stretch",
-      "FaceSelections": "ExceptFirst",
-      "Amount": 1.0,
-      "Randomize": false,
-      "Disabled": true
-    },
-    {
-      "OpType": "Kis",
-      "FaceSelections": "FacingUp",
-      "Amount": 0.55,
-      "Randomize": false,
-      "Disabled": false
-    },
-    {
       "OpType": "Loft",
-      "FaceSelections": "FacingLevel",
+      "FaceSelections": "All",
       "Amount": 0.5,
       "Randomize": false,
       "Disabled": false
     },
     {
-      "OpType": "Kis",
-      "FaceSelections": "FacingLevel",
-      "Amount": 0.02,
+      "OpType": "FaceRemove",
+      "FaceSelections": "FacingUp",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Shell",
+      "FaceSelections": "All",
+      "Amount": 0.25,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Propeller",
+      "FaceSelections": "All",
+      "Amount": 0.15,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "Existing",
+      "Amount": 0.03,
       "Randomize": false,
       "Disabled": false
     }

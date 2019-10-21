@@ -1,14 +1,14 @@
 {
-  "Name": "Tryptabug",
+  "Name": "Altar",
   "ShapeType": "Uniform",
-  "PolyType": 32,
+  "PolyType": 50,
   "JohnsonPolyType": 0,
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Square",
-  "PrismP": 0,
-  "PrismQ": 0,
-  "AppearancePresetName": "Black Mirror",
+  "GridType": "Hex",
+  "PrismP": 5,
+  "PrismQ": 2,
+  "AppearancePresetName": "Rich",
   "Ops": [
     {
       "OpType": "SitLevel",
@@ -18,16 +18,23 @@
       "Disabled": false
     },
     {
-      "OpType": "Yank",
-      "FaceSelections": "FacingLevel",
-      "Amount": 0.3,
+      "OpType": "Gyro",
+      "FaceSelections": "All",
+      "Amount": 0.5,
       "Randomize": false,
       "Disabled": false
     },
     {
-      "OpType": "Exalt",
+      "OpType": "Extrude",
       "FaceSelections": "FacingUp",
-      "Amount": -0.6,
+      "Amount": 0.25,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Stretch",
+      "FaceSelections": "All",
+      "Amount": 1.53,
       "Randomize": false,
       "Disabled": false
     }

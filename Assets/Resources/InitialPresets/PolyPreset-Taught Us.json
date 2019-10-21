@@ -8,7 +8,7 @@
   "GridType": "Hex",
   "PrismP": 5,
   "PrismQ": 2,
-  "AppearancePresetName": "Vectrex",
+  "AppearancePresetName": "Spiral Blush",
   "Ops": [
     {
       "OpType": "FaceRemove",
