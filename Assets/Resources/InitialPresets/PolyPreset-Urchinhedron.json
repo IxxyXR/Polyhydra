@@ -1,0 +1,35 @@
+{
+  "Name": "Urchinhedron",
+  "ShapeType": "Johnson",
+  "PolyType": 28,
+  "JohnsonPolyType": 1,
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Hex",
+  "PrismP": 22,
+  "PrismQ": 2,
+  "AppearancePresetName": "Tinted Glass",
+  "Ops": [
+    {
+      "OpType": "Meta",
+      "FaceSelections": "All",
+      "Amount": 1.05,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "VertexScale",
+      "FaceSelections": "FourSided",
+      "Amount": -5.9,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "FourSided",
+      "Amount": -0.05,
+      "Randomize": false,
+      "Disabled": true
+    }
+  ]
+}

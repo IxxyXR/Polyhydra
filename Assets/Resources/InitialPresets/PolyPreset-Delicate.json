@@ -8,26 +8,19 @@
   "GridType": "Square",
   "PrismP": 0,
   "PrismQ": 0,
-  "AppearancePresetName": "Subtle",
+  "AppearancePresetName": "Dirty Metal",
   "Ops": [
     {
       "OpType": "Lace",
       "FaceSelections": "All",
-      "Amount": 0.5,
+      "Amount": 0.2,
       "Randomize": false,
       "Disabled": false
     },
     {
       "OpType": "Lace",
       "FaceSelections": "All",
-      "Amount": 0.5,
-      "Randomize": false,
-      "Disabled": false
-    },
-    {
-      "OpType": "FaceOffset",
-      "FaceSelections": "NewAlt",
-      "Amount": 0.01,
+      "Amount": 0.8,
       "Randomize": false,
       "Disabled": false
     }

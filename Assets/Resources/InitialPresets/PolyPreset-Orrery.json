@@ -8,7 +8,7 @@
   "GridType": "Hex",
   "PrismP": 11,
   "PrismQ": 2,
-  "AppearancePresetName": "Dirty Metal",
+  "AppearancePresetName": "Subtle",
   "Ops": [
     {
       "OpType": "SitLevel",

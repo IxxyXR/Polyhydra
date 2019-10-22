@@ -1,7 +1,7 @@
 {
-  "Name": "Altar",
+  "Name": "Fausseract",
   "ShapeType": "Uniform",
-  "PolyType": 50,
+  "PolyType": 13,
   "JohnsonPolyType": 0,
   "BypassOps": false,
   "TwoSided": true,
@@ -11,30 +11,30 @@
   "AppearancePresetName": "Tinted Glass",
   "Ops": [
     {
-      "OpType": "SitLevel",
-      "FaceSelections": "All",
-      "Amount": 0.0,
-      "Randomize": false,
-      "Disabled": false
-    },
-    {
-      "OpType": "Gyro",
-      "FaceSelections": "All",
+      "OpType": "Loft",
+      "FaceSelections": "ThreeSided",
       "Amount": 0.5,
       "Randomize": false,
       "Disabled": false
     },
     {
-      "OpType": "Extrude",
-      "FaceSelections": "FacingUp",
+      "OpType": "FaceRemove",
+      "FaceSelections": "ThreeSided",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Shell",
+      "FaceSelections": "All",
       "Amount": 0.25,
       "Randomize": false,
       "Disabled": false
     },
     {
-      "OpType": "Stretch",
+      "OpType": "Dual",
       "FaceSelections": "All",
-      "Amount": 1.53,
+      "Amount": 0.0,
       "Randomize": false,
       "Disabled": false
     }
