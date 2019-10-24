@@ -23,6 +23,8 @@ namespace Conway
 			Halfedges = new MeshHalfedgeList(this);
 			Vertices = new MeshVertexList(this);
 			Faces = new MeshFaceList(this);
+			FaceRoles = new List<Roles>();
+			VertexRoles = new List<Roles>();
 		}
 
 		public ConwayPoly(WythoffPoly source, bool abortOnFailure=true) : this()
@@ -2041,7 +2043,7 @@ namespace Conway
 			var vertexPoints = new List<Vector3>();
 			var faceIndices = new List<IEnumerable<int>>();
 
-			var faceRoles = new List<Roles>();
+			var newFaceRoles = new List<Roles>();
 
 			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
 			{
@@ -2060,10 +2062,10 @@ namespace Conway
 				}
 
 				faceIndices.Add(faceVerts);
-				faceRoles.Add(includeFace ? Roles.Existing : Roles.Ignored);
+				newFaceRoles.Add(includeFace ? Roles.Existing : Roles.Ignored);
 			}
-
-			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, VertexRoles);
+			// TODO Use new face roles or the existing ones?
+			return new ConwayPoly(vertexPoints, faceIndices, FaceRoles, VertexRoles);
 		}
 
 		public ConwayPoly FaceRotate(float angle, FaceSelections facesel, int axis, bool randomize)
