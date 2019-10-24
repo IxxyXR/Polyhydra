@@ -227,8 +227,8 @@ namespace Conway
             var poly = polygon.Kis(height, ConwayPoly.FaceSelections.All, false);
             var baseVerts = poly.Vertices.GetRange(0, sides);
             baseVerts.Reverse();
-            poly.Faces.Add(baseVerts);
-            poly.FaceRoles.Add(ConwayPoly.Roles.Existing);
+            poly.Faces.Insert(0, baseVerts);
+            poly.FaceRoles.Insert(0, ConwayPoly.Roles.Existing);
             poly.Halfedges.MatchPairs();
             return poly;
         }

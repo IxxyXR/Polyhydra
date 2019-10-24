@@ -20,12 +20,22 @@ namespace Conway {
             return face.Name;
         }
 
+        public Boolean Add(IEnumerable<Vertex> vertices)
+        {
+            return _AddOrInsert(vertices, false);
+        }
+        
+        public Boolean Insert(int index, IEnumerable<Vertex> vertices)
+        {
+            return _AddOrInsert(vertices, true, index);
+        }
+
         /// <summary>
         /// Add a new face by its vertices. Will not allow the mesh to become non-manifold (e.g. by duplicating an existing halfedge).
         /// </summary>
         /// <param name="vertices">the vertices which define the face, given in anticlockwise order</param>
         /// <returns>true on success, false on failure</returns>
-        public Boolean Add(IEnumerable<Vertex> vertices) {
+        private Boolean _AddOrInsert(IEnumerable<Vertex> vertices, bool insert, int index=-1) {
             Vertex[] array = vertices.ToArray();
 
             if (array.Length < 3) {
@@ -62,7 +72,14 @@ namespace Conway {
             }
 
             // add face to mesh
-            Add(new_face);
+            if (insert)
+            {
+                Insert(index, new_face);
+            }
+            else
+            {
+                Add(new_face);
+            }
 
             return true;
         }
