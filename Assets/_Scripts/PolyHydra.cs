@@ -909,7 +909,14 @@ public class PolyHydra : MonoBehaviour {
 		
 		
 		return originalFaceSides;
-	} 
+	}
+
+	Vector3 Jitter(Vector3 val)
+	{
+		// Used to reduce Z fighting for coincident faces
+		float jitter = 0.0002f;
+		return val + new Vector3(Random.value * jitter, Random.value * jitter, Random.value * jitter);
+	}
 
 	public Mesh BuildMeshFromConwayPoly(bool forceTwosided)
 	{
@@ -1079,7 +1086,7 @@ public class PolyHydra : MonoBehaviour {
 			}		
 		}
 		
-		target.vertices = meshVertices.ToArray();
+		target.vertices = meshVertices.Select(x => Jitter(x)).ToArray();
 		target.normals = meshNormals.ToArray();
 		target.triangles = meshTriangles.ToArray();
 		target.colors32 = meshColors.ToArray();
