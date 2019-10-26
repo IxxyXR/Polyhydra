@@ -2148,6 +2148,7 @@ namespace Conway
 
 			newPoly.Vertices.CullUnused();
 			newPoly.FaceRoles = newFaceRoles;
+			newPoly.FillHoles();
 			return newPoly;
 		}
 
@@ -3092,6 +3093,62 @@ namespace Conway
 			return points;
 		}
 
+		public List<List<Halfedge>> FindBoundaries()
+		{
+			var looped = new Dictionary<string, Halfedge>();
+			var loops = new List<List<Halfedge>>();
+			
+			foreach (var halfedge in Halfedges)
+			{
+				if (halfedge.Pair == null && !looped.ContainsKey(halfedge.Name))
+				{
+					var loop = new List<Halfedge>();
+					var startHalfedge = halfedge;
+					var currHalfedge = halfedge;
+					int escapeClause = 0;
+					do
+					{
+						loop.Add(currHalfedge);
+						looped[currHalfedge.Name] = currHalfedge;
+						do
+						{
+							currHalfedge = currHalfedge.Next.Pair.Next;
+						} while (currHalfedge.Pair != null);
+						escapeClause++;
+					} while (currHalfedge != startHalfedge && escapeClause < 100);
+					loops.Add(loop);
+				}
+				
+			}
+
+			return loops;
+		}
+
+		public void FillHoles()
+		{
+			var boundaries = FindBoundaries();
+			foreach (var boundary in boundaries)
+			{
+				var success = Faces.Add(boundary.Select(x => x.Vertex));
+				if (!success)
+				{
+					boundary.Reverse();
+					Faces.Add(boundary.Select(x => x.Vertex));
+				}
+				FaceRoles.Add(Roles.New);
+			}
+		}
+		
+//		public ConwayPoly ElongateHoles()
+//		{
+//			
+//		}		
+//
+//		public ConwayPoly GyroElongateHoles()
+//		{
+//			
+//		}		
+		
 		/// <summary>
 		/// Gets the indices of vertices in each face loop (i.e. index face-vertex data structure).
 		/// Used for duplication and conversion to other mesh types, such as Rhino's.
