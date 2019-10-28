@@ -32,15 +32,15 @@ Material:
     MotionVector: User
   disabledShaderPasses:
   - MOTIONVECTORS
+  - TransparentBackface
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats:
-    - _AlphaCutoff: 0.5
     - _AlphaCutoffEnable: 0
     - _AlphaDstBlend: 0
     - _AlphaSrcBlend: 1
-    - _Amount: -0.3
+    - _Amount: 0.5
     - _BlendMode: 0
     - _CullMode: 2
     - _CullModeForward: 2
@@ -51,7 +51,7 @@ Material:
     - _ReceivesSSR: 1
     - _RenderQueueType: 1
     - _RequireSplitLighting: 0
-    - _Size: 0.78
+    - _Size: 0.5
     - _Smoothness: 0.5
     - _SrcBlend: 1
     - _StencilRef: 2
