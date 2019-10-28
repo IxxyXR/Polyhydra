@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Wythoff;
 
 namespace Conway
 {
@@ -127,7 +128,73 @@ namespace Conway
             poly.Halfedges.MatchPairs();
             return poly;
         }
-        
+
+        // Work in progress. Not working at the moment
+        public static ConwayPoly MakeRotunda(int sides, float height, bool bi=false)
+        {
+
+            if (sides < 3) sides = 3;
+
+            ConwayPoly poly = MakePolygon(sides);
+            Face bottom = poly.Faces[0];
+            ConwayPoly top1 = MakePolygon(sides, true, 0.25f, height,0.5f);
+            poly.Append(top1);
+
+            int i = 0;
+//            var upperTriFaces = new List<Face>();
+//            var LowerTriFaces = new List<Face>();
+//            var SidePentFaces = new List<Face>();
+
+            var edge1 = poly.Halfedges[0];
+            var edge2 = poly.Halfedges[sides * 2];
+
+            while (true)
+            {
+                poly.Vertices.Add(new Vertex(Vector3.Lerp(edge1.Vector, edge2.Vector, 0.5f)));
+                var newV1 = poly.Vertices.Last();
+                poly.Vertices.Add(new Vertex(Vector3.Lerp(edge1.Prev.Vector, edge2.Next.Vector, 0.5f)));
+                var newV2 = poly.Vertices.Last();
+
+                var pentFace = new List<Vertex>
+                {
+                    edge1.Next.Vertex,
+                    edge1.Vertex,
+                    newV1,
+                };
+                poly.Faces.Add(pentFace);
+                poly.FaceRoles.Add(ConwayPoly.Roles.New);
+
+//                var upperTriFace = new List<Vertex>
+//                {
+//                    edge1.Vertex,
+//                    edge1.Prev.Vertex,
+//                    newV
+//                };
+//                poly.Faces.Add(upperTriFace);
+//                //upperTriFaces.Add(poly.Faces.Last());
+//                poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
+//
+//                var lowerTriFace = new List<Vertex>
+//                {
+//                    newV,
+//                    edge2.Vertex,
+//                    edge2.Prev.Vertex
+//                };
+//                poly.Faces.Add(lowerTriFace);
+//                //lowerTriFaces.Add(poly.Faces.Last());
+//                poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
+
+                i++;
+                edge1 = edge1.Next.Next;
+                edge2 = edge2.Prev;
+                if (i == sides) break;
+            }
+
+            poly.Halfedges.MatchPairs();
+            return poly;
+        }
+
+
         public static ConwayPoly MakePrism(int sides)
         {
             float height = SideLength(sides);
@@ -270,6 +337,16 @@ namespace Conway
             poly = MakeCupola(sides, height/2, true);
             return poly;
         }
-        
+
+        public static ConwayPoly MakeRotunda()
+        {
+            var wythoffPoly = new WythoffPoly(Uniform.Uniforms[29].Wythoff);
+            wythoffPoly.BuildFaces();
+            var conwayPoly = new ConwayPoly(wythoffPoly);
+            conwayPoly = conwayPoly.FaceRemove(ConwayPoly.FaceSelections.FacingDown, false);
+            conwayPoly.FillHoles();
+            return conwayPoly;
+        }
+
     }
 }

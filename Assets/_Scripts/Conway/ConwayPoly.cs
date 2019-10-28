@@ -2146,9 +2146,8 @@ namespace Conway
 				newPoly.Faces.Remove(face);
 			}
 
-			newPoly.Vertices.CullUnused();
 			newPoly.FaceRoles = newFaceRoles;
-			newPoly.FillHoles();
+			newPoly.Vertices.CullUnused();
 			return newPoly;
 		}
 
@@ -3106,17 +3105,29 @@ namespace Conway
 					var startHalfedge = halfedge;
 					var currHalfedge = halfedge;
 					int escapeClause = 0;
+					bool invalidLoop = false;
 					do
 					{
 						loop.Add(currHalfedge);
 						looped[currHalfedge.Name] = currHalfedge;
 						do
 						{
+							if (currHalfedge.Next == null || currHalfedge.Next.Pair == null ||
+							    currHalfedge.Next.Pair.Next == null)
+							{
+								invalidLoop = true;
+								break;
+							}
 							currHalfedge = currHalfedge.Next.Pair.Next;
+							if (invalidLoop) break;
 						} while (currHalfedge.Pair != null);
 						escapeClause++;
-					} while (currHalfedge != startHalfedge && escapeClause < 100);
-					loops.Add(loop);
+					} while (currHalfedge != startHalfedge && escapeClause < 1000);
+
+					if (loop.Count >= 3)
+					{
+						loops.Add(loop);
+					}
 				}
 				
 			}
@@ -3133,9 +3144,11 @@ namespace Conway
 				if (!success)
 				{
 					boundary.Reverse();
-					Faces.Add(boundary.Select(x => x.Vertex));
+					success = Faces.Add(boundary.Select(x => x.Vertex));
 				}
-				FaceRoles.Add(Roles.New);
+
+				if (success) FaceRoles.Add(Roles.New);
+				Halfedges.MatchPairs();
 			}
 		}
 		
@@ -3260,9 +3273,9 @@ namespace Conway
 					Debug.Log(Math.Abs(angle - 180));
 					return Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE;
 				case FaceSelections.FacingIn:
-					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) % 180 < 90 - TOLERANCE;
+					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) > 90 - TOLERANCE;
 				case FaceSelections.FacingOut:
-					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) % 180 > 90 + TOLERANCE;
+					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) < 90 + TOLERANCE;
 				case FaceSelections.Existing:
 					return FaceRoles[faceIndex] == Roles.Existing;
 				case FaceSelections.Ignored:

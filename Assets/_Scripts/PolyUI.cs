@@ -231,10 +231,13 @@ public class PolyUI : MonoBehaviour {
     {
         _shouldReBuild = false;
         TwoSidedToggle.isOn = poly.TwoSided;
-        BasePolyDropdown.value = (int)poly.UniformPolyType;        
-        GridTypeDropdown.value = (int)poly.GridType;
+        ShapeTypesDropdown.value = (int) poly.ShapeType;
+        BasePolyDropdown.value = (int) poly.UniformPolyType;
+        JohnsonTypeDropdown.value = (int) poly.JohnsonPolyType;
+        GridTypeDropdown.value = (int) poly.GridType;
         PrismPInput.text = poly.PrismP.ToString();
         PrismQInput.text = poly.PrismQ.ToString();
+        InitShapeTypesUI((int) poly.ShapeType);
         _shouldReBuild = true;
     }
 
@@ -464,15 +467,15 @@ public class PolyUI : MonoBehaviour {
         }
     }
 
-    void ShapeTypesDropdownChanged(Dropdown change)
+    void InitShapeTypesUI(int value)
     {
-        switch (change.value)
+        switch (value)
         {
             case (int)PolyHydra.ShapeTypes.Uniform:
                 BasePolyDropdown.gameObject.SetActive(true);
                 GridTypeDropdown.gameObject.SetActive(false);
                 JohnsonTypeDropdown.gameObject.SetActive(false);
-                poly.ShapeType = (PolyHydra.ShapeTypes)change.value;
+                poly.ShapeType = (PolyHydra.ShapeTypes)value;
                 break;
             case (int)PolyHydra.ShapeTypes.Grid:
                 PrismPInput.gameObject.SetActive(true);
@@ -480,7 +483,7 @@ public class PolyUI : MonoBehaviour {
                 BasePolyDropdown.gameObject.SetActive(false);
                 GridTypeDropdown.gameObject.SetActive(true);
                 JohnsonTypeDropdown.gameObject.SetActive(false);
-                poly.ShapeType = (PolyHydra.ShapeTypes)change.value;
+                poly.ShapeType = (PolyHydra.ShapeTypes)value;
                 break;
             case (int)PolyHydra.ShapeTypes.Johnson:
                 PrismPInput.gameObject.SetActive(true);
@@ -488,14 +491,18 @@ public class PolyUI : MonoBehaviour {
                 BasePolyDropdown.gameObject.SetActive(false);
                 GridTypeDropdown.gameObject.SetActive(false);
                 JohnsonTypeDropdown.gameObject.SetActive(true);
-                poly.ShapeType = (PolyHydra.ShapeTypes)change.value;
+                poly.ShapeType = (PolyHydra.ShapeTypes)value;
                 break;
             default:
                 break;
         }
 
-        Rebuild();
+    }
 
+    void ShapeTypesDropdownChanged(Dropdown change)
+    {
+        InitShapeTypesUI(change.value);
+        Rebuild();
     }
 
     void BasePolyDropdownChanged(Dropdown change)

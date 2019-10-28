@@ -86,7 +86,7 @@ public class PolyHydra : MonoBehaviour {
 		//ElongatedBicupola,
 		//GyroelongatedBicupola,
 
-		//Rotunda,
+		Rotunda,
 		//ElongatedRotunda,
 		//GyroelongatedRotunda,
 
@@ -135,6 +135,7 @@ public class PolyHydra : MonoBehaviour {
 //		FaceRotateY,
 		FaceRemove,
 		FaceKeep,
+		FillHoles,
 		Hinge,
 		AddDual,
 		Canonicalize,
@@ -325,6 +326,7 @@ public class PolyHydra : MonoBehaviour {
 //			{Ops.FaceRotateY, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180}},
 			//{Ops.Test, new OpConfig{}}
 			{Ops.FaceRemove, new OpConfig{usesFaces=true, usesAmount=false}},
+			{Ops.FillHoles, new OpConfig{usesAmount=false}},
 			{Ops.FaceKeep, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.Hinge, new OpConfig{amountDefault = 15f, amountMin = -180, amountMax = 180}},
 			{Ops.AddDual, new OpConfig{amountDefault = 1f, amountMin = -6, amountMax = 6}},
@@ -380,6 +382,12 @@ public class PolyHydra : MonoBehaviour {
 				return JohnsonPoly.MakeCupola(PrismP);
 			case JohnsonPolyTypes.Bicupola:
 				return JohnsonPoly.MakeBicupola(PrismP);
+			case JohnsonPolyTypes.Rotunda:
+				// A fudge for the pentagonal rotunda (which is the only actual Johnson solid Rotunda)
+				return JohnsonPoly.MakeRotunda();
+				// WIP
+				//return JohnsonPoly.MakeRotunda(PrismP, 1, false);
+
 			default:
 				Debug.LogError("Unknown Johnson Poly Type");
 				return null;
@@ -750,6 +758,9 @@ public class PolyHydra : MonoBehaviour {
 				break;
 			case Ops.FaceKeep:
 				conway = conway.FaceRemove(op.faceSelections, true);
+				break;
+			case Ops.FillHoles:
+				conway.FillHoles();
 				break;
 			case Ops.Hinge:
 				conway = conway.Hinge(op.amount);
@@ -1172,7 +1183,6 @@ public class PolyHydra : MonoBehaviour {
 
 		if (WythoffPoly != null)
 		{
-			return;
 			if (wythoffVertexGizmos)
 			{
 				Gizmos.color = Color.white;
