@@ -300,6 +300,41 @@ namespace Conway
             return poly;
         }
 
+        // Base forms are pyramids, cupolae and rotundae.
+        // For each base we have elongate and bi. For each bi form we can also gyroelongate
+        // Bi can come in ortho and gyro flavours in most cases.
+        // You can combine bases i.e. cupolarotunda. These also come in ortho and gyro flavours.
+        // Gyrobifastigium is just trying to be weird
+        // Prisms can be augmented and diminished. Also bi, tri, para and meta
+        // Truncation is a thing.and can be combined with augment/diminish.
+        // Phew! Then stuff gets weirder.
+
+//        public static ConwayPoly MakeElongatedPyramid(int sides)
+//        {
+//        }
+//        public static ConwayPoly MakeElongatedBipyramid(int sides)
+//        {
+//        }
+//        public static ConwayPoly MakeGyroelongatedPyramid(int sides)
+//        {
+//        }
+//        public static ConwayPoly MakeGyroelongatedBipyramid(int sides)
+//        {
+//        }
+//
+//        public static ConwayPoly MakeElongatedCupola(int sides)
+//        {
+//        }
+//        public static ConwayPoly MakeElongatedBicupola(int sides)
+//        {
+//        }
+//        public static ConwayPoly MakeGyroelongatedCupola(int sides)
+//        {
+//        }
+//        public static ConwayPoly MakeGyroelongatedBicupola(int sides)
+//        {
+//        }
+
         public static float SideLength(float sides)
         {
             return 2 * Mathf.Sin(Mathf.PI / sides);
