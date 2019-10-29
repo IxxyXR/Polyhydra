@@ -155,9 +155,19 @@ MonoBehaviour:
   OuterRange: 250
   AngleVary: 30
   poly: {fileID: 5733346978052904263, guid: 0c2187e05571002419f0cd3dca219487, type: 3}
-  PolyMaterial: {fileID: 2100000, guid: 1ba2d4597951a8447b74c79b9c3e6b0c, type: 2}
-  InitialPolyCount: 30
-  CreationRate: 1
+  PolyMaterials:
+  - {fileID: 2100000, guid: 1ba2d4597951a8447b74c79b9c3e6b0c, type: 2}
+  - {fileID: 2100000, guid: babd5a74636dd0f4c9442aeb11a88248, type: 2}
+  - {fileID: 2100000, guid: 33312f87b96d9994a8ff504d24ab19f2, type: 2}
+  - {fileID: 2100000, guid: 67b6151c41f7e5340ab0bb5b1035ab69, type: 2}
+  - {fileID: 2100000, guid: cb369995bee5c9b4289fdeb45a2eac3f, type: 2}
+  - {fileID: 2100000, guid: bf761844ec5fd30409c4e9a2f30db428, type: 2}
+  - {fileID: 2100000, guid: ff47891f2ea45fc459041f7ff80c576e, type: 2}
+  - {fileID: 2100000, guid: 4e166601e9dffe6479a4bd6234e92266, type: 2}
+  - {fileID: 2100000, guid: db2e00f48dc62fd42ac5b3329e36977a, type: 2}
+  - {fileID: 2100000, guid: a4dea1a5842bbea479163954f340a816, type: 2}
+  InitialPolyCount: 100
+  CreationRate: 0.2
 --- !u!4 &61051092
 Transform:
   m_ObjectHideFlags: 0
@@ -874,7 +884,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb15890ccdb5484cbe973b1888259ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boost: 3.5
+  Speed: 0.01
+  boost: 2
   positionLerpTime: 0.2
   mouseSensitivityCurve:
     serializedVersion: 2
@@ -1154,7 +1165,7 @@ Transform:
   m_GameObject: {fileID: 1408377593}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 33, y: 33, z: 33}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0

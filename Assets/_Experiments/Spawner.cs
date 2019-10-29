@@ -13,7 +13,7 @@ public class Spawner : MonoBehaviour
     public float OuterRange = 12f;
     public float AngleVary = 20f;
     public Transform poly;
-    public Material PolyMaterial;
+    public List<Material> PolyMaterials;
     public int InitialPolyCount = 30;
     public float CreationRate = 1;
     private float scale = 5f;
@@ -53,7 +53,7 @@ public class Spawner : MonoBehaviour
         Transform newPoly = Instantiate(poly, newPos, Quaternion.identity);
         newPoly.localScale = Vector3.one * scale;
 
-        newPoly.GetComponent<MeshRenderer>().material = PolyMaterial;
+        newPoly.GetComponent<MeshRenderer>().material = PolyMaterials[Random.Range(0, PolyMaterials.Count)];
         var polyComponent = newPoly.GetComponent<PolyHydra>();
 
         polyComponent.Rescale = false;

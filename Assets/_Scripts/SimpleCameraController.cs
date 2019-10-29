@@ -49,6 +49,8 @@ namespace UnityTemplateProjects
                 t.position = new Vector3(x, y, z);
             }
         }
+
+        public float Speed = 0.02f;
         
         CameraState m_TargetCameraState = new CameraState();
         CameraState m_InterpolatingCameraState = new CameraState();
@@ -143,6 +145,7 @@ namespace UnityTemplateProjects
             
             // Translation
             var translation = GetInputTranslationDirection() * Time.deltaTime;
+            translation += Vector3.forward * Speed;
 
             // Speed up movement when shift key held
             if (Input.GetKey(KeyCode.LeftShift))
