@@ -90,6 +90,8 @@ public class PolyHydra : MonoBehaviour {
 		//ElongatedRotunda,
 		//GyroelongatedRotunda,
 
+		L,
+
 	}
 
 	public enum Ops {
@@ -387,6 +389,8 @@ public class PolyHydra : MonoBehaviour {
 				return JohnsonPoly.MakeRotunda();
 				// WIP
 				//return JohnsonPoly.MakeRotunda(PrismP, 1, false);
+			case JohnsonPolyTypes.L:
+				return JohnsonPoly.MakeL();
 
 			default:
 				Debug.LogError("Unknown Johnson Poly Type");

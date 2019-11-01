@@ -377,11 +377,47 @@ namespace Conway
         {
             var wythoffPoly = new WythoffPoly(Uniform.Uniforms[29].Wythoff);
             wythoffPoly.BuildFaces();
+
             var conwayPoly = new ConwayPoly(wythoffPoly);
             conwayPoly = conwayPoly.FaceRemove(ConwayPoly.FaceSelections.FacingDown, false);
             conwayPoly.FillHoles();
             return conwayPoly;
         }
+
+        public static ConwayPoly MakeL()
+        {
+            var verts = new List<Vector3>();
+            for (var i = -0.25f; i <=0.25f; i+=0.5f)
+            {
+                verts.Add(new Vector3(0, i, 0));
+                verts.Add(new Vector3(0.5f, i, 0));
+                verts.Add(new Vector3(0.5f, i, -0.5f));
+                verts.Add(new Vector3(-0.5f, i, -0.5f));
+                verts.Add(new Vector3(-0.5f, i, 0.5f));
+                verts.Add(new Vector3(0, i, 0.5f));
+            }
+
+            var faces = new List<List<int>>
+            {
+                new List<int>{0, 5, 4, 3, 2, 1},
+                new List<int>{6, 7, 8, 9, 10, 11},
+                new List<int>{3, 9, 8, 2},
+                new List<int>{2, 8, 7, 1},
+                new List<int>{1, 7, 6, 0},
+                new List<int>{0, 6, 11, 5},
+                new List<int>{5, 11, 10, 4},
+                new List<int>{4, 10, 9, 3}
+            };
+
+            var faceRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, 8);
+            var vertexRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, 12);
+
+            return new ConwayPoly(verts, faces, faceRoles, vertexRoles);
+
+
+        }
+
+
 
     }
 }
