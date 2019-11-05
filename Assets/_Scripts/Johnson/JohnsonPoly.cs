@@ -319,9 +319,14 @@ namespace Conway
 					
 					return poly;
         }
-//        public static ConwayPoly MakeElongatedBipyramid(int sides)
-//        {
-//        }
+        public static ConwayPoly MakeElongatedBipyramid(int sides)
+        {
+					ConwayPoly poly = MakeElongatedPyramid(sides);
+					float height = CalcPyramidHeight(sides);
+					poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingDown, false);
+					
+					return poly;
+        }
 //        public static ConwayPoly MakeGyroelongatedPyramid(int sides)
 //        {
 //        }
