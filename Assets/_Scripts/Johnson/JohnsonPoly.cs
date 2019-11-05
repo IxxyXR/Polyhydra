@@ -416,8 +416,75 @@ namespace Conway
 
 
         }
-
-
-
+				
+				public static ConwayPoly MakeL1()
+				{
+					var verts = new List<Vector3>();
+					for (var i = -0.25f; i <= 0.25f; i+=0.5f)
+					{
+						verts.Add(new Vector3(0, i, 0));
+						verts.Add(new Vector3(0.5f, i, 0));
+						verts.Add(new Vector3(0.5f, i, -0.5f));
+						verts.Add(new Vector3(-0.5f, i, -0.5f));
+						verts.Add(new Vector3(-0.5f, i, 0.5f));
+						verts.Add(new Vector3(0, i, 0.5f));
+					}
+					
+					var faces = new List<List<int>>
+					{
+						new List<int>{0, 5, 4, 3},
+						new List<int>{0, 3, 2, 1},
+						new List<int>{6, 7, 8, 9},
+						new List<int>{6, 9, 10, 11},
+						new List<int>{3, 9, 8, 2},
+						new List<int>{2, 8, 7, 1},
+						new List<int>{1, 7, 6, 0},
+						new List<int>{0, 6, 11, 5},
+						new List<int>{5, 11, 10, 4},
+						new List<int>{4, 10, 9, 3}
+					};
+					
+					var faceRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, 10);
+					var vertexRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, 12);
+					
+					return new ConwayPoly(verts, faces, faceRoles, vertexRoles);
+				}
+				
+				public static ConwayPoly MakeL2()
+				{
+					var verts = new List<Vector3>();
+					for (var i = -0.25f; i <= 0.25f; i+=0.5f)
+					{
+						verts.Add(new Vector3(0, i, 0));
+						verts.Add(new Vector3(0.5f, i, 0));
+						verts.Add(new Vector3(0.5f, i, -0.5f));
+						verts.Add(new Vector3(0, i, -0.5f));
+						verts.Add(new Vector3(-0.5f, i, -0.5f));
+						verts.Add(new Vector3(-0.5f, i, 0));
+						verts.Add(new Vector3(-0.5f, i, 0.5f));
+						verts.Add(new Vector3(0, i, 0.5f));
+					}
+					
+					var faces = new List<List<int>>
+					{
+						new List<int>{0, 7, 6, 5},
+						new List<int>{0, 5, 4, 3},
+						new List<int>{0, 3, 2, 1},
+						new List<int>{8, 9, 10, 11},
+						new List<int>{8, 11, 12, 13},
+						new List<int>{8, 13, 14, 15},
+						new List<int>{4, 12, 11, 10, 2, 3},
+						new List<int>{2, 10, 9, 1},
+						new List<int>{1, 9, 8, 0},
+						new List<int>{0, 8, 15, 7},
+						new List<int>{7, 15, 14, 6},
+						new List<int>{6, 14, 13, 12, 4, 5}
+					};
+					
+					var faceRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, 12);
+					var vertexRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, 16);
+					
+					return new ConwayPoly(verts, faces, faceRoles, vertexRoles);
+				}
     }
 }
