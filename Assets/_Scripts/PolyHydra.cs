@@ -71,7 +71,7 @@ public class PolyHydra : MonoBehaviour {
 		Antiprism,
 
 		Pyramid,
-		//ElongatedPyramid,
+		ElongatedPyramid,
 		//GyroelongatedPyramid,
 
 		Dipyramid,
@@ -380,6 +380,8 @@ public class PolyHydra : MonoBehaviour {
 				return JohnsonPoly.MakeAntiprism(PrismP);
 			case JohnsonPolyTypes.Pyramid:
 				return JohnsonPoly.MakePyramid(PrismP);
+			case JohnsonPolyTypes.ElongatedPyramid:
+				return JohnsonPoly.MakeElongatedPyramid(PrismP);
 			case JohnsonPolyTypes.Dipyramid:
 				return JohnsonPoly.MakeDipyramid(PrismP);
 			case JohnsonPolyTypes.Cupola:

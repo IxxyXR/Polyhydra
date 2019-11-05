@@ -309,9 +309,16 @@ namespace Conway
         // Truncation is a thing.and can be combined with augment/diminish.
         // Phew! Then stuff gets weirder.
 
-//        public static ConwayPoly MakeElongatedPyramid(int sides)
-//        {
-//        }
+        public static ConwayPoly MakeElongatedPyramid(int sides)
+        {
+					float height = SideLength(sides);
+					ConwayPoly poly = MakePrism(sides, height);
+					
+					height = CalcPyramidHeight(sides);
+					poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingUp, false);
+					
+					return poly;
+        }
 //        public static ConwayPoly MakeElongatedBipyramid(int sides)
 //        {
 //        }
