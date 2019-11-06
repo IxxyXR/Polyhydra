@@ -343,6 +343,7 @@ public class PolyHydra : MonoBehaviour {
 
 	void Start()
 	{
+		Debug.unityLogger.logEnabled = false;
 		InitCacheIfNeeded();
 		meshFilter = gameObject.GetComponent<MeshFilter>();
 		MakePolyhedron();
