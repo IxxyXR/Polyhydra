@@ -18,9 +18,11 @@ public class QuickPolyAnimate : MonoBehaviour
 
 //    private List<float> _originalAmounts;
     private PolyUI polyUi;
+    private int frame;
 
     private PolyHydra _poly;
-
+    private HashSet<string> tester;
+    [Multiline] public string logger;
     void Start()
     {
         _poly = gameObject.GetComponent<PolyHydra>();
@@ -30,7 +32,7 @@ public class QuickPolyAnimate : MonoBehaviour
 //        {
 //            _originalAmounts.Add(op.amount);
 //        }
-
+        tester = new HashSet<string>();
     }
 
     public void AnimateNext()
@@ -48,22 +50,24 @@ public class QuickPolyAnimate : MonoBehaviour
 
         // Quick and dirty hack to grab anim parameters directly from the UI
         // Evebtually I'll add them to the op params properly.
+        bool isAnimating = false;  // Set to true if any op is animated
         var opParent = _poly.polyUI.OpContainer.gameObject.transform;
         foreach (Transform opUiTransform in opParent)
         {
             var opPrefabManager = opUiTransform.gameObject.GetComponent<OpPrefabManager>();
             if (!opPrefabManager.ToggleAnimate.isOn) continue;
+            isAnimating = true;
             var opIndex = opPrefabManager.Index;
             var op = _poly.ConwayOperators[opIndex];
             var _originalAmount = float.Parse(opPrefabManager.AmountInput.text);
             var amplitude = float.Parse(opPrefabManager.AnimAmountInput.text);
             var rate = float.Parse(opPrefabManager.AnimRateInput.text);
-            float amount = Mathf.Sin(Time.time * rate) * amplitude;
-            amount = Mathf.Round(amount * 1000) / 1000f;
+            float amount = Mathf.Sin(frame * rate * updateFrequency) * amplitude;
+            amount = Mathf.Round(amount * 100) / 100f;
             op.amount = _originalAmount + amount;
             _poly.ConwayOperators[opIndex] = op;
+            frame++;
         }
-
-        _poly.Rebuild();
+        if (isAnimating) _poly.Rebuild();  // Something animated so let's rebuild
     }
 }

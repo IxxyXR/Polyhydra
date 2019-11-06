@@ -92,6 +92,7 @@ public class PolyCache : MonoBehaviour
         // Todo Use a proper evicion pollicy
         if (WythoffCache.Count > MAX_CACHE_LENGTH)
         {
+            Debug.LogWarning("Wythoff cache cull");
             WythoffCache = WythoffCache.Skip(MAX_CACHE_LENGTH/2).ToDictionary(kv => kv.Key, kv => kv.Value);
         }
     }
@@ -109,9 +110,10 @@ public class PolyCache : MonoBehaviour
 
     public void CullMesh()
     {
-        // Todo Use a proper evicion pollicy
+        // Todo Use a proper eviction pollicy
         if (MeshCache.Count > MAX_CACHE_LENGTH)
         {
+            Debug.LogWarning("Conway cache cull");
             MeshCache = MeshCache.Skip(MAX_CACHE_LENGTH/2).ToDictionary(kv => kv.Key, kv => kv.Value);
         }
     }
