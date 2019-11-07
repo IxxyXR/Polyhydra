@@ -50,7 +50,7 @@ public class PolyUI : MonoBehaviour {
     public Button ObjExportButton;
     public GameObject[] Tabs; 
     public GameObject[] TabButtons;
-    
+
     private List<Button> presetButtons;
     private List<Button> basePolyButtons;
     private List<Transform> opPrefabs;
@@ -281,9 +281,13 @@ public class PolyUI : MonoBehaviour {
         
         opPrefabManager.FaceSelectionDropdown.gameObject.SetActive(opConfig.usesFaces);
         opPrefabManager.RandomizeToggle.gameObject.SetActive(opConfig.usesRandomize);
+
         opPrefabManager.AmountSlider.gameObject.SetActive(opConfig.usesAmount);
         opPrefabManager.AmountInput.gameObject.SetActive(opConfig.usesAmount);
-        
+        opPrefabManager.ToggleAnimate.gameObject.SetActive(opConfig.usesAmount);
+//        opPrefabManager.AnimationControls.gameObject.SetActive(opConfig.usesAmount);
+        opPrefabManager.GetComponent<RectTransform>().sizeDelta = new Vector2(200, opConfig.usesAmount?238:100);
+
         opPrefabManager.AmountSlider.minValue = opConfig.amountMin;
         opPrefabManager.AmountSlider.maxValue = opConfig.amountMax;
         opPrefabManager.AmountSlider.value = opConfig.amountDefault;
@@ -328,9 +332,33 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.UpButton.onClick.AddListener(MoveOpUp);
         opPrefabManager.DownButton.onClick.AddListener(MoveOpDown);
         opPrefabManager.DeleteButton.onClick.AddListener(DeleteOp);
+
+        opPrefabManager.ToggleAnimate.onValueChanged.AddListener(AnimateToggleChanged);
+        opPrefabManager.AnimRateInput.onValueChanged.AddListener(AnimRateInputChanged);
+        opPrefabManager.AnimAmountInput.onValueChanged.AddListener(AnimValueInputChanged);
         
         opPrefabManager.Index = opPrefabs.Count;
         
+        void AnimateToggleChanged(bool value)
+        {
+            opPrefabManager.AnimationControls.gameObject.SetActive(value);
+        }
+
+        void AnimRateInputChanged(string text)
+        {
+            _AnimInputChanged(text, true);
+        }
+
+        void AnimValueInputChanged(string text)
+        {
+            _AnimInputChanged(text, false);
+        }
+
+        void _AnimInputChanged(string text, bool setRate)
+        {
+            // TODO
+        }
+
         // Enable/Disable down buttons as appropriate:
         // We are adding this at the end so it can't move down
         opPrefab.GetComponent<OpPrefabManager>().DownButton.enabled = false;

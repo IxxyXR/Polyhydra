@@ -19,7 +19,10 @@ using Random = UnityEngine.Random;
 [ExecuteInEditMode]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(MeshFilter))]
-public class PolyHydra : MonoBehaviour {
+public class PolyHydra : MonoBehaviour
+{
+
+	public bool EnableLogging = false;
 
 	private bool enableThreading = true;
 	private bool enableCaching = true;
@@ -345,6 +348,7 @@ public class PolyHydra : MonoBehaviour {
 
 	void Start()
 	{
+		Debug.unityLogger.logEnabled = EnableLogging;
 		InitCacheIfNeeded();
 		meshFilter = gameObject.GetComponent<MeshFilter>();
 		MakePolyhedron();
@@ -418,7 +422,7 @@ public class PolyHydra : MonoBehaviour {
 			}
 			catch (InvalidOperationException e)
 			{
-				Debug.Log($"Failed to build Conway from Wythoff {WythoffPoly.PolyTypeIndex} {WythoffPoly.PolyName}");
+				Debug.LogError($"Failed to build Conway from Wythoff {WythoffPoly.PolyTypeIndex} {WythoffPoly.PolyName}");
 				throw;
 			}
 		}
@@ -821,6 +825,7 @@ public class PolyHydra : MonoBehaviour {
 					nextOpResult = ApplyOp(_conwayPoly, op);
 					polyCache.SetConway(key, nextOpResult);
 				}
+				else {Debug.LogWarning($"Op cache hit:  {op.opType} {op.amount}");}
 				_conwayPoly = nextOpResult;
 			}
 			else

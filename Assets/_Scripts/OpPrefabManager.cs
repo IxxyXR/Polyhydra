@@ -16,28 +16,32 @@ public class OpPrefabManager : MonoBehaviour
     public Button UpButton;
     public Button DownButton;
     public Button DeleteButton;
+    public Toggle ToggleAnimate;
+    public Transform AnimationControls;
+    public InputField AnimRateInput;
+    public InputField AnimAmountInput;
 
-    public void DisableAll()
-    {
-        OpTypeDropdown.interactable = false;
-        FaceSelectionDropdown.interactable = false;
-        AmountSlider.interactable = false;
-        AmountInput.interactable = false;
-        DisabledToggle.interactable = false;
-        UpButton.interactable = false;
-        DownButton.interactable = false;
-        DeleteButton.interactable = false;
-    }
-    
-    public void EnableAll()
-    {
-        OpTypeDropdown.interactable = true;
-        FaceSelectionDropdown.interactable = true;
-        AmountSlider.interactable = true;
-        AmountInput.interactable = true;
-        DisabledToggle.interactable = true;
-        UpButton.interactable = true;
-        DownButton.interactable = true;
-        DeleteButton.interactable = true;
-    }
+//    public void DisableAll()
+//    {
+//        OpTypeDropdown.interactable = false;
+//        FaceSelectionDropdown.interactable = false;
+//        AmountSlider.interactable = false;
+//        AmountInput.interactable = false;
+//        DisabledToggle.interactable = false;
+//        UpButton.interactable = false;
+//        DownButton.interactable = false;
+//        DeleteButton.interactable = false;
+//    }
+//
+//    public void EnableAll()
+//    {
+//        OpTypeDropdown.interactable = true;
+//        FaceSelectionDropdown.interactable = true;
+//        AmountSlider.interactable = true;
+//        AmountInput.interactable = true;
+//        DisabledToggle.interactable = true;
+//        UpButton.interactable = true;
+//        DownButton.interactable = true;
+//        DeleteButton.interactable = true;
+//    }
 }

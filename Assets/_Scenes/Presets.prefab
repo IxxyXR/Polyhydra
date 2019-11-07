@@ -2636,7 +2636,7 @@ MonoBehaviour:
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
   - Name: Dirty Metal
-    PolyhedronMaterial: {fileID: 2100000, guid: f446fe272d555444f9e3d8d9a6de3e14,
+    PolyhedronMaterial: {fileID: 2100000, guid: 756d17fc7a02e1c4ea003575272634a7,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
@@ -4821,6 +4821,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 5b3c6541358e988469fc3922e6d35d99, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9bde919803c77e546942de0f1f48b097, type: 2}
     - target: {fileID: 400000, guid: 5b3c6541358e988469fc3922e6d35d99, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.084130295
@@ -4877,10 +4881,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 5b3c6541358e988469fc3922e6d35d99, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 9bde919803c77e546942de0f1f48b097, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b3c6541358e988469fc3922e6d35d99, type: 3}
 --- !u!1 &2770511818260660741 stripped
