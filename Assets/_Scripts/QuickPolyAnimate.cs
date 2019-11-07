@@ -62,7 +62,7 @@ public class QuickPolyAnimate : MonoBehaviour
             var _originalAmount = float.Parse(opPrefabManager.AmountInput.text);
             var amplitude = float.Parse(opPrefabManager.AnimAmountInput.text);
             var rate = float.Parse(opPrefabManager.AnimRateInput.text);
-            float amount = Mathf.Sin(frame * rate * updateFrequency) * amplitude;
+            float amount = Mathf.Sin(frame * rate * 0.05f) * amplitude;
             amount = Mathf.Round(amount * 100) / 100f;
             op.amount = _originalAmount + amount;
             _poly.ConwayOperators[opIndex] = op;
