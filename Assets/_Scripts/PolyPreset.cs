@@ -10,10 +10,10 @@ public class PolyPreset {
 
 	public string Name;
 
-	[JsonConverter(typeof(StringEnumConverter))]
-	public PolyHydra.ShapeTypes ShapeType;
-	public PolyTypes PolyType;
-	public PolyHydra.JohnsonPolyTypes JohnsonPolyType;
+	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.ShapeTypes ShapeType;
+	[JsonConverter(typeof(StringEnumConverter))] public PolyTypes PolyType;
+	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.JohnsonPolyTypes JohnsonPolyType;
+	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.OtherPolyTypes OtherPolyType;
 	public bool BypassOps;
 	public bool TwoSided;
 	[JsonConverter(typeof(StringEnumConverter))]
@@ -40,6 +40,7 @@ public class PolyPreset {
 		ShapeType = poly.ShapeType;
 		PolyType = poly.UniformPolyType;
 		JohnsonPolyType = poly.JohnsonPolyType;
+		OtherPolyType = poly.OtherPolyType;
 		GridType = poly.GridType;
 		BypassOps = poly.BypassOps;
 		PrismP = poly.PrismP;
@@ -67,6 +68,7 @@ public class PolyPreset {
 		poly.ShapeType = ShapeType;
 		poly.UniformPolyType = PolyType;
 		poly.JohnsonPolyType = JohnsonPolyType;
+		poly.OtherPolyType = OtherPolyType;
 		poly.BypassOps = BypassOps;
 		poly.TwoSided = TwoSided;
 		poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();

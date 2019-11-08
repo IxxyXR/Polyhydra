@@ -1,8 +1,9 @@
 {
   "Name": "Taught Us",
   "ShapeType": "Uniform",
-  "PolyType": 0,
-  "JohnsonPolyType": 3,
+  "PolyType": "Grid",
+  "JohnsonPolyType": "ElongatedPyramid",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Hex",

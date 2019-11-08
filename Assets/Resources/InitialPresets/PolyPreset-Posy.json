@@ -1,8 +1,9 @@
 {
   "Name": "Posy",
   "ShapeType": "Uniform",
-  "PolyType": 53,
-  "JohnsonPolyType": 0,
+  "PolyType": "Great_Icosicosidodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

@@ -1,8 +1,9 @@
 {
   "Name": "Joining",
   "ShapeType": "Uniform",
-  "PolyType": 27,
-  "JohnsonPolyType": 0,
+  "PolyType": "Icosahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

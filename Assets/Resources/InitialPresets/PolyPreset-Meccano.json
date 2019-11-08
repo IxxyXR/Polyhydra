@@ -1,8 +1,9 @@
 {
   "Name": "Meccano",
   "ShapeType": "Uniform",
-  "PolyType": 30,
-  "JohnsonPolyType": 4,
+  "PolyType": "Truncated_Icosahedron",
+  "JohnsonPolyType": "Dipyramid",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

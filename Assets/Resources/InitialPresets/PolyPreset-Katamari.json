@@ -1,8 +1,9 @@
 {
   "Name": "Katamari",
   "ShapeType": "Uniform",
-  "PolyType": 65,
-  "JohnsonPolyType": 0,
+  "PolyType": "Inverted_Snub_Dodecadodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

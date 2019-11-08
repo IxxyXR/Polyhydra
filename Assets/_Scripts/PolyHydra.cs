@@ -35,6 +35,7 @@ public class PolyHydra : MonoBehaviour
 	public PolyTypes UniformPolyType;
 	public ColorMethods ColorMethod;
 	public JohnsonPolyTypes JohnsonPolyType;
+	public OtherPolyTypes OtherPolyType;
 	public GridTypes GridType;
 	public string WythoffSymbol;
 	public string PresetName;
@@ -58,7 +59,8 @@ public class PolyHydra : MonoBehaviour
 	{
 		Uniform,
 		Grid,
-		Johnson
+		Johnson,
+		Other
 	}
 
 	public enum GridTypes
@@ -93,10 +95,13 @@ public class PolyHydra : MonoBehaviour
 		//ElongatedRotunda,
 		//GyroelongatedRotunda,
 
-		L,
+
+	}
+
+	public enum OtherPolyTypes
+	{
 		L1,
 		L2
-
 	}
 
 	public enum Ops {
@@ -399,14 +404,22 @@ public class PolyHydra : MonoBehaviour
 				return JohnsonPoly.MakeRotunda();
 				// WIP
 				//return JohnsonPoly.MakeRotunda(PrismP, 1, false);
-			case JohnsonPolyTypes.L:
-				return JohnsonPoly.MakeL();
-			case JohnsonPolyTypes.L1:
-				return JohnsonPoly.MakeL1();
-			case JohnsonPolyTypes.L2:
-				return JohnsonPoly.MakeL2();
 			default:
 				Debug.LogError("Unknown Johnson Poly Type");
+				return null;
+		}
+	}
+
+	public ConwayPoly MakeOtherPoly(OtherPolyTypes otherPolyType)
+	{
+		switch (otherPolyType)
+		{
+			case OtherPolyTypes.L1:
+				return JohnsonPoly.MakeL1();
+			case OtherPolyTypes.L2:
+				return JohnsonPoly.MakeL2();
+			default:
+				Debug.LogError("Unknown Other Poly Type");
 				return null;
 		}
 	}
@@ -434,6 +447,11 @@ public class PolyHydra : MonoBehaviour
 		else if (ShapeType == ShapeTypes.Johnson)
 		{
 			_conwayPoly = MakeJohnsonPoly(JohnsonPolyType);
+		}
+
+		else if (ShapeType == ShapeTypes.Other)
+		{
+			_conwayPoly = MakeOtherPoly(OtherPolyType);
 		}
 
 		if (!enableThreading || disableThreading)  // TODO fix confusing flags
@@ -808,7 +826,7 @@ public class PolyHydra : MonoBehaviour
 	public void ApplyOps()
 	{
 
-		var cacheKeySource = $"{ShapeType} {JohnsonPolyType} {UniformPolyType} {PrismP} {PrismQ} {GridType} {TwoSided}";
+		var cacheKeySource = $"{ShapeType} {OtherPolyType} {JohnsonPolyType} {UniformPolyType} {PrismP} {PrismQ} {GridType} {TwoSided}";
 		
 		foreach (var op in ConwayOperators.ToList())
 		{

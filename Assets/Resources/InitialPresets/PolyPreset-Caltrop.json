@@ -1,8 +1,9 @@
 {
   "Name": "Caltrop",
   "ShapeType": "Uniform",
-  "PolyType": 41,
-  "JohnsonPolyType": 0,
+  "PolyType": "Great_Dodecadodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

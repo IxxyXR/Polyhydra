@@ -1,8 +1,9 @@
 {
   "Name": "Dark Star",
   "ShapeType": "Uniform",
-  "PolyType": 21,
-  "JohnsonPolyType": 0,
+  "PolyType": "Cubitruncated_Cuboctahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

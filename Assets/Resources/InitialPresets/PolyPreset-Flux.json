@@ -1,8 +1,9 @@
 {
   "Name": "Flux",
   "ShapeType": "Grid",
-  "PolyType": 14,
-  "JohnsonPolyType": 4,
+  "PolyType": "Truncated_Cube",
+  "JohnsonPolyType": "Dipyramid",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": false,
   "GridType": "Isometric",

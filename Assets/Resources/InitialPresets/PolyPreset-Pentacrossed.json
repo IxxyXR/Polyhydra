@@ -1,8 +1,9 @@
 {
   "Name": "Pentacrossed",
   "ShapeType": "Uniform",
-  "PolyType": 3,
-  "JohnsonPolyType": 0,
+  "PolyType": "Pentagrammic_Prism",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

@@ -1,8 +1,9 @@
 {
   "Name": "Bipod",
   "ShapeType": "Uniform",
-  "PolyType": 11,
-  "JohnsonPolyType": 3,
+  "PolyType": "Cube",
+  "JohnsonPolyType": "ElongatedPyramid",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Hex",

@@ -38,6 +38,7 @@ public class PolyUI : MonoBehaviour {
     public Dropdown BasePolyDropdown;
     public Dropdown GridTypeDropdown;
     public Dropdown JohnsonTypeDropdown;
+    public Dropdown OtherTypeDropdown;
     public InputField PrismPInput;
     public InputField PrismQInput;
     public Toggle LoadMatchingAppearanceToggle;
@@ -87,6 +88,12 @@ public class PolyUI : MonoBehaviour {
             JohnsonTypeDropdown.options.Add(label);
         }
 
+        OtherTypeDropdown.ClearOptions();
+        foreach (var otherType in Enum.GetValues(typeof(PolyHydra.OtherPolyTypes))) {
+            var label = new Dropdown.OptionData(otherType.ToString());
+            OtherTypeDropdown.options.Add(label);
+        }
+
         ShapeTypesDropdown.onValueChanged.AddListener(delegate{ShapeTypesDropdownChanged(ShapeTypesDropdown);});
         BasePolyDropdown.onValueChanged.AddListener(delegate{BasePolyDropdownChanged(BasePolyDropdown);});
         PrevPolyButton.onClick.AddListener(PrevPolyButtonClicked);
@@ -94,6 +101,7 @@ public class PolyUI : MonoBehaviour {
         TwoSidedToggle.onValueChanged.AddListener(delegate{TwoSidedToggleChanged();});
         GridTypeDropdown.onValueChanged.AddListener(delegate{GridTypeDropdownChanged(GridTypeDropdown);});
         JohnsonTypeDropdown.onValueChanged.AddListener(delegate{JohnsonTypeDropdownChanged(JohnsonTypeDropdown);});
+        OtherTypeDropdown.onValueChanged.AddListener(delegate{OtherTypeDropdownChanged(OtherTypeDropdown);});
         PrismPInput.onValueChanged.AddListener(delegate{PrismPInputChanged();});
         PrismQInput.onValueChanged.AddListener(delegate{PrismQInputChanged();});
         BypassOpsToggle.onValueChanged.AddListener(delegate{BypassOpsToggleChanged();});
@@ -172,6 +180,9 @@ public class PolyUI : MonoBehaviour {
             case PolyHydra.ShapeTypes.Johnson:
                 JohnsonTypeDropdown.value = SaneMod(JohnsonTypeDropdown.value + direction, Enum.GetValues(typeof(PolyHydra.JohnsonPolyTypes)).Length);
                 break;
+            case PolyHydra.ShapeTypes.Other:
+                OtherTypeDropdown.value = SaneMod(OtherTypeDropdown.value + direction, Enum.GetValues(typeof(PolyHydra.OtherPolyTypes)).Length);
+                break;
             case PolyHydra.ShapeTypes.Uniform:
                 BasePolyDropdown.value = SaneMod(BasePolyDropdown.value + direction, Enum.GetValues(typeof(PolyTypes)).Length);
                 break;
@@ -234,6 +245,7 @@ public class PolyUI : MonoBehaviour {
         ShapeTypesDropdown.value = (int) poly.ShapeType;
         BasePolyDropdown.value = (int) poly.UniformPolyType;
         JohnsonTypeDropdown.value = (int) poly.JohnsonPolyType;
+        OtherTypeDropdown.value = (int) poly.OtherPolyType;
         GridTypeDropdown.value = (int) poly.GridType;
         PrismPInput.text = poly.PrismP.ToString();
         PrismQInput.text = poly.PrismQ.ToString();
@@ -497,12 +509,14 @@ public class PolyUI : MonoBehaviour {
 
     void InitShapeTypesUI(int value)
     {
+        // TODO remove repetition
         switch (value)
         {
             case (int)PolyHydra.ShapeTypes.Uniform:
                 BasePolyDropdown.gameObject.SetActive(true);
                 GridTypeDropdown.gameObject.SetActive(false);
                 JohnsonTypeDropdown.gameObject.SetActive(false);
+                OtherTypeDropdown.gameObject.SetActive(false);
                 poly.ShapeType = (PolyHydra.ShapeTypes)value;
                 break;
             case (int)PolyHydra.ShapeTypes.Grid:
@@ -511,6 +525,7 @@ public class PolyUI : MonoBehaviour {
                 BasePolyDropdown.gameObject.SetActive(false);
                 GridTypeDropdown.gameObject.SetActive(true);
                 JohnsonTypeDropdown.gameObject.SetActive(false);
+                OtherTypeDropdown.gameObject.SetActive(false);
                 poly.ShapeType = (PolyHydra.ShapeTypes)value;
                 break;
             case (int)PolyHydra.ShapeTypes.Johnson:
@@ -519,6 +534,16 @@ public class PolyUI : MonoBehaviour {
                 BasePolyDropdown.gameObject.SetActive(false);
                 GridTypeDropdown.gameObject.SetActive(false);
                 JohnsonTypeDropdown.gameObject.SetActive(true);
+                OtherTypeDropdown.gameObject.SetActive(false);
+                poly.ShapeType = (PolyHydra.ShapeTypes)value;
+                break;
+            case (int)PolyHydra.ShapeTypes.Other:
+                PrismPInput.gameObject.SetActive(true);
+                PrismQInput.gameObject.SetActive(false);
+                BasePolyDropdown.gameObject.SetActive(false);
+                GridTypeDropdown.gameObject.SetActive(false);
+                JohnsonTypeDropdown.gameObject.SetActive(false);
+                OtherTypeDropdown.gameObject.SetActive(true);
                 poly.ShapeType = (PolyHydra.ShapeTypes)value;
                 break;
             default:
@@ -562,6 +587,12 @@ public class PolyUI : MonoBehaviour {
     void JohnsonTypeDropdownChanged(Dropdown change)
     {
         poly.JohnsonPolyType = (PolyHydra.JohnsonPolyTypes) change.value;
+        Rebuild();
+    }
+
+    void OtherTypeDropdownChanged(Dropdown change)
+    {
+        poly.OtherPolyType = (PolyHydra.OtherPolyTypes) change.value;
         Rebuild();
     }
 

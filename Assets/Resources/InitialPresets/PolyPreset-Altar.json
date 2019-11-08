@@ -1,8 +1,9 @@
 {
   "Name": "Altar",
   "ShapeType": "Uniform",
-  "PolyType": 50,
-  "JohnsonPolyType": 0,
+  "PolyType": "Icositruncated_Dodecadodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Hex",

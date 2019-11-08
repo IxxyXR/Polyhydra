@@ -1,8 +1,9 @@
 {
   "Name": "Space Opera House",
   "ShapeType": "Uniform",
-  "PolyType": 8,
-  "JohnsonPolyType": 0,
+  "PolyType": "Octahemioctahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

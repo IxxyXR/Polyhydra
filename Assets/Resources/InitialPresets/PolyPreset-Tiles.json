@@ -1,8 +1,9 @@
 {
   "Name": "Tiles",
   "ShapeType": "Uniform",
-  "PolyType": 11,
-  "JohnsonPolyType": 0,
+  "PolyType": "Cube",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

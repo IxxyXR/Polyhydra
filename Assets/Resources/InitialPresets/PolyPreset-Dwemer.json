@@ -1,8 +1,9 @@
 {
   "Name": "Dwemer",
   "ShapeType": "Uniform",
-  "PolyType": 33,
-  "JohnsonPolyType": 0,
+  "PolyType": "Truncated_Icosidodechedon",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

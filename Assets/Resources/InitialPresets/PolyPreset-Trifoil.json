@@ -1,8 +1,9 @@
 {
   "Name": "Trifoil",
   "ShapeType": "Uniform",
-  "PolyType": 6,
-  "JohnsonPolyType": 0,
+  "PolyType": "Tetrahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Hex",

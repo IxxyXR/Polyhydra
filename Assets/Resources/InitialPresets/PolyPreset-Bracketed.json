@@ -1,8 +1,9 @@
 {
   "Name": "Bracketed",
   "ShapeType": "Uniform",
-  "PolyType": 1,
-  "JohnsonPolyType": 0,
+  "PolyType": "Pentagonal_Prism",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

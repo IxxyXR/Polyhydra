@@ -1,8 +1,9 @@
 {
   "Name": "Urchinhedron",
   "ShapeType": "Johnson",
-  "PolyType": 28,
-  "JohnsonPolyType": 1,
+  "PolyType": "Dodecahedron",
+  "JohnsonPolyType": "Antiprism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Hex",

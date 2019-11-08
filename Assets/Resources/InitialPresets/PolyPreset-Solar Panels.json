@@ -1,8 +1,9 @@
 {
   "Name": "Solar Panels",
   "ShapeType": "Uniform",
-  "PolyType": 30,
-  "JohnsonPolyType": 0,
+  "PolyType": "Truncated_Icosahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

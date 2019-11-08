@@ -1,8 +1,9 @@
 {
   "Name": "Some Assembly Required",
   "ShapeType": "Uniform",
-  "PolyType": 13,
-  "JohnsonPolyType": 4,
+  "PolyType": "Truncated_Octahedron",
+  "JohnsonPolyType": "Dipyramid",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Hex",

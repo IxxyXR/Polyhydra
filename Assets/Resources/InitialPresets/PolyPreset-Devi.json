@@ -1,8 +1,9 @@
 {
   "Name": "Devi",
   "ShapeType": "Uniform",
-  "PolyType": 49,
-  "JohnsonPolyType": 0,
+  "PolyType": "Icosidodecadodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

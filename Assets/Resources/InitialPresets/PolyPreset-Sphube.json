@@ -1,8 +1,9 @@
 {
   "Name": "Sphube",
   "ShapeType": "Uniform",
-  "PolyType": 11,
-  "JohnsonPolyType": 0,
+  "PolyType": "Cube",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": false,
   "GridType": "Square",

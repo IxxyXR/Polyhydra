@@ -1,8 +1,9 @@
 {
   "Name": "Snowball",
   "ShapeType": "Uniform",
-  "PolyType": 35,
-  "JohnsonPolyType": 0,
+  "PolyType": "Small_Ditrigonal_Icosidodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

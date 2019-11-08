@@ -1,8 +1,9 @@
 {
   "Name": "Chocolate Slabs",
   "ShapeType": "Uniform",
-  "PolyType": 77,
-  "JohnsonPolyType": 0,
+  "PolyType": "Small_Retrosnub_Icosicosidodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

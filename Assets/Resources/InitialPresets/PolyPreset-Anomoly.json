@@ -1,0 +1,29 @@
+{
+  "Name": "Anomoly",
+  "ShapeType": "Johnson",
+  "PolyType": "Truncated_Icosidodechedon",
+  "JohnsonPolyType": "ElongatedPyramid",
+  "OtherPolyType": "L1",
+  "BypassOps": true,
+  "TwoSided": true,
+  "GridType": "Hex",
+  "PrismP": 8,
+  "PrismQ": 2,
+  "AppearancePresetName": "RGB",
+  "Ops": [
+    {
+      "OpType": "Chamfer",
+      "FaceSelections": "All",
+      "Amount": -1.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Canonicalize",
+      "FaceSelections": "All",
+      "Amount": 0.1,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

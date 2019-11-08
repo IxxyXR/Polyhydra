@@ -1,8 +1,9 @@
 {
   "Name": "Goldsugi",
   "ShapeType": "Uniform",
-  "PolyType": 28,
-  "JohnsonPolyType": 0,
+  "PolyType": "Dodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": false,
   "GridType": "Square",

@@ -1,8 +1,9 @@
 {
   "Name": "Move the Extrude Slider",
   "ShapeType": "Uniform",
-  "PolyType": 22,
-  "JohnsonPolyType": 0,
+  "PolyType": "Great_Rhombicuboctahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

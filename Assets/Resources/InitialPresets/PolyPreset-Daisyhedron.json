@@ -1,8 +1,9 @@
 {
   "Name": "Daisyhedron",
   "ShapeType": "Uniform",
-  "PolyType": 29,
-  "JohnsonPolyType": 0,
+  "PolyType": "Icosidodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

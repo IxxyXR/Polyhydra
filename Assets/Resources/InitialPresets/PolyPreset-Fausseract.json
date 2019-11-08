@@ -1,8 +1,9 @@
 {
   "Name": "Fausseract",
   "ShapeType": "Uniform",
-  "PolyType": 13,
-  "JohnsonPolyType": 0,
+  "PolyType": "Truncated_Octahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Hex",

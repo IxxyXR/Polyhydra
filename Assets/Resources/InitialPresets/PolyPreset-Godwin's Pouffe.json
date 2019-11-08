@@ -1,8 +1,9 @@
 {
   "Name": "Godwin's Pouffe",
   "ShapeType": "Uniform",
-  "PolyType": 2,
-  "JohnsonPolyType": 0,
+  "PolyType": "Pentagonal_Antiprism",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": false,
   "GridType": "Square",

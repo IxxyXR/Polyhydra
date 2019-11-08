@@ -1,8 +1,9 @@
 {
   "Name": "Pentalattice",
   "ShapeType": "Uniform",
-  "PolyType": 39,
-  "JohnsonPolyType": 0,
+  "PolyType": "Small_Stellated_Dodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

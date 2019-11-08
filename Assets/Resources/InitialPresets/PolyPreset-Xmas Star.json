@@ -1,8 +1,9 @@
 {
   "Name": "Xmas Star",
   "ShapeType": "Uniform",
-  "PolyType": 46,
-  "JohnsonPolyType": 0,
+  "PolyType": "Ditrigonal_Dodecadodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

@@ -1,8 +1,9 @@
 {
   "Name": "Jewelberries",
   "ShapeType": "Uniform",
-  "PolyType": 34,
-  "JohnsonPolyType": 0,
+  "PolyType": "Snub_Dodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

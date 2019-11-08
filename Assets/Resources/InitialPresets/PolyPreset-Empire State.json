@@ -1,8 +1,9 @@
 {
   "Name": "Empire State",
   "ShapeType": "Uniform",
-  "PolyType": 42,
-  "JohnsonPolyType": 0,
+  "PolyType": "Truncated_Great_Dodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Hex",

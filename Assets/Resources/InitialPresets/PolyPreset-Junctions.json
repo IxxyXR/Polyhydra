@@ -1,8 +1,9 @@
 {
   "Name": "Junctions",
   "ShapeType": "Uniform",
-  "PolyType": 66,
-  "JohnsonPolyType": 0,
+  "PolyType": "Great_Dodecicosidodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

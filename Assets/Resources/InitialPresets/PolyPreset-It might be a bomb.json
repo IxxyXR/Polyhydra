@@ -1,8 +1,9 @@
 {
   "Name": "It might be a bomb",
   "ShapeType": "Uniform",
-  "PolyType": 18,
-  "JohnsonPolyType": 0,
+  "PolyType": "Small_Cubicuboctahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

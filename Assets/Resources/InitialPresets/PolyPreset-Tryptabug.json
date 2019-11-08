@@ -1,8 +1,9 @@
 {
   "Name": "Tryptabug",
   "ShapeType": "Uniform",
-  "PolyType": 32,
-  "JohnsonPolyType": 0,
+  "PolyType": "Rhombicosidodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",

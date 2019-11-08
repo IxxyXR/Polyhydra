@@ -1,8 +1,9 @@
 {
   "Name": "Shards",
   "ShapeType": "Uniform",
-  "PolyType": 0,
-  "JohnsonPolyType": 0,
+  "PolyType": "Grid",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Hex",

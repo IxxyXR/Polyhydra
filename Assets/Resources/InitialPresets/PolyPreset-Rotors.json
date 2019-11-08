@@ -1,8 +1,9 @@
 {
   "Name": "Rotors",
   "ShapeType": "Uniform",
-  "PolyType": 40,
-  "JohnsonPolyType": 0,
+  "PolyType": "Great_Dodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",
