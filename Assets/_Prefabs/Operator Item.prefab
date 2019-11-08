@@ -3454,6 +3454,7 @@ MonoBehaviour:
     ShapeType: 0
     PolyType: 0
     JohnsonPolyType: 0
+    OtherPolyType: 0
     BypassOps: 0
     TwoSided: 0
     GridType: 0
@@ -4368,9 +4369,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Rate
-
-'
+  m_Text: Amount
 --- !u!1 &3197114062225126159
 GameObject:
   m_ObjectHideFlags: 0

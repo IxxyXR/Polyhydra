@@ -309,7 +309,7 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Meta, new OpConfig{usesFaces=true, amountDefault = 0.15f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Truncate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Gyro, new OpConfig{amountDefault = 0.33f, amountMin = -.5f, amountMax = 0.5f}},
-			{Ops.Snub, new OpConfig{amountDefault = 0.5f, amountMin = -.5f, amountMax = 0.5f}},
+			{Ops.Snub, new OpConfig{amountDefault = 0.5f, amountMin = -1f, amountMax = 1f}},
 			{Ops.Subdivide, new OpConfig {usesAmount=false}},
 			{Ops.Loft, new OpConfig {usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
 			{Ops.Chamfer, new OpConfig {amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
