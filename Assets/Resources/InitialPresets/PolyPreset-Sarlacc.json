@@ -5,11 +5,11 @@
   "JohnsonPolyType": "ElongatedPyramid",
   "OtherPolyType": "L1",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "GridType": "Square",
   "PrismP": 5,
   "PrismQ": 2,
-  "AppearancePresetName": "Subtle",
+  "AppearancePresetName": "Colorful Dark Edges ",
   "Ops": [
     {
       "OpType": "FaceRemove",

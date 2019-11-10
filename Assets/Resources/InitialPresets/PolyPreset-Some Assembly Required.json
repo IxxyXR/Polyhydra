@@ -5,11 +5,11 @@
   "JohnsonPolyType": "Dipyramid",
   "OtherPolyType": "L1",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "GridType": "Hex",
   "PrismP": 3,
   "PrismQ": 2,
-  "AppearancePresetName": "Rich",
+  "AppearancePresetName": "Edged Glass",
   "Ops": [
     {
       "OpType": "Extrude",

@@ -1,14 +1,14 @@
 {
   "Name": "Knotiles",
-  "ShapeType": "Uniform",
+  "ShapeType": "Grid",
   "PolyType": "Grid",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Hex",
-  "PrismP": 0,
-  "PrismQ": 0,
+  "PrismP": 5,
+  "PrismQ": 5,
   "AppearancePresetName": "Subtle",
   "Ops": [
     {

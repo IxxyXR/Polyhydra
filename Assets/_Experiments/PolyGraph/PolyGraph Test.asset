@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-251701682859361774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85e97a757e1c97146b918d00a32b43ed, type: 3}
+  m_Name: Make Model
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -362, y: -87.5}
+  ports:
+    keys:
+    - mesh
+    - material
+    - output
+    values:
+    - _fieldName: mesh
+      _node: {fileID: -251701682859361774}
+      _typeQualifiedName: UnityEngine.Mesh, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _dynamic: 0
+    - _fieldName: material
+      _node: {fileID: -251701682859361774}
+      _typeQualifiedName: UnityEngine.Material, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 0
+      _connectionType: 0
+      _dynamic: 0
+    - _fieldName: output
+      _node: {fileID: -251701682859361774}
+      _typeQualifiedName: Graphmesh.ModelGroup, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: input
+        node: {fileID: 7040380889040423687}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _dynamic: 0
+  mesh: {fileID: 4300116, guid: fb9ba08c9d86b5a409b5fe2eb4f02f5a, type: 3}
+  material: {fileID: 2100000, guid: e92c598ccd7563b408cb22916184a2e9, type: 2}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fa84fc612ad1f94e8f79a8b7ff076b0, type: 3}
+  m_Name: PolyGraph Test
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 7040380889040423687}
+  - {fileID: -251701682859361774}
+--- !u!114 &7040380889040423687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8adb454b88a0dc542aa44472a5aa5804, type: 3}
+  m_Name: Output Model
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -47.5, y: -145.5}
+  ports:
+    keys:
+    - input
+    values:
+    - _fieldName: input
+      _node: {fileID: 7040380889040423687}
+      _typeQualifiedName: Graphmesh.ModelGroup, Assembly-CSharp, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: output
+        node: {fileID: -251701682859361774}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _dynamic: 0

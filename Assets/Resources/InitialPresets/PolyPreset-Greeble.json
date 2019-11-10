@@ -1,35 +1,35 @@
 {
-  "Name": "Force Field",
-  "ShapeType": "Grid",
+  "Name": "Greeble",
+  "ShapeType": "Other",
   "PolyType": "Grid",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": false,
-  "GridType": "Isometric",
-  "PrismP": 5,
-  "PrismQ": 5,
-  "AppearancePresetName": "Hologram",
+  "GridType": "Square",
+  "PrismP": 13,
+  "PrismQ": 0,
+  "AppearancePresetName": "Colorful Dark Edges ",
   "Ops": [
     {
-      "OpType": "Loft",
-      "FaceSelections": "Alternate",
-      "Amount": 0.5,
+      "OpType": "Whirl",
+      "FaceSelections": "All",
+      "Amount": 1.65,
       "Randomize": false,
       "Disabled": false
     },
     {
       "OpType": "FaceRemove",
-      "FaceSelections": "ThreeSided",
+      "FaceSelections": "AllNew",
       "Amount": 0.0,
       "Randomize": false,
       "Disabled": false
     },
     {
       "OpType": "Extrude",
-      "FaceSelections": "All",
-      "Amount": 0.1,
-      "Randomize": false,
+      "FaceSelections": "Existing",
+      "Amount": 1.45,
+      "Randomize": true,
       "Disabled": false
     }
   ]

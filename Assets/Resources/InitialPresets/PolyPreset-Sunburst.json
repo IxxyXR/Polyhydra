@@ -1,15 +1,15 @@
 {
-  "Name": "Shards",
+  "Name": "Sunburst",
   "ShapeType": "Grid",
-  "PolyType": "Grid",
-  "JohnsonPolyType": "Prism",
+  "PolyType": "Tetrahedron",
+  "JohnsonPolyType": "Pyramid",
   "OtherPolyType": "L1",
   "BypassOps": false,
-  "TwoSided": true,
-  "GridType": "Hex",
-  "PrismP": 5,
-  "PrismQ": 5,
-  "AppearancePresetName": "Subtle",
+  "TwoSided": false,
+  "GridType": "Polar",
+  "PrismP": 16,
+  "PrismQ": 6,
+  "AppearancePresetName": "Dirty Metal",
   "Ops": [
     {
       "OpType": "Ambo",
@@ -19,9 +19,9 @@
       "Disabled": false
     },
     {
-      "OpType": "Snub",
-      "FaceSelections": "SixSided",
-      "Amount": 0.5,
+      "OpType": "Extrude",
+      "FaceSelections": "Alternate",
+      "Amount": 0.1,
       "Randomize": false,
       "Disabled": false
     }

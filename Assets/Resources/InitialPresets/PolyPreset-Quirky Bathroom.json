@@ -1,14 +1,14 @@
 {
   "Name": "Quirky Bathroom",
-  "ShapeType": "Uniform",
+  "ShapeType": "Grid",
   "PolyType": "Grid",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": true,
   "GridType": "Square",
-  "PrismP": 0,
-  "PrismQ": 0,
+  "PrismP": 5,
+  "PrismQ": 5,
   "AppearancePresetName": "Flat",
   "Ops": [
     {

@@ -146,18 +146,18 @@ public class PolyUI : MonoBehaviour {
         if (int.TryParse(PrismPInput.text, out p))
         {
             poly.PrismP = p;
+            Rebuild();
         }
-        Rebuild();    
     }
 
     private void PrismQInputChanged()
     {
-        int q;        
+        int q;
         if (int.TryParse(PrismQInput.text, out q))
         {
             poly.PrismQ = q;
+            Rebuild();
         }
-        Rebuild();    
     }
 
     private void PrevPolyButtonClicked()
@@ -513,6 +513,8 @@ public class PolyUI : MonoBehaviour {
         switch (value)
         {
             case (int)PolyHydra.ShapeTypes.Uniform:
+                PrismPInput.gameObject.SetActive(false);
+                PrismQInput.gameObject.SetActive(false);
                 BasePolyDropdown.gameObject.SetActive(true);
                 GridTypeDropdown.gameObject.SetActive(false);
                 JohnsonTypeDropdown.gameObject.SetActive(false);
@@ -521,7 +523,7 @@ public class PolyUI : MonoBehaviour {
                 break;
             case (int)PolyHydra.ShapeTypes.Grid:
                 PrismPInput.gameObject.SetActive(true);
-                PrismQInput.gameObject.SetActive(false);
+                PrismQInput.gameObject.SetActive(true);
                 BasePolyDropdown.gameObject.SetActive(false);
                 GridTypeDropdown.gameObject.SetActive(true);
                 JohnsonTypeDropdown.gameObject.SetActive(false);

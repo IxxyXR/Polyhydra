@@ -67,7 +67,8 @@ public class PolyHydra : MonoBehaviour
 	{
 		Square,
 		Isometric,
-		Hex
+		Hex,
+		Polar
 	}
 
 	public enum JohnsonPolyTypes
@@ -140,7 +141,6 @@ public class PolyHydra : MonoBehaviour
 		FaceOffset,
 		FaceScale,
 		FaceRotate,
-//		Chamfer,
 //		Ribbon,
 //		FaceTranslate,
 //		FaceRotateX,
@@ -150,9 +150,13 @@ public class PolyHydra : MonoBehaviour
 		FillHoles,
 		Hinge,
 		AddDual,
+		AddMirrorX,
+		AddMirrorY,
+		AddMirrorZ,
 		Canonicalize,
 //		CanonicalizeI,
 		Spherize,
+		Recenter,
 		SitLevel,
 		Stretch
 	}
@@ -303,7 +307,7 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Zip, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Expand, new OpConfig{usesAmount=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
 			{Ops.Bevel, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, usesRandomize=true}},
-			{Ops.Join, new OpConfig{usesAmount=false}},
+			{Ops.Join, new OpConfig{usesAmount=true, amountDefault = 0.5f, amountMin = -1f, amountMax = 2f}},  // TODO Support random
 			{Ops.Needle, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Ortho, new OpConfig{usesAmount=false}},
 			{Ops.Meta, new OpConfig{usesFaces=true, amountDefault = 0.15f, amountMin = -6, amountMax = 6, usesRandomize=true}},
@@ -325,7 +329,6 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Volute, new OpConfig{amountDefault = 0.33f, amountMin = -4, amountMax = 4}},
 			{Ops.Exalt, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Yank, new OpConfig{usesFaces=true, amountDefault = 0.33f, amountMin = -6, amountMax = 6, usesRandomize=true}},
-			//{Ops.Chamfer new OpConfig{}},
 			{Ops.FaceOffset, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			//{Ops.Ribbon, new OpConfig{}},
 			{Ops.Extrude, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
@@ -336,17 +339,20 @@ public class PolyHydra : MonoBehaviour
 			{Ops.FaceRotate, new OpConfig{usesFaces=true, amountDefault = 45f, amountMin = -180, amountMax = 180, usesRandomize=true}},
 //			{Ops.FaceRotateX, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180}},
 //			{Ops.FaceRotateY, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180}},
-			//{Ops.Test, new OpConfig{}}
 			{Ops.FaceRemove, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.FillHoles, new OpConfig{usesAmount=false}},
 			{Ops.FaceKeep, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.Hinge, new OpConfig{amountDefault = 15f, amountMin = -180, amountMax = 180}},
 			{Ops.AddDual, new OpConfig{amountDefault = 1f, amountMin = -6, amountMax = 6}},
+			{Ops.AddMirrorX, new OpConfig{amountDefault = 0, amountMin = -6, amountMax = 6}},
+			{Ops.AddMirrorY, new OpConfig{amountDefault = 0, amountMin = -6, amountMax = 6}},
+			{Ops.AddMirrorZ, new OpConfig{amountDefault = 0, amountMin = -6, amountMax = 6}},
 			{Ops.Canonicalize, new OpConfig{amountDefault = 0.1f, amountMin = 0.0001f, amountMax = 1f}},
 //			{Ops.CanonicalizeI, new OpConfig{amountDefault = 200, amountMin = 1, amountMax = 400}},
-			{Ops.Spherize, new OpConfig{amountDefault = 1.0f, amountMin = 0, amountMax = 1}},
+			{Ops.Spherize, new OpConfig{usesFaces=true, amountDefault = 1.0f, amountMin = -2, amountMax = 2}},
 			{Ops.Stretch, new OpConfig{amountDefault = 1.0f, amountMin = 0, amountMax = 3f}},
-			{Ops.SitLevel, new OpConfig{}}
+			{Ops.Recenter, new OpConfig{usesAmount=false}},
+			{Ops.SitLevel, new OpConfig{usesAmount=false}}
 
 		};
 	}
@@ -369,11 +375,13 @@ public class PolyHydra : MonoBehaviour
 		switch (gridType)
 		{
 			case GridTypes.Square:
-				return ConwayPoly.MakeGrid();
+				return ConwayPoly.MakeGrid(PrismP, PrismQ);
 			case GridTypes.Isometric:
-				return ConwayPoly.MakeIsoGrid();
+				return ConwayPoly.MakeIsoGrid(PrismP, PrismQ);
 			case GridTypes.Hex:
-				return ConwayPoly.MakeHexGrid();
+				return ConwayPoly.MakeHexGrid(PrismP, PrismQ);
+			case GridTypes.Polar:
+				return ConwayPoly.MakePolarGrid(PrismP, PrismQ);
 		}
 
 		return null;
@@ -454,7 +462,7 @@ public class PolyHydra : MonoBehaviour
 			_conwayPoly = MakeOtherPoly(OtherPolyType);
 		}
 
-		if (!enableThreading || disableThreading)  // TODO fix confusing flags
+		if (true) // !enableThreading || disableThreading)  // TODO fix confusing flags
 		{
 			ApplyOps();
 			FinishedApplyOps();
@@ -475,11 +483,14 @@ public class PolyHydra : MonoBehaviour
 
 		InitCacheIfNeeded();
 
-		if (PrismP < 3) {PrismP = 3;}
-		if (PrismP > 16) PrismP = 16;
-		if (PrismQ > PrismP - 2) PrismQ = PrismP - 2;
-		if (PrismQ < 2) PrismQ = 2;
-		
+		if (ShapeType == ShapeTypes.Uniform)
+		{
+			if (PrismP < 3) {PrismP = 3;}
+			if (PrismP > 16) PrismP = 16;
+			if (PrismQ > PrismP - 2) PrismQ = PrismP - 2;
+			if (PrismQ < 2) PrismQ = 2;
+		}
+
 		// Control the amount variables to some degree
 		for (var i = 0; i < ConwayOperators.Count; i++)
 		{
@@ -654,15 +665,12 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Expand(op.amount);
 				break;
 			case Ops.Bevel:
-				conway = conway.Ambo();
-				conway = conway.Dual();
+				conway = conway.Join(op.amount);
 				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 				conway = conway.Dual();
 				break;
 			case Ops.Join:
-				// conway = conway.Join(op.amount);  // Not currently used as it results in non-coplanar faces
-				conway = conway.Ambo();
-				conway = conway.Dual();
+				conway = conway.Join(op.amount);
 				break;
 			case Ops.Needle:
 				conway = conway.Dual();
@@ -672,7 +680,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Ortho();
 				break;
 			case Ops.Meta:
-				conway = conway.Ambo();
+				conway = conway.Join(op.amount);
 				conway = conway.Dual();
 				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 				break;
@@ -687,6 +695,8 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Dual();
 				break;
 			case Ops.Exalt:
+				// TODO return a correct VertexRole array
+				// I suspect the last vertices map to the original shape verts
 				conway = conway.Dual();
 				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
 				conway = conway.Dual();
@@ -761,6 +771,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.VertexScale(op.amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.FaceOffset:
+				// TODO Faceroles ignored. Vertex Roles
 				// Split faces
 				var origRoles = conway.FaceRoles;
 				conway = conway.FaceScale(0, ConwayPoly.FaceSelections.All, false);
@@ -773,9 +784,6 @@ public class PolyHydra : MonoBehaviour
 			case Ops.FaceRotate:
 				conway = conway.FaceRotate(op.amount, op.faceSelections, 0, op.randomize);
 				break;
-//					case Ops.Chamfer:
-//						conway = conway.Chamfer();
-//						break;
 //					case Ops.Ribbon:
 //						conway = conway.Ribbon(op.amount, false, 0.1f);
 //						break;
@@ -803,14 +811,23 @@ public class PolyHydra : MonoBehaviour
 			case Ops.AddDual:
 				conway = conway.AddDual(op.amount);
 				break;
+			case Ops.AddMirrorX:
+				conway = conway.AddMirrored(Vector3.right, op.amount);
+				break;
+			case Ops.AddMirrorY:
+				conway = conway.AddMirrored(Vector3.up, op.amount);
+				break;
+			case Ops.AddMirrorZ:
+				conway = conway.AddMirrored(Vector3.forward, op.amount);
+				break;
 			case Ops.Canonicalize:
 				conway = conway.Canonicalize(op.amount, op.amount);
 				break;
-//			case Ops.CanonicalizeI:
-//				conway = conway.Canonicalize((int)op.amount, (int)op.amount);
-//				break;
 			case Ops.Spherize:
-				conway = conway.Spherize(op.amount);
+				conway = conway.Spherize(op.faceSelections, op.amount);
+				break;
+			case Ops.Recenter:
+				conway.Recenter();
 				break;
 			case Ops.SitLevel:
 				conway = conway.SitLevel();
@@ -1245,6 +1262,7 @@ public class PolyHydra : MonoBehaviour
 					Vector3 vert = _conwayPoly.Vertices[i].Position;
 					Vector3 pos = transform.TransformPoint(vert);
 					Gizmos.DrawWireSphere(pos, GizmoRadius);
+//					Handles.Label(pos + new Vector3(0, .15f, 0), _conwayPoly.VertexRoles[i].ToString());
 					Handles.Label(pos + new Vector3(0, .15f, 0), i.ToString());
 				}
 			}

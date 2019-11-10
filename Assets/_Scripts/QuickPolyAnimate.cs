@@ -56,9 +56,11 @@ public class QuickPolyAnimate : MonoBehaviour
         {
             var opPrefabManager = opUiTransform.gameObject.GetComponent<OpPrefabManager>();
             if (!opPrefabManager.ToggleAnimate.isOn) continue;
-            isAnimating = true;
             var opIndex = opPrefabManager.Index;
             var op = _poly.ConwayOperators[opIndex];
+            if (op.disabled) continue;
+            if (!_poly.opconfigs[op.opType].usesAmount) continue;
+            isAnimating = true;
             var _originalAmount = float.Parse(opPrefabManager.AmountInput.text);
             var amplitude = float.Parse(opPrefabManager.AnimAmountInput.text);
             var rate = float.Parse(opPrefabManager.AnimRateInput.text);

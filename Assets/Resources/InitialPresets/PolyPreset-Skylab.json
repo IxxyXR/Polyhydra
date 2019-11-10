@@ -1,41 +1,41 @@
 {
-  "Name": "Fleur",
+  "Name": "Skylab",
   "ShapeType": "Grid",
-  "PolyType": "Grid",
-  "JohnsonPolyType": "Prism",
+  "PolyType": "Tetrahedron",
+  "JohnsonPolyType": "Pyramid",
   "OtherPolyType": "L1",
   "BypassOps": false,
-  "TwoSided": false,
-  "GridType": "Square",
-  "PrismP": 3,
-  "PrismQ": 3,
-  "AppearancePresetName": "Tinted Glass",
+  "TwoSided": true,
+  "GridType": "Polar",
+  "PrismP": 8,
+  "PrismQ": 8,
+  "AppearancePresetName": "Showroom",
   "Ops": [
     {
-      "OpType": "Needle",
+      "OpType": "Shell",
+      "FaceSelections": "All",
+      "Amount": 0.55,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Recenter",
       "FaceSelections": "All",
       "Amount": 0.0,
       "Randomize": false,
       "Disabled": false
     },
     {
-      "OpType": "Kis",
+      "OpType": "Spherize",
       "FaceSelections": "All",
-      "Amount": 0.0,
+      "Amount": -1.6,
       "Randomize": false,
       "Disabled": false
     },
     {
-      "OpType": "Quinto",
+      "OpType": "AddDual",
       "FaceSelections": "All",
-      "Amount": 0.1,
-      "Randomize": false,
-      "Disabled": true
-    },
-    {
-      "OpType": "Lace",
-      "FaceSelections": "All",
-      "Amount": 0.5,
+      "Amount": 1.0,
       "Randomize": false,
       "Disabled": false
     }

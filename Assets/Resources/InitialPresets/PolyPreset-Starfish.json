@@ -9,7 +9,7 @@
   "GridType": "Hex",
   "PrismP": 5,
   "PrismQ": 2,
-  "AppearancePresetName": "Rich",
+  "AppearancePresetName": "Tinted Glass",
   "Ops": [
     {
       "OpType": "Truncate",

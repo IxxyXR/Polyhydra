@@ -1,50 +1,50 @@
 {
-  "Name": "Flux",
+  "Name": "Fresnel",
   "ShapeType": "Grid",
-  "PolyType": "Truncated_Cube",
-  "JohnsonPolyType": "Dipyramid",
+  "PolyType": "Tetrahedron",
+  "JohnsonPolyType": "Pyramid",
   "OtherPolyType": "L1",
   "BypassOps": false,
-  "TwoSided": true,
-  "GridType": "Isometric",
-  "PrismP": 5,
-  "PrismQ": 5,
-  "AppearancePresetName": "Posterized",
+  "TwoSided": false,
+  "GridType": "Polar",
+  "PrismP": 12,
+  "PrismQ": 9,
+  "AppearancePresetName": "Black Mirror",
   "Ops": [
     {
-      "OpType": "Loft",
+      "OpType": "Shell",
       "FaceSelections": "All",
-      "Amount": 0.4,
+      "Amount": 0.7,
       "Randomize": false,
       "Disabled": false
     },
     {
-      "OpType": "Loft",
+      "OpType": "Recenter",
       "FaceSelections": "All",
-      "Amount": 0.4,
+      "Amount": 0.0,
       "Randomize": false,
       "Disabled": false
     },
     {
-      "OpType": "Loft",
+      "OpType": "Spherize",
       "FaceSelections": "All",
-      "Amount": 0.4,
+      "Amount": 0.2,
       "Randomize": false,
       "Disabled": false
     },
     {
-      "OpType": "Subdivide",
+      "OpType": "Dual",
       "FaceSelections": "All",
-      "Amount": 0.3,
+      "Amount": 0.0,
       "Randomize": false,
       "Disabled": true
     },
     {
-      "OpType": "Subdivide",
+      "OpType": "Ambo",
       "FaceSelections": "All",
-      "Amount": 0.3,
+      "Amount": 0.0,
       "Randomize": false,
-      "Disabled": true
+      "Disabled": false
     }
   ]
 }

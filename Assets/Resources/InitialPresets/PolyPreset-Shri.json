@@ -1,6 +1,6 @@
 {
   "Name": "Shri",
-  "ShapeType": "Uniform",
+  "ShapeType": "Grid",
   "PolyType": "Grid",
   "JohnsonPolyType": "ElongatedPyramid",
   "OtherPolyType": "L1",
@@ -8,7 +8,7 @@
   "TwoSided": true,
   "GridType": "Hex",
   "PrismP": 5,
-  "PrismQ": 2,
+  "PrismQ": 5,
   "AppearancePresetName": "Grooves",
   "Ops": [
     {
