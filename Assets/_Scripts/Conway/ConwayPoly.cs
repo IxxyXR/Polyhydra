@@ -2662,7 +2662,10 @@ namespace Conway
 
 			var faceRoles = Enumerable.Repeat(Roles.New, faceIndices.Count);
 			var vertexRoles = Enumerable.Repeat(Roles.New, vertexPoints.Count);
-			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+
+			var poly = new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+			poly.Recenter();
+			return poly;
 		}
 		
 		public static ConwayPoly MakeHexGrid(int cols = 4, int rows = 4)
@@ -2730,7 +2733,9 @@ namespace Conway
 
 			var faceRoles = Enumerable.Repeat(Roles.New, faceIndices.Count);
 			var vertexRoles = Enumerable.Repeat(Roles.New, vertexPoints.Count);
-			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+			var poly = new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+			poly.Recenter();
+			return poly;
 		}
 
 		public static ConwayPoly MakePolarGrid(int sides = 6, int divisions = 4)
