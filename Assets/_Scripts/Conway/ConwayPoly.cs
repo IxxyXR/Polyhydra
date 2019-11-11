@@ -576,9 +576,6 @@ namespace Conway
 					var thisFaceIndices = new List<int>();
 					var edges = oldFace.GetHalfedges();
 
-					
-					
-					
 					var seedVertex = edges[j].Vertex;
 					keyName = seedVertex.Name;
 					if (existingVerts.ContainsKey(keyName))
@@ -635,7 +632,7 @@ namespace Conway
 
 					faceIndices.Add(thisFaceIndices);
 					// Alternate roles but only for faces with an even number of sides
-					if (j % 2 == 0 || Faces[j].Sides % 2 != 0){faceRoles.Add(Roles.New);}
+					if (j % 2 == 0 || (j < Faces.Count() && Faces[j].Sides % 2 != 0)){faceRoles.Add(Roles.New);}
 					else {faceRoles.Add(Roles.NewAlt);}
 				}
 			}

@@ -462,7 +462,7 @@ public class PolyHydra : MonoBehaviour
 			_conwayPoly = MakeOtherPoly(OtherPolyType);
 		}
 
-		if (true) // !enableThreading || disableThreading)  // TODO fix confusing flags
+		if (!enableThreading || disableThreading)  // TODO fix confusing flags
 		{
 			ApplyOps();
 			FinishedApplyOps();
