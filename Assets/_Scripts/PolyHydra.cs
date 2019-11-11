@@ -126,6 +126,7 @@ public class PolyHydra : MonoBehaviour
 		Quinto,
 		Lace,
 		JoinedLace,
+		OppositeLace,
 		Stake,
 		Medial,
 		EdgeMedial,
@@ -320,6 +321,7 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Quinto, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
 			{Ops.Lace, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
 			{Ops.JoinedLace, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
+			{Ops.OppositeLace, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
 			{Ops.Stake, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4}},
 			{Ops.Medial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8}},
 			{Ops.EdgeMedial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8}},
@@ -722,6 +724,9 @@ public class PolyHydra : MonoBehaviour
 				break;
 			case Ops.JoinedLace:
 				conway = conway.JoinedLace(op.amount);
+				break;
+			case Ops.OppositeLace:
+				conway = conway.OppositeLace(op.amount);
 				break;
 			case Ops.Lace:
 				conway = conway.Lace(op.amount, op.faceSelections);

@@ -1373,15 +1373,20 @@ namespace Conway
 
 		public ConwayPoly JoinedLace(float ratio = 0.33333333f)
 		{
-			return this._Lace(0, true, ratio);
+			return this._Lace(0, true, false, ratio);
+		}
+
+		public ConwayPoly OppositeLace(float ratio = 0.33333333f)
+		{
+			return this._Lace(0, false, true, ratio);
 		}
 
 		public ConwayPoly Lace(float ratio = 0.33333333f, FaceSelections facesel = FaceSelections.All)
 		{
-			return this._Lace(facesel, false, ratio);
+			return this._Lace(facesel, false, false, ratio);
 		}
 
-		private ConwayPoly _Lace(FaceSelections facesel, bool joined, float ratio = 0.3333333f)
+		private ConwayPoly _Lace(FaceSelections facesel, bool joined, bool opposite, float ratio = 0.3333333f)
 		{
 
 			var faceIndices = new List<int[]>();
@@ -1405,7 +1410,7 @@ namespace Conway
 			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
 			{
 				var face = Faces[faceIndex];
-				if (joined || IncludeFace(faceIndex, facesel))
+				if (joined || opposite || IncludeFace(faceIndex, facesel))
 				{
 					var edge = face.Halfedge;
 					var centroid = face.Centroid;
@@ -1441,7 +1446,7 @@ namespace Conway
 						faceIndices.Add(largeTriangle);
 						faceRoles.Add(Roles.NewAlt);
 
-						if (!joined)
+						if (!joined && !opposite)
 						{
 							var smallTriangle = new int[]
 							{
@@ -1488,6 +1493,35 @@ namespace Conway
 						};
 						faceIndices.Add(rhombus);
 						faceRoles.Add(Roles.New);
+						rhombusFlags[edge.PairedName] = true;
+					}
+				}
+			}
+
+			if (opposite)
+			{
+				foreach (var edge in Halfedges)
+				{
+					if (!rhombusFlags.ContainsKey(edge.PairedName))
+					{
+						var tri1 = new int[]
+						{
+							existingVertices[edge.Prev.Vertex.Position],
+							newInnerVertices[edge.Pair.Name],
+							newInnerVertices[edge.Name]
+						};
+						faceIndices.Add(tri1);
+						faceRoles.Add(Roles.New);
+
+						var tri2 = new int[]
+						{
+							newInnerVertices[edge.Pair.Name],
+							existingVertices[edge.Vertex.Position],
+							newInnerVertices[edge.Name]
+						};
+						faceIndices.Add(tri2);
+						faceRoles.Add(Roles.New);
+
 						rhombusFlags[edge.PairedName] = true;
 					}
 				}
