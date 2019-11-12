@@ -1,0 +1,50 @@
+{
+  "Name": "Borg",
+  "ShapeType": "Uniform",
+  "PolyType": "Cube",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
+  "BypassOps": false,
+  "TwoSided": false,
+  "GridType": "Polar",
+  "PrismP": 5,
+  "PrismQ": 3,
+  "AppearancePresetName": "Black Mirror",
+  "Ops": [
+    {
+      "OpType": "OppositeLace",
+      "FaceSelections": "All",
+      "Amount": 0.5,
+      "Randomize": false,
+      "Disabled": true
+    },
+    {
+      "OpType": "Ortho",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Whirl",
+      "FaceSelections": "All",
+      "Amount": 0.25,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Whirl",
+      "FaceSelections": "All",
+      "Amount": 0.3,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "All",
+      "Amount": 0.06,
+      "Randomize": true,
+      "Disabled": false
+    }
+  ]
+}

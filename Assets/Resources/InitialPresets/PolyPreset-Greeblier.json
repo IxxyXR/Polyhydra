@@ -1,0 +1,36 @@
+{
+  "Name": "Greeblier",
+  "ShapeType": "Uniform",
+  "PolyType": "Truncated_Cube",
+  "JohnsonPolyType": "Rotunda",
+  "OtherPolyType": "L1",
+  "BypassOps": false,
+  "TwoSided": false,
+  "GridType": "Square",
+  "PrismP": 3,
+  "PrismQ": 2,
+  "AppearancePresetName": "RGB",
+  "Ops": [
+    {
+      "OpType": "OppositeLace",
+      "FaceSelections": "All",
+      "Amount": 0.5,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Whirl",
+      "FaceSelections": "All",
+      "Amount": 0.3,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "All",
+      "Amount": 0.05,
+      "Randomize": true,
+      "Disabled": false
+    }
+  ]
+}
