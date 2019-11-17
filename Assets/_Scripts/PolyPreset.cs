@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Conway;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using UnityEngine;
 
 
 [Serializable]
 public class PolyPreset {
+
+	public const string PresetFileNamePrefix = "PolyPreset-";
 
 	public string Name;
 
@@ -101,4 +105,10 @@ public class PolyPreset {
 		}
 	}
 
+	public void Save()
+	{
+		var fileName = Path.Combine(Application.persistentDataPath, PresetFileNamePrefix + Name + ".json");
+        var polyJson = JsonConvert.SerializeObject(this, Formatting.Indented);
+        File.WriteAllText(fileName, polyJson);
+	}
 }

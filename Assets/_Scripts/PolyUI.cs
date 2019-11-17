@@ -477,6 +477,28 @@ public class PolyUI : MonoBehaviour {
         }
         presetButtons.Clear();
     }
+
+    private Button AddOrUpdatePresetButton(PolyPreset preset)
+    {
+        foreach (var btn in PresetButtonContainer.GetComponentsInChildren<Button>())
+        {
+            if (btn.name == preset.Name)
+            {
+                btn.transform.GetComponentInChildren<GetPresetImageForButton>().UpdateImage();
+                return btn;
+            }
+        }
+
+        var presetButton = Instantiate(ButtonTemplate);
+        presetButton.transform.SetParent(PresetButtonContainer);
+        presetButton.name = preset.Name;
+        presetButton.GetComponentInChildren<Text>().text = preset.Name;
+        presetButton.onClick.AddListener(LoadPresetButtonClicked);
+        presetButtons.Add(presetButton);
+        presetButton.transform.GetComponentInChildren<GetPresetImageForButton>().UpdateImage();
+        return presetButton;
+
+    }
     
     void CreatePresetButtons()
     {
@@ -484,13 +506,13 @@ public class PolyUI : MonoBehaviour {
         for (var index = 0; index < Presets.Items.Count; index++)
         {
             var preset = Presets.Items[index];
-            var presetButton = Instantiate(ButtonTemplate);
-            presetButton.transform.SetParent(PresetButtonContainer);
-            presetButton.name = index.ToString();
-            presetButton.GetComponentInChildren<Text>().text = preset.Name;
-            presetButton.onClick.AddListener(LoadPresetButtonClicked);
-            presetButtons.Add(presetButton);
+            AddOrUpdatePresetButton(preset);
         }
+
+//        foreach (var presetButton in presetButtons)
+//        {
+//            presetButton.GetComponentInChildren<GetPresetImageForButton>().UpdateImage();
+//        }
     }
     
     // Event handlers
@@ -620,46 +642,55 @@ public class PolyUI : MonoBehaviour {
 
     void LoadPresetButtonClicked()
     {
-        int buttonIndex = 0;
-        if (Int32.TryParse(EventSystem.current.currentSelectedGameObject.name, out buttonIndex))
+        var btn = EventSystem.current.currentSelectedGameObject;
+        PolyPreset preset = null;
+        foreach (var p in Presets.Items)
         {
-            poly.gameObject.GetComponent<MeshFilter>().mesh = null;
-            _shouldReBuild = false;
-            var preset = Presets.ApplyPresetToPoly(buttonIndex, LoadMatchingAppearanceToggle.isOn);
-            PresetNameInput.text = preset.Name;
-            AppearancePresetNameText.text = poly.APresetName;
-            InitUI();
-            _shouldReBuild = true;
-            poly.Rebuild();
+            if (p.Name == btn.name)
+            {
+                preset = p;
+                break;
+            }
         }
-        else
+
+        if (preset == null)
         {
-            Debug.LogError("Invalid button name: " + buttonIndex);
-        }        
-        
+            Debug.LogError($"No matching preset found for button: {btn.name}");
+            return;
+        }
+
+        poly.gameObject.GetComponent<MeshFilter>().mesh = null;
+        _shouldReBuild = false;
+        Presets.ApplyPresetToPoly(preset, LoadMatchingAppearanceToggle.isOn);
+        PresetNameInput.text = preset.Name;
+        AppearancePresetNameText.text = poly.APresetName;
+        InitUI();
+        _shouldReBuild = true;
+        poly.Rebuild();
     }
     
     void SavePresetButtonClicked()
     {
+        var cap = FindObjectOfType<ScreenCaptureTool>();
+        cap.TakePresetScreenshotNow(PresetNameInput.text);
         poly.PresetName = PresetNameInput.text;
-        Presets.AddPresetFromPoly(PresetNameInput.text);
-        Presets.SaveAllPresets();
-        CreatePresetButtons();
-        PresetSnapshotButtonClicked();
+
+        // TODO Handle saving over an existing preset
+        int countBefore = Presets.Items.Count;
+        var preset = Presets.AddOrUpdateFromPoly(PresetNameInput.text);
+        preset.Save();
+        AddOrUpdatePresetButton(preset);
     }
 
     void PresetSnapshotButtonClicked()
     {
         // TODO Find a less clunky way to get the button that matches the current preset
         var cap = FindObjectOfType<ScreenCaptureTool>();
-        string presetName = poly.PresetName;
-        Debug.Log(PresetButtonContainer.transform.childCount);
-        cap.TakePresetScreenshotNow(presetName);
         foreach (Transform button in PresetButtonContainer.transform)
         {
-            Debug.Log($"{button.GetComponentInChildren<Text>().text} == {presetName} : {button.GetComponentInChildren<Text>().text == presetName}");
-            if (button.GetComponentInChildren<Text>().text == presetName)
+            if (button.GetComponentInChildren<Text>().text == PresetNameInput.text)
             {
+                cap.TakePresetScreenshotNow(PresetNameInput.text);
                 button.GetComponentInChildren<GetPresetImageForButton>().UpdateImage();
                 break;
             }

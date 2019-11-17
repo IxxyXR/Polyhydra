@@ -82,9 +82,9 @@ public class ScreenCaptureTool : MonoBehaviour
         }
     }
 
-    public void TakePresetScreenshotNow(string fname)
+    public void TakePresetScreenshotNow(string presetName)
     {
-        filename = fname;
+        filename = PresetScreenShotName(presetName);
         TakeShotNow();
     }
 

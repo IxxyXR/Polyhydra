@@ -19,7 +19,7 @@ public class PolyPresetEditor : CustomEditorBase {
         base.OnInspectorGUI();
         GUILayout.TextField(newPresetName);
         if(GUILayout.Button("Save")) {
-            _presets.AddPresetFromPoly(newPresetName);
+            _presets.AddOrUpdateFromPoly(newPresetName);
         }
     }
     

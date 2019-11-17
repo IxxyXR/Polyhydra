@@ -2,14 +2,13 @@
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using UnityEngine;
+
 
 public class PolyPresets : MonoBehaviour {
 	
 	public PolyHydra _poly;
-	private const string PresetFileNamePrefix = "PolyPreset-";
-	public AppearancePresets APresets; 
+	public AppearancePresets APresets;
 	public List<PolyPreset> Items;
 
 	public PolyPreset ApplyPresetToPoly(int presetIndex, bool loadMatchingAppearance)
@@ -24,13 +23,23 @@ public class PolyPresets : MonoBehaviour {
 		preset.ApplyToPoly(_poly, APresets, loadMatchingAppearance);
 	}
 
-	public void AddPresetFromPoly(string presetName)
+	public PolyPreset AddOrUpdateFromPoly(string presetName)
 	{
-		var existingPreset = Items.Find(x => x.Name.Equals(presetName));
-		Items.Remove(existingPreset);
 		var preset = new PolyPreset();
 		preset.CreateFromPoly(presetName, _poly);
+
+		for (var i = 0; i < Items.Count; i++)
+		{
+			var item = Items[i];
+			if (item.Name == presetName)
+			{
+				Items[i] = preset;
+				return Items[i];
+			}
+		}
+
 		Items.Add(preset);
+		return Items.Last();
 	}
 
 	[ContextMenu("Copy to clipboard")]
@@ -74,13 +83,13 @@ public class PolyPresets : MonoBehaviour {
 	{
 		var existingPresets = Items.Select(x => x.Name);
 		var dirInfo = new DirectoryInfo(path);
-		var fileInfo = dirInfo.GetFiles(PresetFileNamePrefix + "*.json");
+		var fileInfo = dirInfo.GetFiles(PolyPreset.PresetFileNamePrefix + "*.json");
 		foreach (var file in fileInfo) {
 			var preset = new PolyPreset();
 			preset = JsonConvert.DeserializeObject<PolyPreset>(File.ReadAllText(file.FullName));
 			if (string.IsNullOrEmpty(preset.Name))
 			{
-				preset.Name = file.Name.Replace(PresetFileNamePrefix, "").Replace(".json", "");
+				preset.Name = file.Name.Replace(PolyPreset.PresetFileNamePrefix, "").Replace(".json", "");
 			}
 			if (!existingPresets.Contains(preset.Name) || overwrite)
 			{
@@ -98,7 +107,7 @@ public class PolyPresets : MonoBehaviour {
 			preset = JsonConvert.DeserializeObject<PolyPreset>(presetResource.ToString());
 			if (string.IsNullOrEmpty(preset.Name))
 			{
-				preset.Name = presetResource.name.Replace(PresetFileNamePrefix, "").Replace(".json", "");
+				preset.Name = presetResource.name.Replace(PolyPreset.PresetFileNamePrefix, "").Replace(".json", "");
 			}
 			if (!existingPresets.Contains(preset.Name))
 			{
@@ -119,9 +128,7 @@ public class PolyPresets : MonoBehaviour {
 	public void SaveAllPresets()
 	{
 		foreach (var preset in Items) {
-			var fileName = Path.Combine(Application.persistentDataPath, PresetFileNamePrefix + preset.Name + ".json");
-			var polyJson = JsonConvert.SerializeObject(preset, Formatting.Indented);
-			File.WriteAllText(fileName, polyJson);
+			preset.Save();
 		}
 	}
 
