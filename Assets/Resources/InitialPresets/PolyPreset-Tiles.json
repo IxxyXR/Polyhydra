@@ -5,9 +5,9 @@
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "GridType": "Square",
-  "PrismP": 0,
+  "PrismP": 4,
   "PrismQ": 0,
   "AppearancePresetName": "Subtle",
   "Ops": [
@@ -21,16 +21,23 @@
     {
       "OpType": "Lace",
       "FaceSelections": "All",
-      "Amount": 0.33,
+      "Amount": 0.5,
       "Randomize": false,
       "Disabled": false
     },
     {
       "OpType": "FaceRotate",
       "FaceSelections": "All",
-      "Amount": 1.0,
+      "Amount": 19.0,
       "Randomize": false,
-      "Disabled": true
+      "Disabled": false
+    },
+    {
+      "OpType": "Recenter",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
     }
   ]
 }

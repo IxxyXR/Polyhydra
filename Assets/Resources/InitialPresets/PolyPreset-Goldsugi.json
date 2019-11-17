@@ -9,7 +9,7 @@
   "GridType": "Square",
   "PrismP": 0,
   "PrismQ": 0,
-  "AppearancePresetName": "Black Mirror",
+  "AppearancePresetName": "Colorful Dark Edges ",
   "Ops": [
     {
       "OpType": "Subdivide",
@@ -35,30 +35,16 @@
     {
       "OpType": "Truncate",
       "FaceSelections": "All",
-      "Amount": 1.0,
+      "Amount": 0.3,
       "Randomize": false,
       "Disabled": false
     },
     {
       "OpType": "Extrude",
       "FaceSelections": "SixSided",
-      "Amount": 0.01,
+      "Amount": -1.04,
       "Randomize": false,
       "Disabled": false
-    },
-    {
-      "OpType": "FaceScale",
-      "FaceSelections": "EightSided",
-      "Amount": -0.05,
-      "Randomize": false,
-      "Disabled": true
-    },
-    {
-      "OpType": "FaceScale",
-      "FaceSelections": "FourSided",
-      "Amount": -0.05,
-      "Randomize": false,
-      "Disabled": true
     }
   ]
 }

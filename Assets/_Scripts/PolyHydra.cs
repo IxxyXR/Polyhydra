@@ -24,8 +24,8 @@ public class PolyHydra : MonoBehaviour
 
 	public bool EnableLogging = false;
 
-	private bool enableThreading = true;
-	private bool enableCaching = true;
+	[NonSerialized] public bool enableThreading = true;
+	[NonSerialized] public bool enableCaching = true;
 
 	private int _faceCount;
 	private int _vertexCount;
@@ -106,24 +106,28 @@ public class PolyHydra : MonoBehaviour
 	}
 
 	public enum Ops {
+
 		Identity,
-		Kis,
 		Dual,
+		Kis,
 		Ambo,
 		Zip,
 		Expand,
+
 		Bevel,
 		Join,
 		Needle,
 		Ortho,
 		Meta,
 		Truncate,
+
 		Gyro,
 		Snub,
 		Subdivide,
 		Loft,
 		Chamfer,
 		Quinto,
+
 		Lace,
 		JoinedLace,
 		OppositeLace,
@@ -131,11 +135,13 @@ public class PolyHydra : MonoBehaviour
 		Medial,
 		EdgeMedial,
 //		JoinedMedial,
+
 		Propeller,
 		Whirl,
 		Volute,
 		Exalt,
 		Yank,
+
 		Extrude,
 		Shell,
 		VertexScale,
@@ -605,7 +611,10 @@ public class PolyHydra : MonoBehaviour
 			var size = mesh.bounds.size;
 			var maxDimension = Mathf.Max(size.x, size.y, size.z);
 			var scale = (1f / maxDimension) * 2f;
-			transform.localScale = new Vector3(scale, scale, scale);
+			if (scale > 0)
+			{
+				transform.localScale = new Vector3(scale, scale, scale);
+			}
 		}
 
 		if (meshFilter != null)
@@ -1016,6 +1025,7 @@ public class PolyHydra : MonoBehaviour
 			var faceIndex = faceIndices[i];
 			var face = _conwayPoly.Faces[i];
 			var faceNormal = face.Normal;
+			var faceCentroid = face.Centroid;
 
 			// Axes for UV mapping
 			var xAxis = face.Halfedge.Vector;
@@ -1045,14 +1055,14 @@ public class PolyHydra : MonoBehaviour
 				return new Vector2(u, v);
 			}
 
-			var miscUV = new Vector4(face.Centroid.x, face.Centroid.y, face.Centroid.z, ((float)i)/faceIndices.Length);
+			var miscUV = new Vector4(faceCentroid.x, faceCentroid.y, faceCentroid.z, ((float)i)/faceIndices.Length);
 
 			if (face.Sides > 3)
 			{
 				for (var edgeIndex = 0; edgeIndex < faceIndex.Count; edgeIndex++)
 				{
 					
-					meshVertices.Add(face.Centroid);
+					meshVertices.Add(faceCentroid);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					edgeUVs.Add(new Vector2(0, 0));
@@ -1107,7 +1117,7 @@ public class PolyHydra : MonoBehaviour
 				{
 					for (var edgeIndex = 0; edgeIndex < faceIndex.Count; edgeIndex++)
 					{
-						meshVertices.Add(face.Centroid);
+						meshVertices.Add(faceCentroid);
 						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
 						edgeUVs.Add(new Vector2(0, 0));

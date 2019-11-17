@@ -5,11 +5,11 @@
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "GridType": "Square",
   "PrismP": 5,
   "PrismQ": 5,
-  "AppearancePresetName": "Dirty Metal",
+  "AppearancePresetName": "Tinted Glass",
   "Ops": [
     {
       "OpType": "Dual",

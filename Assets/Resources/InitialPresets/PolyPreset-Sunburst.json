@@ -19,8 +19,15 @@
       "Disabled": false
     },
     {
-      "OpType": "Extrude",
+      "OpType": "FaceRemove",
       "FaceSelections": "Alternate",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "All",
       "Amount": 0.1,
       "Randomize": false,
       "Disabled": false

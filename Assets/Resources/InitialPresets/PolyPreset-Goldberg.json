@@ -1,14 +1,14 @@
 {
   "Name": "Goldberg",
-  "ShapeType": "Uniform",
+  "ShapeType": "Grid",
   "PolyType": "Grid",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
   "BypassOps": false,
   "TwoSided": false,
   "GridType": "Square",
-  "PrismP": 5,
-  "PrismQ": 2,
+  "PrismP": 4,
+  "PrismQ": 4,
   "AppearancePresetName": "Gem",
   "Ops": [
     {
@@ -42,7 +42,7 @@
     {
       "OpType": "Kis",
       "FaceSelections": "All",
-      "Amount": 1.0,
+      "Amount": 0.5,
       "Randomize": false,
       "Disabled": false
     },

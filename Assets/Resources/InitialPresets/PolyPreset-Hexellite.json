@@ -9,7 +9,7 @@
   "GridType": "Square",
   "PrismP": 5,
   "PrismQ": 5,
-  "AppearancePresetName": "Rich",
+  "AppearancePresetName": "Edged Glass",
   "Ops": [
     {
       "OpType": "Loft",
@@ -21,21 +21,14 @@
     {
       "OpType": "VertexScale",
       "FaceSelections": "New",
-      "Amount": -0.3,
+      "Amount": -0.22,
       "Randomize": false,
       "Disabled": false
     },
     {
       "OpType": "Chamfer",
       "FaceSelections": "All",
-      "Amount": 0.65,
-      "Randomize": false,
-      "Disabled": false
-    },
-    {
-      "OpType": "Spherize",
-      "FaceSelections": "Existing",
-      "Amount": 0.2,
+      "Amount": 0.3,
       "Randomize": false,
       "Disabled": false
     }

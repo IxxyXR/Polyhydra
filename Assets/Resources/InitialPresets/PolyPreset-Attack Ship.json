@@ -5,23 +5,16 @@
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "GridType": "Square",
   "PrismP": 0,
   "PrismQ": 0,
-  "AppearancePresetName": "Spiral Blush",
+  "AppearancePresetName": "Edged Glass",
   "Ops": [
-    {
-      "OpType": "Dual",
-      "FaceSelections": "All",
-      "Amount": 1.0,
-      "Randomize": false,
-      "Disabled": true
-    },
     {
       "OpType": "Loft",
       "FaceSelections": "All",
-      "Amount": 1.0,
+      "Amount": -4.0,
       "Randomize": false,
       "Disabled": false
     },
@@ -35,14 +28,14 @@
     {
       "OpType": "Join",
       "FaceSelections": "All",
-      "Amount": -0.0224998,
+      "Amount": 1.89,
       "Randomize": false,
       "Disabled": false
     },
     {
       "OpType": "Canonicalize",
       "FaceSelections": "All",
-      "Amount": 0.0001,
+      "Amount": 0.09,
       "Randomize": false,
       "Disabled": false
     }

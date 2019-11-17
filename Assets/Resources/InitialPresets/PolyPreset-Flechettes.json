@@ -1,7 +1,7 @@
 {
   "Name": "Flechettes",
   "ShapeType": "Uniform",
-  "PolyType": "Small_Dodecicosidodecahedron",
+  "PolyType": "Truncated_Cuboctahedron",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
   "BypassOps": false,

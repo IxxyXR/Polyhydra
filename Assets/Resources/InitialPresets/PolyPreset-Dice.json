@@ -5,11 +5,11 @@
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "GridType": "Square",
   "PrismP": 0,
   "PrismQ": 0,
-  "AppearancePresetName": "Dirty Metal",
+  "AppearancePresetName": "Edged Tiles",
   "Ops": [
     {
       "OpType": "Kis",

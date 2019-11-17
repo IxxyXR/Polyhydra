@@ -2,7 +2,7 @@
   "Name": "Anomoly",
   "ShapeType": "Johnson",
   "PolyType": "Truncated_Icosidodechedon",
-  "JohnsonPolyType": "ElongatedPyramid",
+  "JohnsonPolyType": "Cupola",
   "OtherPolyType": "L1",
   "BypassOps": true,
   "TwoSided": true,

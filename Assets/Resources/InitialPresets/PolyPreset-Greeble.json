@@ -1,20 +1,20 @@
 {
   "Name": "Greeble",
   "ShapeType": "Other",
-  "PolyType": "Grid",
-  "JohnsonPolyType": "Prism",
-  "OtherPolyType": "L1",
+  "PolyType": "Octahedron",
+  "JohnsonPolyType": "Bicupola",
+  "OtherPolyType": "L2",
   "BypassOps": false,
   "TwoSided": false,
   "GridType": "Square",
-  "PrismP": 13,
-  "PrismQ": 0,
-  "AppearancePresetName": "Colorful Dark Edges ",
+  "PrismP": 5,
+  "PrismQ": 5,
+  "AppearancePresetName": "Edged Tiles",
   "Ops": [
     {
       "OpType": "Whirl",
       "FaceSelections": "All",
-      "Amount": 1.65,
+      "Amount": 0.15,
       "Randomize": false,
       "Disabled": false
     },
@@ -23,13 +23,27 @@
       "FaceSelections": "AllNew",
       "Amount": 0.0,
       "Randomize": false,
+      "Disabled": true
+    },
+    {
+      "OpType": "Ortho",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
       "Disabled": false
     },
     {
       "OpType": "Extrude",
-      "FaceSelections": "Existing",
-      "Amount": 1.45,
+      "FaceSelections": "All",
+      "Amount": 0.1,
       "Randomize": true,
+      "Disabled": false
+    },
+    {
+      "OpType": "AddMirrorX",
+      "FaceSelections": "All",
+      "Amount": 0.5,
+      "Randomize": false,
       "Disabled": false
     }
   ]

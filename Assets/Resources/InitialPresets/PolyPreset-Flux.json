@@ -5,11 +5,11 @@
   "JohnsonPolyType": "Dipyramid",
   "OtherPolyType": "L1",
   "BypassOps": false,
-  "TwoSided": true,
-  "GridType": "Isometric",
-  "PrismP": 5,
-  "PrismQ": 5,
-  "AppearancePresetName": "Posterized",
+  "TwoSided": false,
+  "GridType": "Hex",
+  "PrismP": 3,
+  "PrismQ": 3,
+  "AppearancePresetName": "Graph Paper",
   "Ops": [
     {
       "OpType": "Loft",

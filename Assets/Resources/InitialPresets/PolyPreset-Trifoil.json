@@ -9,7 +9,7 @@
   "GridType": "Hex",
   "PrismP": 5,
   "PrismQ": 2,
-  "AppearancePresetName": "Subtle",
+  "AppearancePresetName": "Edged Glass",
   "Ops": [
     {
       "OpType": "Quinto",

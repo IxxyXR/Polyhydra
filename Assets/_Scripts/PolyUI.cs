@@ -43,6 +43,7 @@ public class PolyUI : MonoBehaviour {
     public InputField PrismQInput;
     public Toggle LoadMatchingAppearanceToggle;
     public Button SavePresetButton;
+    public Button PresetSnapshotButton;
     public Button ResetPresetsButton;
     public Button OpenPresetsFolderButton;
     public Text AppearancePresetNameText;
@@ -110,6 +111,7 @@ public class PolyUI : MonoBehaviour {
         
         PresetNameInput.onValueChanged.AddListener(delegate{PresetNameChanged();});
         SavePresetButton.onClick.AddListener(SavePresetButtonClicked);
+        PresetSnapshotButton.onClick.AddListener(PresetSnapshotButtonClicked);
         ResetPresetsButton.onClick.AddListener(ResetPresetsButtonClicked);
         OpenPresetsFolderButton.onClick.AddListener(OpenPersistentDataFolder);
         
@@ -129,11 +131,6 @@ public class PolyUI : MonoBehaviour {
         ShowTab(TabButtons[0].gameObject);
     }
 
-    void Update()
-    {
-        // TODO hook up a signal or something to only set this when the mesh has changed
-        InfoText.text = poly.GetInfoText();
-    }
 
     private void ObjExportButtonClicked()
     {
@@ -221,6 +218,7 @@ public class PolyUI : MonoBehaviour {
     void Rebuild()
     {
         if (_shouldReBuild) poly.Rebuild();
+        InfoText.text = poly.GetInfoText();
     }
 
     void AddOpButtonClicked()
@@ -288,6 +286,8 @@ public class PolyUI : MonoBehaviour {
 
     void ConfigureOpControls(OpPrefabManager opPrefabManager)
     {
+        opPrefabManager.OpTypeDropdown.GetComponentInChildren<DropdownSVGIcon>().UpdateIcon();
+
         var opType = (PolyHydra.Ops)opPrefabManager.OpTypeDropdown.value;
         var opConfig = poly.opconfigs[opType];
         
@@ -500,57 +500,47 @@ public class PolyUI : MonoBehaviour {
         if (String.IsNullOrEmpty(PresetNameInput.text))
         {
             SavePresetButton.interactable = false;
+            PresetSnapshotButton.interactable = false;
         }
         else
         {
             SavePresetButton.interactable = true;
+            PresetSnapshotButton.interactable = true;
         }
     }
 
     void InitShapeTypesUI(int value)
     {
-        // TODO remove repetition
+
+        PrismPInput.gameObject.SetActive(false);
+        PrismQInput.gameObject.SetActive(false);
+        BasePolyDropdown.gameObject.SetActive(false);
+        GridTypeDropdown.gameObject.SetActive(false);
+        JohnsonTypeDropdown.gameObject.SetActive(false);
+        OtherTypeDropdown.gameObject.SetActive(false);
+
         switch (value)
         {
             case (int)PolyHydra.ShapeTypes.Uniform:
-                PrismPInput.gameObject.SetActive(false);
-                PrismQInput.gameObject.SetActive(false);
+                // P and Q buttons are set per poly type
                 BasePolyDropdown.gameObject.SetActive(true);
-                GridTypeDropdown.gameObject.SetActive(false);
-                JohnsonTypeDropdown.gameObject.SetActive(false);
-                OtherTypeDropdown.gameObject.SetActive(false);
-                poly.ShapeType = (PolyHydra.ShapeTypes)value;
                 break;
             case (int)PolyHydra.ShapeTypes.Grid:
                 PrismPInput.gameObject.SetActive(true);
                 PrismQInput.gameObject.SetActive(true);
-                BasePolyDropdown.gameObject.SetActive(false);
                 GridTypeDropdown.gameObject.SetActive(true);
-                JohnsonTypeDropdown.gameObject.SetActive(false);
-                OtherTypeDropdown.gameObject.SetActive(false);
-                poly.ShapeType = (PolyHydra.ShapeTypes)value;
                 break;
             case (int)PolyHydra.ShapeTypes.Johnson:
                 PrismPInput.gameObject.SetActive(true);
-                PrismQInput.gameObject.SetActive(false);
-                BasePolyDropdown.gameObject.SetActive(false);
-                GridTypeDropdown.gameObject.SetActive(false);
                 JohnsonTypeDropdown.gameObject.SetActive(true);
-                OtherTypeDropdown.gameObject.SetActive(false);
-                poly.ShapeType = (PolyHydra.ShapeTypes)value;
                 break;
             case (int)PolyHydra.ShapeTypes.Other:
                 PrismPInput.gameObject.SetActive(true);
-                PrismQInput.gameObject.SetActive(false);
-                BasePolyDropdown.gameObject.SetActive(false);
-                GridTypeDropdown.gameObject.SetActive(false);
-                JohnsonTypeDropdown.gameObject.SetActive(false);
                 OtherTypeDropdown.gameObject.SetActive(true);
-                poly.ShapeType = (PolyHydra.ShapeTypes)value;
-                break;
-            default:
                 break;
         }
+
+        poly.ShapeType = (PolyHydra.ShapeTypes)value;
 
     }
 
@@ -633,6 +623,7 @@ public class PolyUI : MonoBehaviour {
         int buttonIndex = 0;
         if (Int32.TryParse(EventSystem.current.currentSelectedGameObject.name, out buttonIndex))
         {
+            poly.gameObject.GetComponent<MeshFilter>().mesh = null;
             _shouldReBuild = false;
             var preset = Presets.ApplyPresetToPoly(buttonIndex, LoadMatchingAppearanceToggle.isOn);
             PresetNameInput.text = preset.Name;
@@ -650,9 +641,29 @@ public class PolyUI : MonoBehaviour {
     
     void SavePresetButtonClicked()
     {
+        poly.PresetName = PresetNameInput.text;
         Presets.AddPresetFromPoly(PresetNameInput.text);
         Presets.SaveAllPresets();
         CreatePresetButtons();
+        PresetSnapshotButtonClicked();
+    }
+
+    void PresetSnapshotButtonClicked()
+    {
+        // TODO Find a less clunky way to get the button that matches the current preset
+        var cap = FindObjectOfType<ScreenCaptureTool>();
+        string presetName = poly.PresetName;
+        Debug.Log(PresetButtonContainer.transform.childCount);
+        cap.TakePresetScreenshotNow(presetName);
+        foreach (Transform button in PresetButtonContainer.transform)
+        {
+            Debug.Log($"{button.GetComponentInChildren<Text>().text} == {presetName} : {button.GetComponentInChildren<Text>().text == presetName}");
+            if (button.GetComponentInChildren<Text>().text == presetName)
+            {
+                button.GetComponentInChildren<GetPresetImageForButton>().UpdateImage();
+                break;
+            }
+        }
     }
     
     public void HandleTabButton()

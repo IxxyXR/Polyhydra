@@ -9,7 +9,7 @@
   "GridType": "Hex",
   "PrismP": 5,
   "PrismQ": 2,
-  "AppearancePresetName": "Black Mirror",
+  "AppearancePresetName": "Edged Tiles",
   "Ops": [
     {
       "OpType": "FaceRemove",

@@ -45,6 +45,13 @@
       "Amount": 0.6,
       "Randomize": false,
       "Disabled": false
+    },
+    {
+      "OpType": "Recenter",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
     }
   ]
 }

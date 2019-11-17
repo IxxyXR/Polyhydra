@@ -9,7 +9,7 @@
   "GridType": "Square",
   "PrismP": 3,
   "PrismQ": 2,
-  "AppearancePresetName": "RGB",
+  "AppearancePresetName": "Dirty Metal",
   "Ops": [
     {
       "OpType": "OppositeLace",
