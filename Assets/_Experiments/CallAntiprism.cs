@@ -46,8 +46,6 @@ public class CallAntiprism : MonoBehaviour
             process = null;
         }
 
-        string line;
-
         var faceIndices = new List<int[]>();
         var vertexPoints = new List<Vector3>();
 
