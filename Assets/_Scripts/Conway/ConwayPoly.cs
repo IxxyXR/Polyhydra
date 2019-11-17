@@ -75,7 +75,6 @@ namespace Conway
 					}
 				}
 			}
-			
 
 			// Find and link halfedge pairs
 			Halfedges.MatchPairs();
@@ -349,13 +348,21 @@ namespace Conway
 			return original;
 		}
 
-		public void Recenter()
+		public Vector3 GetCentroid()
 		{
-			Vector3 newCenter = new Vector3(
+			if (Vertices.Count == 0) return Vector3.zero;
+
+			return new Vector3(
 				Vertices.Average(x=>x.Position.x),
 				Vertices.Average(x=>x.Position.y),
 				Vertices.Average(x=>x.Position.z)
 			);
+
+		}
+
+		public void Recenter()
+		{
+			Vector3 newCenter = GetCentroid();
 			foreach (var v in Vertices)
 			{
 				v.Position -= newCenter;
