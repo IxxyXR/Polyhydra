@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Conway;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -126,9 +127,33 @@ public class PolyUI : MonoBehaviour {
         
         Presets.LoadAllPresets();
         
-        InitUI();
+        InitPolySpecificUI();
+        AddMissingPresetImages();
         CreatePresetButtons();
         ShowTab(TabButtons[0].gameObject);
+    }
+
+    private void AddMissingPresetImages()
+    {
+        foreach (var preset in Presets.Items)
+        {
+            var filePath = ScreenCaptureTool.PresetScreenShotName(preset.Name);
+            if (!File.Exists(filePath))
+            {
+//                var imagePath = $"Resources/InitialPresets/preset_{preset.Name}.png";
+//                var bytes = File.ReadAllBytes(imagePath);
+//                File.WriteAllBytes(filePath, bytes);
+                
+//                string address = $"InitialPresets/preset_{preset.Name}";
+//                byte[] byteArray = File.ReadAllBytes(@address);
+//                var pic = new Texture2D(12080,1024); 
+//                bool check = pic.LoadImage(byteArray);
+                
+                Texture2D tex2d = Resources.Load<Texture2D>($"InitialPresets/preset_{preset.Name}");
+                byte[] bytes = tex2d.EncodeToPNG();
+                File.WriteAllBytes(filePath, bytes);
+            }
+        }
     }
 
 
@@ -208,7 +233,7 @@ public class PolyUI : MonoBehaviour {
         AppearancePresetNameText.text = poly.APresetName;
     }
     
-    public void InitUI()
+    public void InitPolySpecificUI()
     {
         UpdatePolyUI();
         UpdateOpsUI();
@@ -664,7 +689,7 @@ public class PolyUI : MonoBehaviour {
         Presets.ApplyPresetToPoly(preset, LoadMatchingAppearanceToggle.isOn);
         PresetNameInput.text = preset.Name;
         AppearancePresetNameText.text = poly.APresetName;
-        InitUI();
+        InitPolySpecificUI();
         _shouldReBuild = true;
         poly.Rebuild();
     }
