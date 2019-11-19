@@ -334,9 +334,27 @@ namespace Conway
 //        {
 //        }
 //
-//        public static ConwayPoly MakeElongatedCupola(int sides)
-//        {
-//        }
+        public static ConwayPoly MakeElongatedCupola(int sides)
+        {
+					float height = CalcPyramidHeight(sides) / 2f;
+					ConwayPoly poly = MakeCupola(sides, height);
+					Face polybottom = poly.Faces[0];
+					ConwayPoly elongate = MakePrism(sides*2, height);
+					poly.Append(elongate);
+					Face elongtop = poly.Faces[(sides*2) + 3];
+					poly.Faces.Remove(polybottom);
+					poly.Faces.Remove(elongtop);
+					
+					poly.Halfedges.MatchPairs();
+					
+					// float height =  CalcPyramidHeight(sides) / 2f;
+					// ConwayPoly poly = MakePrism(sides*2, height);
+					// Face bottom = poly.Faces[0];
+					// poly.Faces.Remove(bottom);
+					
+					
+					return poly;
+        }
 //        public static ConwayPoly MakeElongatedBicupola(int sides)
 //        {
 //        }

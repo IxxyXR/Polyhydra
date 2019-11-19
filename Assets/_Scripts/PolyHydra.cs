@@ -85,7 +85,7 @@ public class PolyHydra : MonoBehaviour
 		//GyroelongatedDipyramid,
 
 		Cupola,
-		//ElongatedCupola,
+		ElongatedCupola,
 		//GyroelongatedCupola,
 
 		Bicupola,
@@ -413,6 +413,8 @@ public class PolyHydra : MonoBehaviour
 				return JohnsonPoly.MakeElongatedBipyramid(PrismP);
 			case JohnsonPolyTypes.Cupola:
 				return JohnsonPoly.MakeCupola(PrismP);
+			case JohnsonPolyTypes.ElongatedCupola:
+				return JohnsonPoly.MakeElongatedCupola(PrismP);
 			case JohnsonPolyTypes.Bicupola:
 				return JohnsonPoly.MakeBicupola(PrismP);
 			case JohnsonPolyTypes.Rotunda:
