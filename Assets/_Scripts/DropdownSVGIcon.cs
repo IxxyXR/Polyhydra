@@ -8,10 +8,10 @@ public class DropdownSVGIcon : MonoBehaviour
 
     public bool IsMainItem = false;
 
-    private float startX = 65f;
-    private float startY = -155f;
-    private float offsetX = 46.5f;
-    private float offsetY = 53.5f;
+    private float startX = 136f;
+    private float startY = -131f;
+    private float offsetX = 39.25f;
+    private float offsetY = 53f;
 
     void Start()
     {
