@@ -12,7 +12,7 @@ public class PolyComponentDrawer : Editor
         PolyHydra ui = (PolyHydra)target;
         if(GUILayout.Button("Sync UI to Inspector"))
         {
-            ui.polyUI.InitUI();
+            ui.polyUI.InitPolySpecificUI();
         }
 
         GUI.enabled = true;
