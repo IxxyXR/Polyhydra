@@ -24,8 +24,8 @@ public class PolyHydra : MonoBehaviour
 
 	public bool EnableLogging = false;
 
-	[NonSerialized] public bool enableThreading = true;
-	[NonSerialized] public bool enableCaching = true;
+	public bool enableThreading = true;
+	public bool enableCaching = true;
 
 	private int _faceCount;
 	private int _vertexCount;
@@ -375,7 +375,11 @@ public class PolyHydra : MonoBehaviour
 
 	void InitCacheIfNeeded()
 	{
-		if (!polyCache) polyCache = FindObjectOfType<PolyCache>();
+		if (polyCache==null) polyCache = FindObjectOfType<PolyCache>();
+		if (polyCache == null)
+		{
+			enableCaching = false;
+		}
 	}
 
 	public ConwayPoly MakeGrid(GridTypes gridType)
@@ -874,7 +878,6 @@ public class PolyHydra : MonoBehaviour
 					nextOpResult = ApplyOp(_conwayPoly, op);
 					polyCache.SetConway(key, nextOpResult);
 				}
-				else {Debug.LogWarning($"Op cache hit:  {op.opType} {op.amount}");}
 				_conwayPoly = nextOpResult;
 			}
 			else
