@@ -311,53 +311,94 @@ namespace Conway
 
         public static ConwayPoly MakeElongatedPyramid(int sides)
         {
-					float height = SideLength(sides);
-					ConwayPoly poly = MakePrism(sides, height);
-					
-					height = CalcPyramidHeight(sides);
-					poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingUp, false);
-					
-					return poly;
+			float height = SideLength(sides);
+			ConwayPoly poly = MakePrism(sides, height);
+			
+			height = CalcPyramidHeight(sides);
+			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingUp, false);
+			
+			return poly;
         }
         public static ConwayPoly MakeElongatedBipyramid(int sides)
         {
-					ConwayPoly poly = MakeElongatedPyramid(sides);
-					float height = CalcPyramidHeight(sides);
-					poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingDown, false);
-					
-					return poly;
+			ConwayPoly poly = MakeElongatedPyramid(sides);
+			float height = CalcPyramidHeight(sides);
+			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingDown, false);
+			
+			return poly;
         }
-//        public static ConwayPoly MakeGyroelongatedPyramid(int sides)
-//        {
-//        }
-//        public static ConwayPoly MakeGyroelongatedBipyramid(int sides)
-//        {
-//        }
-//
+		public static ConwayPoly MakeGyroelongatedPyramid(int sides)
+		{
+			float height = SideLength(sides);
+			ConwayPoly poly = MakeAntiprism(sides);
+			
+			height = CalcPyramidHeight(sides);
+			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingCenter, false);
+			poly.Recenter();
+			return poly;
+		}
+		public static ConwayPoly MakeGyroelongatedBipyramid(int sides)
+		{
+			ConwayPoly poly = MakeGyroelongatedPyramid(sides);
+			
+			float height = CalcPyramidHeight(sides);
+			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingCenter, false);
+			poly.Recenter();
+			return poly;
+		}
+
         public static ConwayPoly MakeElongatedCupola(int sides)
         {
 					float height = CalcPyramidHeight(sides) / 2f;
 					ConwayPoly poly = MakeCupola(sides, height);
-					Face polybottom = poly.Faces[0];
-					ConwayPoly elongate = MakePrism(sides*2, height);
-					poly.Append(elongate);
-					Face elongtop = poly.Faces[(sides*2) + 3];
-					poly.Faces.Remove(polybottom);
-					poly.Faces.Remove(elongtop);
-					
-					poly.Halfedges.MatchPairs();
-					
-					// float height =  CalcPyramidHeight(sides) / 2f;
-					// ConwayPoly poly = MakePrism(sides*2, height);
-					// Face bottom = poly.Faces[0];
-					// poly.Faces.Remove(bottom);
-					
-					
+					var included = poly.FaceRemove(ConwayPoly.FaceSelections.FacingDown, true);
+					included = included.FaceScale(0f, ConwayPoly.FaceSelections.All, false);
+					var excluded = poly.FaceRemove(ConwayPoly.FaceSelections.FacingDown, false);
+					poly = included.Extrude(SideLength(sides), false, false);
+					poly.Append(excluded);
 					return poly;
         }
-//        public static ConwayPoly MakeElongatedBicupola(int sides)
-//        {
-//        }
+		public static ConwayPoly MakeElongatedBicupola(int sides)
+		{
+			ConwayPoly poly = MakeElongatedCupola(sides);
+			Face bottom = poly.Faces[1];
+			ConwayPoly top2 = MakePolygon(sides, false, 0.75f, -2*(CalcPyramidHeight(sides) /2f), 0.5f);
+			poly.Append(top2);
+
+			int i = 0;
+			var middleVerts = bottom.GetVertices();
+			poly.Faces.Remove(bottom);
+			var edge2 = poly.Faces.Last().Halfedge.Prev;
+			while (true)
+			{
+				var side1 = new List<Vertex>
+				{
+					middleVerts[PolyUtils.ActualMod(i * 2 - 1, sides * 2)],
+					middleVerts[PolyUtils.ActualMod(i * 2, sides * 2)],
+					edge2.Vertex
+				};
+				poly.Faces.Add(side1);
+				poly.FaceRoles.Add(ConwayPoly.Roles.New);
+
+				var side2 = new List<Vertex>
+				{
+					middleVerts[PolyUtils.ActualMod(i * 2, sides * 2)],
+					middleVerts[PolyUtils.ActualMod(i * 2 + 1, sides * 2)],
+					edge2.Next.Vertex,
+					edge2.Vertex,
+				};
+				poly.Faces.Add(side2);
+				poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
+
+				i++;
+				edge2 = edge2.Next;
+
+				if (i == sides) break;
+			}
+			poly.Halfedges.MatchPairs();
+			poly.Recenter();
+			return poly;
+			}
 //        public static ConwayPoly MakeGyroelongatedCupola(int sides)
 //        {
 //        }

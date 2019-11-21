@@ -78,18 +78,18 @@ public class PolyHydra : MonoBehaviour
 
 		Pyramid,
 		ElongatedPyramid,
-		//GyroelongatedPyramid,
+		GyroelongatedPyramid,
 
 		Dipyramid,
 		ElongatedDipyramid,
-		//GyroelongatedDipyramid,
+		GyroelongatedDipyramid,
 
 		Cupola,
 		ElongatedCupola,
 		//GyroelongatedCupola,
 
 		Bicupola,
-		//ElongatedBicupola,
+		ElongatedBicupola,
 		//GyroelongatedBicupola,
 
 		Rotunda,
@@ -407,16 +407,22 @@ public class PolyHydra : MonoBehaviour
 				return JohnsonPoly.MakePyramid(PrismP);
 			case JohnsonPolyTypes.ElongatedPyramid:
 				return JohnsonPoly.MakeElongatedPyramid(PrismP);
+			case JohnsonPolyTypes.GyroelongatedPyramid:
+				return JohnsonPoly.MakeGyroelongatedPyramid(PrismP);
 			case JohnsonPolyTypes.Dipyramid:
 				return JohnsonPoly.MakeDipyramid(PrismP);
 			case JohnsonPolyTypes.ElongatedDipyramid:
 				return JohnsonPoly.MakeElongatedBipyramid(PrismP);
+			case JohnsonPolyTypes.GyroelongatedDipyramid:
+				return JohnsonPoly.MakeGyroelongatedBipyramid(PrismP);
 			case JohnsonPolyTypes.Cupola:
 				return JohnsonPoly.MakeCupola(PrismP);
 			case JohnsonPolyTypes.ElongatedCupola:
 				return JohnsonPoly.MakeElongatedCupola(PrismP);
 			case JohnsonPolyTypes.Bicupola:
 				return JohnsonPoly.MakeBicupola(PrismP);
+			case JohnsonPolyTypes.ElongatedBicupola:
+				return JohnsonPoly.MakeElongatedBicupola(PrismP);
 			case JohnsonPolyTypes.Rotunda:
 				// A fudge for the pentagonal rotunda (which is the only actual Johnson solid Rotunda)
 				return JohnsonPoly.MakeRotunda();
