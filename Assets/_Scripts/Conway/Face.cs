@@ -51,7 +51,7 @@ namespace Conway {
                     Vector normal = new Vector(0, 0, 0);
                     Halfedge edge = Halfedge;
                     do {
-                        Vector3 crossTmp = Vector3.Cross(edge.Vector, edge.Next.Vector);
+                        Vector3 crossTmp = Vector3.Cross(edge.Vector - Centroid, edge.Next.Vector - Centroid);
                         normal = normal.sum(new Vector(crossTmp.x, crossTmp.y, crossTmp.z));
                         edge = edge.Next;  // move on to next halfedge
                     } while (edge != Halfedge);
