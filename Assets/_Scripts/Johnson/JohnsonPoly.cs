@@ -354,7 +354,7 @@ namespace Conway
 					var included = poly.FaceRemove(ConwayPoly.FaceSelections.FacingDown, true);
 					included = included.FaceScale(0f, ConwayPoly.FaceSelections.All, false);
 					var excluded = poly.FaceRemove(ConwayPoly.FaceSelections.FacingDown, false);
-					poly = included.Extrude(SideLength(sides), false, false);
+					poly = included.Extrude((CalcPyramidHeight(sides)/2f), false, false);
 					poly.Append(excluded);
 					return poly;
         }
