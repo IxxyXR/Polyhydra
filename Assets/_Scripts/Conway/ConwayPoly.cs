@@ -171,7 +171,8 @@ namespace Conway
 			OnlyFirst,
 			ExceptFirst,
 			None,
-			Random
+			Random,
+			TopHalf
 		}
 
 		public bool IsValid
@@ -3419,6 +3420,8 @@ namespace Conway
 					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) > 90 - TOLERANCE;
 				case FaceSelections.FacingOut:
 					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) < 90 + TOLERANCE;
+				case FaceSelections.TopHalf:
+					return Faces[faceIndex].Centroid.y > 0;
 				case FaceSelections.Existing:
 					return FaceRoles[faceIndex] == Roles.Existing;
 				case FaceSelections.Ignored:

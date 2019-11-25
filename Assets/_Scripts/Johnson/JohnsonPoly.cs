@@ -316,7 +316,7 @@ namespace Conway
 			
 			height = CalcPyramidHeight(sides);
 			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingUp, false);
-			
+			poly.Recenter();
 			return poly;
         }
         public static ConwayPoly MakeElongatedBipyramid(int sides)

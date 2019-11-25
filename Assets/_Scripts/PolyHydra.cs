@@ -11,6 +11,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
+using Face = Conway.Face;
 using Random = UnityEngine.Random;
 
 // ReSharper disable InconsistentNaming
@@ -44,6 +45,7 @@ public class PolyHydra : MonoBehaviour
 	public bool TwoSided;
 	public bool Rescale;
 	private PolyCache polyCache;
+	private Coroutine geomCoroutine;
 
 	// Parameters for prismatic forms
 	public int PrismP = 5;
@@ -489,7 +491,13 @@ public class PolyHydra : MonoBehaviour
 		}
 		else
 		{
-			StartCoroutine(RunOffMainThread(ApplyOps, FinishedApplyOps));
+			if (geomCoroutine != null)
+			{
+				Debug.LogWarning("Coroutine already exists. Aborting.");
+				return;
+			}
+			geomCoroutine = StartCoroutine(RunOffMainThread(ApplyOps, FinishedApplyOps));
+			geomCoroutine = null;
 		}
 	}
 
@@ -645,10 +653,10 @@ public class PolyHydra : MonoBehaviour
 	// This is a helper coroutine
 	IEnumerator RunOffMainThread(Action toRun, Action callback)
 	{
-		if (thread != null)
+		if (thread!=null && thread.IsAlive)
 		{
-			thread.Abort();
-			thread.Join();			
+			Debug.LogWarning("Waiting for existing geometry thread");
+			yield break;
 		}
 		finishedOpsThread = false;
 		thread = null;
@@ -1066,7 +1074,14 @@ public class PolyHydra : MonoBehaviour
 				return new Vector2(u, v);
 			}
 
-			var miscUV = new Vector4(faceCentroid.x, faceCentroid.y, faceCentroid.z, ((float)i)/faceIndices.Length);
+			float faceScale = 0;
+			foreach (var v in face.GetVertices())
+			{
+				faceScale += Vector3.Distance(v.Position, faceCentroid);
+			}
+			faceScale /= face.Sides;
+
+			var miscUV = new Vector4(faceScale, face.Sides, faceCentroid.magnitude, ((float)i)/faceIndices.Length);
 
 			if (face.Sides > 3)
 			{
@@ -1134,17 +1149,20 @@ public class PolyHydra : MonoBehaviour
 						edgeUVs.Add(new Vector2(0, 0));
 						barycentricUVs.Add(new Vector3(0, 0, 1));
 
+
 						meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
 						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
 						edgeUVs.Add(new Vector2(1, 1));
 						barycentricUVs.Add(new Vector3(0, 1, 0));
 
+
 						meshVertices.Add(points[faceIndex[edgeIndex]]);
 						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
 						edgeUVs.Add(new Vector2(1, 1));					
 						barycentricUVs.Add(new Vector3(1, 0, 0));
+
 
 						meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
 						meshColors.AddRange(Enumerable.Repeat(color, 3));
@@ -1158,15 +1176,18 @@ public class PolyHydra : MonoBehaviour
 					meshTriangles.Add(index++);
 					barycentricUVs.Add(new Vector3(0, 0, 1));
 
+
 					meshVertices.Add(points[faceIndex[2]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					barycentricUVs.Add(new Vector3(0, 1, 0));
 
+
 					meshVertices.Add(points[faceIndex[1]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					barycentricUVs.Add(new Vector3(1, 0, 0));
+
 
 					edgeUVs.AddRange(Enumerable.Repeat(new Vector2(1, 1), 3));
 					meshNormals.AddRange(Enumerable.Repeat(-faceNormal, 3));
@@ -1215,7 +1236,7 @@ public class PolyHydra : MonoBehaviour
 		}
 		catch (Exception e)
 		{
-			Debug.Log($"opType: {opType} opconfigs count: {opconfigs.Count}");
+			Debug.LogWarning($"opType: {opType} opconfigs count: {opconfigs.Count}");
 			throw;
 		}
         
@@ -1392,7 +1413,7 @@ public class PolyHydra : MonoBehaviour
 						transform.TransformPoint(edgeEnd.Position)
 					);
 				}
-				Handles.Label(face.Centroid + new Vector3(0, .15f, 0), f.ToString());
+				Handles.Label(Vector3.Scale(face.Centroid, transform.lossyScale) + new Vector3(0, .15f, 0), f.ToString());
 			}
 		}
 	}
