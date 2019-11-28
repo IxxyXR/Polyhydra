@@ -3414,6 +3414,7 @@ namespace Conway
 				case FaceSelections.FacingDown:
 					return Faces[faceIndex].Normal.y < -TOLERANCE;
 				case FaceSelections.FacingCenter:
+					Recenter();
 					float angle = Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid);
 					return Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE;
 				case FaceSelections.FacingIn:
