@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 6607251758953439345}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9999045, y: 0.9999045, z: 0.9999045}
+  m_LocalScale: {x: 1.224605, y: 1.224605, z: 1.224605}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -47,19 +47,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16fa6755628f34246af47ee2aab9e558, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShapeType: 0
+  EnableLogging: 0
+  enableThreading: 1
+  enableCaching: 1
+  ShapeType: 1
   UniformPolyType: 6
   ColorMethod: 1
   JohnsonPolyType: 0
+  OtherPolyType: 0
   GridType: 0
   WythoffSymbol: 
   PresetName: New Preset
   APresetName: Subtle
   BypassOps: 0
-  TwoSided: 1
+  TwoSided: 0
   Rescale: 1
-  PrismP: 5
-  PrismQ: 2
+  PrismP: 1
+  PrismQ: 1
   ConwayOperators: []
   wythoffVertexGizmos: 0
   conwayVertexGizmos: 0

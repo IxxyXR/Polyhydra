@@ -2584,6 +2584,23 @@ namespace Conway
 
 		}
 
+		public static ConwayPoly MakeUnitileGrid(int pattern = 1, int rows = 5, int cols = 5)
+		{
+			var ut = new Unitile(pattern, rows, cols);
+			ut.plane();
+			var vertexRoles = Enumerable.Repeat(Roles.New, ut.raw_verts.Count);
+			var faceRoles = Enumerable.Repeat(Roles.New, ut.raw_faces.Count);
+			for (var i = 0; i < ut.raw_faces[0].Count; i++)
+			{
+				var idx = ut.raw_faces[0][i];
+				var v = ut.raw_verts[idx];
+			}
+
+			var poly = new ConwayPoly(ut.raw_verts, ut.raw_faces, faceRoles, vertexRoles);
+			poly.Recenter();
+			return poly;
+		}
+
 		public static ConwayPoly MakeGrid(int rows = 5, int cols = 5, float rowScale = .3f, float colScale = .3f)
 		{
 			float rowOffset = rows * rowScale * 0.5f;
@@ -2701,7 +2718,6 @@ namespace Conway
 
 			var faceRoles = Enumerable.Repeat(Roles.New, faceIndices.Count);
 			var vertexRoles = Enumerable.Repeat(Roles.New, vertexPoints.Count);
-
 			var poly = new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 			poly.Recenter();
 			return poly;

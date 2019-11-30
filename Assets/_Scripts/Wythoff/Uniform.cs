@@ -36,7 +36,10 @@
  *****************************************************************************
  */
 
+using System.Linq;
+
 namespace Wythoff {
+
 	public class Uniform {
 	
 		public readonly string Wythoff;
@@ -632,6 +635,43 @@ namespace Wythoff {
                 "great dirhombicosidodecacron"
                 , 92, 119)
         };
-	
-	}
+
+        public static Uniform[] Platonic =
+        {
+            Uniforms[6],
+            Uniforms[11],
+            Uniforms[10],
+            Uniforms[28],
+            Uniforms[27],
+        };
+
+        public static Uniform[] Archimedean =
+        {
+            Uniforms[7],
+            Uniforms[12],
+            Uniforms[14],
+            Uniforms[13],
+            Uniforms[15],
+            Uniforms[16],
+            Uniforms[17],
+            Uniforms[29],
+            Uniforms[31],
+            Uniforms[30],
+            Uniforms[32],
+            Uniforms[73],
+            Uniforms[34],
+        };
+
+        public static Uniform[] KeplerPoinsot =
+        {
+            Uniforms[40],
+            Uniforms[39],
+            Uniforms[58],
+            Uniforms[57],
+        };
+
+        public static Uniform[] Convex = Uniforms.Where(x => !x.Wythoff.Contains("/")).ToArray();
+        public static Uniform[] Star = Uniforms.Where(x => x.Wythoff.Contains("/")).ToArray();
+
+    }
 }
