@@ -92,7 +92,7 @@ public class PolyHydra : MonoBehaviour
 
 		Bicupola,
 		ElongatedBicupola,
-		//GyroelongatedBicupola,
+		GyroelongatedBicupola,
 
 		Rotunda,
 		//ElongatedRotunda,
@@ -431,6 +431,8 @@ public class PolyHydra : MonoBehaviour
 				return JohnsonPoly.MakeBicupola(PrismP);
 			case JohnsonPolyTypes.ElongatedBicupola:
 				return JohnsonPoly.MakeElongatedBicupola(PrismP);
+			case JohnsonPolyTypes.GyroelongatedBicupola:
+				return JohnsonPoly.MakeGyroelongatedBicupola(PrismP);
 			case JohnsonPolyTypes.Rotunda:
 				// A fudge for the pentagonal rotunda (which is the only actual Johnson solid Rotunda)
 				return JohnsonPoly.MakeRotunda();

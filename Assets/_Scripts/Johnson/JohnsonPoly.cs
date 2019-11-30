@@ -437,13 +437,50 @@ namespace Conway
 				}
 				
 				poly.Halfedges.MatchPairs();
-				poly.Recenter();
 				return poly;
 			}
-      // public static ConwayPoly MakeGyroelongatedBicupola(int sides)
-      // {
+      public static ConwayPoly MakeGyroelongatedBicupola(int sides)
+      {
+				ConwayPoly poly = MakeGyroelongatedCupola(sides);
+				Face bottomFace = poly.Faces[0];
+				ConwayPoly bottom1 = MakePolygon(sides, false, 0.75f, -(CalcPyramidHeight(sides)/2f), 0.5f);
+				poly.Append(bottom1);
 				
-      // }
+				int i = 0;
+				var middleVerts = bottomFace.GetVertices();
+				poly.Faces.Remove(bottomFace);
+				var edge2 = poly.Faces.Last().Halfedge.Prev;
+				while (true)
+				{
+						var side1 = new List<Vertex>
+						{
+								middleVerts[PolyUtils.ActualMod(i * 2 - 1, sides * 2)],
+								middleVerts[PolyUtils.ActualMod(i * 2, sides * 2)],
+								edge2.Vertex
+						};
+						poly.Faces.Add(side1);
+						poly.FaceRoles.Add(ConwayPoly.Roles.New);
+						
+						var side2 = new List<Vertex>
+						{
+								middleVerts[PolyUtils.ActualMod(i * 2, sides * 2)],
+								middleVerts[PolyUtils.ActualMod(i * 2 + 1, sides * 2)],
+								edge2.Next.Vertex,
+								edge2.Vertex,
+						};
+						poly.Faces.Add(side2);
+						poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
+						
+						i++;
+						edge2 = edge2.Next;
+						
+						if (i == sides) break;
+				}
+				
+				poly.Halfedges.MatchPairs();
+				poly.Recenter();
+				return poly;
+      }
 
         public static float SideLength(float sides)
         {
