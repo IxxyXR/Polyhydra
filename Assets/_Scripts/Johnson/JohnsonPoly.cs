@@ -403,7 +403,7 @@ namespace Conway
 			{
 				ConwayPoly poly = MakeAntiprism(sides*2);
 				Face topFace = poly.Faces[1];
-				ConwayPoly top1 = MakePolygon(sides, true, 0f, (SideLength(sides*2) * Mathf.sqrt(0.75f))+(CalcPyramidHeight(sides)/2f), 0.5f);
+				ConwayPoly top1 = MakePolygon(sides, true, 0f, (SideLength(sides*2) * Mathf.Sqrt(0.75f))+(CalcPyramidHeight(sides)/2f), 0.5f);
 				poly.Append(top1);
 				
 				int i = 0;
