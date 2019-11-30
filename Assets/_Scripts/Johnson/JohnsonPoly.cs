@@ -333,7 +333,7 @@ namespace Conway
 			ConwayPoly poly = MakeAntiprism(sides);
 			
 			height = CalcPyramidHeight(sides);
-			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingCenter, false);
+			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingUpCenter, false);
 			poly.Recenter();
 			return poly;
 		}
@@ -342,7 +342,7 @@ namespace Conway
 			ConwayPoly poly = MakeGyroelongatedPyramid(sides);
 			
 			float height = CalcPyramidHeight(sides);
-			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingCenter, false);
+			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingDownCenter, false);
 			poly.Recenter();
 			return poly;
 		}
@@ -399,9 +399,10 @@ namespace Conway
 			poly.Recenter();
 			return poly;
 			}
-//        public static ConwayPoly MakeGyroelongatedCupola(int sides)
-//        {
-//        }
+			public static ConwayPoly MakeGyroelongatedCupola(int sides)
+			{
+				return null;
+			}
 //        public static ConwayPoly MakeGyroelongatedBicupola(int sides)
 //        {
 //        }
