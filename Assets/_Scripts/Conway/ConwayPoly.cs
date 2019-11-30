@@ -3463,6 +3463,7 @@ namespace Conway
 
 		public bool IncludeVertex(int vertexIndex, FaceSelections vertexsel)
 		{
+			float angle;
 			switch (vertexsel)
 			{
 				case FaceSelections.All:
@@ -3488,8 +3489,18 @@ namespace Conway
 					return Vertices[vertexIndex].Normal.y < -TOLERANCE;
 				case FaceSelections.FacingCenter:
 					Recenter();
-					float angle = Vector3.Angle(-Vertices[vertexIndex].Normal, Vertices[vertexIndex].Position);
+					angle = Vector3.Angle(-Vertices[vertexIndex].Normal, Vertices[vertexIndex].Position);
 					return Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE;
+				case FaceSelections.FacingUpCenter:	
+					//this will determine if a face is facing both up and center, to tackle the problem of antiprisms
+					Recenter();
+					angle = Vector3.Angle(-Vertices[vertexIndex].Normal, Vertices[vertexIndex].Position);
+					return (Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE) && (Vertices[vertexIndex].Normal.y > TOLERANCE);
+				case FaceSelections.FacingDownCenter:
+					//this will determine if a face is facing both down and center, to tackle the problem of antiprisms
+					Recenter();
+					angle = Vector3.Angle(-Vertices[vertexIndex].Normal, Vertices[vertexIndex].Position);
+					return (Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE) && (Vertices[vertexIndex].Normal.y < -TOLERANCE);
 				case FaceSelections.FacingIn:
 					return Vector3.Angle(-Vertices[vertexIndex].Normal, Vertices[vertexIndex].Position) > 90 - TOLERANCE;
 				case FaceSelections.FacingOut:
