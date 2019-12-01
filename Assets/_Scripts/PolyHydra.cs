@@ -155,6 +155,8 @@ public class PolyHydra : MonoBehaviour
 		Extrude,
 		Shell,
 		VertexScale,
+		VertexRotate,
+		VertexFlex,
 		FaceOffset,
 		FaceScale,
 		FaceRotate,
@@ -352,6 +354,8 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Extrude, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Shell, new OpConfig{amountDefault = 0.1f, amountMin = -6, amountMax = 6}},
 			{Ops.VertexScale, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.VertexRotate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180, usesRandomize=true}},
+			{Ops.VertexFlex, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			//{Ops.FaceTranslate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6}},
 			{Ops.FaceScale, new OpConfig{usesFaces=true, amountDefault = -0.03f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.FaceRotate, new OpConfig{usesFaces=true, amountDefault = 45f, amountMin = -180, amountMax = 180, usesRandomize=true}},
@@ -827,6 +831,12 @@ public class PolyHydra : MonoBehaviour
 				break;
 			case Ops.VertexScale:
 				conway = conway.VertexScale(op.amount, op.faceSelections, op.randomize);
+				break;
+			case Ops.VertexRotate:
+				conway = conway.VertexRotate(op.amount, op.faceSelections, op.randomize);
+				break;
+			case Ops.VertexFlex:
+				conway = conway.VertexFlex(op.amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.FaceOffset:
 				// TODO Faceroles ignored. Vertex Roles

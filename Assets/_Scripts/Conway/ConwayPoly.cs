@@ -2109,6 +2109,51 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, FaceRoles, VertexRoles);
 		}
 
+		public ConwayPoly VertexFlex(float scale, FaceSelections facesel, bool randomize)
+		{
+			var poly = Duplicate();
+			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
+			{
+				var face = poly.Faces[faceIndex];
+				if (!IncludeFace(faceIndex, facesel)) continue;
+				var faceCentroid = face.Centroid;
+				var faceVerts = face.GetVertices();
+				for (var vertexIndex = 0; vertexIndex < faceVerts.Count; vertexIndex++)
+				{
+					var vertexPos = faceVerts[vertexIndex].Position;
+					float _scale = scale * (randomize ? (float)random.NextDouble() : 1f) + 1f;
+					var newPos = vertexPos + (vertexPos - faceCentroid) * _scale;
+					faceVerts[vertexIndex].Position = newPos;
+				}
+			}
+
+			return poly;
+		}
+
+		public ConwayPoly VertexRotate(float angle, FaceSelections facesel, bool randomize)
+		{
+			var poly = Duplicate();
+			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
+			{
+				var face = poly.Faces[faceIndex];
+				if (!IncludeFace(faceIndex, facesel)) continue;
+				var faceCentroid = face.Centroid;
+				var direction = face.Normal;
+				var _angle = angle * (float)(randomize?random.NextDouble():1);
+				var faceVerts = face.GetVertices();
+				for (var vertexIndex = 0; vertexIndex < faceVerts.Count; vertexIndex++)
+				{
+					var vertexPos = faceVerts[vertexIndex].Position;
+					var rot = Quaternion.AngleAxis(angle, direction);
+					var newPos = faceCentroid + rot * (vertexPos - faceCentroid);
+					Debug.Log($"{_angle}: centroid: {faceCentroid} pos:{vertexPos}  newpos: {newPos} offset: {rot * (vertexPos - faceCentroid)}, vec: {vertexPos - faceCentroid}");
+					faceVerts[vertexIndex].Position = newPos;
+				}
+			}
+
+			return poly;
+		}
+
 
 		public ConwayPoly FaceScale(float scale, FaceSelections facesel, bool randomize)
 		{
