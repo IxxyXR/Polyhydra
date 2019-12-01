@@ -70,7 +70,15 @@ public class PolyHydra : MonoBehaviour
 		Square,
 		Isometric,
 		Hex,
-		Polar
+		Polar,
+		U_3_6_3_6,
+		U_3_3_3_4_4,
+		U_3_3_4_3_4,
+//		U_3_3_3_3_6,  // TODO Fix
+		U_3_12_12,
+		U_4_8_8,
+		U_3_4_6_4,
+		U_4_6_12,
 	}
 
 	public enum JohnsonPolyTypes
@@ -147,6 +155,8 @@ public class PolyHydra : MonoBehaviour
 		Extrude,
 		Shell,
 		VertexScale,
+		VertexRotate,
+		VertexFlex,
 		FaceOffset,
 		FaceScale,
 		FaceRotate,
@@ -344,6 +354,8 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Extrude, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Shell, new OpConfig{amountDefault = 0.1f, amountMin = -6, amountMax = 6}},
 			{Ops.VertexScale, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.VertexRotate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180, usesRandomize=true}},
+			{Ops.VertexFlex, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			//{Ops.FaceTranslate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6}},
 			{Ops.FaceScale, new OpConfig{usesFaces=true, amountDefault = -0.03f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.FaceRotate, new OpConfig{usesFaces=true, amountDefault = 45f, amountMin = -180, amountMax = 180, usesRandomize=true}},
@@ -396,6 +408,22 @@ public class PolyHydra : MonoBehaviour
 				return ConwayPoly.MakeHexGrid(PrismP, PrismQ);
 			case GridTypes.Polar:
 				return ConwayPoly.MakePolarGrid(PrismP, PrismQ);
+			case GridTypes.U_3_6_3_6:
+				return ConwayPoly.MakeUnitileGrid(4, PrismP, PrismQ);
+			case GridTypes.U_3_3_3_4_4:
+				return ConwayPoly.MakeUnitileGrid(5, PrismP, PrismQ);
+			case GridTypes.U_3_3_4_3_4:
+				return ConwayPoly.MakeUnitileGrid(6, PrismP, PrismQ);
+//			case GridTypes.U_3_3_3_3_6:
+//				return ConwayPoly.MakeUnitileGrid(7, PrismP, PrismQ);
+			case GridTypes.U_3_12_12:
+				return ConwayPoly.MakeUnitileGrid(8, PrismP, PrismQ);
+			case GridTypes.U_4_8_8:
+				return ConwayPoly.MakeUnitileGrid(9, PrismP, PrismQ);
+			case GridTypes.U_3_4_6_4:
+				return ConwayPoly.MakeUnitileGrid(10, PrismP, PrismQ);
+			case GridTypes.U_4_6_12:
+				return ConwayPoly.MakeUnitileGrid(11, PrismP, PrismQ);
 		}
 
 		return null;
@@ -549,7 +577,7 @@ public class PolyHydra : MonoBehaviour
 
 	public void Rebuild(bool disableThreading = false)
 	{
-//		InitCacheIfNeeded();
+		InitCacheIfNeeded();
 //		var currentState = new PolyPreset();
 //		currentState.CreateFromPoly("temp", this);
 //		if (previousState != currentState)
@@ -807,6 +835,12 @@ public class PolyHydra : MonoBehaviour
 				break;
 			case Ops.VertexScale:
 				conway = conway.VertexScale(op.amount, op.faceSelections, op.randomize);
+				break;
+			case Ops.VertexRotate:
+				conway = conway.VertexRotate(op.amount, op.faceSelections, op.randomize);
+				break;
+			case Ops.VertexFlex:
+				conway = conway.VertexFlex(op.amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.FaceOffset:
 				// TODO Faceroles ignored. Vertex Roles

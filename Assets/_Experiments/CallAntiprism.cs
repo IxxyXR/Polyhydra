@@ -11,14 +11,14 @@ using Debug = UnityEngine.Debug;
 public class CallAntiprism : MonoBehaviour
 {
     public bool applyOps;
-    public string filename = "conway";
-    public string arguments = "kC";
+    public string command = "conway kC";
 
     private PolyHydra _poly;
 
     [ContextMenu("Go")]
     public void Go()
     {
+        var parts = command.Split(new []{' '}, 2);
         _poly = FindObjectOfType<PolyHydra>();
         int exitCode = -1;
         string output = "";
@@ -26,8 +26,8 @@ public class CallAntiprism : MonoBehaviour
         process.StartInfo.UseShellExecute = false;
         process.StartInfo.RedirectStandardOutput = true;
         process.StartInfo.CreateNoWindow = true;
-        process.StartInfo.FileName = filename;
-        process.StartInfo.Arguments = arguments;
+        process.StartInfo.FileName = parts[0];
+        process.StartInfo.Arguments = parts[1];
 
         try
         {
@@ -50,18 +50,22 @@ public class CallAntiprism : MonoBehaviour
         var vertexPoints = new List<Vector3>();
 
         using (StringReader reader = new StringReader(output)) {
-            reader.ReadLine();  // The "OFF" header
-            var metrics = reader.ReadLine().Split(' ');
+            string line = reader.ReadLine();  // The "OFF" header
+            if (line == null || line != "OFF")
+            {
+                Debug.LogError("Antiprism error");
+                return;
+            }
+            line = reader.ReadLine();
+            var metrics = line.Split(' ');
             int NVertices = int.Parse(metrics[0]);
             int NFaces = int.Parse(metrics[1]);
-            Debug.Log($"NVertices: {NVertices} NFaces: {NFaces}");
 
             for (int i = 0; i < NVertices; i++)
             {
                 var vert = reader.ReadLine().Split(' ');
                 vertexPoints.Add(new Vector3(float.Parse(vert[0]), float.Parse(vert[1]), float.Parse(vert[2])));
             }
-            Debug.Log($"vertexPoints: {vertexPoints.Count}");
             for (int i = 0; i < NFaces; i++)
             {
                 var faceString = reader.ReadLine().Split(' ');
@@ -74,9 +78,7 @@ public class CallAntiprism : MonoBehaviour
                 }
 
                 faceIndices.Add(face);
-                Debug.Log($"face: {face.Length}");
             }
-            Debug.Log($"faceIndices: {faceIndices.Count}");
             var faceRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, faceIndices.Count);
             var vertexRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, NVertices);
             var _conwayPoly = new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);

@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class DropdownSVGIcon : MonoBehaviour
 {
 
-    public bool IsMainItem = false;
+    public bool IsMainItem;
 
-    private float startX = 136f;
-    private float startY = -131f;
-    private float offsetX = 39.25f;
-    private float offsetY = 53f;
+    private float startX = 281f;
+    private float startY = -128f;
+    private float offsetX = 51.5f;
+    private float offsetY = 51.5f;
 
     void Start()
     {
