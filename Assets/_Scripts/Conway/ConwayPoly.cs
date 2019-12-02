@@ -160,8 +160,6 @@ namespace Conway
 			FacingLevel,
 			FacingDown,
 			FacingCenter,
-			FacingUpCenter,
-			FacingDownCenter,
 			FacingIn,
 			FacingOut,
 			Ignored,
@@ -3477,19 +3475,8 @@ namespace Conway
 				case FaceSelections.FacingDown:
 					return Faces[faceIndex].Normal.y < -TOLERANCE;
 				case FaceSelections.FacingCenter:
-					Recenter();
 					angle = Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid);
 					return Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE;
-				case FaceSelections.FacingUpCenter:	
-					//this will determine if a face is facing both up and center, to tackle the problem of antiprisms
-					Recenter();
-					angle = Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid);
-					return (Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE) && (Faces[faceIndex].Normal.y > TOLERANCE);
-				case FaceSelections.FacingDownCenter:
-					//this will determine if a face is facing both down and center, to tackle the problem of antiprisms
-					Recenter();
-					angle = Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid);
-					return (Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE) && (Faces[faceIndex].Normal.y < -TOLERANCE);
 				case FaceSelections.FacingIn:
 					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) > 90 - TOLERANCE;
 				case FaceSelections.FacingOut:
@@ -3548,19 +3535,8 @@ namespace Conway
 				case FaceSelections.FacingDown:
 					return Vertices[vertexIndex].Normal.y < -TOLERANCE;
 				case FaceSelections.FacingCenter:
-					Recenter();
 					angle = Vector3.Angle(-Vertices[vertexIndex].Normal, Vertices[vertexIndex].Position);
 					return Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE;
-				case FaceSelections.FacingUpCenter:	
-					//this will determine if a face is facing both up and center, to tackle the problem of antiprisms
-					Recenter();
-					angle = Vector3.Angle(-Vertices[vertexIndex].Normal, Vertices[vertexIndex].Position);
-					return (Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE) && (Vertices[vertexIndex].Normal.y > TOLERANCE);
-				case FaceSelections.FacingDownCenter:
-					//this will determine if a face is facing both down and center, to tackle the problem of antiprisms
-					Recenter();
-					angle = Vector3.Angle(-Vertices[vertexIndex].Normal, Vertices[vertexIndex].Position);
-					return (Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE) && (Vertices[vertexIndex].Normal.y < -TOLERANCE);
 				case FaceSelections.FacingIn:
 					return Vector3.Angle(-Vertices[vertexIndex].Normal, Vertices[vertexIndex].Position) > 90 - TOLERANCE;
 				case FaceSelections.FacingOut:
