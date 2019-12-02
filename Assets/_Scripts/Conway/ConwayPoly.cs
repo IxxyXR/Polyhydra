@@ -2148,7 +2148,6 @@ namespace Conway
 					var vertexPos = faceVerts[vertexIndex].Position;
 					var rot = Quaternion.AngleAxis(angle, direction);
 					var newPos = faceCentroid + rot * (vertexPos - faceCentroid);
-					Debug.Log($"{_angle}: centroid: {faceCentroid} pos:{vertexPos}  newpos: {newPos} offset: {rot * (vertexPos - faceCentroid)}, vec: {vertexPos - faceCentroid}");
 					faceVerts[vertexIndex].Position = newPos;
 				}
 			}

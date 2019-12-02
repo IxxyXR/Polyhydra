@@ -1055,6 +1055,12 @@ public class PolyHydra : MonoBehaviour
 
 	public Mesh BuildMeshFromConwayPoly(bool forceTwosided)
 	{
+		return BuildMeshFromConwayPoly(this._conwayPoly, forceTwosided);
+	}
+
+
+	public Mesh BuildMeshFromConwayPoly(ConwayPoly conway, bool forceTwosided)
+	{
 		
 		var target = new Mesh();
 		var meshTriangles = new List<int>();
@@ -1066,12 +1072,12 @@ public class PolyHydra : MonoBehaviour
 		var barycentricUVs = new List<Vector3>();
 		var miscUVs = new List<Vector4>();
 		
-		var hasNaked = _conwayPoly.HasNaked();
+		var hasNaked = conway.HasNaked();
 		hasNaked = false;  // TODO
 		
 		// Strip down to Face-Vertex structure
-		var points = _conwayPoly.ListVerticesByPoints();
-		var faceIndices = _conwayPoly.ListFacesByVertexIndices();
+		var points = conway.ListVerticesByPoints();
+		var faceIndices = conway.ListFacesByVertexIndices();
 
 		// Add faces
 		int index = 0;
@@ -1080,7 +1086,7 @@ public class PolyHydra : MonoBehaviour
 		{
 
 			var faceIndex = faceIndices[i];
-			var face = _conwayPoly.Faces[i];
+			var face = conway.Faces[i];
 			var faceNormal = face.Normal;
 			var faceCentroid = face.Centroid;
 
@@ -1092,7 +1098,7 @@ public class PolyHydra : MonoBehaviour
 			switch (ColorMethod)
 			{
 				case ColorMethods.ByRole:
-					color = faceColors[(int) _conwayPoly.FaceRoles[i]];
+					color = faceColors[(int) conway.FaceRoles[i]];
 					break;
 				case ColorMethods.BySides:
 					color = faceColors[face.Sides % faceColors.Length];
