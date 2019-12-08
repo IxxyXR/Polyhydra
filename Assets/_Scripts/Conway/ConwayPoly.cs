@@ -171,7 +171,8 @@ namespace Conway
 			OnlyFirst,
 			ExceptFirst,
 			None,
-			Random
+			Random,
+			TopHalf
 		}
 
 		public bool IsValid
@@ -2108,6 +2109,50 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, FaceRoles, VertexRoles);
 		}
 
+		public ConwayPoly VertexFlex(float scale, FaceSelections facesel, bool randomize)
+		{
+			var poly = Duplicate();
+			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
+			{
+				var face = poly.Faces[faceIndex];
+				if (!IncludeFace(faceIndex, facesel)) continue;
+				var faceCentroid = face.Centroid;
+				var faceVerts = face.GetVertices();
+				for (var vertexIndex = 0; vertexIndex < faceVerts.Count; vertexIndex++)
+				{
+					var vertexPos = faceVerts[vertexIndex].Position;
+					float _scale = scale * (randomize ? (float)random.NextDouble() : 1f) + 1f;
+					var newPos = vertexPos + (vertexPos - faceCentroid) * _scale;
+					faceVerts[vertexIndex].Position = newPos;
+				}
+			}
+
+			return poly;
+		}
+
+		public ConwayPoly VertexRotate(float angle, FaceSelections facesel, bool randomize)
+		{
+			var poly = Duplicate();
+			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
+			{
+				var face = poly.Faces[faceIndex];
+				if (!IncludeFace(faceIndex, facesel)) continue;
+				var faceCentroid = face.Centroid;
+				var direction = face.Normal;
+				var _angle = angle * (float)(randomize?random.NextDouble():1);
+				var faceVerts = face.GetVertices();
+				for (var vertexIndex = 0; vertexIndex < faceVerts.Count; vertexIndex++)
+				{
+					var vertexPos = faceVerts[vertexIndex].Position;
+					var rot = Quaternion.AngleAxis(angle, direction);
+					var newPos = faceCentroid + rot * (vertexPos - faceCentroid);
+					faceVerts[vertexIndex].Position = newPos;
+				}
+			}
+
+			return poly;
+		}
+
 
 		public ConwayPoly FaceScale(float scale, FaceSelections facesel, bool randomize)
 		{
@@ -2583,6 +2628,23 @@ namespace Conway
 
 		}
 
+		public static ConwayPoly MakeUnitileGrid(int pattern = 1, int rows = 5, int cols = 5)
+		{
+			var ut = new Unitile(pattern, rows, cols);
+			ut.plane();
+			var vertexRoles = Enumerable.Repeat(Roles.New, ut.raw_verts.Count);
+			var faceRoles = Enumerable.Repeat(Roles.New, ut.raw_faces.Count);
+			for (var i = 0; i < ut.raw_faces[0].Count; i++)
+			{
+				var idx = ut.raw_faces[0][i];
+				var v = ut.raw_verts[idx];
+			}
+
+			var poly = new ConwayPoly(ut.raw_verts, ut.raw_faces, faceRoles, vertexRoles);
+			poly.Recenter();
+			return poly;
+		}
+
 		public static ConwayPoly MakeGrid(int rows = 5, int cols = 5, float rowScale = .3f, float colScale = .3f)
 		{
 			float rowOffset = rows * rowScale * 0.5f;
@@ -2700,7 +2762,6 @@ namespace Conway
 
 			var faceRoles = Enumerable.Repeat(Roles.New, faceIndices.Count);
 			var vertexRoles = Enumerable.Repeat(Roles.New, vertexPoints.Count);
-
 			var poly = new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 			poly.Recenter();
 			return poly;
@@ -3402,6 +3463,7 @@ namespace Conway
 
 		public bool IncludeFace(int faceIndex, FaceSelections facesel)
 		{
+			float angle;
 			switch (facesel)
 			{
 				case FaceSelections.All:
@@ -3413,12 +3475,14 @@ namespace Conway
 				case FaceSelections.FacingDown:
 					return Faces[faceIndex].Normal.y < -TOLERANCE;
 				case FaceSelections.FacingCenter:
-					float angle = Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid);
+					angle = Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid);
 					return Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE;
 				case FaceSelections.FacingIn:
 					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) > 90 - TOLERANCE;
 				case FaceSelections.FacingOut:
 					return Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid) < 90 + TOLERANCE;
+				case FaceSelections.TopHalf:
+					return Faces[faceIndex].Centroid.y > 0;
 				case FaceSelections.Existing:
 					return FaceRoles[faceIndex] == Roles.Existing;
 				case FaceSelections.Ignored:
@@ -3446,6 +3510,7 @@ namespace Conway
 
 		public bool IncludeVertex(int vertexIndex, FaceSelections vertexsel)
 		{
+			float angle;
 			switch (vertexsel)
 			{
 				case FaceSelections.All:
@@ -3470,7 +3535,7 @@ namespace Conway
 				case FaceSelections.FacingDown:
 					return Vertices[vertexIndex].Normal.y < -TOLERANCE;
 				case FaceSelections.FacingCenter:
-					float angle = Vector3.Angle(-Vertices[vertexIndex].Normal, Vertices[vertexIndex].Position);
+					angle = Vector3.Angle(-Vertices[vertexIndex].Normal, Vertices[vertexIndex].Position);
 					return Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE;
 				case FaceSelections.FacingIn:
 					return Vector3.Angle(-Vertices[vertexIndex].Normal, Vertices[vertexIndex].Position) > 90 - TOLERANCE;

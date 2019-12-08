@@ -42,8 +42,8 @@ public class PolyPresets : MonoBehaviour {
 		return Items.Last();
 	}
 
-	[ContextMenu("Copy to clipboard")]
-	public void CopyPresetToClipboard()
+	[ContextMenu("Copy from poly")]
+	public void CopyFromPoly()
 	{
 		var preset = new PolyPreset();
 		preset.CreateFromPoly("Temp", _poly);
@@ -51,8 +51,17 @@ public class PolyPresets : MonoBehaviour {
 		GUIUtility.systemCopyBuffer = polyJson;
 	}
 
-	[ContextMenu("Paste from clipboard")]
-	public void AddPresetFromClipboard()
+	[ContextMenu("Paste to poly")]
+	public void PasteToPoly()
+	{
+		var preset = new PolyPreset();
+		preset = JsonConvert.DeserializeObject<PolyPreset>(GUIUtility.systemCopyBuffer);
+		preset.ApplyToPoly(_poly, APresets, false);
+		_poly.Rebuild();
+	}
+
+	[ContextMenu("Create preset from clipboard")]
+	public void CreatePresetFromClipboard()
 	{
 		name = GenerateUniquePresetName();
 		AddPresetFromString(name, GUIUtility.systemCopyBuffer);

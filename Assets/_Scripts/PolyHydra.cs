@@ -11,6 +11,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
+using Face = Conway.Face;
 using Random = UnityEngine.Random;
 
 // ReSharper disable InconsistentNaming
@@ -24,8 +25,8 @@ public class PolyHydra : MonoBehaviour
 
 	public bool EnableLogging = false;
 
-	[NonSerialized] public bool enableThreading = true;
-	[NonSerialized] public bool enableCaching = true;
+	public bool enableThreading = true;
+	public bool enableCaching = true;
 
 	private int _faceCount;
 	private int _vertexCount;
@@ -44,6 +45,7 @@ public class PolyHydra : MonoBehaviour
 	public bool TwoSided;
 	public bool Rescale;
 	private PolyCache polyCache;
+	private Coroutine geomCoroutine;
 
 	// Parameters for prismatic forms
 	public int PrismP = 5;
@@ -68,7 +70,15 @@ public class PolyHydra : MonoBehaviour
 		Square,
 		Isometric,
 		Hex,
-		Polar
+		Polar,
+		U_3_6_3_6,
+		U_3_3_3_4_4,
+		U_3_3_4_3_4,
+//		U_3_3_3_3_6,  // TODO Fix
+		U_3_12_12,
+		U_4_8_8,
+		U_3_4_6_4,
+		U_4_6_12,
 	}
 
 	public enum JohnsonPolyTypes
@@ -78,19 +88,19 @@ public class PolyHydra : MonoBehaviour
 
 		Pyramid,
 		ElongatedPyramid,
-		//GyroelongatedPyramid,
+		GyroelongatedPyramid,
 
 		Dipyramid,
 		ElongatedDipyramid,
-		//GyroelongatedDipyramid,
+		GyroelongatedDipyramid,
 
 		Cupola,
-		//ElongatedCupola,
-		//GyroelongatedCupola,
+		ElongatedCupola,
+		GyroelongatedCupola,
 
 		Bicupola,
-		//ElongatedBicupola,
-		//GyroelongatedBicupola,
+		ElongatedBicupola,
+		GyroelongatedBicupola,
 
 		Rotunda,
 		//ElongatedRotunda,
@@ -145,6 +155,8 @@ public class PolyHydra : MonoBehaviour
 		Extrude,
 		Shell,
 		VertexScale,
+		VertexRotate,
+		VertexFlex,
 		FaceOffset,
 		FaceScale,
 		FaceRotate,
@@ -342,6 +354,8 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Extrude, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.Shell, new OpConfig{amountDefault = 0.1f, amountMin = -6, amountMax = 6}},
 			{Ops.VertexScale, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
+			{Ops.VertexRotate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180, usesRandomize=true}},
+			{Ops.VertexFlex, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			//{Ops.FaceTranslate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6}},
 			{Ops.FaceScale, new OpConfig{usesFaces=true, amountDefault = -0.03f, amountMin = -6, amountMax = 6, usesRandomize=true}},
 			{Ops.FaceRotate, new OpConfig{usesFaces=true, amountDefault = 45f, amountMin = -180, amountMax = 180, usesRandomize=true}},
@@ -375,7 +389,11 @@ public class PolyHydra : MonoBehaviour
 
 	void InitCacheIfNeeded()
 	{
-		if (!polyCache) polyCache = FindObjectOfType<PolyCache>();
+		if (polyCache==null) polyCache = FindObjectOfType<PolyCache>();
+		if (polyCache == null)
+		{
+			enableCaching = false;
+		}
 	}
 
 	public ConwayPoly MakeGrid(GridTypes gridType)
@@ -390,6 +408,22 @@ public class PolyHydra : MonoBehaviour
 				return ConwayPoly.MakeHexGrid(PrismP, PrismQ);
 			case GridTypes.Polar:
 				return ConwayPoly.MakePolarGrid(PrismP, PrismQ);
+			case GridTypes.U_3_6_3_6:
+				return ConwayPoly.MakeUnitileGrid(4, PrismP, PrismQ);
+			case GridTypes.U_3_3_3_4_4:
+				return ConwayPoly.MakeUnitileGrid(5, PrismP, PrismQ);
+			case GridTypes.U_3_3_4_3_4:
+				return ConwayPoly.MakeUnitileGrid(6, PrismP, PrismQ);
+//			case GridTypes.U_3_3_3_3_6:
+//				return ConwayPoly.MakeUnitileGrid(7, PrismP, PrismQ);
+			case GridTypes.U_3_12_12:
+				return ConwayPoly.MakeUnitileGrid(8, PrismP, PrismQ);
+			case GridTypes.U_4_8_8:
+				return ConwayPoly.MakeUnitileGrid(9, PrismP, PrismQ);
+			case GridTypes.U_3_4_6_4:
+				return ConwayPoly.MakeUnitileGrid(10, PrismP, PrismQ);
+			case GridTypes.U_4_6_12:
+				return ConwayPoly.MakeUnitileGrid(11, PrismP, PrismQ);
 		}
 
 		return null;
@@ -407,14 +441,26 @@ public class PolyHydra : MonoBehaviour
 				return JohnsonPoly.MakePyramid(PrismP);
 			case JohnsonPolyTypes.ElongatedPyramid:
 				return JohnsonPoly.MakeElongatedPyramid(PrismP);
+			case JohnsonPolyTypes.GyroelongatedPyramid:
+				return JohnsonPoly.MakeGyroelongatedPyramid(PrismP);
 			case JohnsonPolyTypes.Dipyramid:
 				return JohnsonPoly.MakeDipyramid(PrismP);
 			case JohnsonPolyTypes.ElongatedDipyramid:
 				return JohnsonPoly.MakeElongatedBipyramid(PrismP);
+			case JohnsonPolyTypes.GyroelongatedDipyramid:
+				return JohnsonPoly.MakeGyroelongatedBipyramid(PrismP);
 			case JohnsonPolyTypes.Cupola:
 				return JohnsonPoly.MakeCupola(PrismP);
+			case JohnsonPolyTypes.ElongatedCupola:
+				return JohnsonPoly.MakeElongatedCupola(PrismP);
+			case JohnsonPolyTypes.GyroelongatedCupola:
+				return JohnsonPoly.MakeGyroelongatedCupola(PrismP);
 			case JohnsonPolyTypes.Bicupola:
 				return JohnsonPoly.MakeBicupola(PrismP);
+			case JohnsonPolyTypes.ElongatedBicupola:
+				return JohnsonPoly.MakeElongatedBicupola(PrismP);
+			case JohnsonPolyTypes.GyroelongatedBicupola:
+				return JohnsonPoly.MakeGyroelongatedBicupola(PrismP);
 			case JohnsonPolyTypes.Rotunda:
 				// A fudge for the pentagonal rotunda (which is the only actual Johnson solid Rotunda)
 				return JohnsonPoly.MakeRotunda();
@@ -477,7 +523,13 @@ public class PolyHydra : MonoBehaviour
 		}
 		else
 		{
-			StartCoroutine(RunOffMainThread(ApplyOps, FinishedApplyOps));
+			if (geomCoroutine != null)
+			{
+				Debug.LogWarning("Coroutine already exists. Aborting.");
+				return;
+			}
+			geomCoroutine = StartCoroutine(RunOffMainThread(ApplyOps, FinishedApplyOps));
+			geomCoroutine = null;
 		}
 	}
 
@@ -525,7 +577,7 @@ public class PolyHydra : MonoBehaviour
 
 	public void Rebuild(bool disableThreading = false)
 	{
-//		InitCacheIfNeeded();
+		InitCacheIfNeeded();
 //		var currentState = new PolyPreset();
 //		currentState.CreateFromPoly("temp", this);
 //		if (previousState != currentState)
@@ -633,10 +685,10 @@ public class PolyHydra : MonoBehaviour
 	// This is a helper coroutine
 	IEnumerator RunOffMainThread(Action toRun, Action callback)
 	{
-		if (thread != null)
+		if (thread!=null && thread.IsAlive)
 		{
-			thread.Abort();
-			thread.Join();			
+			Debug.LogWarning("Waiting for existing geometry thread");
+			yield break;
 		}
 		finishedOpsThread = false;
 		thread = null;
@@ -784,6 +836,12 @@ public class PolyHydra : MonoBehaviour
 			case Ops.VertexScale:
 				conway = conway.VertexScale(op.amount, op.faceSelections, op.randomize);
 				break;
+			case Ops.VertexRotate:
+				conway = conway.VertexRotate(op.amount, op.faceSelections, op.randomize);
+				break;
+			case Ops.VertexFlex:
+				conway = conway.VertexFlex(op.amount, op.faceSelections, op.randomize);
+				break;
 			case Ops.FaceOffset:
 				// TODO Faceroles ignored. Vertex Roles
 				// Split faces
@@ -874,7 +932,6 @@ public class PolyHydra : MonoBehaviour
 					nextOpResult = ApplyOp(_conwayPoly, op);
 					polyCache.SetConway(key, nextOpResult);
 				}
-				else {Debug.LogWarning($"Op cache hit:  {op.opType} {op.amount}");}
 				_conwayPoly = nextOpResult;
 			}
 			else
@@ -998,6 +1055,12 @@ public class PolyHydra : MonoBehaviour
 
 	public Mesh BuildMeshFromConwayPoly(bool forceTwosided)
 	{
+		return BuildMeshFromConwayPoly(this._conwayPoly, forceTwosided);
+	}
+
+
+	public Mesh BuildMeshFromConwayPoly(ConwayPoly conway, bool forceTwosided)
+	{
 		
 		var target = new Mesh();
 		var meshTriangles = new List<int>();
@@ -1009,12 +1072,12 @@ public class PolyHydra : MonoBehaviour
 		var barycentricUVs = new List<Vector3>();
 		var miscUVs = new List<Vector4>();
 		
-		var hasNaked = _conwayPoly.HasNaked();
+		var hasNaked = conway.HasNaked();
 		hasNaked = false;  // TODO
 		
 		// Strip down to Face-Vertex structure
-		var points = _conwayPoly.ListVerticesByPoints();
-		var faceIndices = _conwayPoly.ListFacesByVertexIndices();
+		var points = conway.ListVerticesByPoints();
+		var faceIndices = conway.ListFacesByVertexIndices();
 
 		// Add faces
 		int index = 0;
@@ -1023,7 +1086,7 @@ public class PolyHydra : MonoBehaviour
 		{
 
 			var faceIndex = faceIndices[i];
-			var face = _conwayPoly.Faces[i];
+			var face = conway.Faces[i];
 			var faceNormal = face.Normal;
 			var faceCentroid = face.Centroid;
 
@@ -1035,7 +1098,7 @@ public class PolyHydra : MonoBehaviour
 			switch (ColorMethod)
 			{
 				case ColorMethods.ByRole:
-					color = faceColors[(int) _conwayPoly.FaceRoles[i]];
+					color = faceColors[(int) conway.FaceRoles[i]];
 					break;
 				case ColorMethods.BySides:
 					color = faceColors[face.Sides % faceColors.Length];
@@ -1055,7 +1118,14 @@ public class PolyHydra : MonoBehaviour
 				return new Vector2(u, v);
 			}
 
-			var miscUV = new Vector4(faceCentroid.x, faceCentroid.y, faceCentroid.z, ((float)i)/faceIndices.Length);
+			float faceScale = 0;
+			foreach (var v in face.GetVertices())
+			{
+				faceScale += Vector3.Distance(v.Position, faceCentroid);
+			}
+			faceScale /= face.Sides;
+
+			var miscUV = new Vector4(faceScale, face.Sides, faceCentroid.magnitude, ((float)i)/faceIndices.Length);
 
 			if (face.Sides > 3)
 			{
@@ -1123,17 +1193,20 @@ public class PolyHydra : MonoBehaviour
 						edgeUVs.Add(new Vector2(0, 0));
 						barycentricUVs.Add(new Vector3(0, 0, 1));
 
+
 						meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
 						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
 						edgeUVs.Add(new Vector2(1, 1));
 						barycentricUVs.Add(new Vector3(0, 1, 0));
 
+
 						meshVertices.Add(points[faceIndex[edgeIndex]]);
 						meshUVs.Add(calcUV(meshVertices[index]));
 						meshTriangles.Add(index++);
 						edgeUVs.Add(new Vector2(1, 1));					
 						barycentricUVs.Add(new Vector3(1, 0, 0));
+
 
 						meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
 						meshColors.AddRange(Enumerable.Repeat(color, 3));
@@ -1147,15 +1220,18 @@ public class PolyHydra : MonoBehaviour
 					meshTriangles.Add(index++);
 					barycentricUVs.Add(new Vector3(0, 0, 1));
 
+
 					meshVertices.Add(points[faceIndex[2]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					barycentricUVs.Add(new Vector3(0, 1, 0));
 
+
 					meshVertices.Add(points[faceIndex[1]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
 					barycentricUVs.Add(new Vector3(1, 0, 0));
+
 
 					edgeUVs.AddRange(Enumerable.Repeat(new Vector2(1, 1), 3));
 					meshNormals.AddRange(Enumerable.Repeat(-faceNormal, 3));
@@ -1204,7 +1280,7 @@ public class PolyHydra : MonoBehaviour
 		}
 		catch (Exception e)
 		{
-			Debug.Log($"opType: {opType} opconfigs count: {opconfigs.Count}");
+			Debug.LogWarning($"opType: {opType} opconfigs count: {opconfigs.Count}");
 			throw;
 		}
         
@@ -1381,7 +1457,7 @@ public class PolyHydra : MonoBehaviour
 						transform.TransformPoint(edgeEnd.Position)
 					);
 				}
-				Handles.Label(face.Centroid + new Vector3(0, .15f, 0), f.ToString());
+				Handles.Label(Vector3.Scale(face.Centroid, transform.lossyScale) + new Vector3(0, .15f, 0), f.ToString());
 			}
 		}
 	}

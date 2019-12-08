@@ -19,13 +19,6 @@
       "Disabled": false
     },
     {
-      "OpType": "FaceRemove",
-      "FaceSelections": "AllNew",
-      "Amount": 0.0,
-      "Randomize": false,
-      "Disabled": true
-    },
-    {
       "OpType": "Ortho",
       "FaceSelections": "All",
       "Amount": 0.0,
