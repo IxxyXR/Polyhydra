@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Wythoff;
 using UnityEngine;
 
@@ -14,9 +16,9 @@ namespace Conway {
                 Name = Guid.NewGuid().ToString("N").Substring(0, 8);
             }
         
-        public Face() {
-            Name = Guid.NewGuid().ToString("N").Substring(0, 8);
-        }
+            public Face() {
+                Name = Guid.NewGuid().ToString("N").Substring(0, 8);
+            }
 
         #endregion
 
@@ -88,23 +90,9 @@ namespace Conway {
     
                 return halfedges;
             }
-    
-            /// <summary>
-            /// Constructs a close polyline which follows the edges bordering the face
-            /// </summary>
-            /// <returns>a closed polyline representing the face</returns>
-            /// TODO
-    //        public Polyline ToClosedPolyline() {
-    //            Polyline polyline = new Polyline();
-    //            foreach (BVertex v in GetVertices()) {
-    //                polyline.Add(v.Position);
-    //            }
-    //
-    //            polyline.Add(polyline.First); // close polyline
-    //            return polyline;
-    //        }
-    
+
             public void Split(Vertex v1, Vertex v2, out Face f_new, out Halfedge he_new, out Halfedge he_new_pair) {
+
                 Halfedge e1 = Halfedge;
                 while (e1.Vertex != v1) {
                     e1 = e1.Next;
@@ -137,5 +125,17 @@ namespace Conway {
             }
 
         #endregion
+
+        public ConwayPoly Detach()
+        {
+
+            IEnumerable<Vector3> verts = GetVertices().Select(i => i.Position);
+            IEnumerable<IEnumerable<int>> faces = new List<List<int>>
+            {Enumerable.Range(0, verts.Count()).ToList()};
+            IEnumerable<ConwayPoly.Roles> faceRoles = new List<ConwayPoly.Roles> {ConwayPoly.Roles.New};
+            IEnumerable<ConwayPoly.Roles> vertexRoles = new List<ConwayPoly.Roles> {ConwayPoly.Roles.New};
+            return new ConwayPoly(verts, faces, faceRoles, vertexRoles);
+        }
+
     }
 }
