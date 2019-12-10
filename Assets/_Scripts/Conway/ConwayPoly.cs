@@ -19,6 +19,7 @@ namespace Conway
 
 		private Random random;
 		private const float TOLERANCE = 0.02f;
+		private PointOctree<Vertex> octree;
 
 		#region constructors
 
@@ -30,6 +31,20 @@ namespace Conway
 			FaceRoles = new List<Roles>();
 			VertexRoles = new List<Roles>();
 			random = new Random();
+		}
+
+		public void InitOctree()
+		{
+			octree = new PointOctree<Vertex>(1, Vector3.zero, 32);
+			foreach (var v in Vertices)
+			{
+				octree.Add(v, v.Position);
+			}
+		}
+		public Vertex[] FindNeighbours(Vertex v, float distance)
+		{
+			if (octree == null) InitOctree();
+			return octree.GetNearby(v.Position, distance);
 		}
 
 		public ConwayPoly(WythoffPoly source, bool abortOnFailure=true) : this()
@@ -156,6 +171,10 @@ namespace Conway
 			SixSided,
 			SevenSided,
 			EightSided,
+			NineSided,
+			TenSided,
+			ElevenSided,
+			TwelveSided,
 			FacingUp,
 			FacingLevel,
 			FacingDown,
@@ -171,8 +190,10 @@ namespace Conway
 			OnlyFirst,
 			ExceptFirst,
 			None,
+			Inner,
+			Outer,
 			Random,
-			TopHalf
+			TopHalf,
 		}
 
 		public bool IsValid
@@ -694,15 +715,18 @@ namespace Conway
 			{
 				if (!edgeFaceFlags.ContainsKey(edge.PairedName))
 				{
-					var edgeFace = new int[]
+					if (edge.Pair != null)
 					{
-						newVertices[edge.Name],
-						newVertices[edge.Prev.Name],
-						newVertices[edge.Pair.Name],
-						newVertices[edge.Pair.Prev.Name],
-					};
-					faceIndices.Add(edgeFace);
-					faceRoles.Add(Roles.New);
+						var edgeFace = new[]
+						{
+							newVertices[edge.Name],
+							newVertices[edge.Prev.Name],
+							newVertices[edge.Pair.Name],
+							newVertices[edge.Pair.Prev.Name],
+						};
+						faceIndices.Add(edgeFace);
+						faceRoles.Add(Roles.New);
+					}
 					edgeFaceFlags[edge.PairedName] = true;
 				}
 			}
@@ -778,18 +802,20 @@ namespace Conway
 				if (!edgeFaceFlags.ContainsKey(edge.PairedName))
 				{
 					edgeFaceFlags[edge.PairedName] = true;
-
-					var edgeFace = new int[]
+					if (edge.Pair != null)
 					{
-						existingVertices[edge.Vertex.Position],
-						newVertices[edge.Name],
-						newVertices[edge.Prev.Name],
-						existingVertices[edge.Pair.Vertex.Position],
-						newVertices[edge.Pair.Name],
-						newVertices[edge.Pair.Prev.Name],
-					};
-					faceIndices.Add(edgeFace);
-					faceRoles.Add(Roles.New);
+						var edgeFace = new[]
+						{
+							existingVertices[edge.Vertex.Position],
+							newVertices[edge.Name],
+							newVertices[edge.Prev.Name],
+							existingVertices[edge.Pair.Vertex.Position],
+							newVertices[edge.Pair.Name],
+							newVertices[edge.Pair.Prev.Name],
+						};
+						faceIndices.Add(edgeFace);
+						faceRoles.Add(Roles.New);
+					}
 				}
 			}
 			
@@ -798,9 +824,10 @@ namespace Conway
 			edgeFaceFlags = new Dictionary<string, bool>();
 			foreach (var edge in Halfedges)
 			{
+				if (edge.Pair==null) continue;
+
 				if (!edgeFaceFlags.ContainsKey(edge.PairedName))
 				{
-
 					edgeFaceFlags[edge.PairedName] = true;
 
 					float distance;
@@ -811,7 +838,6 @@ namespace Conway
 						vertexPoints[newVertices[edge.Prev.Name]],
 						vertexPoints[newVertices[edge.Pair.Name]]
 					);
-
 
 					var ray1 = new Ray(edge.Vertex.Position, edge.Vertex.Normal);
 					plane.Raycast(ray1, out distance);
@@ -860,15 +886,18 @@ namespace Conway
 			{
 				if (!rhombusFlags.ContainsKey(edge.PairedName))
 				{
-					var rhombus = new[]
+					if (edge.Pair != null)
 					{
-						newCentroidVertices[edge.Pair.Face.Name],
-						existingVertices[edge.Vertex.Position],
-						newCentroidVertices[edge.Face.Name],
-						existingVertices[edge.Prev.Vertex.Position]
-					};
-					faceIndices.Add(rhombus);
-					faceRoles.Add(Roles.New);
+						var rhombus = new[]
+						{
+							newCentroidVertices[edge.Pair.Face.Name],
+							existingVertices[edge.Vertex.Position],
+							newCentroidVertices[edge.Face.Name],
+							existingVertices[edge.Prev.Vertex.Position]
+						};
+						faceIndices.Add(rhombus);
+						faceRoles.Add(Roles.New);
+					}
 					rhombusFlags[edge.PairedName] = true;
 				}
 			}
@@ -1492,15 +1521,18 @@ namespace Conway
 					
 					if (!rhombusFlags.ContainsKey(edge.PairedName))
 					{
-						var rhombus = new int[]
+						if (edge.Pair != null)
 						{
-							existingVertices[edge.Prev.Vertex.Position],
-							newInnerVertices[edge.Pair.Name],
-							existingVertices[edge.Vertex.Position],
-							newInnerVertices[edge.Name]
-						};
-						faceIndices.Add(rhombus);
-						faceRoles.Add(Roles.New);
+							var rhombus = new[]
+							{
+								existingVertices[edge.Prev.Vertex.Position],
+								newInnerVertices[edge.Pair.Name],
+								existingVertices[edge.Vertex.Position],
+								newInnerVertices[edge.Name]
+							};
+							faceIndices.Add(rhombus);
+							faceRoles.Add(Roles.New);
+						}
 						rhombusFlags[edge.PairedName] = true;
 					}
 				}
@@ -1512,24 +1544,26 @@ namespace Conway
 				{
 					if (!rhombusFlags.ContainsKey(edge.PairedName))
 					{
-						var tri1 = new int[]
+						if (edge.Pair != null)
 						{
-							existingVertices[edge.Prev.Vertex.Position],
-							newInnerVertices[edge.Pair.Name],
-							newInnerVertices[edge.Name]
-						};
-						faceIndices.Add(tri1);
-						faceRoles.Add(Roles.New);
+							var tri1 = new[]
+							{
+								existingVertices[edge.Prev.Vertex.Position],
+								newInnerVertices[edge.Pair.Name],
+								newInnerVertices[edge.Name]
+							};
+							faceIndices.Add(tri1);
+							faceRoles.Add(Roles.New);
+							var tri2 = new[]
+							{
+								newInnerVertices[edge.Pair.Name],
+								existingVertices[edge.Vertex.Position],
+								newInnerVertices[edge.Name]
+							};
+							faceIndices.Add(tri2);
+							faceRoles.Add(Roles.New);
 
-						var tri2 = new int[]
-						{
-							newInnerVertices[edge.Pair.Name],
-							existingVertices[edge.Vertex.Position],
-							newInnerVertices[edge.Name]
-						};
-						faceIndices.Add(tri2);
-						faceRoles.Add(Roles.New);
-
+						}
 						rhombusFlags[edge.PairedName] = true;
 					}
 				}
@@ -1742,14 +1776,17 @@ namespace Conway
 						faceIndices.Add(triangle1);
 						faceRoles.Add(Roles.Existing);
 
-						var triangle2 = new[]
-						{
-							centroidIndex,
-							existingVertices[edge.Pair.Vertex.Position],
-							furthestVertexIndex
-						};
-						faceIndices.Add(triangle2);
-						faceRoles.Add(Roles.Existing);
+//						if (edge.Pair != null)
+//						{
+							var triangle2 = new[]
+							{
+								centroidIndex,
+								existingVertices[edge.Prev.Vertex.Position],
+								furthestVertexIndex
+							};
+							faceIndices.Add(triangle2);
+							faceRoles.Add(Roles.Existing);
+//						}
 					}
 
 					// Create new triangular faces at edges
@@ -2088,6 +2125,30 @@ namespace Conway
 		{
 			return Whirl(ratio).Dual();
 		}
+
+		public ConwayPoly Cross()
+		{
+
+			var vertexPoints = new List<Vector3>();
+			var faceIndices = new List<IEnumerable<int>>();
+
+			var faceRoles = new List<Roles>();
+			var vertexRoles = new List<Roles>();
+
+			for (var i = 0; i < Faces.Count; i++)
+			{
+				var face = Faces[i];
+				vertexPoints.AddRange(face.GetVertices().Select(v => v.Position));
+				var mewVertIndices = Enumerable.Range(vertexPoints.Count - 1, face.Sides);
+				faceIndices.Add(mewVertIndices);
+			}
+
+			faceRoles = Enumerable.Repeat(Roles.Existing, faceIndices.Count).ToList();
+			vertexRoles = Enumerable.Repeat(Roles.Existing, vertexPoints.Count).ToList();
+
+			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+		}
+
 
 		#endregion
 
@@ -2545,6 +2606,107 @@ namespace Conway
 			return Extrude(offsetList, symmetric, randomize);
 		}
 
+		public ConwayPoly Extrude(float amount, FaceSelections facesel, bool randomize)
+		{
+			var debugFaces = new[] { 0, 1};
+
+			ConwayPoly result;
+			result = Duplicate();
+			var affectedFaces = new List<Face>();
+			for (var i = 0; i < result.Faces.Count; i++)
+			{
+				if (!debugFaces.Contains(i)) continue;
+				var face = result.Faces[i];
+				if (IncludeFace(i, facesel))
+				{
+					affectedFaces.Add(face);
+				}
+			}
+
+			foreach (var face in affectedFaces)
+			{
+					var hole = result.Faces.Remove(face);
+					var holeVerts = hole.Select(e => e.Vertex).ToList();
+					var newVerts = hole.Select(e => new Vertex(e.Vertex.Position + face.Normal * amount)).ToList();
+					result.Vertices.AddRange(newVerts);
+					for (int j=0; j<newVerts.Count; j++)
+					{
+						var side = new List<Vertex>();
+//						side.Add(result.Vertices[k - 1]);
+						side.Add(newVerts[j]);
+						side.Add(newVerts[(j+1) % newVerts.Count]);
+						side.Add(holeVerts[j]);
+						result.Faces.Add(side);
+					}
+
+
+
+//					foreach (var v in newVerts)
+//					{
+//						result.Vertices.Add(v);
+//					}
+//					result.Faces.Add(hole.Select(e=>e.Vertex));
+
+//					var newTopVerts = new List<Vector3>();
+//					var holeVerts = new List<Vector3>();
+//
+//					var extrusionFaces = new List<List<int>>();
+//					var topFace = new List<int>();
+//
+//					var origFaceVerts = face.GetVertices();
+//
+//					for (var j = 0; j < origFaceVerts.Count; j++)
+//					{
+//						var v = origFaceVerts[j];
+//						newTopVerts.Add(v.Position + face.Normal * amount);
+//						topFace.Add(j);
+////						holeVerts.Add(v.Position);
+//						holeVerts.Add(v.Position + face.Normal * (amount/2));
+//						extrusionFaces.Add(new List<int>
+//						{
+//							(j % origFaceVerts.Count) + origFaceVerts.Count,
+//							((j + 1) % origFaceVerts.Count) + origFaceVerts.Count,
+//							(j + 1) % origFaceVerts.Count,
+//							j,
+//						});
+//					}
+//
+//					var allNewVerts = newTopVerts;
+//					allNewVerts.AddRange(holeVerts);
+//					extrusionFaces.Add(topFace);
+//					var extrusionPoly = new ConwayPoly(
+//						allNewVerts,
+//						extrusionFaces,
+//						Enumerable.Repeat(Roles.New, extrusionFaces.Count).ToList(),
+//						Enumerable.Repeat(Roles.New, allNewVerts.Count).ToList()
+//					);
+//					result.Append(extrusionPoly);
+//					result.Faces.Remove(result.Faces.First(f=>f.Centroid==face.Centroid));  // TODO implement without iteration
+//				}
+
+			}
+
+//			for (var i = 0; i < Faces.Count; i++)
+//			{
+//				if (!IncludeFace(i, facesel))
+//				{
+//					result.Append(Faces[i].Detach());
+//				}
+//				else
+//				{
+//					//List<Halfedge> holeEdges = result.Faces.Remove(result.Faces[i]);
+//				}
+//			}
+
+			result.Halfedges.MatchPairs();
+
+			result.FaceRoles = Enumerable.Repeat(Roles.Existing, result.Faces.Count).ToList();
+			result.VertexRoles = Enumerable.Repeat(Roles.Existing, result.Vertices.Count).ToList();
+
+			return result;
+
+		}
+
 		public ConwayPoly Extrude(List<double> distance, bool symmetric, bool randomize)
 		{
 
@@ -2632,6 +2794,7 @@ namespace Conway
 		{
 			var ut = new Unitile(pattern, rows, cols);
 			ut.plane();
+//			ut.torus();
 			var vertexRoles = Enumerable.Repeat(Roles.New, ut.raw_verts.Count);
 			var faceRoles = Enumerable.Repeat(Roles.New, ut.raw_faces.Count);
 			for (var i = 0; i < ut.raw_faces[0].Count; i++)
@@ -3456,6 +3619,14 @@ namespace Conway
 					return 7;
 				case FaceSelections.EightSided:
 					return 8;
+				case FaceSelections.NineSided:
+					return 9;
+				case FaceSelections.TenSided:
+					return 19;
+				case FaceSelections.ElevenSided:
+					return 11;
+				case FaceSelections.TwelveSided:
+					return 12;
 			}
 
 			return 0;
@@ -3473,7 +3644,7 @@ namespace Conway
 				case FaceSelections.FacingLevel:
 					return Math.Abs(Faces[faceIndex].Normal.y) < TOLERANCE;
 				case FaceSelections.FacingDown:
-					return Faces[faceIndex].Normal.y < -TOLERANCE;
+					return Vector3.Angle(Vector3.down, Faces[faceIndex].Normal) < -TOLERANCE;
 				case FaceSelections.FacingCenter:
 					angle = Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid);
 					return Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE;
@@ -3499,6 +3670,10 @@ namespace Conway
 					return faceIndex == 0;
 				case FaceSelections.ExceptFirst:
 					return faceIndex != 0;
+				case FaceSelections.Inner:
+					return Faces[faceIndex].GetHalfedges().All(i=>i.Pair!=null);
+				case FaceSelections.Outer:
+					return Faces[faceIndex].GetHalfedges().Any(i=>i.Pair==null);
 				case FaceSelections.Random:
 					return random.NextDouble() < 0.5;
 				case FaceSelections.None:

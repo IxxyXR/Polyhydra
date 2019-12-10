@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using Conway;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -80,13 +81,13 @@ public class PolyUI : MonoBehaviour {
 
         GridTypeDropdown.ClearOptions();        
         foreach (var gridType in Enum.GetValues(typeof(PolyHydra.GridTypes))) {
-            var label = new Dropdown.OptionData(gridType.ToString());
+            var label = new Dropdown.OptionData(gridType.ToString().Replace("_", " "));
             GridTypeDropdown.options.Add(label);
         }
 
         JohnsonTypeDropdown.ClearOptions();
         foreach (var johnsonType in Enum.GetValues(typeof(PolyHydra.JohnsonPolyTypes))) {
-            var label = new Dropdown.OptionData(johnsonType.ToString());
+            var label = new Dropdown.OptionData(CamelCaseSpaces(johnsonType.ToString()));
             JohnsonTypeDropdown.options.Add(label);
         }
 
@@ -330,6 +331,11 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.AmountSlider.value = opConfig.amountDefault;
     }
 
+    static string  CamelCaseSpaces(string str)
+    {
+        return Regex.Replace(str, "(\\B[A-Z])", " $1");
+    }
+
     void AddOpItemToUI(PolyHydra.ConwayOperator op)
     {
         var opPrefab = Instantiate(OpTemplate);
@@ -338,16 +344,14 @@ public class PolyUI : MonoBehaviour {
         
         opPrefab.name = op.opType.ToString();
         foreach (var item in Enum.GetValues(typeof(PolyHydra.Ops))) {
-            var label = new Dropdown.OptionData(item.ToString());
+            var label = new Dropdown.OptionData(CamelCaseSpaces(item.ToString()));
             opPrefabManager.OpTypeDropdown.options.Add(label);
         }
         
         foreach (var item in Enum.GetValues(typeof(ConwayPoly.FaceSelections))) {
-            var label = new Dropdown.OptionData(item.ToString());
+            var label = new Dropdown.OptionData(CamelCaseSpaces(item.ToString()));
             opPrefabManager.FaceSelectionDropdown.options.Add(label);
         }
-
-
 
         opPrefabManager.OpTypeDropdown.value = (int)op.opType;
         ConfigureOpControls(opPrefab.GetComponent<OpPrefabManager>());

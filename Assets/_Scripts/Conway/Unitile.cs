@@ -359,40 +359,40 @@ public class Unitile
         GenerateTile();
 
 //        float x_sh_inc = shear.x * x_inc;
-//        float y_sh_inc = shear.y * y_inc;
+//        float y_sh_inc = shear.z * y_inc;
 //        float x_sh_inc2 = x_sh_inc * (1 + y_sh_inc / y_end);
 //        float y_sh_inc2 = y_sh_inc * (1 + x_sh_inc / x_end);
 //        float x_cross = x_end + x_sh_inc - x_sh_inc2;
 //        float y_cross = y_end + y_sh_inc - y_sh_inc2;
-
+//
 //        for (var i = 0; i < raw_verts.Count; i++)
 //        {
 //            var vert = raw_verts[i];
 //            var newvert = new Vector3();
 //            float x = vert.x;
-//            newvert.x += (shear.x * x_inc) * (vert.y / y_end);
+//            newvert.x += (shear.x * x_inc) * (vert.z / y_end);
 //            newvert.x *= x_end / x_cross;
-//            newvert.y += (shear.y * y_inc) * (x / x_end);
-//            newvert.y *= y_end / y_cross;
+//            newvert.z += (shear.z * y_inc) * (x / x_end);
+//            newvert.z *= y_end / y_cross;
 //            raw_verts[i] = newvert;
 //        }
-
+//
 //        for (var i = 0; i < raw_verts.Count; i++)
 //        {
 //            var vert = raw_verts[i];
 //            if (lr_join == UT.ut_twist && (vert.x < -Mathf.Epsilon || vert.x > x_end - Mathf.Epsilon))
-//                vert.y = -vert.y;
+//                vert.z = -vert.z;
 //            if (lr_join == UT.ut_twist2 && (vert.x < -Mathf.Epsilon || vert.x > x_end - Mathf.Epsilon))
-//                vert.y = y_end - vert.y;
+//                vert.z = y_end - vert.z;
 //            if (lr_join == UT.ut_twist3 && (vert.x < -Mathf.Epsilon || vert.x > x_end - Mathf.Epsilon))
-//                vert.y = 1.5f * y_end - vert.y % y_end;
-//            if (tb_join == UT.ut_twist && (vert.y < -Mathf.Epsilon || vert.y > y_end - Mathf.Epsilon))
+//                vert.z = 1.5f * y_end - vert.z % y_end;
+//            if (tb_join == UT.ut_twist && (vert.z < -Mathf.Epsilon || vert.z > y_end - Mathf.Epsilon))
 //                vert.x = -vert.x;
-//            if (tb_join == UT.ut_twist2 && (vert.y < -Mathf.Epsilon || vert.y > y_end - Mathf.Epsilon))
+//            if (tb_join == UT.ut_twist2 && (vert.z < -Mathf.Epsilon || vert.z > y_end - Mathf.Epsilon))
 //                vert.x = x_end - vert.x;
-//            if (tb_join == UT.ut_twist3 && (vert.y < -Mathf.Epsilon || vert.y > y_end - Mathf.Epsilon))
+//            if (tb_join == UT.ut_twist3 && (vert.z < -Mathf.Epsilon || vert.z > y_end - Mathf.Epsilon))
 //                vert.x = 1.5f * x_end - vert.x % x_end;
-//            if (tb_join == UT.ut_join2 && (vert.y < -Mathf.Epsilon || vert.y > y_end - Mathf.Epsilon))
+//            if (tb_join == UT.ut_join2 && (vert.z < -Mathf.Epsilon || vert.z > y_end - Mathf.Epsilon))
 //                vert.x = 0.5f * x_end - vert.x % x_end;
 //            if (lr_join != UT.ut_open)
 //            {
@@ -401,13 +401,31 @@ public class Unitile
 //
 //            if (tb_join != UT.ut_open)
 //            {
-//                vert.y = vert.y + y_end % y_end - Mathf.Epsilon;
+//                vert.z = vert.z + y_end % y_end - Mathf.Epsilon;
 //            }
 //
 //            raw_verts[i] = vert;
 //        }
-
     }
+
+    public void torus(float sect_rad = 1f, float ring_rad = 2f)
+    {
+        plane(UT.ut_join, UT.ut_join);
+        float a0, a1;
+        for (var i = 0; i < raw_verts.Count; i++)
+        {
+            var vert = raw_verts[i];
+            a0 = 2 * Mathf.PI * vert.x / x_end;
+            a1 = 2 * Mathf.PI * vert.z / y_end;
+            vert = new Vector3(
+                Mathf.Sin(a1) * (sect_rad * Mathf.Cos(a0) + ring_rad),
+                sect_rad * Mathf.Sin(a0),
+                Mathf.Cos(a1) * (sect_rad * Mathf.Cos(a0) + ring_rad)
+            );
+            raw_verts[i] = vert;
+        }
+    }
+
 
     int CheckCoincidentVert(Vector3 a, float Epsilon)
     {
@@ -430,8 +448,8 @@ public class Unitile
 //  List<Vector3> verts = raw_verts();
 //  for (auto &vert : verts) {
 //    a0 = 2 * Mathf.PI * vert.x / x_end;
-//    h = ht * vert.y / y_end;
-//    rad = (top_rad - bot_rad) * vert.y / y_end + bot_rad;
+//    h = ht * vert.z / y_end;
+//    rad = (top_rad - bot_rad) * vert.z / y_end + bot_rad;
 //    vert = Vector3(rad * cos(a0), rad * sin(a0), h);
 //  }
 //}
@@ -443,27 +461,14 @@ public class Unitile
 //  List<Vector3> &verts = raw_verts();
 //  for (auto &vert : verts) {
 //    a0 = 2 * Mathf.PI * vert.x / x_end;
-//    vert.y -= y_end / 2;
+//    vert.z -= y_end / 2;
 //    vert =
-//        Vector3(sin(a0) * (sect_rad * vert.y / y_end * cos(a0 / 2) + ring_rad),
-//              sect_rad * vert.y / y_end * sin(a0 / 2),
-//              cos(a0) * (sect_rad * vert.y / y_end * cos(a0 / 2) + ring_rad));
+//        Vector3(sin(a0) * (sect_rad * vert.z / y_end * cos(a0 / 2) + ring_rad),
+//              sect_rad * vert.z / y_end * sin(a0 / 2),
+//              cos(a0) * (sect_rad * vert.z / y_end * cos(a0 / 2) + ring_rad));
 //  }
 //}
-//
-//void torus(float sect_rad, float ring_rad)
-//{
-//  plane(ut_join, ut_join);
-//  float a0, a1;
-//  List<Vector3> &verts = raw_verts();
-//  for (auto &vert : verts) {
-//    a0 = 2 * Mathf.PI * vert.x / x_end;
-//    a1 = 2 * Mathf.PI * vert.y / y_end;
-//    vert = Vector3(sin(a1) * (sect_rad * cos(a0) + ring_rad), sect_rad * sin(a0),
-//                 cos(a1) * (sect_rad * cos(a0) + ring_rad));
-//  }
-//}
-//
+
 //void torus_trefoil(float sect_rad, float ring_rad,
 //    List<float> pq)
 //{
@@ -473,7 +478,7 @@ public class Unitile
 //  for (auto &vert : verts) {
 //    i++;
 //    float a0 = 2 * Mathf.PI * vert.x / x_end;
-//    float a1 = 2 * Mathf.PI * vert.y / y_end;
+//    float a1 = 2 * Mathf.PI * vert.z / y_end;
 //
 //    int q = 3;
 //    int p = 2;
@@ -482,8 +487,8 @@ public class Unitile
 //      if(floor(pq.x) > 0)
 //         q = floor(pq.x);
 //      p = 1;
-//      if(pq.Count()>1 && floor(pq.y) > 0)
-//         p = floor(pq.y);
+//      if(pq.Count()>1 && floor(pq.z) > 0)
+//         p = floor(pq.z);
 //    }
 //
 //    float a = ring_rad;
@@ -518,9 +523,9 @@ public class Unitile
 //  List<Vector3> &verts = raw_verts();
 //  for (auto &vert : verts) {
 //    // a0 = 2*Mathf.PI*fmod(1+verts[i].x/x_end, 1);
-//    // a1 = 2*Mathf.PI*fmod(1+verts[i].y/y_end, 1);
+//    // a1 = 2*Mathf.PI*fmod(1+verts[i].z/y_end, 1);
 //    a0 = 2 * Mathf.PI * vert.x / x_end;
-//    a1 = 2 * Mathf.PI * vert.y / y_end;
+//    a1 = 2 * Mathf.PI * vert.z / y_end;
 //    if (a0 < Mathf.PI)
 //      vert = Vector3(6 * cos(a0) * (1 + sin(a0)) +
 //                       4 * sect_rad * (1 - 0.5f * cos(a0)) * cos(a0) * cos(a1),
@@ -541,7 +546,7 @@ public class Unitile
 //  List<Vector3> &verts = raw_verts();
 //  for (auto &vert : verts) {
 //    a0 = 2 * Mathf.PI * vert.x / x_end;
-//    a1 = 2 * Mathf.PI * vert.y / y_end;
+//    a1 = 2 * Mathf.PI * vert.z / y_end;
 //    vert = Vector3(
 //        (ring_rad +
 //         (cos(0.5f * a0) * sin(a1) - sin(0.5f * a0) * sin(2 * a1)) * sect_rad) *
@@ -560,7 +565,7 @@ public class Unitile
 //  List<Vector3> &verts = raw_verts();
 //  for (auto &vert : verts) {
 //    a0 = Mathf.PI * vert.x / x_end;
-//    a1 = Mathf.PI * (vert.y / y_end - 0.5f);
+//    a1 = Mathf.PI * (vert.z / y_end - 0.5f);
 //    vert = Vector3(0.5f * sin(2 * a0) * sin(a1) * sin(a1),
 //                 0.5f * sin(a0) * cos(2 * a1), 0.5f * cos(a0) * sin(2 * a1));
 //    // verts[i] = Vector3(
@@ -579,7 +584,7 @@ public class Unitile
 //  List<Vector3> &verts = raw_verts();
 //  for (auto &vert : verts) {
 //    a0 = Mathf.PI * (0.5f - vert.x / x_end);
-//    a1 = Mathf.PI * vert.y / y_end;
+//    a1 = Mathf.PI * vert.z / y_end;
 //    float x =
 //        (Mathf.Sqrt(2) * cos(2 * a0) * cos(a1) * cos(a1) + cos(a0) * sin(2 * a1)) /
 //        (2 - t * Mathf.Sqrt(2) * sin(3 * a0) * sin(2 * a1));
@@ -598,7 +603,7 @@ public class Unitile
 //  List<Vector3> &verts = raw_verts();
 //  for (auto &vert : verts) {
 //    float x = 1 - 2.0 * vert.x / x_end;
-//    float y = 1 - 2.0 * vert.y / y_end;
+//    float y = 1 - 2.0 * vert.z / y_end;
 //    float a0 = atan2(y, x);
 //    // x *= 0.9;
 //    // y *= 0.9;
@@ -629,7 +634,7 @@ public class Unitile
 //  List<Vector3> &verts = raw_verts();
 //  for (auto &vert : verts) {
 //    a0 = 2 * Mathf.PI * vert.x / x_end;
-//    a1 = 0.5f * Mathf.PI * vert.y / y_end;
+//    a1 = 0.5f * Mathf.PI * vert.z / y_end;
 //    // verts[i] = Vector3(cos(a0)*sin(2*a1), sin(a0)*sin(2*a1),
 //    //                 cos(a1)*cos(a1)-cos(a0)*cos(a0)*sin(a1)*sin(a1));
 //
@@ -645,10 +650,10 @@ public class Unitile
 //  List<Vector3> &verts = raw_verts();
 //  for (auto &vert : verts) {
 //    a0 = 2 * Mathf.PI * vert.x / x_end;
-//    a1 = 2 * Mathf.PI * vert.y / y_end;
+//    a1 = 2 * Mathf.PI * vert.z / y_end;
 //    Vec4d v4d = rot4d_m * Vec4d(cos(a0), sin(a0), cos(a1), sin(a1));
 //    // Vec4d v4d = rot * Vec4d(cos(a0+a1), sin(a0+a1), cos(a0-a1), sin(a0-a1));
-//    vert = Vector3(v4d.x, v4d.y, v4d.z);
+//    vert = Vector3(v4d.x, v4d.z, v4d.z);
 //  }
 //}
 //
@@ -659,7 +664,7 @@ public class Unitile
 //  List<Vector3> &verts = raw_verts();
 //  for (auto &vert : verts) {
 //    a0 = 2 * Mathf.PI * vert.x / x_end;
-//    a1 = 2 * Mathf.PI * vert.y / y_end;
+//    a1 = 2 * Mathf.PI * vert.z / y_end;
 //
 //    float x = cos(a0) / (1 + pow(sin(a0), 2));
 //    float y = sin(a0) * x;
@@ -668,7 +673,7 @@ public class Unitile
 //    float y2 = x * sin(a2) + y * cos(a2);
 //    Vec4d v4d = rot4d_m * Vec4d(x2, y2, cos(a1), sin(a1));
 //    // Vec4d v4d = rot * Vec4d(cos(a0+a1), sin(a0+a1), cos(a0-a1), sin(a0-a1));
-//    vert = Vector3(v4d.x, v4d.y, v4d.z);
+//    vert = Vector3(v4d.x, v4d.z, v4d.z);
 //  }
 //}
 //
@@ -679,7 +684,7 @@ public class Unitile
 //  List<Vector3> &verts = raw_verts();
 //  for (auto &vert : verts) {
 //    a0 = -Mathf.PI * (2 * vert.x / x_end - 0.5f);
-//    a1 = Mathf.PI * (2 * vert.y / y_end - 0.5f);
+//    a1 = Mathf.PI * (2 * vert.z / y_end - 0.5f);
 //
 //    float x = cos(a0) / (1 + pow(sin(a0), 2));
 //    float y = sin(a0) * x;
@@ -693,7 +698,7 @@ public class Unitile
 //    float w2 = z * sin(a3) + w * cos(a3);
 //    Vec4d v4d = rot4d_m * Vec4d(x2, y2, z2, w2);
 //    // Vec4d v4d = rot * Vec4d(cos(a0+a1), sin(a0+a1), cos(a0-a1), sin(a0-a1));
-//    vert = Vector3(v4d.x, v4d.y, v4d.z);
+//    vert = Vector3(v4d.x, v4d.z, v4d.z);
 //  }
 //}
 }

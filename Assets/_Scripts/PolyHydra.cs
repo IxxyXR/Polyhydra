@@ -431,36 +431,37 @@ public class PolyHydra : MonoBehaviour
 
 	public ConwayPoly MakeJohnsonPoly(JohnsonPolyTypes johnsonPolyType)
 	{
+
 		switch (johnsonPolyType)
 		{
 			case JohnsonPolyTypes.Prism:
-				return JohnsonPoly.MakePrism(PrismP);
+				return JohnsonPoly.MakePrism(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.Antiprism:
-				return JohnsonPoly.MakeAntiprism(PrismP);
+				return JohnsonPoly.MakeAntiprism(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.Pyramid:
-				return JohnsonPoly.MakePyramid(PrismP);
+				return JohnsonPoly.MakePyramid(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.ElongatedPyramid:
-				return JohnsonPoly.MakeElongatedPyramid(PrismP);
+				return JohnsonPoly.MakeElongatedPyramid(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.GyroelongatedPyramid:
-				return JohnsonPoly.MakeGyroelongatedPyramid(PrismP);
+				return JohnsonPoly.MakeGyroelongatedPyramid(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.Dipyramid:
-				return JohnsonPoly.MakeDipyramid(PrismP);
+				return JohnsonPoly.MakeDipyramid(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.ElongatedDipyramid:
-				return JohnsonPoly.MakeElongatedBipyramid(PrismP);
+				return JohnsonPoly.MakeElongatedBipyramid(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.GyroelongatedDipyramid:
-				return JohnsonPoly.MakeGyroelongatedBipyramid(PrismP);
+				return JohnsonPoly.MakeGyroelongatedBipyramid(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.Cupola:
-				return JohnsonPoly.MakeCupola(PrismP);
+				return JohnsonPoly.MakeCupola(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.ElongatedCupola:
-				return JohnsonPoly.MakeElongatedCupola(PrismP);
+				return JohnsonPoly.MakeElongatedCupola(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.GyroelongatedCupola:
-				return JohnsonPoly.MakeGyroelongatedCupola(PrismP);
+				return JohnsonPoly.MakeGyroelongatedCupola(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.Bicupola:
-				return JohnsonPoly.MakeBicupola(PrismP);
+				return JohnsonPoly.MakeBicupola(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.ElongatedBicupola:
-				return JohnsonPoly.MakeElongatedBicupola(PrismP);
+				return JohnsonPoly.MakeElongatedBicupola(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.GyroelongatedBicupola:
-				return JohnsonPoly.MakeGyroelongatedBicupola(PrismP);
+				return JohnsonPoly.MakeGyroelongatedBicupola(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.Rotunda:
 				// A fudge for the pentagonal rotunda (which is the only actual Johnson solid Rotunda)
 				return JohnsonPoly.MakeRotunda();
@@ -818,6 +819,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Extrude(op.amount, false, op.randomize);
 				break;
 			case Ops.Extrude:
+				//conway = conway.Extrude(op.amount, op.faceSelections, op.randomize);
 				if (op.faceSelections == ConwayPoly.FaceSelections.All)
 				{
 					conway = conway.FaceScale(0f, ConwayPoly.FaceSelections.All, false);
