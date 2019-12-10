@@ -44,40 +44,40 @@ namespace Conway {
             }
 
             int n = array.Length;
-            Halfedge[] new_edges = new Halfedge[n]; // temporary container for new halfedges
+            Halfedge[] newEdges = new Halfedge[n]; // temporary container for new halfedges
 
             // create new halfedges (it is only possible for each to reference their vertex at this point)
             for (int i = 0; i < n; i++) {
-                new_edges[i] = new Halfedge(array[i], null, null, null);
+                newEdges[i] = new Halfedge(array[i], null, null, null);
             }
 
-            Face new_face = new Face(new_edges[0]); // create new face
+            Face newFace = new Face(newEdges[0]); // create new face
 
             // link halfedges to face, next and prev
             // stop if a similiar halfedge is found in the mesh (avoid duplicates)
             for (int i = 0; i < n; i++) {
-                new_edges[i].Face = new_face;
-                new_edges[i].Next = new_edges[(i + 1) % n];
-                new_edges[i].Prev = new_edges[(i + n - 1) % n];
-                if (_mConwayPoly.Halfedges.Contains(new_edges[i].Name)) {
+                newEdges[i].Face = newFace;
+                newEdges[i].Next = newEdges[(i + 1) % n];
+                newEdges[i].Prev = newEdges[(i + n - 1) % n];
+                if (_mConwayPoly.Halfedges.Contains(newEdges[i].Name)) {
                     return false;
                 }
             }
 
             // add halfedges to mesh
             for (int j = 0; j < n; j++) {
-                array[j].Halfedge = array[j].Halfedge ?? new_edges[j];
-                _mConwayPoly.Halfedges.Add(new_edges[j]);
+                array[j].Halfedge = array[j].Halfedge ?? newEdges[j];
+                _mConwayPoly.Halfedges.Add(newEdges[j]);
             }
 
             // add face to mesh
             if (insert)
             {
-                Insert(index, new_face);
+                Insert(index, newFace);
             }
             else
             {
-                Add(new_face);
+                Add(newFace);
             }
 
             return true;
@@ -85,10 +85,12 @@ namespace Conway {
 
         /// <summary>
         /// Remove a face from the mesh, also removing its halfedges. (Replaces IList.Remove(T item).)
+        /// Returns the edges of the hole.
         /// </summary>
         /// <param name="item">a reference to the face which is to be removed</param>
-        new public void Remove(Face item) {
-            List<Halfedge> edges = new List<Halfedge>();
+        public new List<Halfedge> Remove(Face item) {
+            var edges = new List<Halfedge>();
+            var hole = new List<Halfedge>();
             Halfedge edge = item.Halfedge;
             do {
                 edges.Add(edge);
@@ -98,7 +100,11 @@ namespace Conway {
 
             foreach (Halfedge e in edges) {
                 if (e.Pair != null)
+                {
                     e.Pair.Pair = null;
+                    hole.Add(e.Pair);
+                }
+
                 // if halfedge's vertex references halfedge, point it to another
                 if (e.Vertex.Halfedge == e) {
                     if (e.Pair != null)
@@ -119,6 +125,7 @@ namespace Conway {
             }
 
             base.Remove(item);
+            return hole;
         }
 
         /// <summary>
@@ -134,9 +141,9 @@ namespace Conway {
             Face face = this[index];
             Vertex start = face.Halfedge.Vertex;
             List<Vertex> end = face.GetVertices();
-            if (end.Count < 4 && !quads || end.Count <= 4 && quads) {
-                return 0;
-            }
+            if (end.Count <= 3) return 0;
+            if (end.Count <= 4 && !quads) return 0;
+
 
             int count = 0;
             for (int i = 2; i < end.Count - 1; i++) {
