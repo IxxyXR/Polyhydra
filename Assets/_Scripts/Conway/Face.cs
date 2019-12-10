@@ -126,7 +126,7 @@ namespace Conway {
 
         #endregion
 
-        public ConwayPoly Detach()
+        public ConwayPoly DetachCopy()
         {
 
             IEnumerable<Vector3> verts = GetVertices().Select(i => i.Position);

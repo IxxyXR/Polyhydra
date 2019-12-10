@@ -315,7 +315,6 @@ namespace Conway
         {
 			float height = SideLength(sides);
 			ConwayPoly poly = MakePrism(sides, height);
-			
 			height = CalcPyramidHeight(sides);
 			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingUp, false);
 			poly.Recenter();
@@ -337,8 +336,7 @@ namespace Conway
 			ConwayPoly poly = MakeAntiprism(sides);
 			
 			height = CalcPyramidHeight(sides);
-			poly.Recenter();
-			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingCenter, false);
+			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingStraightUp, false);
 			poly.Recenter();
 			return poly;
 		}
@@ -346,10 +344,8 @@ namespace Conway
 		public static ConwayPoly MakeGyroelongatedBipyramid(int sides)
 		{
 			ConwayPoly poly = MakeGyroelongatedPyramid(sides);
-			
 			float height = CalcPyramidHeight(sides);
-			poly.Recenter();
-			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingCenter, false);
+			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingStraightDown, false);
 			poly.Recenter();
 			return poly;
 		}
@@ -360,10 +356,10 @@ namespace Conway
 	        ConwayPoly poly = MakeCupola(sides, height);
 	        poly.Recenter();
 	        var included = poly.FaceRemove(ConwayPoly.FaceSelections.FacingDown, false);
-//	        included = included.FaceScale(0f, ConwayPoly.FaceSelections.All, false);
-//	        var excluded = poly.FaceRemove(ConwayPoly.FaceSelections.FacingDown, false);
-//	        poly = included.Extrude((CalcPyramidHeight(sides)/2f), false, false);
-//	        poly.Append(excluded);
+	        included = included.FaceScale(0f, ConwayPoly.FaceSelections.All, false);
+	        var excluded = poly.FaceRemove(ConwayPoly.FaceSelections.FacingDown, false);
+	        poly = included.Extrude((CalcPyramidHeight(sides)/2f), false, false);
+	        poly.Append(excluded);
 	        return included;
         }
 

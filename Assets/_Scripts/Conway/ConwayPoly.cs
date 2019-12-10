@@ -176,8 +176,10 @@ namespace Conway
 			ElevenSided,
 			TwelveSided,
 			FacingUp,
-			FacingLevel,
+			FacingStraightUp,
 			FacingDown,
+			FacingStraightDown,
+			FacingLevel,
 			FacingCenter,
 			FacingIn,
 			FacingOut,
@@ -3641,10 +3643,14 @@ namespace Conway
 					return true;
 				case FaceSelections.FacingUp:
 					return Faces[faceIndex].Normal.y > TOLERANCE;
+				case FaceSelections.FacingStraightUp:
+					return Vector3.Angle(Vector3.up, Faces[faceIndex].Normal) < TOLERANCE;
 				case FaceSelections.FacingLevel:
 					return Math.Abs(Faces[faceIndex].Normal.y) < TOLERANCE;
 				case FaceSelections.FacingDown:
-					return Vector3.Angle(Vector3.down, Faces[faceIndex].Normal) < -TOLERANCE;
+					return Faces[faceIndex].Normal.y < -TOLERANCE;
+				case FaceSelections.FacingStraightDown:
+					return Vector3.Angle(Vector3.down, Faces[faceIndex].Normal) < TOLERANCE;
 				case FaceSelections.FacingCenter:
 					angle = Vector3.Angle(-Faces[faceIndex].Normal, Faces[faceIndex].Centroid);
 					return Math.Abs(angle) < TOLERANCE || Math.Abs(angle - 180) < TOLERANCE;
