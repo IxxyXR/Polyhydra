@@ -1,7 +1,7 @@
 {
   "Name": "Shri",
   "ShapeType": "Grid",
-  "PolyType": "Grid",
+  "PolyType": "Cube",
   "JohnsonPolyType": "ElongatedPyramid",
   "OtherPolyType": "L1",
   "BypassOps": false,

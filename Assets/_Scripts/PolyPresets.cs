@@ -93,9 +93,17 @@ public class PolyPresets : MonoBehaviour {
 		var existingPresets = Items.Select(x => x.Name);
 		var dirInfo = new DirectoryInfo(path);
 		var fileInfo = dirInfo.GetFiles(PolyPreset.PresetFileNamePrefix + "*.json");
-		foreach (var file in fileInfo) {
+		foreach (var file in fileInfo)
+		{
+			string rawJson = File.ReadAllText(file.FullName);
+			// Legacy Fixes
+			// Grid is no longer a uniform polytype. Set it to any valid value (Cube)
+			rawJson = rawJson.Replace(
+				"PolyType\": \"Grid\"",
+				"PolyType\": \"Cube\""
+			);
 			var preset = new PolyPreset();
-			preset = JsonConvert.DeserializeObject<PolyPreset>(File.ReadAllText(file.FullName));
+			preset = JsonConvert.DeserializeObject<PolyPreset>(rawJson);
 			if (string.IsNullOrEmpty(preset.Name))
 			{
 				preset.Name = file.Name.Replace(PolyPreset.PresetFileNamePrefix, "").Replace(".json", "");

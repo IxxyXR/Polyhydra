@@ -34,10 +34,12 @@ public class PolyHydra : MonoBehaviour
 	[FormerlySerializedAs("PolyType")]
 	public ShapeTypes ShapeType;
 	public PolyTypes UniformPolyType;
+	public PolyTypeCategories UniformPolyTypeCategory;
 	public ColorMethods ColorMethod;
 	public JohnsonPolyTypes JohnsonPolyType;
 	public OtherPolyTypes OtherPolyType;
 	public GridTypes GridType;
+	public GridShapes GridShape;
 	public string WythoffSymbol;
 	public string PresetName;
 	public string APresetName;
@@ -50,7 +52,18 @@ public class PolyHydra : MonoBehaviour
 	// Parameters for prismatic forms
 	public int PrismP = 5;
 	public int PrismQ = 2;
-	
+
+	public enum PolyTypeCategories
+	{
+		Platonic,
+		Prismatic,
+		Archimedean,
+		KeplerPoinsot,
+		Convex,
+		Star,
+	}
+
+
 	public enum ColorMethods
 	{
 		BySides,
@@ -63,6 +76,12 @@ public class PolyHydra : MonoBehaviour
 		Grid,
 		Johnson,
 		Other
+	}
+
+	public enum GridShapes
+	{
+		Plane,
+		Torus,
 	}
 
 	public enum GridTypes
@@ -396,7 +415,7 @@ public class PolyHydra : MonoBehaviour
 		}
 	}
 
-	public ConwayPoly MakeGrid(GridTypes gridType)
+	public ConwayPoly MakeGrid(GridTypes gridType, GridShapes gridShape)
 	{
 		switch (gridType)
 		{
@@ -408,22 +427,23 @@ public class PolyHydra : MonoBehaviour
 				return ConwayPoly.MakeHexGrid(PrismP, PrismQ);
 			case GridTypes.Polar:
 				return ConwayPoly.MakePolarGrid(PrismP, PrismQ);
+
 			case GridTypes.U_3_6_3_6:
-				return ConwayPoly.MakeUnitileGrid(4, PrismP, PrismQ);
+				return ConwayPoly.MakeUnitileGrid(4, (int)gridShape, PrismP, PrismQ);
 			case GridTypes.U_3_3_3_4_4:
-				return ConwayPoly.MakeUnitileGrid(5, PrismP, PrismQ);
+				return ConwayPoly.MakeUnitileGrid(5, (int)gridShape, PrismP, PrismQ);
 			case GridTypes.U_3_3_4_3_4:
-				return ConwayPoly.MakeUnitileGrid(6, PrismP, PrismQ);
+				return ConwayPoly.MakeUnitileGrid(6, (int)gridShape, PrismP, PrismQ);
 //			case GridTypes.U_3_3_3_3_6:
-//				return ConwayPoly.MakeUnitileGrid(7, PrismP, PrismQ);
+//				return ConwayPoly.MakeUnitileGrid(7, (int)gridShape, PrismP, PrismQ);
 			case GridTypes.U_3_12_12:
-				return ConwayPoly.MakeUnitileGrid(8, PrismP, PrismQ);
+				return ConwayPoly.MakeUnitileGrid(8, (int)gridShape, PrismP, PrismQ);
 			case GridTypes.U_4_8_8:
-				return ConwayPoly.MakeUnitileGrid(9, PrismP, PrismQ);
+				return ConwayPoly.MakeUnitileGrid(9, (int)gridShape, PrismP, PrismQ);
 			case GridTypes.U_3_4_6_4:
-				return ConwayPoly.MakeUnitileGrid(10, PrismP, PrismQ);
+				return ConwayPoly.MakeUnitileGrid(10, (int)gridShape, PrismP, PrismQ);
 			case GridTypes.U_4_6_12:
-				return ConwayPoly.MakeUnitileGrid(11, PrismP, PrismQ);
+				return ConwayPoly.MakeUnitileGrid(11, (int)gridShape, PrismP, PrismQ);
 		}
 
 		return null;
@@ -504,7 +524,7 @@ public class PolyHydra : MonoBehaviour
 		}
 		else if (ShapeType == ShapeTypes.Grid)
 		{
-			_conwayPoly = MakeGrid(GridType);
+			_conwayPoly = MakeGrid(GridType, GridShape);
 		}
 		
 		else if (ShapeType == ShapeTypes.Johnson)
@@ -917,7 +937,7 @@ public class PolyHydra : MonoBehaviour
 	public void ApplyOps()
 	{
 
-		var cacheKeySource = $"{ShapeType} {OtherPolyType} {JohnsonPolyType} {UniformPolyType} {PrismP} {PrismQ} {GridType} {TwoSided}";
+		var cacheKeySource = $"{ShapeType} {OtherPolyType} {JohnsonPolyType} {UniformPolyType} {PrismP} {PrismQ} {GridType} {GridShape} {TwoSided}";
 		
 		foreach (var op in ConwayOperators.ToList())
 		{
@@ -1262,7 +1282,7 @@ public class PolyHydra : MonoBehaviour
 	// Returns true if at least one face matches the facesel rule but all of them
 	public bool FaceSelectionIsValid(ConwayPoly.FaceSelections facesel)
 	{
-		if (ConwayOperators.Count == 0 && UniformPolyType > 0) {
+		if (ConwayOperators.Count == 0) {
 			_conwayPoly = new ConwayPoly(WythoffPoly);  // We need a conway poly
 		}
 		int includedFaceCount = Enumerable.Range(0, _conwayPoly.Faces.Count).Count(x => _conwayPoly.IncludeFace(x, facesel));

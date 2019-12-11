@@ -2792,11 +2792,18 @@ namespace Conway
 
 		}
 
-		public static ConwayPoly MakeUnitileGrid(int pattern = 1, int rows = 5, int cols = 5)
+		public static ConwayPoly MakeUnitileGrid(int pattern, int gridShape, int rows = 5, int cols = 5)
 		{
 			var ut = new Unitile(pattern, rows, cols);
-			ut.plane();
-//			ut.torus();
+			switch (gridShape)
+			{
+				case 0:
+					ut.plane();
+					break;
+				case 1:
+					ut.torus();
+					break;
+			}
 			var vertexRoles = Enumerable.Repeat(Roles.New, ut.raw_verts.Count);
 			var faceRoles = Enumerable.Repeat(Roles.New, ut.raw_faces.Count);
 			for (var i = 0; i < ut.raw_faces[0].Count; i++)

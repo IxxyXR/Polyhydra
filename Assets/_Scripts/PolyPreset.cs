@@ -15,13 +15,14 @@ public class PolyPreset {
 	public string Name;
 
 	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.ShapeTypes ShapeType;
+	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.PolyTypeCategories UniformPolyTypeCategory;
 	[JsonConverter(typeof(StringEnumConverter))] public PolyTypes PolyType;
 	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.JohnsonPolyTypes JohnsonPolyType;
 	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.OtherPolyTypes OtherPolyType;
+	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.GridTypes GridType;
+	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.GridShapes GridShape;
 	public bool BypassOps;
 	public bool TwoSided;
-	[JsonConverter(typeof(StringEnumConverter))]
-	public PolyHydra.GridTypes GridType;
 	public int PrismP;
 	public int PrismQ;
 	public string AppearancePresetName;
@@ -43,9 +44,11 @@ public class PolyPreset {
 		AppearancePresetName = poly.APresetName;
 		ShapeType = poly.ShapeType;
 		PolyType = poly.UniformPolyType;
+		UniformPolyTypeCategory = poly.UniformPolyTypeCategory;
 		JohnsonPolyType = poly.JohnsonPolyType;
 		OtherPolyType = poly.OtherPolyType;
 		GridType = poly.GridType;
+		GridShape = poly.GridShape;
 		BypassOps = poly.BypassOps;
 		PrismP = poly.PrismP;
 		PrismQ = poly.PrismQ;
@@ -71,12 +74,15 @@ public class PolyPreset {
 	{
 		poly.ShapeType = ShapeType;
 		poly.UniformPolyType = PolyType;
+		poly.UniformPolyTypeCategory = UniformPolyTypeCategory;
+
 		poly.JohnsonPolyType = JohnsonPolyType;
 		poly.OtherPolyType = OtherPolyType;
 		poly.BypassOps = BypassOps;
 		poly.TwoSided = TwoSided;
 		poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();
 		poly.GridType = GridType;
+		poly.GridShape = GridShape;
 		poly.PrismP = PrismP;
 		poly.PrismQ = PrismQ;
 		poly.PresetName = Name;

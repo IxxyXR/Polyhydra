@@ -1,7 +1,7 @@
 {
   "Name": "Taught Us",
   "ShapeType": "Grid",
-  "PolyType": "Grid",
+  "PolyType": "Cube",
   "JohnsonPolyType": "ElongatedPyramid",
   "OtherPolyType": "L1",
   "BypassOps": false,

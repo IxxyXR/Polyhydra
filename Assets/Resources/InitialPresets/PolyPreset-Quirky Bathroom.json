@@ -1,7 +1,7 @@
 {
   "Name": "Quirky Bathroom",
   "ShapeType": "Grid",
-  "PolyType": "Grid",
+  "PolyType": "Cube",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
   "BypassOps": false,

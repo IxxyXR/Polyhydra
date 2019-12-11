@@ -1,7 +1,7 @@
 {
   "Name": "Shards",
   "ShapeType": "Grid",
-  "PolyType": "Grid",
+  "PolyType": "Cube",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
   "BypassOps": false,
