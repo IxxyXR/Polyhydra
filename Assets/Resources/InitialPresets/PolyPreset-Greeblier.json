@@ -1,12 +1,14 @@
 {
   "Name": "Greeblier",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Truncated_Cube",
   "JohnsonPolyType": "Rotunda",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": false,
-  "GridType": "Square",
   "PrismP": 3,
   "PrismQ": 2,
   "AppearancePresetName": "Dirty Metal",
@@ -16,21 +18,30 @@
       "FaceSelections": "All",
       "Amount": 0.5,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Whirl",
       "FaceSelections": "All",
       "Amount": 0.3,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Extrude",
       "FaceSelections": "All",
       "Amount": 0.05,
       "Randomize": true,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

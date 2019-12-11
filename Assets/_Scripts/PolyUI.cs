@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Conway;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Wythoff;
 using Debug = UnityEngine.Debug;
 #if UNITY_EDITOR
     using UnityEditor;
@@ -81,6 +84,7 @@ public class PolyUI : MonoBehaviour {
             var label = new Dropdown.OptionData(cat.ToString().Replace("_", " "));
             BasePolyCategoryDropdown.options.Add(label);
         }
+        BasePolyCategoryDropdown.value = 0;
 
         BasePolyDropdown.ClearOptions();
         foreach (var polyType in Enum.GetValues(typeof(PolyTypes))) {
@@ -215,18 +219,18 @@ public class PolyUI : MonoBehaviour {
         switch (poly.ShapeType)
         {
             case PolyHydra.ShapeTypes.Grid:
-                // TODO Cycle shapes also
-                GridTypeDropdown.value = SaneMod(GridTypeDropdown.value + direction, Enum.GetValues(typeof(PolyHydra.GridTypes)).Length);
+                GridTypeDropdown.value = SaneMod(GridTypeDropdown.value + direction, GridTypeDropdown.options.Count);
                 break;
             case PolyHydra.ShapeTypes.Johnson:
-                JohnsonTypeDropdown.value = SaneMod(JohnsonTypeDropdown.value + direction, Enum.GetValues(typeof(PolyHydra.JohnsonPolyTypes)).Length);
+                JohnsonTypeDropdown.value = SaneMod(JohnsonTypeDropdown.value + direction, JohnsonTypeDropdown.options.Count);
                 break;
             case PolyHydra.ShapeTypes.Other:
-                OtherTypeDropdown.value = SaneMod(OtherTypeDropdown.value + direction, Enum.GetValues(typeof(PolyHydra.OtherPolyTypes)).Length);
+                OtherTypeDropdown.value = SaneMod(OtherTypeDropdown.value + direction, OtherTypeDropdown.options.Count);
                 break;
             case PolyHydra.ShapeTypes.Uniform:
-                // TODO Handle poly categories
-                BasePolyDropdown.value = SaneMod(BasePolyDropdown.value + direction, Enum.GetValues(typeof(PolyTypes)).Length);
+                int polyIndex = SaneMod(BasePolyDropdown.value + direction, BasePolyDropdown.options.Count);
+                //polyIndex = polyIndex == 0 ? 1 : polyIndex;
+                BasePolyDropdown.value = polyIndex;
                 break;
         }
     }
@@ -344,7 +348,6 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.AmountSlider.gameObject.SetActive(opConfig.usesAmount);
         opPrefabManager.AmountInput.gameObject.SetActive(opConfig.usesAmount);
         opPrefabManager.ToggleAnimate.gameObject.SetActive(opConfig.usesAmount);
-//        opPrefabManager.AnimationControls.gameObject.SetActive(opConfig.usesAmount);
         opPrefabManager.GetComponent<RectTransform>().sizeDelta = new Vector2(200, opConfig.usesAmount?238:100);
 
         opPrefabManager.AmountSlider.minValue = opConfig.amountMin;
@@ -382,7 +385,10 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.AmountSlider.value = op.amount;
         opPrefabManager.AmountInput.text = op.amount.ToString();
         opPrefabManager.RandomizeToggle.isOn = op.randomize;
-
+        opPrefabManager.ToggleAnimate.isOn = op.animate;
+        opPrefabManager.AnimRateInput.text = op.animationRate.ToString();
+        opPrefabManager.AnimAmountInput.text = op.animationAmount.ToString();
+        AnimateToggleChanged(op.animate);
 
         opPrefabManager.OpTypeDropdown.onValueChanged.AddListener(delegate{OpTypeChanged();});
         opPrefabManager.FaceSelectionDropdown.onValueChanged.AddListener(delegate{OpsUIToPoly();});
@@ -390,36 +396,23 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.AmountSlider.onValueChanged.AddListener(delegate{AmountSliderChanged();});
         opPrefabManager.AmountInput.onValueChanged.AddListener(delegate{AmountInputChanged();});
         opPrefabManager.RandomizeToggle.onValueChanged.AddListener(delegate{OpsUIToPoly();});
-        
+
         opPrefabManager.UpButton.onClick.AddListener(MoveOpUp);
         opPrefabManager.DownButton.onClick.AddListener(MoveOpDown);
         opPrefabManager.DeleteButton.onClick.AddListener(DeleteOp);
 
         opPrefabManager.ToggleAnimate.onValueChanged.AddListener(AnimateToggleChanged);
-        opPrefabManager.AnimRateInput.onValueChanged.AddListener(AnimRateInputChanged);
-        opPrefabManager.AnimAmountInput.onValueChanged.AddListener(AnimValueInputChanged);
+        opPrefabManager.AnimRateInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opPrefabManager.AnimAmountInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
         
         opPrefabManager.Index = opPrefabs.Count;
         
         void AnimateToggleChanged(bool value)
         {
             opPrefabManager.AnimationControls.gameObject.SetActive(value);
+            OpsUIToPoly();
         }
 
-        void AnimRateInputChanged(string text)
-        {
-            _AnimInputChanged(text, true);
-        }
-
-        void AnimValueInputChanged(string text)
-        {
-            _AnimInputChanged(text, false);
-        }
-
-        void _AnimInputChanged(string text, bool setRate)
-        {
-            // TODO
-        }
 
         // Enable/Disable down buttons as appropriate:
         // We are adding this at the end so it can't move down
@@ -482,6 +475,10 @@ public class PolyUI : MonoBehaviour {
             op.disabled = opPrefabManager.DisabledToggle.isOn;
             op.amount = opPrefabManager.AmountSlider.value;
             op.randomize = opPrefabManager.RandomizeToggle.isOn;
+            op.animate = opPrefabManager.ToggleAnimate.isOn;
+            float tempVal;
+            if (float.TryParse(opPrefabManager.AnimRateInput.text, out tempVal)) op.animationRate = tempVal;
+            if (float.TryParse(opPrefabManager.AnimAmountInput.text, out tempVal)) op.animationAmount = tempVal;
             poly.ConwayOperators[index] = op;
 
         }
@@ -626,16 +623,62 @@ public class PolyUI : MonoBehaviour {
         Rebuild();
     }
 
+    private void FilterBasePolyDropdown(Uniform[] polySubset)
+    {
+        BasePolyDropdown.ClearOptions();
+        polySubset = polySubset == null ? Uniform.Uniforms : polySubset;
+        foreach (var uniform in polySubset) {
+            var label = new Dropdown.OptionData(ToTitleCase(uniform.Name));
+            BasePolyDropdown.options.Add(label);
+        }
+
+        BasePolyDropdown.value = 1;
+    }
+
+    private static string ToTitleCase(string str)
+    {
+        var textInfo = new CultureInfo("en-US").TextInfo;
+        return textInfo.ToTitleCase(str);
+    }
+
     void BasePolyCategoryDropdownChanged(Dropdown change)
     {
-        // TODO
+        Uniform[] polySubset = null;
         poly.UniformPolyTypeCategory = (PolyHydra.PolyTypeCategories)change.value;
+
+        switch (poly.UniformPolyTypeCategory)
+        {
+            case PolyHydra.PolyTypeCategories.All:
+                polySubset = Uniform.Uniforms;
+                break;
+            case PolyHydra.PolyTypeCategories.Archimedean:
+                polySubset = Uniform.Archimedean;
+                break;
+            case PolyHydra.PolyTypeCategories.Convex:
+                polySubset = Uniform.Convex;
+                break;
+            case PolyHydra.PolyTypeCategories.Platonic:
+                polySubset = Uniform.Platonic;
+                break;
+            case PolyHydra.PolyTypeCategories.Prismatic:
+                polySubset = Uniform.Prismatic;
+                break;
+            case PolyHydra.PolyTypeCategories.Star:
+                polySubset = Uniform.Star;
+                break;
+            case PolyHydra.PolyTypeCategories.KeplerPoinsot:
+                polySubset = Uniform.KeplerPoinsot;
+                break;
+       }
+
+        FilterBasePolyDropdown(polySubset);
         Rebuild();
     }
 
     void BasePolyDropdownChanged(Dropdown change)
     {
-        poly.UniformPolyType = (PolyTypes)change.value;
+        var polyName = ToTitleCase(change.options[change.value].text).Replace(" ", "_");
+        poly.UniformPolyType = (PolyTypes)Enum.Parse(typeof(PolyTypes), polyName);
         Rebuild();
         
         if (poly.WythoffPoly!=null && poly.WythoffPoly.IsOneSided)
@@ -647,10 +690,8 @@ public class PolyUI : MonoBehaviour {
             OpsWarning.enabled = false;
         }
 
-        GridTypeDropdown.gameObject.SetActive(change.value == 0);
-        GridShapeDropdown.gameObject.SetActive(change.value == 0);
-        PrismPInput.gameObject.SetActive(change.value > 0 && change.value < 6);
-        PrismQInput.gameObject.SetActive(change.value > 2 && change.value < 6);
+        PrismPInput.gameObject.SetActive((int)poly.UniformPolyType > 0 && change.value < 6);
+        PrismQInput.gameObject.SetActive((int)poly.UniformPolyType > 2 && change.value < 6);
         
     }
     

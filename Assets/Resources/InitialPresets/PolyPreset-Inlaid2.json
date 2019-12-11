@@ -1,12 +1,14 @@
 {
   "Name": "Inlaid2",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Truncated_Octahedron",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Square",
   "PrismP": 0,
   "PrismQ": 0,
   "AppearancePresetName": "Dirty Metal",
@@ -16,21 +18,30 @@
       "FaceSelections": "All",
       "Amount": 0.33,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Lace",
       "FaceSelections": "All",
       "Amount": 0.33,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "FaceRotate",
       "FaceSelections": "All",
       "Amount": 1.0,
       "Randomize": false,
-      "Disabled": true
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

@@ -1,12 +1,14 @@
 {
   "Name": "Dwemer",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Truncated_Icosidodechedon",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Square",
   "PrismP": 0,
   "PrismQ": 0,
   "AppearancePresetName": "Rich",
@@ -16,35 +18,50 @@
       "FaceSelections": "All",
       "Amount": 0.725,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Dual",
       "FaceSelections": "All",
       "Amount": 0.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "FaceScale",
       "FaceSelections": "FourSided",
       "Amount": -0.1,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "FaceRotate",
       "FaceSelections": "ThreeSided",
       "Amount": 20.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Extrude",
       "FaceSelections": "All",
       "Amount": 0.1,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

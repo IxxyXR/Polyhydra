@@ -1,12 +1,14 @@
 {
   "Name": "Space Opera House",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Octahemioctahedron",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Square",
   "PrismP": 6,
   "PrismQ": 5,
   "AppearancePresetName": "Rich",
@@ -16,42 +18,60 @@
       "FaceSelections": "All",
       "Amount": 0.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Extrude",
       "FaceSelections": "ExceptFirst",
       "Amount": 1.125,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "FaceScale",
       "FaceSelections": "FacingUp",
       "Amount": -0.79,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Extrude",
       "FaceSelections": "FacingUp",
       "Amount": 6.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Extrude",
       "FaceSelections": "FacingDown",
       "Amount": 3.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Extrude",
       "FaceSelections": "FacingLevel",
       "Amount": 2.3,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

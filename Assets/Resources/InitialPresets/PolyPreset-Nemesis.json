@@ -1,12 +1,14 @@
 {
   "Name": "Nemesis",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Great_Dodecahedron",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Square",
   "PrismP": 0,
   "PrismQ": 0,
   "AppearancePresetName": "Grooves",
@@ -16,21 +18,30 @@
       "FaceSelections": "FiveSided",
       "Amount": -2.98548985,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Zip",
       "FaceSelections": "All",
       "Amount": -1.61049128,
       "Randomize": false,
-      "Disabled": true
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Exalt",
       "FaceSelections": "All",
       "Amount": 2.47488856,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

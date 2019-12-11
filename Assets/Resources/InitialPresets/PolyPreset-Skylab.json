@@ -1,12 +1,14 @@
 {
   "Name": "Skylab",
   "ShapeType": "Grid",
+  "PolyTypeCategory": "All",
   "PolyType": "Tetrahedron",
   "JohnsonPolyType": "Pyramid",
   "OtherPolyType": "L1",
+  "GridType": "Polar",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Polar",
   "PrismP": 8,
   "PrismQ": 8,
   "AppearancePresetName": "Showroom",
@@ -16,28 +18,40 @@
       "FaceSelections": "All",
       "Amount": 0.55,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Recenter",
       "FaceSelections": "All",
       "Amount": 0.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Spherize",
       "FaceSelections": "All",
       "Amount": -1.6,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "AddDual",
       "FaceSelections": "All",
       "Amount": 1.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

@@ -55,6 +55,7 @@ public class PolyHydra : MonoBehaviour
 
 	public enum PolyTypeCategories
 	{
+		All,
 		Platonic,
 		Prismatic,
 		Archimedean,
@@ -282,7 +283,11 @@ public class PolyHydra : MonoBehaviour
 		public ConwayPoly.FaceSelections faceSelections;
 		public bool randomize;
 		public float amount;
+		public float animatedAmount;
 		public bool disabled;
+		public bool animate;
+		public float animationRate;
+		public float animationAmount;
 	}
 	public List<ConwayOperator> ConwayOperators;
 	
@@ -616,14 +621,14 @@ public class PolyHydra : MonoBehaviour
 		}
 		else
 		{
-			MakeWythoff((int)UniformPolyType);
+			MakeWythoff((int)UniformPolyType + 1);
 		}
 
 	}
 
-	public void MakeWythoff(int polyType)
+	public void MakeWythoff(int polyTypeIndex)
 	{
-		MakeWythoff(Uniform.Uniforms[polyType].Wythoff);
+		MakeWythoff(Uniform.Uniforms[polyTypeIndex].Wythoff);
 	}
 
 	public void MakeWythoff(string symbol)
@@ -728,12 +733,14 @@ public class PolyHydra : MonoBehaviour
 	public static ConwayPoly ApplyOp(ConwayPoly conway, ConwayOperator op)
 	{
 
+		float amount = op.animate ? op.animatedAmount : op.amount;
+
 		switch (op.opType)
 		{
 			case Ops.Identity:
 				break;
 			case Ops.Kis:
-				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Kis(amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.Dual:
 				conway = conway.Dual();
@@ -742,108 +749,108 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Ambo();
 				break;
 			case Ops.Zip:
-				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Kis(amount, op.faceSelections, op.randomize);
 				conway = conway.Dual();
 				break;
 			case Ops.Expand:
-				conway = conway.Expand(op.amount);
+				conway = conway.Expand(amount);
 				break;
 			case Ops.Bevel:
-				conway = conway.Join(op.amount);
-				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Join(amount);
+				conway = conway.Kis(amount, op.faceSelections, op.randomize);
 				conway = conway.Dual();
 				break;
 			case Ops.Join:
-				conway = conway.Join(op.amount);
+				conway = conway.Join(amount);
 				break;
 			case Ops.Needle:
 				conway = conway.Dual();
-				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Kis(amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.Ortho:
 				conway = conway.Ortho();
 				break;
 			case Ops.Meta:
-				conway = conway.Join(op.amount);
+				conway = conway.Join(amount);
 				conway = conway.Dual();
-				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Kis(amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.Truncate:
-				conway = conway.Truncate(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Truncate(amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.Gyro:
-				conway = conway.Gyro(op.amount);
+				conway = conway.Gyro(amount);
 				break;
 			case Ops.Snub:
-				conway = conway.Gyro(op.amount);
+				conway = conway.Gyro(amount);
 				conway = conway.Dual();
 				break;
 			case Ops.Exalt:
 				// TODO return a correct VertexRole array
 				// I suspect the last vertices map to the original shape verts
 				conway = conway.Dual();
-				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Kis(amount, op.faceSelections, op.randomize);
 				conway = conway.Dual();
-				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Kis(amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.Yank:
-				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Kis(amount, op.faceSelections, op.randomize);
 				conway = conway.Dual();
-				conway = conway.Kis(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Kis(amount, op.faceSelections, op.randomize);
 				conway = conway.Dual();
 				break;
 			case Ops.Subdivide:
 				conway = conway.Subdivide();
 				break;
 			case Ops.Loft:
-				conway = conway.Loft(op.amount, op.faceSelections);
+				conway = conway.Loft(amount, op.faceSelections);
 				break;					
 			case Ops.Chamfer:
-				conway = conway.Chamfer(op.amount);
+				conway = conway.Chamfer(amount);
 				break;					
 			case Ops.Quinto:
-				conway = conway.Quinto(op.amount);
+				conway = conway.Quinto(amount);
 				break;
 			case Ops.JoinedLace:
-				conway = conway.JoinedLace(op.amount);
+				conway = conway.JoinedLace(amount);
 				break;
 			case Ops.OppositeLace:
-				conway = conway.OppositeLace(op.amount);
+				conway = conway.OppositeLace(amount);
 				break;
 			case Ops.Lace:
-				conway = conway.Lace(op.amount, op.faceSelections);
+				conway = conway.Lace(amount, op.faceSelections);
 				break;
 			case Ops.Stake:
-				conway = conway.Stake(op.amount, op.faceSelections);
+				conway = conway.Stake(amount, op.faceSelections);
 				break;
 			case Ops.Medial:
-				conway = conway.Medial((int)op.amount);
+				conway = conway.Medial((int)amount);
 				break;
 			case Ops.EdgeMedial:
-				conway = conway.EdgeMedial((int)op.amount);
+				conway = conway.EdgeMedial((int)amount);
 				break;
 //			case Ops.JoinedMedial:
-//				conway = conway.JoinedMedial((int)op.amount);
+//				conway = conway.JoinedMedial((int)amount);
 //				break;
 			case Ops.Propeller:
-				conway = conway.Propeller(op.amount);
+				conway = conway.Propeller(amount);
 				break;
 			case Ops.Whirl:
-				conway = conway.Whirl(op.amount);
+				conway = conway.Whirl(amount);
 				break;
 			case Ops.Volute:
-				conway = conway.Volute(op.amount);
+				conway = conway.Volute(amount);
 				break;
 			case Ops.Shell:
 				// TODO do this properly with shared edges/vertices
-				conway = conway.Extrude(op.amount, false, op.randomize);
+				conway = conway.Extrude(amount, false, op.randomize);
 				break;
 			case Ops.Extrude:
-				//conway = conway.Extrude(op.amount, op.faceSelections, op.randomize);
+				//conway = conway.Extrude(amount, op.faceSelections, op.randomize);
 				if (op.faceSelections == ConwayPoly.FaceSelections.All)
 				{
 					conway = conway.FaceScale(0f, ConwayPoly.FaceSelections.All, false);
-					conway = conway.Extrude(op.amount, false, op.randomize);
+					conway = conway.Extrude(amount, false, op.randomize);
 				}
 				else
 				{
@@ -851,18 +858,18 @@ public class PolyHydra : MonoBehaviour
 					var included = conway.FaceRemove(op.faceSelections, true);
 					included = included.FaceScale(0, ConwayPoly.FaceSelections.All, false);
 					var excluded = conway.FaceRemove(op.faceSelections, false);
-					conway = included.Extrude(op.amount, false, op.randomize);
+					conway = included.Extrude(amount, false, op.randomize);
 					conway.Append(excluded);
 				}
 				break;
 			case Ops.VertexScale:
-				conway = conway.VertexScale(op.amount, op.faceSelections, op.randomize);
+				conway = conway.VertexScale(amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.VertexRotate:
-				conway = conway.VertexRotate(op.amount, op.faceSelections, op.randomize);
+				conway = conway.VertexRotate(amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.VertexFlex:
-				conway = conway.VertexFlex(op.amount, op.faceSelections, op.randomize);
+				conway = conway.VertexFlex(amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.FaceOffset:
 				// TODO Faceroles ignored. Vertex Roles
@@ -870,25 +877,25 @@ public class PolyHydra : MonoBehaviour
 				var origRoles = conway.FaceRoles;
 				conway = conway.FaceScale(0, ConwayPoly.FaceSelections.All, false);
 				conway.FaceRoles = origRoles;
-				conway = conway.Offset(op.amount, op.faceSelections, op.randomize);
+				conway = conway.Offset(amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.FaceScale:
-				conway = conway.FaceScale(op.amount, op.faceSelections, op.randomize);
+				conway = conway.FaceScale(amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.FaceRotate:
-				conway = conway.FaceRotate(op.amount, op.faceSelections, 0, op.randomize);
+				conway = conway.FaceRotate(amount, op.faceSelections, 0, op.randomize);
 				break;
 //					case Ops.Ribbon:
-//						conway = conway.Ribbon(op.amount, false, 0.1f);
+//						conway = conway.Ribbon(amount, false, 0.1f);
 //						break;
 //					case Ops.FaceTranslate:
-//						conway = conway.FaceTranslate(op.amount, op.faceSelections);
+//						conway = conway.FaceTranslate(amount, op.faceSelections);
 //						break;
 //					case Ops.FaceRotateX:
-//						conway = conway.FaceRotate(op.amount, op.faceSelections, 1);
+//						conway = conway.FaceRotate(amount, op.faceSelections, 1);
 //						break;
 //					case Ops.FaceRotateY:
-//						conway = conway.FaceRotate(op.amount, op.faceSelections, 2);
+//						conway = conway.FaceRotate(amount, op.faceSelections, 2);
 //						break;
 			case Ops.FaceRemove:
 				conway = conway.FaceRemove(op.faceSelections, false);
@@ -900,25 +907,25 @@ public class PolyHydra : MonoBehaviour
 				conway.FillHoles();
 				break;
 			case Ops.Hinge:
-				conway = conway.Hinge(op.amount);
+				conway = conway.Hinge(amount);
 				break;
 			case Ops.AddDual:
-				conway = conway.AddDual(op.amount);
+				conway = conway.AddDual(amount);
 				break;
 			case Ops.AddMirrorX:
-				conway = conway.AddMirrored(Vector3.right, op.amount);
+				conway = conway.AddMirrored(Vector3.right, amount);
 				break;
 			case Ops.AddMirrorY:
-				conway = conway.AddMirrored(Vector3.up, op.amount);
+				conway = conway.AddMirrored(Vector3.up, amount);
 				break;
 			case Ops.AddMirrorZ:
-				conway = conway.AddMirrored(Vector3.forward, op.amount);
+				conway = conway.AddMirrored(Vector3.forward, amount);
 				break;
 			case Ops.Canonicalize:
-				conway = conway.Canonicalize(op.amount, op.amount);
+				conway = conway.Canonicalize(amount, amount);
 				break;
 			case Ops.Spherize:
-				conway = conway.Spherize(op.faceSelections, op.amount);
+				conway = conway.Spherize(op.faceSelections, amount);
 				break;
 			case Ops.Recenter:
 				conway.Recenter();
@@ -927,7 +934,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.SitLevel();
 				break;
 			case Ops.Stretch:
-				conway = conway.Stretch(op.amount);
+				conway = conway.Stretch(amount);
 				break;
 		}
 

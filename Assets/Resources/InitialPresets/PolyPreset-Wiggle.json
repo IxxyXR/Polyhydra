@@ -1,12 +1,14 @@
 {
   "Name": "Wiggle",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Truncated_Octahedron",
   "JohnsonPolyType": "ElongatedPyramid",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Square",
   "PrismP": 2,
   "PrismQ": 1,
   "AppearancePresetName": "Black Mirror",
@@ -16,14 +18,20 @@
       "FaceSelections": "All",
       "Amount": 0.66,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "VertexRotate",
       "FaceSelections": "SixSided",
-      "Amount": -39.14,
+      "Amount": 54.04,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": true,
+      "AnimationRate": 2.0,
+      "AnimationAmount": 55.0
     }
   ]
 }

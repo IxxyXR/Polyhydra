@@ -1,12 +1,14 @@
 {
   "Name": "Godwin's Pouffe",
   "ShapeType": "Uniform",
-  "PolyType": "Pentagonal_Antiprism",
+  "PolyTypeCategory": "All",
+  "PolyType": "Polygonal_Antiprism",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": false,
-  "GridType": "Square",
   "PrismP": 5,
   "PrismQ": 5,
   "AppearancePresetName": "Rich",
@@ -16,14 +18,20 @@
       "FaceSelections": "All",
       "Amount": 0.3333,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "EdgeMedial",
       "FaceSelections": "All",
       "Amount": 2.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

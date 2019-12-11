@@ -1,12 +1,14 @@
 {
   "Name": "Joining",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Icosahedron",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Square",
   "PrismP": 10,
   "PrismQ": 10,
   "AppearancePresetName": "Rich",
@@ -16,7 +18,10 @@
       "FaceSelections": "All",
       "Amount": 0.333333343,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

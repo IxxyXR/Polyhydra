@@ -1,12 +1,14 @@
 {
   "Name": "Tunnel",
   "ShapeType": "Johnson",
+  "PolyTypeCategory": "All",
   "PolyType": "Cube",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "U_3_6_3_6",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "U_3_6_3_6",
   "PrismP": 4,
   "PrismQ": 2,
   "AppearancePresetName": "Dirty Metal",
@@ -16,49 +18,70 @@
       "FaceSelections": "FacingStraightUp",
       "Amount": 2.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "FaceRemove",
       "FaceSelections": "FacingStraightDown",
       "Amount": 2.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "FaceRemove",
       "FaceSelections": "FacingStraightDown",
       "Amount": 2.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Ortho",
       "FaceSelections": "All",
       "Amount": 0.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Ortho",
       "FaceSelections": "All",
       "Amount": 0.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Whirl",
       "FaceSelections": "All",
       "Amount": 0.25,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Extrude",
       "FaceSelections": "All",
       "Amount": -0.3,
       "Randomize": true,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

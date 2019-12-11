@@ -1,12 +1,14 @@
 {
   "Name": "Tiles",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Cube",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": false,
-  "GridType": "Square",
   "PrismP": 4,
   "PrismQ": 0,
   "AppearancePresetName": "Subtle",
@@ -16,28 +18,40 @@
       "FaceSelections": "All",
       "Amount": 0.33,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Lace",
       "FaceSelections": "All",
       "Amount": 0.5,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "FaceRotate",
       "FaceSelections": "All",
       "Amount": 19.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Recenter",
       "FaceSelections": "All",
       "Amount": 0.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

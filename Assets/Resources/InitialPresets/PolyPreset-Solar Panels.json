@@ -1,12 +1,14 @@
 {
   "Name": "Solar Panels",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Truncated_Icosahedron",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Square",
   "PrismP": 5,
   "PrismQ": 2,
   "AppearancePresetName": "RGB",
@@ -16,28 +18,40 @@
       "FaceSelections": "All",
       "Amount": 0.58,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "VertexScale",
       "FaceSelections": "New",
       "Amount": 0.2,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Loft",
       "FaceSelections": "FiveSided",
       "Amount": 1.25,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "VertexScale",
       "FaceSelections": "ThreeSided",
       "Amount": -0.1875,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

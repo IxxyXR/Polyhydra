@@ -1,12 +1,14 @@
 {
   "Name": "Lampwork",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Small_Cubicuboctahedron",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Square",
   "PrismP": 0,
   "PrismQ": 0,
   "AppearancePresetName": "Black Mirror",
@@ -16,28 +18,40 @@
       "FaceSelections": "All",
       "Amount": 0.3333333,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Loft",
       "FaceSelections": "All",
       "Amount": 0.5,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "FaceScale",
       "FaceSelections": "All",
       "Amount": -0.08,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Extrude",
       "FaceSelections": "All",
       "Amount": -0.03,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

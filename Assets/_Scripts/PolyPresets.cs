@@ -97,10 +97,16 @@ public class PolyPresets : MonoBehaviour {
 		{
 			string rawJson = File.ReadAllText(file.FullName);
 			// Legacy Fixes
+			rawJson = rawJson
 			// Grid is no longer a uniform polytype. Set it to any valid value (Cube)
-			rawJson = rawJson.Replace(
+			.Replace(
 				"PolyType\": \"Grid\"",
 				"PolyType\": \"Cube\""
+			)
+			// We renamed prisms
+			.Replace(
+				"PolyType\": \"Penta",
+				"PolyType\": \"Poly"
 			);
 			var preset = new PolyPreset();
 			preset = JsonConvert.DeserializeObject<PolyPreset>(rawJson);

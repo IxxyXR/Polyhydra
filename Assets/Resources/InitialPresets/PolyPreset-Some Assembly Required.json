@@ -1,12 +1,14 @@
 {
   "Name": "Some Assembly Required",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Truncated_Octahedron",
   "JohnsonPolyType": "Dipyramid",
   "OtherPolyType": "L1",
+  "GridType": "Hex",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": false,
-  "GridType": "Hex",
   "PrismP": 3,
   "PrismQ": 2,
   "AppearancePresetName": "Edged Glass",
@@ -16,28 +18,40 @@
       "FaceSelections": "All",
       "Amount": 0.46,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "FaceScale",
       "FaceSelections": "All",
       "Amount": -0.68,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Extrude",
       "FaceSelections": "All",
       "Amount": 0.12,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Dual",
       "FaceSelections": "All",
       "Amount": 0.12,
       "Randomize": false,
-      "Disabled": true
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

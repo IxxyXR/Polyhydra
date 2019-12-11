@@ -15,7 +15,7 @@ public class PolyPreset {
 	public string Name;
 
 	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.ShapeTypes ShapeType;
-	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.PolyTypeCategories UniformPolyTypeCategory;
+	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.PolyTypeCategories PolyTypeCategory;
 	[JsonConverter(typeof(StringEnumConverter))] public PolyTypes PolyType;
 	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.JohnsonPolyTypes JohnsonPolyType;
 	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.OtherPolyTypes OtherPolyType;
@@ -34,6 +34,9 @@ public class PolyPreset {
 		public float Amount;
 		public bool Randomize;
 		public bool Disabled;
+		public bool Animate;
+		public float AnimationRate;
+		public float AnimationAmount;
 	}
 	
 	public Op[] Ops;
@@ -44,7 +47,7 @@ public class PolyPreset {
 		AppearancePresetName = poly.APresetName;
 		ShapeType = poly.ShapeType;
 		PolyType = poly.UniformPolyType;
-		UniformPolyTypeCategory = poly.UniformPolyTypeCategory;
+		PolyTypeCategory = poly.UniformPolyTypeCategory;
 		JohnsonPolyType = poly.JohnsonPolyType;
 		OtherPolyType = poly.OtherPolyType;
 		GridType = poly.GridType;
@@ -64,7 +67,10 @@ public class PolyPreset {
 				FaceSelections = polyOp.faceSelections,
 				Amount = polyOp.amount,
 				Randomize = polyOp.randomize,
-				Disabled = polyOp.disabled
+				Disabled = polyOp.disabled,
+				Animate = polyOp.animate,
+				AnimationRate = polyOp.animationRate,
+				AnimationAmount = polyOp.animationAmount,
 			};
 			Ops[index] = op;
 		}
@@ -73,9 +79,8 @@ public class PolyPreset {
 	public void ApplyToPoly(PolyHydra poly)
 	{
 		poly.ShapeType = ShapeType;
+		poly.UniformPolyTypeCategory = PolyTypeCategory;
 		poly.UniformPolyType = PolyType;
-		poly.UniformPolyTypeCategory = UniformPolyTypeCategory;
-
 		poly.JohnsonPolyType = JohnsonPolyType;
 		poly.OtherPolyType = OtherPolyType;
 		poly.BypassOps = BypassOps;
@@ -96,7 +101,10 @@ public class PolyPreset {
 				faceSelections = presetOp.FaceSelections,
 				amount = presetOp.Amount,
 				randomize = presetOp.Randomize,
-				disabled = presetOp.Disabled
+				disabled = presetOp.Disabled,
+				animate = presetOp.Animate,
+				animationRate = presetOp.AnimationRate,
+				animationAmount = presetOp.AnimationAmount,
 			};
 			poly.ConwayOperators.Add(op);
 		}

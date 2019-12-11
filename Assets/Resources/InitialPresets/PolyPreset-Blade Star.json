@@ -1,12 +1,14 @@
 {
   "Name": "Blade Star",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Great_Stellated_Dodecahedron",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Square",
   "PrismP": 0,
   "PrismQ": 0,
   "AppearancePresetName": "Colorful Dark Edges ",
@@ -16,14 +18,20 @@
       "FaceSelections": "All",
       "Amount": -4.75,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Kis",
       "FaceSelections": "ThreeSided",
       "Amount": 0.11,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

@@ -1,12 +1,14 @@
 {
   "Name": "Kryptonite",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Great_Rhombicuboctahedron",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": false,
-  "GridType": "Square",
   "PrismP": 5,
   "PrismQ": 2,
   "AppearancePresetName": "Tinted Glass",
@@ -16,42 +18,60 @@
       "FaceSelections": "All",
       "Amount": 0.333333,
       "Randomize": false,
-      "Disabled": true
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Expand",
       "FaceSelections": "All",
       "Amount": -14.3080359,
       "Randomize": false,
-      "Disabled": true
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "FaceScale",
       "FaceSelections": "All",
       "Amount": 0.39794445,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Extrude",
       "FaceSelections": "All",
       "Amount": -4.112723,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Kis",
       "FaceSelections": "FiveSided",
       "Amount": 1.63058281,
       "Randomize": false,
-      "Disabled": true
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Kis",
       "FaceSelections": "SixSided",
       "Amount": 0.789063,
       "Randomize": false,
-      "Disabled": true
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

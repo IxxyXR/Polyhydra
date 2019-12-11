@@ -1,12 +1,14 @@
 {
   "Name": "Tetrapod",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Tetrahedron",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": false,
-  "GridType": "Square",
   "PrismP": 10,
   "PrismQ": 10,
   "AppearancePresetName": "Grooves",
@@ -16,21 +18,30 @@
       "FaceSelections": "All",
       "Amount": 0.5,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Spherize",
       "FaceSelections": "All",
       "Amount": 0.2,
       "Randomize": false,
-      "Disabled": true
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Expand",
       "FaceSelections": "All",
       "Amount": 0.77,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

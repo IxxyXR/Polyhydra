@@ -1,12 +1,14 @@
 {
   "Name": "Cos its a hedron",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Icosahedron",
   "JohnsonPolyType": "Rotunda",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Square",
   "PrismP": 5,
   "PrismQ": 2,
   "AppearancePresetName": "Rich",
@@ -16,21 +18,30 @@
       "FaceSelections": "All",
       "Amount": 0.4,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Medial",
       "FaceSelections": "All",
       "Amount": 2.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Dual",
       "FaceSelections": "All",
       "Amount": 0.06,
       "Randomize": false,
-      "Disabled": true
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

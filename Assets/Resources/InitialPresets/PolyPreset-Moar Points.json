@@ -1,12 +1,14 @@
 {
   "Name": "Moar Points",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Great_Dodecahedron",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Square",
   "PrismP": 0,
   "PrismQ": 0,
   "AppearancePresetName": "Dirty Metal",
@@ -16,21 +18,30 @@
       "FaceSelections": "FiveSided",
       "Amount": 0.56863904,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Needle",
       "FaceSelections": "All",
       "Amount": -0.207031369,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Exalt",
       "FaceSelections": "All",
       "Amount": 0.120536089,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

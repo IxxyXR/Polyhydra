@@ -1,12 +1,14 @@
 {
   "Name": "Sarlacc",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Cube",
   "JohnsonPolyType": "ElongatedPyramid",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": false,
-  "GridType": "Square",
   "PrismP": 5,
   "PrismQ": 2,
   "AppearancePresetName": "Colorful Dark Edges ",
@@ -16,28 +18,40 @@
       "FaceSelections": "FacingLevel",
       "Amount": 0.26,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Shell",
       "FaceSelections": "All",
       "Amount": 1.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "EdgeMedial",
       "FaceSelections": "All",
       "Amount": 4.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Canonicalize",
       "FaceSelections": "All",
       "Amount": 0.1,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

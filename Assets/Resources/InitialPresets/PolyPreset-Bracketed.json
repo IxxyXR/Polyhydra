@@ -1,12 +1,14 @@
 {
   "Name": "Bracketed",
   "ShapeType": "Uniform",
-  "PolyType": "Pentagonal_Prism",
+  "PolyTypeCategory": "All",
+  "PolyType": "Polygonal_Prism",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Square",
   "PrismP": 5,
   "PrismQ": 5,
   "AppearancePresetName": "Gray and Colorful",
@@ -16,28 +18,40 @@
       "FaceSelections": "All",
       "Amount": 1.125,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "FaceScale",
       "FaceSelections": "All",
       "Amount": -0.1875,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "FaceRotate",
       "FaceSelections": "All",
       "Amount": 70.62501,
       "Randomize": false,
-      "Disabled": true
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Extrude",
       "FaceSelections": "All",
       "Amount": 0.375,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

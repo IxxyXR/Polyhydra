@@ -1,12 +1,14 @@
 {
   "Name": "Fresnel",
   "ShapeType": "Grid",
+  "PolyTypeCategory": "All",
   "PolyType": "Tetrahedron",
   "JohnsonPolyType": "Pyramid",
   "OtherPolyType": "L1",
+  "GridType": "Polar",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": false,
-  "GridType": "Polar",
   "PrismP": 12,
   "PrismQ": 9,
   "AppearancePresetName": "Black Mirror",
@@ -16,35 +18,50 @@
       "FaceSelections": "All",
       "Amount": 0.7,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Recenter",
       "FaceSelections": "All",
       "Amount": 0.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Spherize",
       "FaceSelections": "All",
       "Amount": 0.2,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Dual",
       "FaceSelections": "All",
       "Amount": 0.0,
       "Randomize": false,
-      "Disabled": true
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Ambo",
       "FaceSelections": "All",
       "Amount": 0.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

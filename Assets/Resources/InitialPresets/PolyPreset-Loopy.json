@@ -1,12 +1,14 @@
 {
   "Name": "Loopy",
   "ShapeType": "Grid",
+  "PolyTypeCategory": "All",
   "PolyType": "Great_Rhombidodecahedron",
   "JohnsonPolyType": "Antiprism",
   "OtherPolyType": "L1",
+  "GridType": "Isometric",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": false,
-  "GridType": "Isometric",
   "PrismP": 5,
   "PrismQ": 5,
   "AppearancePresetName": "Edged Glass",
@@ -16,7 +18,10 @@
       "FaceSelections": "Outer",
       "Amount": 0.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }

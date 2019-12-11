@@ -1,12 +1,14 @@
 {
   "Name": "Clam",
   "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
   "PolyType": "Cube",
   "JohnsonPolyType": "ElongatedPyramid",
   "OtherPolyType": "L1",
+  "GridType": "Hex",
+  "GridShape": "Plane",
   "BypassOps": false,
   "TwoSided": true,
-  "GridType": "Hex",
   "PrismP": 5,
   "PrismQ": 2,
   "AppearancePresetName": "Edged Tiles",
@@ -16,35 +18,50 @@
       "FaceSelections": "FacingLevel",
       "Amount": 0.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "FaceRemove",
       "FaceSelections": "FacingDown",
       "Amount": 0.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Shell",
       "FaceSelections": "All",
       "Amount": 1.5,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Medial",
       "FaceSelections": "All",
       "Amount": 4.0,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     },
     {
       "OpType": "Spherize",
       "FaceSelections": "All",
       "Amount": 0.65,
       "Randomize": false,
-      "Disabled": false
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
     }
   ]
 }
