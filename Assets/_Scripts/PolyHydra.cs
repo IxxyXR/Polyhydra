@@ -489,7 +489,7 @@ public class PolyHydra : MonoBehaviour
 	
 	private void MakePolyhedron(bool disableThreading=false)
 	{
-		if (ShapeType == ShapeTypes.Uniform && UniformPolyType != PolyTypes.Grid)
+		if (ShapeType == ShapeTypes.Uniform)
 		{
 			MakeWythoff();
 			try
@@ -502,7 +502,7 @@ public class PolyHydra : MonoBehaviour
 				throw;
 			}
 		}
-		else if (ShapeType == ShapeTypes.Grid || UniformPolyType == PolyTypes.Grid)
+		else if (ShapeType == ShapeTypes.Grid)
 		{
 			_conwayPoly = MakeGrid(GridType);
 		}

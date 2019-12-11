@@ -58,8 +58,6 @@ namespace Wythoff {
 		
         public static Uniform[] Uniforms = {
             
-            new Uniform("-", "Grid", "Dual Grid", 0, 0),
-
             // Dihedral Schwarz Triangles (D5 only)
 
             // (2 2 5) (D1/5) 
@@ -206,12 +204,15 @@ namespace Wythoff {
                 "great hexacronic icositetrahedron",
                 50, 77
             ),
+
+            // TODO Fix
             new Uniform( // 20
                 "4/3 4|3",
                 "cubohemioctahedron",
                 "hexahemioctacron",
                 51, 78
             ),
+
             new Uniform( // 21
                 "4/3 3 4|",
                 "cubitruncated cuboctahedron",
@@ -227,6 +228,7 @@ namespace Wythoff {
                 "great deltoidal icositetrahedron",
                 59, 85
             ),
+            // TODO Fix
             new Uniform( // 23
                 "3/2 2 4|",
                 "small rhombihexahedron",
@@ -242,6 +244,8 @@ namespace Wythoff {
                 "great triakisoctahedron",
                 66, 92
             ),
+
+            // TODO Fix small holes
             new Uniform( // 25
                 "4/3 2 3|",
                 "great truncated cuboctahedron",
@@ -251,6 +255,7 @@ namespace Wythoff {
 
             // (4/3 3/2 2) (O11) 
 
+            // TODO Fix
             new Uniform( // 26
                 "4/3 3/2 2|",
                 "great rhombihexahedron",
@@ -373,6 +378,8 @@ namespace Wythoff {
                 "medial deltoidal hexecontahedron",
                 48, 76
             ),
+
+            // TODO Fix
             new Uniform( // 44
                 "2 5/2 5|",
                 "small rhombidodecahedron",
@@ -439,12 +446,16 @@ namespace Wythoff {
                 "great icosacronic hexecontahedron",
                 62, 88
             ),
+
+            // TODO Fix
             new Uniform( // 54
                 "3/2 3|5",
                 "small icosihemidodecahedron",
                 "small icosihemidodecacron",
                 63, 89
             ),
+
+            // TODO Fix
             new Uniform( // 55
                 "3/2 3 5|",
                 "small dodecicosahedron",
@@ -454,6 +465,7 @@ namespace Wythoff {
 
             // (5/4 5 5) (I6c) 
 
+            // TODO Fix
             new Uniform( // 56
                 "5/4 5|5",
                 "small dodecahemidodecahedron",
@@ -487,6 +499,8 @@ namespace Wythoff {
                 "great stellapentakisdodecahedron",
                 71, 95
             ),
+
+            // TODO Fix
             new Uniform( // 61
                 "2 5/2 3|",
                 "rhombicosahedron",
@@ -529,12 +543,16 @@ namespace Wythoff {
                 "great dodecacronic hexecontahedron",
                 77, 99
             ),
+
+            // TODO Fix
             new Uniform( // 67
                 "5/3 5/2|3",
                 "small dodecahemicosahedron",
                 "small dodecahemicosacron",
                 78, 100
             ),
+
+            // TODO Fix
             new Uniform( // 68
                 "5/3 5/2 3|",
                 "great dodecicosahedron",
@@ -550,6 +568,7 @@ namespace Wythoff {
 
             // (5/4 3 5) (I10b) 
 
+            // TODO Fix
             new Uniform( // 70
                 "5/4 5|3",
                 "great dodecahemicosahedron",
@@ -595,6 +614,7 @@ namespace Wythoff {
 
             // (3/2 5/3 3) (I18b) 
 
+            // TODO Fix
             new Uniform( // 76
                 "3/2 3|5/3",
                 "great icosihemidodecahedron",
@@ -613,6 +633,7 @@ namespace Wythoff {
 
             // (3/2 5/3 2) (I23) 
 
+            // TODO Fix
             new Uniform( // 78
                 "3/2 5/3 2|",
                 "great rhombidodecahedron",
