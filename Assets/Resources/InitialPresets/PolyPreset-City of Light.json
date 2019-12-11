@@ -1,0 +1,50 @@
+{
+  "Name": "City of Light",
+  "ShapeType": "Grid",
+  "PolyType": "Icosahedron",
+  "JohnsonPolyType": "Antiprism",
+  "OtherPolyType": "L1",
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "U_4_6_12",
+  "PrismP": 6,
+  "PrismQ": 6,
+  "AppearancePresetName": "Gem",
+  "Ops": [
+    {
+      "OpType": "Quinto",
+      "FaceSelections": "All",
+      "Amount": 0.5,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceRemove",
+      "FaceSelections": "Existing",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Whirl",
+      "FaceSelections": "All",
+      "Amount": 0.25,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceRemove",
+      "FaceSelections": "Outer",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "All",
+      "Amount": 0.4,
+      "Randomize": true,
+      "Disabled": false
+    }
+  ]
+}

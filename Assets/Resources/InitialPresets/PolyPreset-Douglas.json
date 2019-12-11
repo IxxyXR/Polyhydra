@@ -1,0 +1,50 @@
+{
+  "Name": "Douglas",
+  "ShapeType": "Uniform",
+  "PolyType": "Icosahedron",
+  "JohnsonPolyType": "Antiprism",
+  "OtherPolyType": "L1",
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Isometric",
+  "PrismP": 4,
+  "PrismQ": 4,
+  "AppearancePresetName": "Black Mirror",
+  "Ops": [
+    {
+      "OpType": "Loft",
+      "FaceSelections": "All",
+      "Amount": 0.8,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceRemove",
+      "FaceSelections": "Existing",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Whirl",
+      "FaceSelections": "All",
+      "Amount": 0.25,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceRemove",
+      "FaceSelections": "Outer",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Shell",
+      "FaceSelections": "All",
+      "Amount": 0.1,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

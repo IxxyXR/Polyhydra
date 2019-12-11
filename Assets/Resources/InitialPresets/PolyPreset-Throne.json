@@ -1,0 +1,50 @@
+{
+  "Name": "Throne",
+  "ShapeType": "Johnson",
+  "PolyType": "Small_Dodecicosidodecahedron",
+  "JohnsonPolyType": "Dipyramid",
+  "OtherPolyType": "L1",
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 13,
+  "PrismQ": 2,
+  "AppearancePresetName": "Showroom",
+  "Ops": [
+    {
+      "OpType": "SitLevel",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceKeep",
+      "FaceSelections": "TopHalf",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Recenter",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Shell",
+      "FaceSelections": "All",
+      "Amount": 0.2,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "AddMirrorX",
+      "FaceSelections": "All",
+      "Amount": 0.3,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

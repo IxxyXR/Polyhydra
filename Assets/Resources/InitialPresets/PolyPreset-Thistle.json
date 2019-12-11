@@ -1,0 +1,36 @@
+{
+  "Name": "Thistle",
+  "ShapeType": "Johnson",
+  "PolyType": "Cube",
+  "JohnsonPolyType": "Bicupola",
+  "OtherPolyType": "L1",
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "U_3_6_3_6",
+  "PrismP": 8,
+  "PrismQ": 2,
+  "AppearancePresetName": "Dirty Metal",
+  "Ops": [
+    {
+      "OpType": "OppositeLace",
+      "FaceSelections": "All",
+      "Amount": 0.5,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Canonicalize",
+      "FaceSelections": "All",
+      "Amount": 0.1,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Recenter",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

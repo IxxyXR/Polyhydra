@@ -1,0 +1,36 @@
+{
+  "Name": "Deco",
+  "ShapeType": "Grid",
+  "PolyType": "Truncated_Cube",
+  "JohnsonPolyType": "ElongatedPyramid",
+  "OtherPolyType": "L1",
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "U_3_6_3_6",
+  "PrismP": 2,
+  "PrismQ": 2,
+  "AppearancePresetName": "Black Mirror",
+  "Ops": [
+    {
+      "OpType": "Lace",
+      "FaceSelections": "All",
+      "Amount": 0.87,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "AddMirrorX",
+      "FaceSelections": "All",
+      "Amount": -1.44,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Ortho",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

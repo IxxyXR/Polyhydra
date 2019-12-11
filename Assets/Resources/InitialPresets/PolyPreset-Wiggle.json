@@ -1,0 +1,29 @@
+{
+  "Name": "Wiggle",
+  "ShapeType": "Uniform",
+  "PolyType": "Truncated_Octahedron",
+  "JohnsonPolyType": "ElongatedPyramid",
+  "OtherPolyType": "L1",
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "Square",
+  "PrismP": 2,
+  "PrismQ": 1,
+  "AppearancePresetName": "Black Mirror",
+  "Ops": [
+    {
+      "OpType": "Lace",
+      "FaceSelections": "All",
+      "Amount": 0.66,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "VertexRotate",
+      "FaceSelections": "SixSided",
+      "Amount": -39.14,
+      "Randomize": false,
+      "Disabled": false
+    }
+  ]
+}

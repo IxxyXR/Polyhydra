@@ -1,0 +1,64 @@
+{
+  "Name": "Tunnel",
+  "ShapeType": "Johnson",
+  "PolyType": "Cube",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
+  "BypassOps": false,
+  "TwoSided": true,
+  "GridType": "U_3_6_3_6",
+  "PrismP": 4,
+  "PrismQ": 2,
+  "AppearancePresetName": "Dirty Metal",
+  "Ops": [
+    {
+      "OpType": "FaceRemove",
+      "FaceSelections": "FacingStraightUp",
+      "Amount": 2.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceRemove",
+      "FaceSelections": "FacingStraightDown",
+      "Amount": 2.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "FaceRemove",
+      "FaceSelections": "FacingStraightDown",
+      "Amount": 2.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Ortho",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Ortho",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Whirl",
+      "FaceSelections": "All",
+      "Amount": 0.25,
+      "Randomize": false,
+      "Disabled": false
+    },
+    {
+      "OpType": "Extrude",
+      "FaceSelections": "All",
+      "Amount": -0.3,
+      "Randomize": true,
+      "Disabled": false
+    }
+  ]
+}
