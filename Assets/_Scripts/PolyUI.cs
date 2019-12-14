@@ -94,7 +94,7 @@ public class PolyUI : MonoBehaviour {
 
         GridTypeDropdown.ClearOptions();        
         foreach (var gridType in Enum.GetValues(typeof(PolyHydra.GridTypes))) {
-            var label = new Dropdown.OptionData(gridType.ToString().Replace("_", " "));
+            var label = new Dropdown.OptionData(gridType.ToString().Replace("_", ""));
             GridTypeDropdown.options.Add(label);
         }
 

@@ -83,6 +83,17 @@ public class PolyHydra : MonoBehaviour
 	{
 		Plane,
 		Torus,
+		Cylinder,
+		Cone,
+		Conic_Frustum,
+		Mobius,
+		Torus_Trefoil,
+		Klein,
+		Klein2,
+		Roman,
+		Roman_Boy,
+		Cross_Cap,
+		Cross_Cap2,
 	}
 
 	public enum GridTypes
@@ -91,6 +102,11 @@ public class PolyHydra : MonoBehaviour
 		Isometric,
 		Hex,
 		Polar,
+
+		U_4_4_4_4,
+		U_3_3_3_3_3_3,
+		U_6_6_6,
+
 		U_3_6_3_6,
 		U_3_3_3_4_4,
 		U_3_3_4_3_4,
@@ -197,7 +213,8 @@ public class PolyHydra : MonoBehaviour
 		Spherize,
 		Recenter,
 		SitLevel,
-		Stretch
+		Stretch,
+		Weld
 	}
 
 	public readonly int[] NonOrientablePolyTypes = {
@@ -398,7 +415,8 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Spherize, new OpConfig{usesFaces=true, amountDefault = 1.0f, amountMin = -2, amountMax = 2}},
 			{Ops.Stretch, new OpConfig{amountDefault = 1.0f, amountMin = 0, amountMax = 3f}},
 			{Ops.Recenter, new OpConfig{usesAmount=false}},
-			{Ops.SitLevel, new OpConfig{usesAmount=false}}
+			{Ops.SitLevel, new OpConfig{usesAmount=false}},
+			{Ops.Weld, new OpConfig{amountDefault = 0.001f, amountMin = 0, amountMax = .25f}}
 
 		};
 	}
@@ -432,6 +450,13 @@ public class PolyHydra : MonoBehaviour
 				return ConwayPoly.MakeHexGrid(PrismP, PrismQ);
 			case GridTypes.Polar:
 				return ConwayPoly.MakePolarGrid(PrismP, PrismQ);
+
+			case GridTypes.U_4_4_4_4:
+				return ConwayPoly.MakeUnitileGrid(1, (int)gridShape, PrismP, PrismQ);
+			case GridTypes.U_3_3_3_3_3_3:
+				return ConwayPoly.MakeUnitileGrid(2, (int)gridShape, PrismP, PrismQ);
+			case GridTypes.U_6_6_6:
+				return ConwayPoly.MakeUnitileGrid(3, (int)gridShape, PrismP, PrismQ);
 
 			case GridTypes.U_3_6_3_6:
 				return ConwayPoly.MakeUnitileGrid(4, (int)gridShape, PrismP, PrismQ);
@@ -935,6 +960,9 @@ public class PolyHydra : MonoBehaviour
 				break;
 			case Ops.Stretch:
 				conway = conway.Stretch(amount);
+				break;
+			case Ops.Weld:
+				conway = conway.Weld(amount);
 				break;
 		}
 

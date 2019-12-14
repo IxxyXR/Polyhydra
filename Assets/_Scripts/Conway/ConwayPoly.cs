@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.UIElements;
 using Wythoff;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -16,7 +17,6 @@ namespace Conway
 
 	public class ConwayPoly
 	{
-
 		private Random random;
 		private const float TOLERANCE = 0.02f;
 		private PointOctree<Vertex> octree;
@@ -41,11 +41,72 @@ namespace Conway
 				octree.Add(v, v.Position);
 			}
 		}
+
 		public Vertex[] FindNeighbours(Vertex v, float distance)
 		{
-			if (octree == null) InitOctree();
 			return octree.GetNearby(v.Position, distance);
 		}
+
+		public ConwayPoly Weld(float distance)
+		{
+			if (distance < .00001f) distance = .00001f;  // We always weld by a very small amount. Disable the op if you don't want to weld at all.
+			var vertexPoints = new List<Vector3>();
+			var faceIndices = new List<IEnumerable<int>>();
+			var faceRoles = new List<Roles>();
+			var vertexRoles = new List<Roles>();
+			var reverseDict = new Dictionary<Vertex, int>();
+			var vertexReplacementDict = new Dictionary<int, int>();
+
+			var groups = new List<Vertex[]>();
+			var checkedVerts = new HashSet<Vertex>();
+
+			InitOctree();
+
+			for (var i = 0; i < Vertices.Count; i++)
+			{
+				var v = Vertices[i];
+				reverseDict[v] = i;
+				if (checkedVerts.Contains(v)) continue;
+				checkedVerts.Add(v);
+				var neighbours = FindNeighbours(v, distance);
+				if (neighbours.Length < 1) continue;
+				groups.Add(neighbours);
+				checkedVerts.UnionWith(neighbours);
+			}
+
+			foreach (var group in groups)
+			{
+				vertexPoints.Add(group[0].Position);
+				int VertToKeep = -1;
+				for (var i = 0; i < group.Length; i++)
+				{
+					var vertIndex = reverseDict[group[i]];
+					if (i == 0)
+					{
+						VertToKeep = vertexPoints.Count - 1;
+					}
+					vertexReplacementDict[vertIndex] = VertToKeep;
+				}
+			}
+
+			foreach (var faceVertIndices in ListFacesByVertexIndices())
+			{
+				var newFaceVertIndices = new List<int>();
+				foreach (var vertIndex in faceVertIndices)
+				{
+					newFaceVertIndices.Add(vertexReplacementDict[vertIndex]);
+				}
+				faceIndices.Add(newFaceVertIndices);
+			}
+
+			faceRoles = Enumerable.Repeat(Roles.New, faceIndices.Count).ToList();
+			vertexRoles = Enumerable.Repeat(Roles.New, vertexPoints.Count).ToList();
+			Debug.Log($"Welded. Before: {Vertices.Count} After: {vertexPoints.Count}");
+
+			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+		}
+
+
 
 		public ConwayPoly(WythoffPoly source, bool abortOnFailure=true) : this()
 		{
@@ -2792,7 +2853,7 @@ namespace Conway
 
 		}
 
-		public static ConwayPoly MakeUnitileGrid(int pattern, int gridShape, int rows = 5, int cols = 5)
+		public static ConwayPoly MakeUnitileGrid(int pattern, int gridShape, int rows = 5, int cols = 5, bool weld=false)
 		{
 			var ut = new Unitile(pattern, rows, cols);
 			switch (gridShape)
@@ -2802,6 +2863,39 @@ namespace Conway
 					break;
 				case 1:
 					ut.torus();
+					break;
+				case 2:
+					ut.conic_frust(1);
+					break;
+				case 3:
+					ut.conic_frust(0.0001f);
+					break;
+				case 4:
+					ut.conic_frust();
+					break;
+				case 5:
+					ut.mobius();
+					break;
+				case 6:
+					ut.torus_trefoil();
+					break;
+				case 7:
+					ut.klein();
+					break;
+				case 8:
+					ut.klein2();
+					break;
+				case 9:
+					ut.roman();
+					break;
+				case 10:
+					ut.roman_boy();
+					break;
+				case 11:
+					ut.cross_cap();
+					break;
+				case 12:
+					ut.cross_cap2();
 					break;
 			}
 			var vertexRoles = Enumerable.Repeat(Roles.New, ut.raw_verts.Count);
@@ -2814,6 +2908,7 @@ namespace Conway
 
 			var poly = new ConwayPoly(ut.raw_verts, ut.raw_faces, faceRoles, vertexRoles);
 			poly.Recenter();
+			if (gridShape > 0 && weld) poly = poly.Weld(0.001f);
 			return poly;
 		}
 
