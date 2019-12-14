@@ -5977,7 +5977,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3460530530819894603}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.02536518
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6730,7 +6730,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -339}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3460530530077112314
 MonoBehaviour:
@@ -8453,7 +8453,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3460530530428987745}
-  - component: {fileID: 3460530530428987747}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -8482,22 +8481,6 @@ RectTransform:
   m_AnchoredPosition: {x: 579.5, y: 312}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3460530530428987747
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3460530530428987744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1ee2fcdc1d06b348bf3bd66fd56b638, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  x: 1
-  y: 1
-  z: 0.1
-  active: 1
 --- !u!1 &3460530530455175119
 GameObject:
   m_ObjectHideFlags: 0

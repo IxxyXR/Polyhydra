@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿    using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -19,6 +19,7 @@ public class QuickPolyAnimate : MonoBehaviour
 
     public void AnimateNext()
     {
+        float adjustment = Mathf.PI / 60;
         bool isAnimating = false;  // Set to true if any op is animated
         for (var i = 0; i < _poly.ConwayOperators.Count; i++)
         {
@@ -29,7 +30,7 @@ public class QuickPolyAnimate : MonoBehaviour
             isAnimating = true;
             var amplitude = op.animationAmount;
             var rate = op.animationRate;
-            float offset = Mathf.Sin(frame * rate * 0.05f) * amplitude;
+            float offset = Mathf.Sin(frame * rate * adjustment) * amplitude;
             offset = Mathf.Round(offset * 100) / 100f;
             op.animatedAmount = op.amount + offset;
             _poly.ConwayOperators[i] = op;
