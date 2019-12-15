@@ -87,7 +87,7 @@ public class PolyHydra : MonoBehaviour
 		Cone,
 		Conic_Frustum,
 		Mobius,
-		Torus_Trefoil,
+//		Torus_Trefoil,
 		Klein,
 		Klein2,
 		Roman,
@@ -102,10 +102,6 @@ public class PolyHydra : MonoBehaviour
 		Isometric,
 		Hex,
 		Polar,
-
-		U_4_4_4_4,
-		U_3_3_3_3_3_3,
-		U_6_6_6,
 
 		U_3_6_3_6,
 		U_3_3_3_4_4,
@@ -440,43 +436,65 @@ public class PolyHydra : MonoBehaviour
 
 	public ConwayPoly MakeGrid(GridTypes gridType, GridShapes gridShape)
 	{
+		ConwayPoly conway = null;
+
 		switch (gridType)
 		{
-			case GridTypes.Square:
-				return ConwayPoly.MakeGrid(PrismP, PrismQ);
-			case GridTypes.Isometric:
-				return ConwayPoly.MakeIsoGrid(PrismP, PrismQ);
-			case GridTypes.Hex:
-				return ConwayPoly.MakeHexGrid(PrismP, PrismQ);
-			case GridTypes.Polar:
-				return ConwayPoly.MakePolarGrid(PrismP, PrismQ);
+//			case GridTypes.Square:
+//				conway = ConwayPoly.MakeGrid(PrismP, PrismQ);
+//				break;
+//			case GridTypes.Isometric:
+//				conway = ConwayPoly.MakeIsoGrid(PrismP, PrismQ);
+//				break;
+//			case GridTypes.Hex:
+//				conway = ConwayPoly.MakeHexGrid(PrismP, PrismQ);
+//				break;
 
-			case GridTypes.U_4_4_4_4:
-				return ConwayPoly.MakeUnitileGrid(1, (int)gridShape, PrismP, PrismQ);
-			case GridTypes.U_3_3_3_3_3_3:
-				return ConwayPoly.MakeUnitileGrid(2, (int)gridShape, PrismP, PrismQ);
-			case GridTypes.U_6_6_6:
-				return ConwayPoly.MakeUnitileGrid(3, (int)gridShape, PrismP, PrismQ);
+			case GridTypes.Square:
+				conway = ConwayPoly.MakeUnitileGrid(1, (int)gridShape, PrismP, PrismQ);
+				break;
+			case GridTypes.Isometric:
+				conway = ConwayPoly.MakeUnitileGrid(2, (int)gridShape, PrismP, PrismQ);
+				break;
+			case GridTypes.Hex:
+				conway = ConwayPoly.MakeUnitileGrid(3, (int)gridShape, PrismP, PrismQ);
+				break;
 
 			case GridTypes.U_3_6_3_6:
-				return ConwayPoly.MakeUnitileGrid(4, (int)gridShape, PrismP, PrismQ);
+				conway = ConwayPoly.MakeUnitileGrid(4, (int)gridShape, PrismP, PrismQ);
+				break;
 			case GridTypes.U_3_3_3_4_4:
-				return ConwayPoly.MakeUnitileGrid(5, (int)gridShape, PrismP, PrismQ);
+				conway = ConwayPoly.MakeUnitileGrid(5, (int)gridShape, PrismP, PrismQ);
+				break;
 			case GridTypes.U_3_3_4_3_4:
-				return ConwayPoly.MakeUnitileGrid(6, (int)gridShape, PrismP, PrismQ);
+				conway = ConwayPoly.MakeUnitileGrid(6, (int)gridShape, PrismP, PrismQ);
+				break;
 //			case GridTypes.U_3_3_3_3_6:
-//				return ConwayPoly.MakeUnitileGrid(7, (int)gridShape, PrismP, PrismQ);
+//				conway = ConwayPoly.MakeUnitileGrid(7, (int)gridShape, PrismP, PrismQ);
+//				break;
 			case GridTypes.U_3_12_12:
-				return ConwayPoly.MakeUnitileGrid(8, (int)gridShape, PrismP, PrismQ);
+				conway = ConwayPoly.MakeUnitileGrid(8, (int)gridShape, PrismP, PrismQ);
+				break;
 			case GridTypes.U_4_8_8:
-				return ConwayPoly.MakeUnitileGrid(9, (int)gridShape, PrismP, PrismQ);
+				conway = ConwayPoly.MakeUnitileGrid(9, (int)gridShape, PrismP, PrismQ);
+				break;
 			case GridTypes.U_3_4_6_4:
-				return ConwayPoly.MakeUnitileGrid(10, (int)gridShape, PrismP, PrismQ);
+				conway = ConwayPoly.MakeUnitileGrid(10, (int)gridShape, PrismP, PrismQ);
+				break;
 			case GridTypes.U_4_6_12:
-				return ConwayPoly.MakeUnitileGrid(11, (int)gridShape, PrismP, PrismQ);
+				conway = ConwayPoly.MakeUnitileGrid(11, (int)gridShape, PrismP, PrismQ);
+				break;
+
+			case GridTypes.Polar:
+				conway = ConwayPoly.MakePolarGrid(PrismP, PrismQ);
+				break;
+
 		}
 
-		return null;
+		// Welding only seems to work reliably on simpler shapres
+		if (gridShape == GridShapes.Cylinder || gridShape == GridShapes.Torus) conway = conway.Weld(0.0001f);
+
+		return conway;
 	}
 
 	public ConwayPoly MakeJohnsonPoly(JohnsonPolyTypes johnsonPolyType)

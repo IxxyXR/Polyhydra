@@ -1,0 +1,28 @@
+{
+  "Name": "Hex Chamfer",
+  "ShapeType": "Grid",
+  "PolyTypeCategory": "All",
+  "PolyType": "Cube",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
+  "GridType": "Hex",
+  "GridShape": "Plane",
+  "BypassOps": false,
+  "TwoSided": false,
+  "PrismP": 5,
+  "PrismQ": 4,
+  "AppearancePresetName": "Colorful Dark Edges ",
+  "Ops": [
+    {
+      "OpType": "Chamfer",
+      "FaceSelections": "All",
+      "Amount": 0.5,
+      "AnimatedAmount": 0.86,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": true,
+      "AnimationRate": 2.0,
+      "AnimationAmount": 0.49
+    }
+  ]
+}

@@ -17,6 +17,7 @@
       "OpType": "Lace",
       "FaceSelections": "All",
       "Amount": 0.66,
+      "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,
@@ -26,7 +27,8 @@
     {
       "OpType": "VertexRotate",
       "FaceSelections": "SixSided",
-      "Amount": 54.04,
+      "Amount": 0.0,
+      "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": true,

@@ -11,12 +11,13 @@
   "TwoSided": false,
   "PrismP": 5,
   "PrismQ": 5,
-  "AppearancePresetName": "Edged Glass",
+  "AppearancePresetName": "Thick Edges",
   "Ops": [
     {
       "OpType": "Bevel",
       "FaceSelections": "Outer",
       "Amount": 0.0,
+      "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,

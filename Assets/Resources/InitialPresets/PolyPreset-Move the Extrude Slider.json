@@ -17,6 +17,7 @@
       "OpType": "FaceScale",
       "FaceSelections": "All",
       "Amount": -0.03,
+      "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,
@@ -26,12 +27,13 @@
     {
       "OpType": "Extrude",
       "FaceSelections": "All",
-      "Amount": 0.13,
+      "Amount": 0.0,
+      "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
-      "Animate": false,
-      "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "Animate": true,
+      "AnimationRate": 0.5,
+      "AnimationAmount": 0.75
     }
   ]
 }

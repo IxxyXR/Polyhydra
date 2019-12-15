@@ -17,6 +17,7 @@
       "OpType": "Chamfer",
       "FaceSelections": "All",
       "Amount": 0.333333343,
+      "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,
