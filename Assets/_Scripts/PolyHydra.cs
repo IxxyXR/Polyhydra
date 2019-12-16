@@ -1328,7 +1328,8 @@ public class PolyHydra : MonoBehaviour
 		if (hasNaked || forceTwosided) {
 			target.RecalculateNormals();
 		}
-
+//		target.RecalculateNormals();
+		target.RecalculateTangents();
 		return target;
 	}
 
