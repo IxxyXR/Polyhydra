@@ -260,7 +260,7 @@ public class PolyUI : MonoBehaviour {
     {
         UpdatePolyUI();
         UpdateOpsUI();
-        UpdateAnimUI();
+        //UpdateAnimUI();
     }
 
     void Rebuild()
