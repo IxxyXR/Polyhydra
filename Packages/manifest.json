@@ -1,13 +1,14 @@
 {
- "scopedRegistries": [
+  "scopedRegistries": [
     {
       "name": "Keijiro",
       "url": "https://registry.npmjs.com",
-      "scopes": [ "jp.keijiro" ]
+      "scopes": [
+        "jp.keijiro"
+      ]
     }
   ],
   "dependencies": {
-    "jp.keijiro.rtmidi": "1.0.3",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.ext.nunit": "1.0.0",
@@ -36,6 +37,9 @@
     "com.unity.visualeffectgraph": "7.1.6",
     "com.unity.xr.legacyinputhelpers": "2.0.6",
     "com.unity.xr.oculus.android": "2.38.4",
+    "com.unity.xr.oculus.standalone": "2.38.4",
+    "com.unity.xr.openvr.standalone": "2.0.5",
+    "jp.keijiro.rtmidi": "1.0.3",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",

@@ -10,6 +10,8 @@ public class PolyMidi : MonoBehaviour
 
    public PolyHydra poly;
    public int UpdateEvery = 4;
+   private int LastFrameRendered = -1;
+   private AppearancePresets aPresets;
 
    MidiProbe _probe;
    MidiOutPort OutPort;
@@ -90,7 +92,7 @@ public class PolyMidi : MonoBehaviour
 
    void Start()
    {
-
+      aPresets = FindObjectOfType<AppearancePresets>();
       ScanPorts();
       poly.ConwayOperators.Clear();
       for (var i=0; i < 8; i++)
@@ -208,12 +210,21 @@ public class PolyMidi : MonoBehaviour
 
    void HandleControlChange(byte channel, byte number, byte value)
    {
+      if (Time.frameCount % UpdateEvery != 0) return;
+      if (Time.frameCount == LastFrameRendered) return; // We've already rendered on this frame
+      LastFrameRendered = Time.frameCount;
       int slider = number - 48;
       if (slider == 8)
       {
          int polyIndex = Mathf.FloorToInt((value / 127f) * Polys.Length);
          poly.UniformPolyType = Polys[polyIndex];
          FinalisePoly();
+      }
+      else if (slider == 7)
+      {
+         int apresetIndex = Mathf.FloorToInt((value / 127f) * aPresets.Items.Count);
+         var apreset = aPresets.Items[apresetIndex];
+         aPresets.ApplyPresetToPoly(apreset);
       }
       else
       {
@@ -256,7 +267,6 @@ public class PolyMidi : MonoBehaviour
 
    void Update()
    {
-      if (Time.frameCount % UpdateEvery != 0) return;
       InPort.ProcessMessages();
    }
 
