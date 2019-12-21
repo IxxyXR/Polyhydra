@@ -1,0 +1,105 @@
+{
+  "Name": "Creation",
+  "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
+  "PolyType": "Snub_Dodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
+  "GridType": "Isometric",
+  "GridShape": "Cylinder",
+  "BypassOps": false,
+  "TwoSided": false,
+  "PrismP": 6,
+  "PrismQ": 4,
+  "AppearancePresetName": "Tinted Glass",
+  "Ops": [
+    {
+      "OpType": "EdgeMedial",
+      "FaceSelections": "All",
+      "Amount": 3.20472431,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "VertexScale",
+      "FaceSelections": "NewAlt",
+      "Amount": -0.4015748,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "Whirl",
+      "FaceSelections": "All",
+      "Amount": 0.468503922,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "VertexScale",
+      "FaceSelections": "Existing",
+      "Amount": -0.779527545,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "Lace",
+      "FaceSelections": "All",
+      "Amount": 0.9527559,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "All",
+      "Amount": 0.1,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "All",
+      "Amount": 0.1,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "All",
+      "Amount": 0.1,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    }
+  ]
+}
