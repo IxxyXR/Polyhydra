@@ -762,7 +762,7 @@ namespace Conway
 					var vertex = edge.Vertex.Position;
 					var newVertex = Vector3.LerpUnclamped(vertex, centroid, ratio);
 					vertexPoints.Add(newVertex);
-					vertexRoles.Add(Roles.New);
+					vertexRoles.Add(Roles.Existing);
 					newInsetFace[i] = vertexIndex;
 					newVertices[edge.Name] = vertexIndex++;
 					edge = edge.Next;

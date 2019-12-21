@@ -186,6 +186,7 @@ public class PolyHydra : MonoBehaviour
 
 		Extrude,
 		Shell,
+		Skeleton,
 		VertexScale,
 		VertexRotate,
 		VertexFlex,
@@ -392,11 +393,12 @@ public class PolyHydra : MonoBehaviour
 			//{Ops.Ribbon, new OpConfig{}},
 			{Ops.Extrude, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = 0, amountSafeMax = 1, usesRandomize=true}},
 			{Ops.Shell, new OpConfig{amountDefault = 0.1f, amountMin = -6, amountSafeMin = 0, amountSafeMax = 1, amountMax = 6}},
-			{Ops.VertexScale, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = 0, amountSafeMax = 1, usesRandomize=true}},
+			{Ops.Skeleton, new OpConfig{amountDefault = 0.1f, amountMin = -6, amountSafeMin = 0, amountSafeMax = 1, amountMax = 6}},
+			{Ops.VertexScale, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 1, usesRandomize=true}},
 			{Ops.VertexRotate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180, amountSafeMin = -180, amountSafeMax = 180, usesRandomize=true}},
 			{Ops.VertexFlex, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 1, usesRandomize=true}},
 			//{Ops.FaceTranslate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6}},
-			{Ops.FaceScale, new OpConfig{usesFaces=true, amountDefault = -0.03f, amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2, usesRandomize=true}},
+			{Ops.FaceScale, new OpConfig{usesFaces=true, amountDefault = -0.03f, amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 0, usesRandomize=true}},
 			{Ops.FaceRotate, new OpConfig{usesFaces=true, amountDefault = 45f, amountMin = -180, amountMax = 180, amountSafeMin = -180, amountSafeMax = 180, usesRandomize=true}},
 //			{Ops.FaceRotateX, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180}},
 //			{Ops.FaceRotateY, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180}},
@@ -733,7 +735,7 @@ public class PolyHydra : MonoBehaviour
 			var size = mesh.bounds.size;
 			var maxDimension = Mathf.Max(size.x, size.y, size.z);
 			var scale = (1f / maxDimension) * 2f;
-			if (scale > 0)
+			if (scale > 0 && scale != Mathf.Infinity)
 			{
 				transform.localScale = new Vector3(scale, scale, scale);
 			}
@@ -887,6 +889,10 @@ public class PolyHydra : MonoBehaviour
 				break;
 			case Ops.Shell:
 				// TODO do this properly with shared edges/vertices
+				conway = conway.Extrude(amount, false, op.randomize);
+				break;
+			case Ops.Skeleton:
+				conway = conway.FaceRemove(op.faceSelections, true);
 				conway = conway.Extrude(amount, false, op.randomize);
 				break;
 			case Ops.Extrude:
