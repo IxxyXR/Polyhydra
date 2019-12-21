@@ -8,10 +8,10 @@
   "GridType": "Square",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "PrismP": 5,
   "PrismQ": 5,
-  "AppearancePresetName": "Cracked Ice",
+  "AppearancePresetName": "Subtle",
   "Ops": [
     {
       "OpType": "Stake",

@@ -8,7 +8,7 @@
   "GridType": "Square",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "PrismP": 5,
   "PrismQ": 2,
   "AppearancePresetName": "Gray and Colorful",

@@ -8,7 +8,7 @@
   "GridType": "Square",
   "GridShape": "Cylinder",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "PrismP": 16,
   "PrismQ": 14,
   "AppearancePresetName": "Edged Glass",

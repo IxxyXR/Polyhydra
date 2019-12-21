@@ -1,17 +1,17 @@
 {
   "Name": "Inlaid",
-  "ShapeType": "Uniform",
+  "ShapeType": "Johnson",
   "PolyTypeCategory": "All",
   "PolyType": "Truncated_Cuboctahedron",
-  "JohnsonPolyType": "Prism",
+  "JohnsonPolyType": "Rotunda",
   "OtherPolyType": "L1",
   "GridType": "Square",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": true,
-  "PrismP": 0,
+  "TwoSided": false,
+  "PrismP": 8,
   "PrismQ": 0,
-  "AppearancePresetName": "Rich",
+  "AppearancePresetName": "Subtle",
   "Ops": [
     {
       "OpType": "Lace",

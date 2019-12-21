@@ -8,10 +8,10 @@
   "GridType": "Hex",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "PrismP": 5,
   "PrismQ": 5,
-  "AppearancePresetName": "Grooves",
+  "AppearancePresetName": "Vectrex",
   "Ops": [
     {
       "OpType": "FaceRemove",

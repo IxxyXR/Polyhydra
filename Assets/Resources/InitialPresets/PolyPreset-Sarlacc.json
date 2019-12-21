@@ -11,7 +11,7 @@
   "TwoSided": false,
   "PrismP": 5,
   "PrismQ": 2,
-  "AppearancePresetName": "Colorful Dark Edges ",
+  "AppearancePresetName": "Graph Paper",
   "Ops": [
     {
       "OpType": "FaceRemove",

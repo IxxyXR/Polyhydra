@@ -8,15 +8,26 @@
   "GridType": "Square",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "PrismP": 0,
   "PrismQ": 0,
-  "AppearancePresetName": "Black Mirror",
+  "AppearancePresetName": "Showroom",
   "Ops": [
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "FourSided",
+      "Amount": -0.8,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
     {
       "OpType": "Gyro",
       "FaceSelections": "All",
-      "Amount": 0.3333333,
+      "Amount": 0.26,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
@@ -27,7 +38,7 @@
     {
       "OpType": "FaceRotate",
       "FaceSelections": "All",
-      "Amount": -39.375,
+      "Amount": -34.88,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
