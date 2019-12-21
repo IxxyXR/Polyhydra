@@ -12,7 +12,7 @@ public class AppearancePresets : MonoBehaviour {
 	public Volume Volume;
 	public List<AppearancePreset> Items;
 	public int editorPresetIndex;
-	
+
 	private const string PresetFileNamePrefix = "AppearancePreset-";
 	
 	public AppearancePreset ApplyPresetToPoly(string presetName)
