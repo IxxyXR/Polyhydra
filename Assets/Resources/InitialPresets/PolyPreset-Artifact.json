@@ -1,7 +1,7 @@
 {
   "Name": "Artifact",
   "ShapeType": "Uniform",
-  "PolyTypeCategory": "Convex",
+  "PolyTypeCategory": "Archimedean",
   "PolyType": "Cuboctahedron",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
