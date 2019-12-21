@@ -20,7 +20,7 @@ public class PolyMidi : MonoBehaviour
    MidiProbe _probe;
    MidiOutPort OutPort;
    MidiInPort InPort;
-   int[] Colors = {1, 3, 5};
+   int[] Colors = {1, 5, 3};
 
    private PolyTypes[] Polys =
    {
@@ -235,12 +235,12 @@ public class PolyMidi : MonoBehaviour
                   if (row <= 3 && (op.faceSelections == ConwayPoly.FaceSelections.Existing ||
                                    op.faceSelections == ConwayPoly.FaceSelections.New))
                   {
-                     OutPort.SendNoteOn(0, note, Colors[0]);
+                     OutPort.SendNoteOn(0, note, Colors[column % 2]);
                   }
                   else if (row > 3 && (op.faceSelections == ConwayPoly.FaceSelections.AllNew ||
                                        op.faceSelections == ConwayPoly.FaceSelections.NewAlt))
                   {
-                     OutPort.SendNoteOn(0, note, Colors[0]);
+                     OutPort.SendNoteOn(0, note, Colors[column % 2]);
                   }
                   else
                   {
@@ -250,7 +250,7 @@ public class PolyMidi : MonoBehaviour
                }
                else
                {
-                  OutPort.SendNoteOn(0, note, Colors[0]);
+                  OutPort.SendNoteOn(0, note, Colors[column % 2]);
                }
 
             }
