@@ -22,6 +22,106 @@ public class PolyMidi : MonoBehaviour
    MidiInPort InPort;
    int[] Colors = {1, 5, 3};
 
+   private List<(int, PolyHydra.JohnsonPolyTypes)> Johnsons = new List<(int, PolyHydra.JohnsonPolyTypes)>
+   {
+      (3, PolyHydra.JohnsonPolyTypes.Prism),
+      (5, PolyHydra.JohnsonPolyTypes.Prism),
+      (6, PolyHydra.JohnsonPolyTypes.Prism),
+//      (7, PolyHydra.JohnsonPolyTypes.Prism),
+      (8, PolyHydra.JohnsonPolyTypes.Prism),
+
+//      (3, PolyHydra.JohnsonPolyTypes.Antiprism),
+      (4, PolyHydra.JohnsonPolyTypes.Antiprism),
+      (5, PolyHydra.JohnsonPolyTypes.Antiprism),
+      (6, PolyHydra.JohnsonPolyTypes.Antiprism),
+//      (7, PolyHydra.JohnsonPolyTypes.Antiprism),
+//      (8, PolyHydra.JohnsonPolyTypes.Antiprism),
+
+//      (4, PolyHydra.JohnsonPolyTypes.Pyramid),
+//      (5, PolyHydra.JohnsonPolyTypes.Pyramid),
+//      (6, PolyHydra.JohnsonPolyTypes.Pyramid),
+////      (7, PolyHydra.JohnsonPolyTypes.Pyramid),
+//      (8, PolyHydra.JohnsonPolyTypes.Pyramid),
+
+//      (3, PolyHydra.JohnsonPolyTypes.ElongatedPyramid),
+//      (4, PolyHydra.JohnsonPolyTypes.ElongatedPyramid),
+//      (5, PolyHydra.JohnsonPolyTypes.ElongatedPyramid),
+//      (6, PolyHydra.JohnsonPolyTypes.ElongatedPyramid),
+//      (7, PolyHydra.JohnsonPolyTypes.ElongatedPyramid),
+//      (8, PolyHydra.JohnsonPolyTypes.ElongatedPyramid),
+
+//      (3, PolyHydra.JohnsonPolyTypes.GyroelongatedPyramid),
+//      (4, PolyHydra.JohnsonPolyTypes.GyroelongatedPyramid),
+//      (5, PolyHydra.JohnsonPolyTypes.GyroelongatedPyramid),
+//      (6, PolyHydra.JohnsonPolyTypes.GyroelongatedPyramid),
+//      (7, PolyHydra.JohnsonPolyTypes.GyroelongatedPyramid),
+//      (8, PolyHydra.JohnsonPolyTypes.GyroelongatedPyramid),
+
+      (3, PolyHydra.JohnsonPolyTypes.Dipyramid),
+      (5, PolyHydra.JohnsonPolyTypes.Dipyramid),
+      (6, PolyHydra.JohnsonPolyTypes.Dipyramid),
+//      (7, PolyHydra.JohnsonPolyTypes.Dipyramid),
+//      (8, PolyHydra.JohnsonPolyTypes.Dipyramid),
+
+      (3, PolyHydra.JohnsonPolyTypes.ElongatedDipyramid),
+      (4, PolyHydra.JohnsonPolyTypes.ElongatedDipyramid),
+      (5, PolyHydra.JohnsonPolyTypes.ElongatedDipyramid),
+      (6, PolyHydra.JohnsonPolyTypes.ElongatedDipyramid),
+//      (7, PolyHydra.JohnsonPolyTypes.ElongatedDipyramid),
+//      (8, PolyHydra.JohnsonPolyTypes.ElongatedDipyramid),
+
+      (3, PolyHydra.JohnsonPolyTypes.GyroelongatedDipyramid),
+      (4, PolyHydra.JohnsonPolyTypes.GyroelongatedDipyramid),
+//      (5, PolyHydra.JohnsonPolyTypes.GyroelongatedDipyramid),
+      (6, PolyHydra.JohnsonPolyTypes.GyroelongatedDipyramid),
+//      (7, PolyHydra.JohnsonPolyTypes.GyroelongatedDipyramid),
+//      (8, PolyHydra.JohnsonPolyTypes.GyroelongatedDipyramid),
+
+//      (3, PolyHydra.JohnsonPolyTypes.Cupola),
+//      (4, PolyHydra.JohnsonPolyTypes.Cupola),
+//      (5, PolyHydra.JohnsonPolyTypes.Cupola),
+//      (6, PolyHydra.JohnsonPolyTypes.Cupola),
+//      (7, PolyHydra.JohnsonPolyTypes.Cupola),
+//      (8, PolyHydra.JohnsonPolyTypes.Cupola),
+
+//      (3, PolyHydra.JohnsonPolyTypes.ElongatedCupola),
+//      (4, PolyHydra.JohnsonPolyTypes.ElongatedCupola),
+//      (5, PolyHydra.JohnsonPolyTypes.ElongatedCupola),
+//      (6, PolyHydra.JohnsonPolyTypes.ElongatedCupola),
+//      (7, PolyHydra.JohnsonPolyTypes.ElongatedCupola),
+//      (8, PolyHydra.JohnsonPolyTypes.ElongatedCupola),
+//
+//      (3, PolyHydra.JohnsonPolyTypes.GyroelongatedCupola),
+//      (4, PolyHydra.JohnsonPolyTypes.GyroelongatedCupola),
+//      (5, PolyHydra.JohnsonPolyTypes.GyroelongatedCupola),
+//      (6, PolyHydra.JohnsonPolyTypes.GyroelongatedCupola),
+//      (7, PolyHydra.JohnsonPolyTypes.GyroelongatedCupola),
+//      (8, PolyHydra.JohnsonPolyTypes.GyroelongatedCupola),
+
+      (3, PolyHydra.JohnsonPolyTypes.Bicupola),
+      (4, PolyHydra.JohnsonPolyTypes.Bicupola),
+//      (5, PolyHydra.JohnsonPolyTypes.Bicupola),
+//      (6, PolyHydra.JohnsonPolyTypes.Bicupola),
+//      (7, PolyHydra.JohnsonPolyTypes.Bicupola),
+//      (8, PolyHydra.JohnsonPolyTypes.Bicupola),
+
+//      (3, PolyHydra.JohnsonPolyTypes.ElongatedBicupola),
+//      (4, PolyHydra.JohnsonPolyTypes.ElongatedBicupola),
+//      (5, PolyHydra.JohnsonPolyTypes.ElongatedBicupola),
+//      (6, PolyHydra.JohnsonPolyTypes.ElongatedBicupola),
+//      (7, PolyHydra.JohnsonPolyTypes.ElongatedBicupola),
+//      (8, PolyHydra.JohnsonPolyTypes.ElongatedBicupola),
+
+//      (3, PolyHydra.JohnsonPolyTypes.GyroelongatedBicupola),
+//      (4, PolyHydra.JohnsonPolyTypes.GyroelongatedBicupola),
+//      (5, PolyHydra.JohnsonPolyTypes.GyroelongatedBicupola),
+//      (6, PolyHydra.JohnsonPolyTypes.GyroelongatedBicupola),
+//      (7, PolyHydra.JohnsonPolyTypes.GyroelongatedBicupola),
+//      (8, PolyHydra.JohnsonPolyTypes.GyroelongatedBicupola),
+
+      (3, PolyHydra.JohnsonPolyTypes.Rotunda),
+   };
+
    private PolyTypes[] Polys =
    {
       PolyTypes.Tetrahedron,
@@ -41,18 +141,6 @@ public class PolyMidi : MonoBehaviour
       PolyTypes.Truncated_Icosahedron,
       PolyTypes.Icosidodecahedron,
       PolyTypes.Great_Dodecahedron,
-      PolyTypes.Polygonal_Prism,
-      PolyTypes.Polygonal_Prism,
-      PolyTypes.Polygonal_Prism,
-      PolyTypes.Polygonal_Prism,
-      PolyTypes.Polygonal_Prism,
-      PolyTypes.Polygonal_Prism,
-      PolyTypes.Polygonal_Antiprism,
-      PolyTypes.Polygonal_Antiprism,
-      PolyTypes.Polygonal_Antiprism,
-      PolyTypes.Polygonal_Antiprism,
-      PolyTypes.Polygonal_Antiprism,
-      PolyTypes.Polygonal_Antiprism,
    };
 
    private PolyHydra.Ops[] OpsWithExistingFaceMode =
@@ -382,7 +470,7 @@ public class PolyMidi : MonoBehaviour
 
    private int TotalShapeCount()
    {
-      return Polys.Length;
+      return Polys.Length + Johnsons.Count;
    }
 
    void HandleControlChange(byte channel, byte number, byte value)
@@ -396,14 +484,17 @@ public class PolyMidi : MonoBehaviour
          int shapeIndex = Mathf.FloorToInt((value / 127f) * TotalShapeCount());
          if (shapeIndex < Polys.Length)
          {
+            poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
             var polyType = Polys[shapeIndex];
             poly.UniformPolyType = polyType;
-
-            if (polyType == PolyTypes.Polygonal_Prism || polyType == PolyTypes.Polygonal_Antiprism)
-            {
-               int prismType = shapeIndex - Array.IndexOf(Polys, polyType);
-               poly.PrismP = prismType + 3;
-            }
+         }
+         else
+         {
+            poly.ShapeType = PolyHydra.ShapeTypes.Johnson;
+            int johnsonIndex = shapeIndex - Polys.Length;
+            var johnsonType = Johnsons[johnsonIndex];
+            poly.JohnsonPolyType = johnsonType.Item2;
+            poly.PrismP = johnsonType.Item1;
          }
          FinalisePoly();
       }
