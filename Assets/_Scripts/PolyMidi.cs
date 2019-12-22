@@ -15,7 +15,7 @@ public class PolyMidi : MonoBehaviour
    public PolyHydra poly;
    public int UpdateEvery = 4;
    private int LastFrameRendered = -1;
-   private AppearancePresets aPresets;
+   public AppearancePresets aPresets;
 
    MidiProbe _probe;
    MidiOutPort OutPort;
@@ -271,7 +271,6 @@ public class PolyMidi : MonoBehaviour
 
    void Start()
    {
-      aPresets = FindObjectOfType<AppearancePresets>();
       ScanPorts();
       poly.ConwayOperators.Clear();
       for (var i=0; i < 8; i++)
