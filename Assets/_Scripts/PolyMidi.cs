@@ -22,6 +22,8 @@ public class PolyMidi : MonoBehaviour
    MidiInPort InPort;
    int[] Colors = {1, 5, 3};
 
+   private const int MAXOPS = 7;
+
    private List<(int, PolyHydra.JohnsonPolyTypes)> Johnsons = new List<(int, PolyHydra.JohnsonPolyTypes)>
    {
       (3, PolyHydra.JohnsonPolyTypes.Prism),
@@ -273,7 +275,17 @@ public class PolyMidi : MonoBehaviour
    {
       ScanPorts();
       poly.ConwayOperators.Clear();
-      for (var i=0; i < 8; i++)
+      InitOps(MAXOPS);
+      SetLEDs();
+      FinalisePoly();
+
+//      OutPort.SendAllOff(0);
+
+   }
+
+   private void InitOps(int count)
+   {
+      for (var i=0; i < count; i++)
       {
          var opType = Ops[0];
          if (poly.ConwayOperators == null)
@@ -287,10 +299,6 @@ public class PolyMidi : MonoBehaviour
             amount = poly.opconfigs[opType].amountDefault
          });
       }
-      SetLEDs();
-      FinalisePoly();
-
-//      OutPort.SendAllOff(0);
 
    }
 
@@ -309,7 +317,7 @@ public class PolyMidi : MonoBehaviour
 
    void SetLEDs()
    {
-      for (var column = 0; column < 8; column++)
+      for (var column = 0; column < MAXOPS; column++)
       {
          if (!poly.ConwayOperators[column].disabled)
          {
@@ -544,6 +552,13 @@ public class PolyMidi : MonoBehaviour
 
    void Update()
    {
+      // Check if we have enough ops (we might have loaded a preset with < 3 ops)
+      if (poly.ConwayOperators.Count != MAXOPS)
+      {
+         InitOps(MAXOPS);
+         SetLEDs();
+      }
+
       InPort.ProcessMessages();
    }
 
