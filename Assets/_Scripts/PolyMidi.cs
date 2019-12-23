@@ -418,7 +418,14 @@ public class PolyMidi : MonoBehaviour
             int faceSelectionMode = -1;
             op.opType = GetOp(column, row);
             faceSelectionMode = row % 2;
-            if (OpsWithExistingFaceMode.ToList().Contains(poly.ConwayOperators[column - 1].opType))
+            PolyHydra.ConwayOperator previousActiveOp = poly.ConwayOperators[column - 1];  // Not sure what to initialize this to
+            // Try and find an active op in previous primary columns
+            for (int prevActiveColumn = column - 1; prevActiveColumn > 0; prevActiveColumn -= 2)
+            {
+               previousActiveOp = poly.ConwayOperators[prevActiveColumn];
+               if (!previousActiveOp.disabled) break;
+            }
+            if (OpsWithExistingFaceMode.ToList().Contains(previousActiveOp.opType))
             {
                selectionType1 = ConwayPoly.FaceSelections.Existing;
                selectionType2 = ConwayPoly.FaceSelections.AllNew;
