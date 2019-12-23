@@ -8,7 +8,7 @@
   "GridType": "U_3_6_3_6",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "PrismP": 2,
   "PrismQ": 2,
   "AppearancePresetName": "Black Mirror",

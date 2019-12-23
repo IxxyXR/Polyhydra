@@ -16,6 +16,7 @@ public class AppearancePreset
     public VolumeProfile ActiveVolumeProfile;
     public HDAdditionalCameraData.ClearColorMode CameraClearColorMode;
     public Color CameraBackgroundColor;
+    public bool ForceTwoSidedOff;
 
     public void ApplyToPoly(ref PolyHydra poly, GameObject LightsParent, GameObject PropsParent, Volume activeVolume, Camera CurrentCamera)
     {
@@ -41,6 +42,12 @@ public class AppearancePreset
         {
             if (ActiveProps.Contains(prop.gameObject)) {prop.gameObject.SetActive(true);}
             else {prop.gameObject.SetActive(false);}
+        }
+
+        if (ForceTwoSidedOff && poly.TwoSided)
+        {
+            poly.TwoSided = false;
+            poly.Rebuild();
         }
 
     }

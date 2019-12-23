@@ -8,10 +8,10 @@
   "GridType": "Square",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "PrismP": 0,
   "PrismQ": 0,
-  "AppearancePresetName": "Black Mirror",
+  "AppearancePresetName": "Thick Edges",
   "Ops": [
     {
       "OpType": "Gyro",

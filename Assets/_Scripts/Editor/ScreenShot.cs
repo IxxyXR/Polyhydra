@@ -23,15 +23,15 @@ public class ScreenShot : MonoBehaviour
        // Image
        var imageRecorder = ScriptableObject.CreateInstance<ImageRecorderSettings>();
        imageRecorder.name = "My Image Recorder";
-       imageRecorder.enabled = true;
-       imageRecorder.outputFormat = ImageRecorderOutputFormat.JPEG;
-       imageRecorder.captureAlpha = false;
-       imageRecorder.outputFile = Path.Combine(Application.persistentDataPath, FolderName, FilenamePrefix) + DefaultWildcard.Take;
+       imageRecorder.Enabled = true;
+       imageRecorder.OutputFormat = ImageRecorderSettings.ImageRecorderOutputFormat.JPEG;
+       imageRecorder.CaptureAlpha = false;
+       imageRecorder.OutputFile = Path.Combine(Application.persistentDataPath, FolderName, FilenamePrefix) + DefaultWildcard.Take;
 
        imageRecorder.imageInputSettings = new GameViewInputSettings
        {
-           outputWidth = 2160,
-           outputHeight = 2160,
+           OutputWidth = 2160,
+           OutputHeight = 2160,
        };
 
        // Setup Recording
@@ -53,7 +53,7 @@ public class ScreenShot : MonoBehaviour
     IEnumerator WaitForCapture()
     {
         yield return new WaitWhile(() => m_RecorderController.IsRecording());
-        Debug.Log($"Saved to {m_RecorderController.settings.recorderSettings.First().outputFile}");
+        Debug.Log($"Saved to {m_RecorderController.Settings.RecorderSettings.First().OutputFile}");
         HideMe.SetActive(true);
     }
 }

@@ -84,7 +84,6 @@ public class PolyUI : MonoBehaviour {
             var label = new Dropdown.OptionData(cat.ToString().Replace("_", " "));
             BasePolyCategoryDropdown.options.Add(label);
         }
-        BasePolyCategoryDropdown.value = 0;
 
         BasePolyDropdown.ClearOptions();
         foreach (var polyType in Enum.GetValues(typeof(PolyTypes))) {
@@ -149,10 +148,10 @@ public class PolyUI : MonoBehaviour {
         
         Presets.LoadAllPresets();
         
-        InitPolySpecificUI();
         AddMissingPresetImages();
         CreatePresetButtons();
         ShowTab(TabButtons[0].gameObject);
+        InitPolySpecificUI();
     }
 
     private void AddMissingPresetImages()
@@ -261,7 +260,7 @@ public class PolyUI : MonoBehaviour {
     {
         UpdatePolyUI();
         UpdateOpsUI();
-        UpdateAnimUI();
+        //UpdateAnimUI();
     }
 
     void Rebuild()
@@ -291,7 +290,14 @@ public class PolyUI : MonoBehaviour {
         TwoSidedToggle.isOn = poly.TwoSided;
         ShapeTypesDropdown.value = (int) poly.ShapeType;
         BasePolyCategoryDropdown.value = (int) poly.UniformPolyTypeCategory;
-        BasePolyDropdown.value = (int) poly.UniformPolyType;
+//        BasePolyCategoryDropdown.value = 1;
+        int i = 0;
+        foreach (var item in BasePolyDropdown.options)
+        {
+            if (item.text == poly.UniformPolyType.ToString().Replace("_", " ")) break;
+            i++;
+        }
+        BasePolyDropdown.value = i;
         JohnsonTypeDropdown.value = (int) poly.JohnsonPolyType;
         OtherTypeDropdown.value = (int) poly.OtherPolyType;
         GridTypeDropdown.value = (int) poly.GridType;
@@ -580,7 +586,6 @@ public class PolyUI : MonoBehaviour {
 
     void InitShapeTypesUI(int value)
     {
-
         PrismPInput.gameObject.SetActive(false);
         PrismQInput.gameObject.SetActive(false);
         BasePolyCategoryDropdown.gameObject.SetActive(false);
@@ -632,7 +637,7 @@ public class PolyUI : MonoBehaviour {
             BasePolyDropdown.options.Add(label);
         }
 
-        BasePolyDropdown.value = 1;
+        BasePolyDropdown.value = 0;
     }
 
     private static string ToTitleCase(string str)

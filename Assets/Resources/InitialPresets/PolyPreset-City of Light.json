@@ -8,7 +8,7 @@
   "GridType": "U_4_6_12",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "PrismP": 6,
   "PrismQ": 6,
   "AppearancePresetName": "Gem",

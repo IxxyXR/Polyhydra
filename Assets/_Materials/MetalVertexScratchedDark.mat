@@ -23,10 +23,10 @@ Material:
   m_Name: MetalVertexScratchedDark
   m_Shader: {fileID: -6465566751694194690, guid: 65b6476da69df064da71f6ca3862b44d,
     type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _DOUBLESIDED_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
+  m_DoubleSidedGI: 1
   m_CustomRenderQueue: 2000
   stringTagMap:
     MotionVector: User
@@ -127,6 +127,7 @@ Material:
     m_Floats:
     - Boolean_77E75FAA: 0
     - Boolean_F2394607: 0
+    - Vector1_11BAFE8B: 0.5
     - Vector1_17F26AF6: 10.18
     - Vector1_1A806F24: 1
     - Vector1_20B60D22: 0.1
@@ -158,8 +159,8 @@ Material:
     - _Anisotropy: 0
     - _BlendMode: 0
     - _CoatMask: 0
-    - _CullMode: 2
-    - _CullModeForward: 2
+    - _CullMode: 0
+    - _CullModeForward: 0
     - _Cutoff: 0.5
     - _DepthOffsetEnable: 0
     - _DetailAlbedoScale: 1
@@ -184,7 +185,7 @@ Material:
     - _DistortionSrcBlend: 0
     - _DistortionVectorBias: -1
     - _DistortionVectorScale: 2
-    - _DoubleSidedEnable: 0
+    - _DoubleSidedEnable: 1
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 0
     - _EmissiveColorMode: 1

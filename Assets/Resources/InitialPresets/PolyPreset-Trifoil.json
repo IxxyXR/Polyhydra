@@ -8,10 +8,10 @@
   "GridType": "Hex",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "PrismP": 5,
   "PrismQ": 2,
-  "AppearancePresetName": "Edged Glass",
+  "AppearancePresetName": "Cracked Ice",
   "Ops": [
     {
       "OpType": "Quinto",

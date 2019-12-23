@@ -762,7 +762,7 @@ namespace Conway
 					var vertex = edge.Vertex.Position;
 					var newVertex = Vector3.LerpUnclamped(vertex, centroid, ratio);
 					vertexPoints.Add(newVertex);
-					vertexRoles.Add(Roles.New);
+					vertexRoles.Add(Roles.Existing);
 					newInsetFace[i] = vertexIndex;
 					newVertices[edge.Name] = vertexIndex++;
 					edge = edge.Next;
@@ -1756,7 +1756,7 @@ namespace Conway
 			for (var i = 0; i < Vertices.Count; i++)
 			{
 				vertexPoints.Add(Vertices[i].Position);
-				vertexRoles.Add(Roles.Existing);
+				vertexRoles.Add(Roles.New);
 				existingVertices[vertexPoints[i]] = i;
 			}
 
@@ -1766,7 +1766,7 @@ namespace Conway
 			foreach (var face in Faces)
 			{
 				vertexPoints.Add(face.Centroid);
-				vertexRoles.Add(Roles.New);
+				vertexRoles.Add(Roles.NewAlt);
 				int centroidIndex = vertexIndex;
 				newCentroidVertices[face.Name] = vertexIndex++;
 
@@ -1778,7 +1778,7 @@ namespace Conway
 						for (int i = 0; i < subdivisions; i++)
 						{
 							vertexPoints.Add(edge.PointAlongEdge((1f / (subdivisions + 1)) * (i + 1)));
-							vertexRoles.Add(Roles.New);
+							vertexRoles.Add(Roles.NewAlt);
 							newEdgeVertices[edge.PairedName][i] = vertexIndex++;
 						}
 					}
@@ -1825,7 +1825,7 @@ namespace Conway
 							otherNearestVertexIndex
 						};
 						faceIndices.Add(quad);
-						faceRoles.Add(Roles.Existing);
+						faceRoles.Add(Roles.New);
 					}
 					else
 					{
@@ -1837,7 +1837,7 @@ namespace Conway
 							existingVertices[edge.Vertex.Position]
 						};
 						faceIndices.Add(triangle1);
-						faceRoles.Add(Roles.Existing);
+						faceRoles.Add(Roles.New);
 
 //						if (edge.Pair != null)
 //						{
@@ -1848,7 +1848,7 @@ namespace Conway
 								furthestVertexIndex
 							};
 							faceIndices.Add(triangle2);
-							faceRoles.Add(Roles.Existing);
+							faceRoles.Add(Roles.New);
 //						}
 					}
 
@@ -1888,7 +1888,7 @@ namespace Conway
 							edgeTriangle[2] = temp;
 						}
 						faceIndices.Add(edgeTriangle);
-						faceRoles.Add(Roles.New);
+						faceRoles.Add(Roles.NewAlt);
 					}
 
 				}
@@ -2220,6 +2220,7 @@ namespace Conway
 		public ConwayPoly VertexScale(float scale, FaceSelections vertexsel, bool randomize)
 		{
 			var vertexPoints = new List<Vector3>();
+			Debug.Log($"Faces: {Faces.Count} ListFacesByVertexIndices: {ListFacesByVertexIndices().Length} ");
 			var faceIndices = ListFacesByVertexIndices();
 
 			for (var vertexIndex = 0; vertexIndex < Vertices.Count; vertexIndex++)

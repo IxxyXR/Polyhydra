@@ -8,10 +8,10 @@
   "GridType": "Square",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": true,
+  "TwoSided": false,
   "PrismP": 13,
   "PrismQ": 2,
-  "AppearancePresetName": "Showroom",
+  "AppearancePresetName": "Dirty Metal",
   "Ops": [
     {
       "OpType": "SitLevel",

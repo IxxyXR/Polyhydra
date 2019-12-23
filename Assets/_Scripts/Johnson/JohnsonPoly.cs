@@ -263,6 +263,7 @@ namespace Conway
             }
             
             poly.Halfedges.MatchPairs();
+            poly.Recenter();
             return poly;
         }
 
