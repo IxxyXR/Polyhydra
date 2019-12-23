@@ -306,7 +306,7 @@ public class PolyMidi : MonoBehaviour
    {
       if (column % 2 == 1)
       {
-         int opIndex = row % 4;
+         int opIndex = row / 2;
          return SecondaryOps[opIndex];
       }
       else
@@ -334,19 +334,18 @@ public class PolyMidi : MonoBehaviour
             int nextOopBankNumber = (op.disabled || Array.IndexOf(Ops, op.opType)>=8) ? 0 : 1;
 
 
-            if (!op.disabled && (op.opType==GetOp(column, row) || op.opType==GetOp(column, row + 8)))
+            if (!op.disabled && (op.opType==GetOp(column, row) || (column % 2 == 0 && op.opType==GetOp(column, row + 8))))
             {
 
                int colIndex = column % 2 + nextOopBankNumber;
-               Debug.Log($"colIndex: {colIndex} nextOopBankNumber: {nextOopBankNumber} IndexOf: {Array.IndexOf(Ops, op.opType)}");
                if (column % 2 == 1)
                {
-                  if (row <= 3 && (op.faceSelections == ConwayPoly.FaceSelections.Existing ||
+                  if ((row % 2 == 0) && (op.faceSelections == ConwayPoly.FaceSelections.Existing ||
                                    op.faceSelections == ConwayPoly.FaceSelections.New))
                   {
                      OutPort.SendNoteOn(0, note, Colors[colIndex]);
                   }
-                  else if (row > 3 && (op.faceSelections == ConwayPoly.FaceSelections.AllNew ||
+                  else if ((row % 2 == 1) && (op.faceSelections == ConwayPoly.FaceSelections.AllNew ||
                                        op.faceSelections == ConwayPoly.FaceSelections.NewAlt))
                   {
                      OutPort.SendNoteOn(0, note, Colors[colIndex]);
@@ -403,7 +402,6 @@ public class PolyMidi : MonoBehaviour
          var pos = NoteToButtonPos(note);
          row = pos[0];
          column = pos[1];
-         //Debug.Log($"Column: {column} Row: {row}");
          var op = poly.ConwayOperators[column];
 
          ConwayPoly.FaceSelections selectionType1 = ConwayPoly.FaceSelections.All;
@@ -419,7 +417,7 @@ public class PolyMidi : MonoBehaviour
          {
             int faceSelectionMode = -1;
             op.opType = GetOp(column, row);
-            faceSelectionMode = row <= 3 ? 0 : 1;
+            faceSelectionMode = row % 2;
             if (OpsWithExistingFaceMode.ToList().Contains(poly.ConwayOperators[column - 1].opType))
             {
                selectionType1 = ConwayPoly.FaceSelections.Existing;
@@ -450,7 +448,6 @@ public class PolyMidi : MonoBehaviour
       else if (note >= 64 && note <= 71)
       {
          column = note - 64;
-         //Debug.Log($"Main column button: {column}");
          var op = poly.ConwayOperators[column];
          var opconfig = poly.opconfigs[op.opType];
          op.disabled = !op.disabled;
@@ -462,7 +459,6 @@ public class PolyMidi : MonoBehaviour
       else if (note >= 82 && note <= 89)
       {
          row = 7 - (note - 82);
-         //Debug.Log($"Main row button: {row}");
       }
       else if (note==98)
       {
@@ -517,7 +513,6 @@ public class PolyMidi : MonoBehaviour
          var op = poly.ConwayOperators[slider];
          var opconfig = poly.opconfigs[op.opType];
          float amount = value / 127f;
-         //Debug.Log($"Slider: {slider} Op: {op.opType} Amount: {amount}");
          op.amount = Mathf.Lerp(opconfig.amountSafeMin, opconfig.amountSafeMax, amount);
          poly.ConwayOperators[slider] = op;
          FinalisePoly();
