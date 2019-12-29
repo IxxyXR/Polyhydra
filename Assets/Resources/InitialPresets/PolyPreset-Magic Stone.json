@@ -1,0 +1,94 @@
+{
+  "Name": "Magic Stone",
+  "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
+  "PolyType": "Great_Dodecahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "L1",
+  "GridType": "Isometric",
+  "GridShape": "Cylinder",
+  "BypassOps": false,
+  "TwoSided": false,
+  "PrismP": 3,
+  "PrismQ": 4,
+  "AppearancePresetName": "Volumetric",
+  "Ops": [
+    {
+      "OpType": "Lace",
+      "FaceSelections": "All",
+      "Amount": 0.125984251,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "FaceScale",
+      "FaceSelections": "Existing",
+      "Amount": -0.488188982,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "Identity",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "Identity",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "Identity",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "Identity",
+      "FaceSelections": "All",
+      "Amount": 9.84252,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "Identity",
+      "FaceSelections": "All",
+      "Amount": 0.0,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": true,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    }
+  ]
+}
