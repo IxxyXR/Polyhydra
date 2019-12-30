@@ -778,6 +778,7 @@ GameObject:
   - component: {fileID: 2447984664232717660}
   - component: {fileID: 6377721072787879096}
   - component: {fileID: 888670778}
+  - component: {fileID: 2159657810675799105}
   m_Layer: 0
   m_Name: PolyMidi
   m_TagString: Untagged
@@ -819,7 +820,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poly: {fileID: 0}
   UpdateEvery: 2
-  aPresets: {fileID: 888670778}
+  aPresets: {fileID: 2159657810675799105}
 --- !u!114 &888670778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1075,6 +1076,279 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     ActiveVolumeProfile: {fileID: 11400000, guid: 68c5df209f4180544a698b9d6f2f0333,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 1
+  editorPresetIndex: 3
+--- !u!114 &2159657810675799105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989677815801499697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d171ed225c4e54a08d46d47f66ac45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _poly: {fileID: 0}
+  CurrentCamera: {fileID: 0}
+  LightsParent: {fileID: 0}
+  PropsParent: {fileID: 0}
+  Volume: {fileID: 0}
+  Items:
+  - Name: Subtle
+    PolyhedronMaterial: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps: []
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: c625964941f7f4dde9dd87b7daebd7aa,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 0
+  - Name: Gem
+    PolyhedronMaterial: {fileID: 2100000, guid: d8a4a6ef844931f45870fbcc07d957d1,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps: []
+    ActiveLights:
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: 2b5451699aaa22b4f87bdd15ca624562,
+      type: 2}
+    CameraClearColorMode: 1
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 1
+  - Name: RGB
+    PolyhedronMaterial: {fileID: 2100000, guid: 5c6e4256d39ccfe40ae83393b8d89c5c,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps: []
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: ed93b40c5e1c74df48f635d54aa61476,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 0
+  - Name: Vectrex
+    PolyhedronMaterial: {fileID: 2100000, guid: 55d7709d316e3e44c9b026a68ceaf744,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps: []
+    ActiveLights: []
+    ActiveVolumeProfile: {fileID: 11400000, guid: ed93b40c5e1c74df48f635d54aa61476,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 0
+  - Name: Posterized
+    PolyhedronMaterial: {fileID: 2100000, guid: 2751a1d4180942544ada7c4123b0971c,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps: []
+    ActiveLights: []
+    ActiveVolumeProfile: {fileID: 11400000, guid: ed93b40c5e1c74df48f635d54aa61476,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 0
+  - Name: Gray and Colorful
+    PolyhedronMaterial: {fileID: 2100000, guid: 5c6e4256d39ccfe40ae83393b8d89c5c,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps: []
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: c625964941f7f4dde9dd87b7daebd7aa,
+      type: 2}
+    CameraClearColorMode: 1
+    CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
+    ForceTwoSidedOff: 0
+  - Name: Rich
+    PolyhedronMaterial: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps: []
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: ab31740888bf2f74ca589b2864cf3895,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
+    ForceTwoSidedOff: 0
+  - Name: Spiral Blush
+    PolyhedronMaterial: {fileID: 2100000, guid: 2aeb841239f0b1945ba03f1608b7d319,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps: []
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: fd024336bc3d4124483efd708b82db30,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
+    ForceTwoSidedOff: 0
+  - Name: 'Colorful Dark Edges '
+    PolyhedronMaterial: {fileID: 2100000, guid: bf262dce8b4c5804eb4925cf9b111941,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps: []
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: ed93b40c5e1c74df48f635d54aa61476,
+      type: 2}
+    CameraClearColorMode: 1
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 0
+  - Name: Black Mirror
+    PolyhedronMaterial: {fileID: 2100000, guid: b7854df036cf90f4ab5d51aa48a94b76,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps:
+    - {fileID: 0}
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: 68c5df209f4180544a698b9d6f2f0333,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 0
+  - Name: Dirty Metal
+    PolyhedronMaterial: {fileID: 2100000, guid: 756d17fc7a02e1c4ea003575272634a7,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps:
+    - {fileID: 0}
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: 68c5df209f4180544a698b9d6f2f0333,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 0
+  - Name: Tinted Glass
+    PolyhedronMaterial: {fileID: 2100000, guid: 7d966c49445a5cb469bd0d46d8d6c8dd,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps:
+    - {fileID: 0}
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: 68c5df209f4180544a698b9d6f2f0333,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 1
+  - Name: Showroom
+    PolyhedronMaterial: {fileID: 2100000, guid: 4e47b9e41487ec54b8403c767d058840,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps:
+    - {fileID: 0}
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: 68c5df209f4180544a698b9d6f2f0333,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 0
+  - Name: Edged Glass
+    PolyhedronMaterial: {fileID: 2100000, guid: dd9ebca479b7b6444af9b560484c5958,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps:
+    - {fileID: 0}
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: 68c5df209f4180544a698b9d6f2f0333,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 1
+  - Name: Edged Tiles
+    PolyhedronMaterial: {fileID: 2100000, guid: 80e51355e1e8c5d4eb4e7b7e7ab5baac,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps:
+    - {fileID: 0}
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: 68c5df209f4180544a698b9d6f2f0333,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 0
+  - Name: Cracked Ice
+    PolyhedronMaterial: {fileID: 2100000, guid: 8f3e2e4e95151024fa4ab9e19055ca07,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps:
+    - {fileID: 0}
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: c461889e2a8927d4d8bdefadf8107ec3,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 0
+  - Name: Thick Edges
+    PolyhedronMaterial: {fileID: 2100000, guid: ae788e1cd3cf54f4f9d5bccdb4d49dc9,
+      type: 2}
+    PolyhedronColorMethod: 0
+    ActiveProps:
+    - {fileID: 0}
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: 68c5df209f4180544a698b9d6f2f0333,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 1
+  - Name: Volumetric
+    PolyhedronMaterial: {fileID: 2100000, guid: 33312f87b96d9994a8ff504d24ab19f2,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps:
+    - {fileID: 0}
+    ActiveLights:
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: 55e4c4dca3381f34aa57507d6140e7ac,
       type: 2}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
@@ -17157,37 +17431,37 @@ PrefabInstance:
     - target: {fileID: 841087925528540846, guid: d95abdd5a8117554fba884869c3d8790,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -579.5
+      value: -579.054
       objectReference: {fileID: 0}
     - target: {fileID: 841087925528540846, guid: d95abdd5a8117554fba884869c3d8790,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -312
+      value: -311.572
       objectReference: {fileID: 0}
     - target: {fileID: 841087925528540846, guid: d95abdd5a8117554fba884869c3d8790,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.338
+      value: 1.824
       objectReference: {fileID: 0}
     - target: {fileID: 841087925528540846, guid: d95abdd5a8117554fba884869c3d8790,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 841087925528540846, guid: d95abdd5a8117554fba884869c3d8790,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 841087925528540846, guid: d95abdd5a8117554fba884869c3d8790,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 841087925528540846, guid: d95abdd5a8117554fba884869c3d8790,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 841087925528540846, guid: d95abdd5a8117554fba884869c3d8790,
         type: 3}
@@ -17202,7 +17476,7 @@ PrefabInstance:
     - target: {fileID: 841087925528540846, guid: d95abdd5a8117554fba884869c3d8790,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 841087925528540846, guid: d95abdd5a8117554fba884869c3d8790,
         type: 3}

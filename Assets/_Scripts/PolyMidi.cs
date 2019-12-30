@@ -418,26 +418,13 @@ public class PolyMidi : MonoBehaviour
 
          if (column % 2 == 0)
          {
-
             // Odd rows - main ops
-
             int bankOffset = (Array.IndexOf(Ops, op.opType)) >= 8 ? 0 : 8;
             op.opType = GetOp(column, row + bankOffset);
-
-            // Changing a primary op should affect the next active secondary op's selection mode.
-            int nextActiveColumn, nextActiveRow;
-            var nextActiveOp = GetNextActiveOp(column, out nextActiveColumn, out nextActiveRow);
-            Debug.Log($"nextActiveColumn: {nextActiveColumn} nextActiveRow: {nextActiveRow}");
-            if (nextActiveRow > 0)
-            {
-               nextActiveOp.faceSelections = ConfigureFaceSelections(nextActiveColumn, nextActiveRow);
-               poly.ConwayOperators[nextActiveColumn] = nextActiveOp;
-            }
          }
          else if (column % 2 == 1)
          {
             // Even rows - secondary ops
-
             op.opType = GetOp(column, row);
             op.faceSelections = ConfigureFaceSelections(column, row);
          }
@@ -445,6 +432,19 @@ public class PolyMidi : MonoBehaviour
          op.disabled = false;
          op.amount = UpdateDefault(op.amount, op.opType, prevOpType);
          poly.ConwayOperators[column] = op;
+
+         // Changing a primary op should affect the next active secondary op's selection mode.
+         if (column % 2 == 0)
+         {
+            int nextActiveColumn, nextActiveRow;
+            var nextActiveOp = GetNextActiveOp(column, out nextActiveColumn, out nextActiveRow);
+            if (nextActiveRow > 0)
+            {
+               nextActiveOp.faceSelections = ConfigureFaceSelections(nextActiveColumn, nextActiveRow);
+               poly.ConwayOperators[nextActiveColumn] = nextActiveOp;
+            }
+         }
+
          SetLEDs();
          FinalisePoly();
       }
