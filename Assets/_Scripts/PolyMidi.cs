@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Conway;
 using RtMidi.LowLevel;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Tilemaps;
 
 
 public class PolyMidi : MonoBehaviour
@@ -20,9 +17,11 @@ public class PolyMidi : MonoBehaviour
    MidiProbe _probe;
    MidiOutPort OutPort;
    MidiInPort InPort;
-   int[] Colors = {1, 5, 3};
 
+   private int[] MidiColorValues = {1, 5, 3};
    private const int MAXOPS = 7;
+
+   private AkaiPrefabController akaiPrefab;
 
    private List<(int, PolyHydra.JohnsonPolyTypes)> Johnsons = new List<(int, PolyHydra.JohnsonPolyTypes)>
    {
@@ -273,6 +272,7 @@ public class PolyMidi : MonoBehaviour
 
    void Start()
    {
+      akaiPrefab = GetComponentInChildren<AkaiPrefabController>();
       ScanPorts();
       poly.ConwayOperators.Clear();
       InitOps(MAXOPS);
@@ -287,7 +287,6 @@ public class PolyMidi : MonoBehaviour
    {
       for (var i=0; i < count; i++)
       {
-         var opType = Ops[0];
          if (poly.ConwayOperators == null)
          {
             poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();
@@ -295,8 +294,8 @@ public class PolyMidi : MonoBehaviour
          poly.ConwayOperators.Add(new PolyHydra.ConwayOperator
          {
             disabled = true,
-            opType = opType,
-            amount = poly.opconfigs[opType].amountDefault
+            opType = PolyHydra.Ops.Identity,
+            amount = 0,
          });
       }
 
@@ -319,14 +318,18 @@ public class PolyMidi : MonoBehaviour
    {
       for (var column = 0; column < MAXOPS; column++)
       {
+
          if (!poly.ConwayOperators[column].disabled)
          {
             OutPort.SendNoteOn(0, column+64, 1);
+            akaiPrefab.SetColumnButton(column, 2);
          }
          else
          {
             OutPort.SendNoteOn(0, column+64, 0);
+            akaiPrefab.SetColumnButton(column, -1);
          }
+
          for (var row = 0; row < 8; row++)
          {
             int note = ButtonPosToNote(column, row);
@@ -337,34 +340,37 @@ public class PolyMidi : MonoBehaviour
             if (!op.disabled && (op.opType==GetOp(column, row) || (column % 2 == 0 && op.opType==GetOp(column, row + 8))))
             {
 
-               int colIndex = column % 2 + nextOopBankNumber;
+               int colorIndex = column % 2 + nextOopBankNumber;
                if (column % 2 == 1)
                {
-                  if ((row % 2 == 0) && (op.faceSelections == ConwayPoly.FaceSelections.Existing ||
-                                   op.faceSelections == ConwayPoly.FaceSelections.New))
+                  if ((row % 2 == 0) && (op.faceSelections == ConwayPoly.FaceSelections.Existing || op.faceSelections == ConwayPoly.FaceSelections.New))
                   {
-                     OutPort.SendNoteOn(0, note, Colors[colIndex]);
+                     OutPort.SendNoteOn(0, note, MidiColorValues[colorIndex]);
+                     akaiPrefab.SetMainButton(column , row, colorIndex);
                   }
-                  else if ((row % 2 == 1) && (op.faceSelections == ConwayPoly.FaceSelections.AllNew ||
-                                       op.faceSelections == ConwayPoly.FaceSelections.NewAlt))
+                  else if ((row % 2 == 1) && (op.faceSelections == ConwayPoly.FaceSelections.AllNew || op.faceSelections == ConwayPoly.FaceSelections.NewAlt))
                   {
-                     OutPort.SendNoteOn(0, note, Colors[colIndex]);
+                     OutPort.SendNoteOn(0, note, MidiColorValues[colorIndex]);
+                     akaiPrefab.SetMainButton(column , row, colorIndex);
                   }
                   else
                   {
                      OutPort.SendNoteOn(0, note, 0);
+                     akaiPrefab.SetMainButton(column , row, -1);
                   }
 
                }
                else
                {
-                  OutPort.SendNoteOn(0, note, Colors[colIndex]);
+                  OutPort.SendNoteOn(0, note, MidiColorValues[colorIndex]);
+                  akaiPrefab.SetMainButton(column , row, colorIndex);
                }
 
             }
             else
             {
                OutPort.SendNoteOn(0, note, 0);
+               akaiPrefab.SetMainButton(column , row, -1);
             }
          }
       }
@@ -395,65 +401,58 @@ public class PolyMidi : MonoBehaviour
 
    void HandleNoteOn(byte channel, byte note, byte velocity)
    {
+
       int column;
       int row;
+
       if (note <= 63)
       {
+
+         // Normal buttons
+
          var pos = NoteToButtonPos(note);
          row = pos[0];
          column = pos[1];
          var op = poly.ConwayOperators[column];
-
-         ConwayPoly.FaceSelections selectionType1 = ConwayPoly.FaceSelections.All;
-         ConwayPoly.FaceSelections selectionType2 = ConwayPoly.FaceSelections.All;
-
+         var prevOpType = op.opType;
 
          if (column % 2 == 0)
          {
+
+            // Odd rows - main ops
+
             int bankOffset = (Array.IndexOf(Ops, op.opType)) >= 8 ? 0 : 8;
             op.opType = GetOp(column, row + bankOffset);
+
+            // Changing a primary op should affect the next active secondary op's selection mode.
+            int nextActiveColumn, nextActiveRow;
+            var nextActiveOp = GetNextActiveOp(column, out nextActiveColumn, out nextActiveRow);
+            Debug.Log($"nextActiveColumn: {nextActiveColumn} nextActiveRow: {nextActiveRow}");
+            if (nextActiveRow > 0)
+            {
+               nextActiveOp.faceSelections = ConfigureFaceSelections(nextActiveColumn, nextActiveRow);
+               poly.ConwayOperators[nextActiveColumn] = nextActiveOp;
+            }
          }
          else if (column % 2 == 1)
          {
-            int faceSelectionMode = -1;
-            op.opType = GetOp(column, row);
-            faceSelectionMode = row % 2;
-            PolyHydra.ConwayOperator previousActiveOp = poly.ConwayOperators[column - 1];  // Not sure what to initialize this to
-            // Try and find an active op in previous primary columns
-            for (int prevActiveColumn = column - 1; prevActiveColumn > 0; prevActiveColumn -= 2)
-            {
-               previousActiveOp = poly.ConwayOperators[prevActiveColumn];
-               if (!previousActiveOp.disabled) break;
-            }
-            if (OpsWithExistingFaceMode.ToList().Contains(previousActiveOp.opType))
-            {
-               selectionType1 = ConwayPoly.FaceSelections.Existing;
-               selectionType2 = ConwayPoly.FaceSelections.AllNew;
-            }
-            else
-            {
-               selectionType1 = ConwayPoly.FaceSelections.New;
-               selectionType2 = ConwayPoly.FaceSelections.NewAlt;
-            }
+            // Even rows - secondary ops
 
-            if (faceSelectionMode == 0)
-            {
-               op.faceSelections = selectionType1;
-            }
-            else
-            {
-               op.faceSelections = selectionType2;
-            }
+            op.opType = GetOp(column, row);
+            op.faceSelections = ConfigureFaceSelections(column, row);
          }
 
          op.disabled = false;
-         op.amount = poly.opconfigs[op.opType].amountDefault;
+         op.amount = UpdateDefault(op.amount, op.opType, prevOpType);
          poly.ConwayOperators[column] = op;
          SetLEDs();
          FinalisePoly();
       }
       else if (note >= 64 && note <= 71)
       {
+
+         // Main Column buttons
+
          column = note - 64;
          var op = poly.ConwayOperators[column];
          var opconfig = poly.opconfigs[op.opType];
@@ -465,12 +464,83 @@ public class PolyMidi : MonoBehaviour
       }
       else if (note >= 82 && note <= 89)
       {
+
+         // Main Row Buttons
+
          row = 7 - (note - 82);
       }
       else if (note==98)
       {
-         //Debug.Log($"Shift button");
+         // Shift Button
       }
+   }
+
+   private float UpdateDefault(float opAmount, PolyHydra.Ops opType, PolyHydra.Ops prevOpType)
+   {
+      // Remaps slider value from previous to new
+      return Remap(
+         opAmount,
+         poly.opconfigs[prevOpType].amountSafeMin,
+         poly.opconfigs[prevOpType].amountSafeMax,
+         poly.opconfigs[opType].amountSafeMin,
+         poly.opconfigs[opType].amountSafeMax
+      );
+   }
+
+   private PolyHydra.ConwayOperator GetPreviousActiveOp(int column)
+   {
+      PolyHydra.ConwayOperator previousActiveOp = poly.ConwayOperators[column - 1];  // Not sure what to initialize this to
+      // Try and find an active op in previous primary columns
+      for (int prevActiveColumn = column - 1; prevActiveColumn > 0; prevActiveColumn -= 2)
+      {
+         previousActiveOp = poly.ConwayOperators[prevActiveColumn];
+         if (!previousActiveOp.disabled) break;
+      }
+
+      return previousActiveOp;
+   }
+
+   private float Remap (float value, float from1, float to1, float from2, float to2) {
+      return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+   }
+
+   private PolyHydra.ConwayOperator GetNextActiveOp(int column, out int nextActiveColumn, out int nextActiveRow)
+   {
+      PolyHydra.ConwayOperator nextActiveOp = poly.ConwayOperators[column + 1];  // Not sure what to initialize this to.
+      // Try and find an active op in previous primary columns
+      for (nextActiveColumn = column + 1; nextActiveColumn < MAXOPS; nextActiveColumn += 2)
+      {
+         nextActiveOp = poly.ConwayOperators[nextActiveColumn];
+         if (!nextActiveOp.disabled) break;
+      }
+
+      if (nextActiveColumn >= MAXOPS)
+      {
+         nextActiveRow = -1;
+         return nextActiveOp;
+      }
+      nextActiveRow = Array.IndexOf(SecondaryOps, poly.ConwayOperators[nextActiveColumn].opType) * 2;
+      return nextActiveOp;
+   }
+
+   private ConwayPoly.FaceSelections ConfigureFaceSelections(int column, int row)
+   {
+      ConwayPoly.FaceSelections selectionType1;
+      ConwayPoly.FaceSelections selectionType2;
+
+      int faceSelectionMode = row % 2;
+      if (OpsWithExistingFaceMode.ToList().Contains(GetPreviousActiveOp(column).opType))
+      {
+         selectionType1 = ConwayPoly.FaceSelections.Existing;
+         selectionType2 = ConwayPoly.FaceSelections.AllNew;
+      }
+      else
+      {
+         selectionType1 = ConwayPoly.FaceSelections.New;
+         selectionType2 = ConwayPoly.FaceSelections.NewAlt;
+      }
+
+      return faceSelectionMode == 0 ? selectionType1 : selectionType2;
    }
 
    void HandleNoteOff(byte channel, byte note)
@@ -485,10 +555,14 @@ public class PolyMidi : MonoBehaviour
 
    void HandleControlChange(byte channel, byte number, byte value)
    {
+
+      int slider = number - 48;
+      akaiPrefab.SetSlider(slider, value);
+
       if (Time.frameCount % UpdateEvery != 0) return;
       if (Time.frameCount == LastFrameRendered) return; // We've already rendered on this frame
       LastFrameRendered = Time.frameCount;
-      int slider = number - 48;
+
       if (slider == 8)
       {
          int shapeIndex = Mathf.FloorToInt((value / 127f) * TotalShapeCount());
