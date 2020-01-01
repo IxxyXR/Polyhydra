@@ -2220,7 +2220,6 @@ namespace Conway
 		public ConwayPoly VertexScale(float scale, FaceSelections vertexsel, bool randomize)
 		{
 			var vertexPoints = new List<Vector3>();
-			Debug.Log($"Faces: {Faces.Count} ListFacesByVertexIndices: {ListFacesByVertexIndices().Length} ");
 			var faceIndices = ListFacesByVertexIndices();
 
 			for (var vertexIndex = 0; vertexIndex < Vertices.Count; vertexIndex++)

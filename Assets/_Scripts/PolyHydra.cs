@@ -739,6 +739,10 @@ public class PolyHydra : MonoBehaviour
 			{
 				transform.localScale = new Vector3(scale, scale, scale);
 			}
+			else
+			{
+				Debug.LogError("Failed to rescale");
+			}
 		}
 
 		if (meshFilter != null)
