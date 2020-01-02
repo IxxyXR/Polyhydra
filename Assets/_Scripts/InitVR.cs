@@ -6,6 +6,7 @@ public class InitVR : MonoBehaviour
 {
     public Transform PolyRoot;
     public Transform AkaiMarker;
+    public Transform VRPlayerMarker;
     private AkaiPrefabController _akaiPrefabController;
     
     void Start()
@@ -15,6 +16,9 @@ public class InitVR : MonoBehaviour
         _akaiPrefabController = FindObjectOfType<AkaiPrefabController>();
         _akaiPrefabController.transform.position = AkaiMarker.position;
         _akaiPrefabController.transform.rotation = AkaiMarker.rotation;
+        _akaiPrefabController.transform.localScale = AkaiMarker.localScale;
+        transform.position = VRPlayerMarker.position;
+        transform.rotation = VRPlayerMarker.rotation;
     }
 
 }

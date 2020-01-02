@@ -43,4 +43,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc9304fb75842f24f952c59f03f3f02b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_CACHE_LENGTH: 5000
+  MAX_CACHE_LENGTH: 50000000
