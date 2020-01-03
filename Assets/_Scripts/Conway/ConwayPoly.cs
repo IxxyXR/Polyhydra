@@ -2665,11 +2665,11 @@ namespace Conway
 		/// <returns>The extruded mesh (always closed)</returns>
 		public ConwayPoly Extrude(double distance, bool symmetric, bool randomize)
 		{
-			var offsetList = Enumerable.Range(0, Vertices.Count).Select(i => distance).ToList();
-			return Extrude(offsetList, symmetric, randomize);
+			var offsetList = Enumerable.Repeat(distance, Vertices.Count).ToList();
+			return _Extrude(offsetList, symmetric, randomize);
 		}
 
-		public ConwayPoly Extrude(float amount, FaceSelections facesel, bool randomize)
+		public ConwayPoly xxxxxxExtrude(float amount, FaceSelections facesel, bool randomize)
 		{
 			var debugFaces = new[] { 0, 1};
 
@@ -2770,7 +2770,7 @@ namespace Conway
 
 		}
 
-		public ConwayPoly Extrude(List<double> distance, bool symmetric, bool randomize)
+		private ConwayPoly _Extrude(List<double> distance, bool symmetric, bool randomize)
 		{
 
 			ConwayPoly result, top;

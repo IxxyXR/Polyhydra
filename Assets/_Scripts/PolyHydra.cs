@@ -360,13 +360,13 @@ public class PolyHydra : MonoBehaviour
 		opconfigs = new Dictionary<Ops, OpConfig>
 		{	
 			{Ops.Identity, new OpConfig {usesAmount=false}},
-			{Ops.Kis, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 1, usesRandomize=true}},
+			{Ops.Kis, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 1, usesRandomize=true}},
 			{Ops.Dual, new OpConfig{usesAmount=false}},
 			{Ops.Ambo, new OpConfig{usesAmount=false}},
-			{Ops.Zip, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 1, usesRandomize=true}},
+			{Ops.Zip, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 2, usesRandomize=true}},
 			{Ops.Expand, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0, amountSafeMax = 1}},
 			{Ops.Bevel, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = 0, amountSafeMax = 1, usesRandomize=true}},
-			{Ops.Join, new OpConfig{amountDefault = 0.5f, amountMin = -1f, amountMax = 2f, amountSafeMin = -1, amountSafeMax = 1}},  // TODO Support random
+			{Ops.Join, new OpConfig{amountDefault = 0.5f, amountMin = -1f, amountMax = 2f, amountSafeMin = -0.5f, amountSafeMax = 1}},  // TODO Support random
 			{Ops.Needle, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 0.5f, usesRandomize=true}},
 			{Ops.Ortho, new OpConfig{usesAmount=false}},
 			{Ops.Meta, new OpConfig{usesFaces=true, amountDefault = 0.15f, amountMin = -6, amountMax = 6, amountSafeMin = -0.333f, amountSafeMax = 0.666f, usesRandomize=true}},
@@ -389,11 +389,12 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Volute, new OpConfig{amountDefault = 0.33f, amountMin = -4, amountMax = 4, amountSafeMin = 0, amountSafeMax = 1}},
 			{Ops.Exalt, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = 0, amountSafeMax = 1, usesRandomize=true}},
 			{Ops.Yank, new OpConfig{usesFaces=true, amountDefault = 0.33f, amountMin = -6, amountMax = 6, amountSafeMin = 0, amountSafeMax = 1, usesRandomize=true}},
+
 			{Ops.FaceOffset, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 1, usesRandomize=true}},
 			//{Ops.Ribbon, new OpConfig{}},
 			{Ops.Extrude, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = 0, amountSafeMax = 1, usesRandomize=true}},
-			{Ops.Shell, new OpConfig{amountDefault = 0.1f, amountMin = -6, amountSafeMin = 0, amountSafeMax = 1, amountMax = 6}},
-			{Ops.Skeleton, new OpConfig{amountDefault = 0.1f, amountMin = -6, amountSafeMin = 0, amountSafeMax = 1, amountMax = 6}},
+			{Ops.Shell, new OpConfig{amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = 0, amountSafeMax = 1}},
+			{Ops.Skeleton, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountSafeMin = 0, amountSafeMax = 1, amountMax = 6}},
 			{Ops.VertexScale, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 1, usesRandomize=true}},
 			{Ops.VertexRotate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180, amountSafeMin = -180, amountSafeMax = 180, usesRandomize=true}},
 			{Ops.VertexFlex, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 1, usesRandomize=true}},
@@ -896,7 +897,12 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Extrude(amount, false, op.randomize);
 				break;
 			case Ops.Skeleton:
-				conway = conway.FaceRemove(op.faceSelections, true);
+				conway = conway.FaceRemove(op.faceSelections, false);
+				if ((op.faceSelections==ConwayPoly.FaceSelections.New || op.faceSelections==ConwayPoly.FaceSelections.NewAlt) && op.opType == PolyHydra.Ops.Skeleton)
+				{
+					// Nasty hack until I fix extrude
+					conway = conway.FaceScale(0f, ConwayPoly.FaceSelections.All, false);
+				}
 				conway = conway.Extrude(amount, false, op.randomize);
 				break;
 			case Ops.Extrude:

@@ -144,6 +144,7 @@ public class PolyMidi : MonoBehaviour
       PolyTypes.Great_Dodecahedron,
    };
 
+   // If an op supports "Existing" face selection mode use it, otherwise use "Alternate"
    private PolyHydra.Ops[] OpsWithExistingFaceMode =
    {
 //      PolyHydra.Ops.Kis,
@@ -166,108 +167,57 @@ public class PolyMidi : MonoBehaviour
 
    private PolyHydra.Ops[] Ops =
    {
+      // Bank 0
       PolyHydra.Ops.Kis,
-//      PolyHydra.Ops.Ambo,
-      PolyHydra.Ops.Zip,
       PolyHydra.Ops.Expand,
-//      PolyHydra.Ops.Bevel,
-//      PolyHydra.Ops.Join,
-      PolyHydra.Ops.Needle,
-//      PolyHydra.Ops.Ortho,
-      PolyHydra.Ops.Meta,
       PolyHydra.Ops.Truncate,
-      PolyHydra.Ops.Gyro,
-//      PolyHydra.Ops.Snub,
-//      PolyHydra.Ops.Subdivide,
       PolyHydra.Ops.Loft,
-      PolyHydra.Ops.Chamfer,
-      PolyHydra.Ops.Quinto,
+      PolyHydra.Ops.Medial,
       PolyHydra.Ops.Lace,
-//      PolyHydra.Ops.JoinedLace,
-      PolyHydra.Ops.OppositeLace,
+      PolyHydra.Ops.Quinto,
+      PolyHydra.Ops.Gyro,
+
+      // Bank 1
+      PolyHydra.Ops.Meta,
+      PolyHydra.Ops.Chamfer,
+      PolyHydra.Ops.Zip,
       PolyHydra.Ops.Stake,
-//      PolyHydra.Ops.Medial,
       PolyHydra.Ops.EdgeMedial,
-      PolyHydra.Ops.Propeller,
+      PolyHydra.Ops.OppositeLace,
       PolyHydra.Ops.Whirl,
-//      PolyHydra.Ops.Volute,
-//      PolyHydra.Ops.Exalt,
-//      PolyHydra.Ops.Yank,
-//      PolyHydra.Ops.Extrude,
-//      PolyHydra.Ops.Shell,
-//      PolyHydra.Ops.VertexScale,
-//      PolyHydra.Ops.VertexRotate,
-//      PolyHydra.Ops.VertexFlex,
-//      PolyHydra.Ops.FaceOffset,
-//      PolyHydra.Ops.FaceScale,
-//      PolyHydra.Ops.FaceRotate,
-//      PolyHydra.Ops.FaceRemove,
-//      PolyHydra.Ops.FaceKeep,
-//      PolyHydra.Ops.FillHoles,
-//      PolyHydra.Ops.Hinge,
-//      PolyHydra.Ops.AddDual,
-//      PolyHydra.Ops.AddMirrorX,
-//      PolyHydra.Ops.AddMirrorY,
-//      PolyHydra.Ops.AddMirrorZ,
-//      PolyHydra.Ops.Canonicalize,
-//      PolyHydra.Ops.Spherize,
-//      PolyHydra.Ops.Recenter,
-//      PolyHydra.Ops.SitLevel,
-//      PolyHydra.Ops.Stretch,
-//      PolyHydra.Ops.Weld
+      PolyHydra.Ops.Propeller,
+
+
+
+
+
    };
    
    private PolyHydra.Ops[] SecondaryOps =
    {
-//      PolyHydra.Ops.Kis,
-//      PolyHydra.Ops.Ambo,
-//      PolyHydra.Ops.Zip,
-//      PolyHydra.Ops.Expand,
-//      PolyHydra.Ops.Bevel,
-//      PolyHydra.Ops.Join,
-//      PolyHydra.Ops.Needle,
-//      PolyHydra.Ops.Ortho,
-//      PolyHydra.Ops.Meta,
-//      PolyHydra.Ops.Truncate,
-//      PolyHydra.Ops.Gyro,
-//      PolyHydra.Ops.Snub,
-//      PolyHydra.Ops.Subdivide,
-//      PolyHydra.Ops.Loft,
-//      PolyHydra.Ops.Chamfer,
-//      PolyHydra.Ops.Quinto,
-//      PolyHydra.Ops.Lace,
-//      PolyHydra.Ops.JoinedLace,
-//      PolyHydra.Ops.OppositeLace,
-//      PolyHydra.Ops.Stake,
-//      PolyHydra.Ops.Medial,
-//      PolyHydra.Ops.EdgeMedial,
-//      PolyHydra.Ops.Propeller,
-//      PolyHydra.Ops.Whirl,
-//      PolyHydra.Ops.Volute,
-//      PolyHydra.Ops.Exalt,
-//      PolyHydra.Ops.Yank,
-      PolyHydra.Ops.Extrude,
-//      PolyHydra.Ops.Shell,
-//      PolyHydra.Ops.VertexScale,
-//      PolyHydra.Ops.VertexRotate,
-//      PolyHydra.Ops.VertexFlex,
       PolyHydra.Ops.FaceScale,
       PolyHydra.Ops.VertexScale,
-//      PolyHydra.Ops.FaceRotate,
+      PolyHydra.Ops.Extrude,
       PolyHydra.Ops.Skeleton,
+
+////      PolyHydra.Ops.Shell,
+////      PolyHydra.Ops.VertexScale,
+////      PolyHydra.Ops.VertexRotate,
+////      PolyHydra.Ops.VertexFlex,
+////      PolyHydra.Ops.FaceRotate,
 //      PolyHydra.Ops.FaceKeep,
-//      PolyHydra.Ops.FillHoles,
-//      PolyHydra.Ops.Hinge,
+////      PolyHydra.Ops.FillHoles,
+////      PolyHydra.Ops.Hinge,
 //      PolyHydra.Ops.AddDual,
 //      PolyHydra.Ops.AddMirrorX,
-//      PolyHydra.Ops.AddMirrorY,
-//      PolyHydra.Ops.AddMirrorZ,
-//      PolyHydra.Ops.Canonicalize,
+////      PolyHydra.Ops.AddMirrorY,
+////      PolyHydra.Ops.AddMirrorZ,
+////      PolyHydra.Ops.Canonicalize,
 //      PolyHydra.Ops.Spherize,
-//      PolyHydra.Ops.Recenter,
-//      PolyHydra.Ops.SitLevel,
-//      PolyHydra.Ops.Stretch,
-//      PolyHydra.Ops.Weld
+////      PolyHydra.Ops.Recenter,
+////      PolyHydra.Ops.SitLevel,
+////      PolyHydra.Ops.Stretch,
+////      PolyHydra.Ops.Weld
    };
 
    void Start()
@@ -285,12 +235,15 @@ public class PolyMidi : MonoBehaviour
 
    private void InitOps(int count)
    {
-      for (var i=0; i < count; i++)
+      if (poly.ConwayOperators == null)
       {
-         if (poly.ConwayOperators == null)
-         {
-            poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();
-         }
+         poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();
+      }
+
+      if (poly.ConwayOperators.Count >= count) return;
+
+      for (var i=poly.ConwayOperators.Count; i < count; i++)
+      {
          poly.ConwayOperators.Add(new PolyHydra.ConwayOperator
          {
             disabled = true,
@@ -419,7 +372,8 @@ public class PolyMidi : MonoBehaviour
          if (column % 2 == 0)
          {
             // Odd rows - main ops
-            int bankOffset = (Array.IndexOf(Ops, op.opType)) >= 8 ? 0 : 8;
+            int currentRow = Array.IndexOf(Ops, op.opType);
+            int bankOffset =  (currentRow < 8 && row==currentRow) ? 8 : 0;  // Toggle
             op.opType = GetOp(column, row + bankOffset);
          }
          else if (column % 2 == 1)
@@ -629,13 +583,16 @@ public class PolyMidi : MonoBehaviour
    void Update()
    {
       // Check if we have enough ops (we might have loaded a preset with < 3 ops)
-      if (poly.ConwayOperators.Count != MAXOPS)
+      if (poly.ConwayOperators.Count < MAXOPS)
       {
          InitOps(MAXOPS);
          SetLEDs();
       }
 
-      InPort.ProcessMessages();
+      if (InPort != null)
+      {
+         InPort.ProcessMessages();
+      }
    }
 
    void DisposePort()
