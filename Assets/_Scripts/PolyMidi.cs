@@ -287,43 +287,49 @@ public class PolyMidi : MonoBehaviour
          {
             int note = ButtonPosToNote(column, row);
             var op = poly.ConwayOperators[column];
-            int nextOopBankNumber = (op.disabled || Array.IndexOf(Ops, op.opType)>=8) ? 0 : 1;
+            int nextOpBankNumber = (op.disabled || Array.IndexOf(Ops, op.opType)>=8) ? 0 : 1;
 
 
             if (!op.disabled && (op.opType==GetOp(column, row) || (column % 2 == 0 && op.opType==GetOp(column, row + 8))))
             {
-
-               int colorIndex = column % 2 + nextOopBankNumber;
+               int colorIndex = column % 2 + nextOpBankNumber;
                if (column % 2 == 1)
                {
                   if ((row % 2 == 0) && (op.faceSelections == ConwayPoly.FaceSelections.Existing || op.faceSelections == ConwayPoly.FaceSelections.New))
                   {
                      OutPort.SendNoteOn(0, note, MidiColorValues[colorIndex]);
-                     akaiPrefab.SetMainButton(column , row, colorIndex);
+                     akaiPrefab.SetGridButtonLED(column, row, colorIndex);
+                     akaiPrefab.SetGridButtonIcon(column, row, op.opType);
+
                   }
                   else if ((row % 2 == 1) && (op.faceSelections == ConwayPoly.FaceSelections.AllNew || op.faceSelections == ConwayPoly.FaceSelections.NewAlt))
                   {
                      OutPort.SendNoteOn(0, note, MidiColorValues[colorIndex]);
-                     akaiPrefab.SetMainButton(column , row, colorIndex);
+                     akaiPrefab.SetGridButtonLED(column, row, colorIndex);
+                     akaiPrefab.SetGridButtonIcon(column, row, op.opType);
                   }
                   else
                   {
                      OutPort.SendNoteOn(0, note, 0);
-                     akaiPrefab.SetMainButton(column , row, -1);
+                     akaiPrefab.SetGridButtonLED(column, row, -1);
+                     akaiPrefab.SetGridButtonIcon(column, row, PolyHydra.Ops.Identity);
+
                   }
 
                }
                else
                {
                   OutPort.SendNoteOn(0, note, MidiColorValues[colorIndex]);
-                  akaiPrefab.SetMainButton(column , row, colorIndex);
+                  akaiPrefab.SetGridButtonLED(column, row, colorIndex);
+                  akaiPrefab.SetGridButtonIcon(column, row, op.opType);
                }
 
             }
             else
             {
                OutPort.SendNoteOn(0, note, 0);
-               akaiPrefab.SetMainButton(column , row, -1);
+               akaiPrefab.SetGridButtonLED(column, row, -1);
+               akaiPrefab.SetGridButtonIcon(column, row, PolyHydra.Ops.Identity);
             }
          }
       }

@@ -266,17 +266,6 @@ MonoBehaviour:
   PropsParent: {fileID: 2770511818099601237}
   Volume: {fileID: 0}
   Items:
-  - Name: Spectrum
-    PolyhedronMaterial: {fileID: 2100000, guid: 33312f87b96d9994a8ff504d24ab19f2,
-      type: 2}
-    PolyhedronColorMethod: 0
-    ActiveProps: []
-    ActiveLights: []
-    ActiveVolumeProfile: {fileID: 11400000, guid: 9ec87e738b0ac4a7f931575536ebc3ee,
-      type: 2}
-    CameraClearColorMode: 0
-    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 0
   - Name: Flat
     PolyhedronMaterial: {fileID: 2100000, guid: a5bdc2c19f0e79f40a716a029473c671,
       type: 2}
@@ -398,20 +387,6 @@ MonoBehaviour:
     - {fileID: 2770511817198488833}
     - {fileID: 2770511816713189263}
     - {fileID: 2770511818686268128}
-    ActiveVolumeProfile: {fileID: 11400000, guid: ab31740888bf2f74ca589b2864cf3895,
-      type: 2}
-    CameraClearColorMode: 0
-    CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
-    ForceTwoSidedOff: 0
-  - Name: Monolith
-    PolyhedronMaterial: {fileID: 2100000, guid: babd5a74636dd0f4c9442aeb11a88248,
-      type: 2}
-    PolyhedronColorMethod: 1
-    ActiveProps: []
-    ActiveLights:
-    - {fileID: 2770511818399393424}
-    - {fileID: 2770511817441937825}
-    - {fileID: 2770511817357839183}
     ActiveVolumeProfile: {fileID: 11400000, guid: ab31740888bf2f74ca589b2864cf3895,
       type: 2}
     CameraClearColorMode: 0

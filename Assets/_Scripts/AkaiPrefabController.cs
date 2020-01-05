@@ -10,6 +10,7 @@ public class AkaiPrefabController : MonoBehaviour
     public Transform RoundButtonPrefab;
     public Transform ShiftButtonPrefab;
     public Transform SliderPrefab;
+    public Transform IconPrefab;
 
     public Vector3 MainButtonOrigin = new Vector3(0.2969f, 0.0079f, 0.0585f);
     public Vector3 ColumnButtonOrigin = new Vector3(0.2961f, 0.022f, 0.05787034f);
@@ -98,9 +99,18 @@ public class AkaiPrefabController : MonoBehaviour
         SetButtonColor(ColumnButtons[column], colorIndex);
     }
 
-    public void SetMainButton(int column, int row, int colorIndex)
+    public void SetGridButtonIcon(int column, int row, PolyHydra.Ops opType)
     {
-        SetButtonColor(MainButtons[column * 8 + row], colorIndex);
+        var btn = MainButtons[column * 8 + row];
+        var ic = btn.GetComponentInChildren<AkaiSVGIcon>();
+        ic.opType = opType;
+        ic.UpdateIcon();
+    }
+
+    public void SetGridButtonLED(int column, int row, int colorIndex)
+    {
+        var btn = MainButtons[column * 8 + row];
+        SetButtonColor(btn, colorIndex);
     }
 
     public void SetSlider(int slider, byte value)

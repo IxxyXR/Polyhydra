@@ -114,13 +114,13 @@ Material:
     m_Floats:
     - Boolean_77E75FAA: 0
     - Boolean_F2394607: 0
-    - Vector1_12FB2629: -0.01
+    - Vector1_12FB2629: 0.01
     - Vector1_20B60D22: 0.1
     - Vector1_2E810D38: 0.995
-    - Vector1_395CC577: 0.01
+    - Vector1_395CC577: 0.05
     - Vector1_39957ABB: 0.2
     - Vector1_5F01DFDD: 0.584
-    - Vector1_74C4623E: 0.1
+    - Vector1_74C4623E: 0.01
     - Vector1_7EB7D62C: 1
     - Vector1_96F85197: 1
     - Vector1_A0747EDC: 0.1

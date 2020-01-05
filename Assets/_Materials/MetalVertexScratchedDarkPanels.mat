@@ -23,7 +23,7 @@ Material:
   m_Name: MetalVertexScratchedDarkPanels
   m_Shader: {fileID: -6465566751694194690, guid: 65b6476da69df064da71f6ca3862b44d,
     type: 3}
-  m_ShaderKeywords: _DOUBLESIDED_ON
+  m_ShaderKeywords: BOOLEAN_3A32519_ON _DOUBLESIDED_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
@@ -125,6 +125,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - BOOLEAN_3A32519: 1
     - Boolean_77E75FAA: 0
     - Boolean_F2394607: 0
     - Vector1_11BAFE8B: 0.46
@@ -144,7 +145,7 @@ Material:
     - Vector1_E4136F9E: 0.1948
     - Vector1_E8712278: 0.211
     - Vector1_F9AA07A3: 0.25
-    - Vector1_FDCB93FC: 0.18
+    - Vector1_FDCB93FC: 0.324
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ATDistance: 1
