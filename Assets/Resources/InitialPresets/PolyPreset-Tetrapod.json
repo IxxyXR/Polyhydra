@@ -11,7 +11,7 @@
   "TwoSided": false,
   "PrismP": 10,
   "PrismQ": 10,
-  "AppearancePresetName": "Grooves",
+  "AppearancePresetName": "Cold Metal",
   "Ops": [
     {
       "OpType": "Subdivide",

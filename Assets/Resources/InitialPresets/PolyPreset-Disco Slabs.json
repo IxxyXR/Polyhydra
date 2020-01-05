@@ -1,8 +1,8 @@
 {
-  "Name": "Nemesis",
+  "Name": "Disco Slabs",
   "ShapeType": "Uniform",
   "PolyTypeCategory": "All",
-  "PolyType": "Great_Dodecahedron",
+  "PolyType": "Small_Retrosnub_Icosicosidodecahedron",
   "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
   "GridType": "Square",
@@ -11,12 +11,12 @@
   "TwoSided": false,
   "PrismP": 0,
   "PrismQ": 0,
-  "AppearancePresetName": "Thick Edges",
+  "AppearancePresetName": "Showroom",
   "Ops": [
     {
-      "OpType": "Kis",
-      "FaceSelections": "FiveSided",
-      "Amount": -2.98548985,
+      "OpType": "FaceRemove",
+      "FaceSelections": "ThreeSided",
+      "Amount": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
@@ -25,20 +25,20 @@
       "AnimationAmount": 0.0
     },
     {
-      "OpType": "Zip",
+      "OpType": "FaceScale",
       "FaceSelections": "All",
-      "Amount": -1.61049128,
+      "Amount": -0.64,
       "AnimatedAmount": 0.0,
       "Randomize": false,
-      "Disabled": true,
+      "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
       "AnimationAmount": 0.0
     },
     {
-      "OpType": "Exalt",
+      "OpType": "Extrude",
       "FaceSelections": "All",
-      "Amount": 2.47488856,
+      "Amount": 0.05,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,

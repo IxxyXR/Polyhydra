@@ -938,7 +938,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2447984664232717660
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1138,6 +1138,21 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     ActiveVolumeProfile: {fileID: 11400000, guid: 68c5df209f4180544a698b9d6f2f0333,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 0
+  - Name: Cold Metal
+    PolyhedronMaterial: {fileID: 2100000, guid: f446fe272d555444f9e3d8d9a6de3e14,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps:
+    - {fileID: 0}
+    ActiveLights:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    ActiveVolumeProfile: {fileID: 11400000, guid: 55e4c4dca3381f34aa57507d6140e7ac,
       type: 2}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}

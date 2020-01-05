@@ -85,15 +85,16 @@ public class PolyHydra : MonoBehaviour
 		Torus,
 		Cylinder,
 		Cone,
-		Conic_Frustum,
-		Mobius,
+		Cube,
+//		Conic_Frustum,
+//		Mobius,
 //		Torus_Trefoil,
-		Klein,
-		Klein2,
-		Roman,
-		Roman_Boy,
-		Cross_Cap,
-		Cross_Cap2,
+//		Klein,
+//		Klein2,
+//		Roman,
+//		Roman_Boy,
+//		Cross_Cap,
+//		Cross_Cap2,
 	}
 
 	public enum GridTypes
@@ -106,7 +107,7 @@ public class PolyHydra : MonoBehaviour
 		U_3_6_3_6,
 		U_3_3_3_4_4,
 		U_3_3_4_3_4,
-//		U_3_3_3_3_6,  // TODO Fix
+//		U_3_3_3_3_6, TODO Fix
 		U_3_12_12,
 		U_4_8_8,
 		U_3_4_6_4,
@@ -173,6 +174,7 @@ public class PolyHydra : MonoBehaviour
 		Lace,
 		JoinedLace,
 		OppositeLace,
+		JoinKisKis,
 		Stake,
 		Medial,
 		EdgeMedial,
@@ -183,6 +185,8 @@ public class PolyHydra : MonoBehaviour
 		Volute,
 		Exalt,
 		Yank,
+
+		Cross,
 
 		Extrude,
 		Shell,
@@ -367,9 +371,9 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Expand, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0, amountSafeMax = 1}},
 			{Ops.Bevel, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = 0, amountSafeMax = 1, usesRandomize=true}},
 			{Ops.Join, new OpConfig{amountDefault = 0.5f, amountMin = -1f, amountMax = 2f, amountSafeMin = -0.5f, amountSafeMax = 1}},  // TODO Support random
-			{Ops.Needle, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 0.5f, usesRandomize=true}},
+			{Ops.Needle, new OpConfig{amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 0.5f, usesRandomize=true}},
 			{Ops.Ortho, new OpConfig{usesAmount=false}},
-			{Ops.Meta, new OpConfig{usesFaces=true, amountDefault = 0.15f, amountMin = -6, amountMax = 6, amountSafeMin = -0.333f, amountSafeMax = 0.666f, usesRandomize=true}},
+			{Ops.Meta, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = -0.333f, amountSafeMax = 0.666f, usesRandomize=true}},
 			{Ops.Truncate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = 0, amountSafeMax = 0.5f, usesRandomize=true}},
 			{Ops.Gyro, new OpConfig{amountDefault = 0.33f, amountMin = -.5f, amountMax = 0.5f, amountSafeMin = 0, amountSafeMax = 0.5f}},
 			{Ops.Snub, new OpConfig{amountDefault = 0.5f, amountMin = -1f, amountMax = 1f, amountSafeMin = 0, amountSafeMax = 1}},
@@ -380,6 +384,7 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Lace, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0, amountSafeMax = 1}},
 			{Ops.JoinedLace, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0, amountSafeMax = 1}},
 			{Ops.OppositeLace, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0, amountSafeMax = 1}},
+			{Ops.JoinKisKis, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0, amountSafeMax = 1}},
 			{Ops.Stake, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0, amountSafeMax = 1}},
 			{Ops.Medial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8, amountSafeMin = 1, amountSafeMax = 6}},
 			{Ops.EdgeMedial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8, amountSafeMin = 1, amountSafeMax = 6}},
@@ -389,6 +394,8 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Volute, new OpConfig{amountDefault = 0.33f, amountMin = -4, amountMax = 4, amountSafeMin = 0, amountSafeMax = 1}},
 			{Ops.Exalt, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = 0, amountSafeMax = 1, usesRandomize=true}},
 			{Ops.Yank, new OpConfig{usesFaces=true, amountDefault = 0.33f, amountMin = -6, amountMax = 6, amountSafeMin = 0, amountSafeMax = 1, usesRandomize=true}},
+
+			{Ops.Cross, new OpConfig{amountDefault = 0.5f, amountMin = -1, amountMax = 1, amountSafeMin = -1, amountSafeMax = 1, usesRandomize=true}},
 
 			{Ops.FaceOffset, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 1, usesRandomize=true}},
 			//{Ops.Ribbon, new OpConfig{}},
@@ -442,6 +449,16 @@ public class PolyHydra : MonoBehaviour
 	{
 		ConwayPoly conway = null;
 
+		bool isCube = false;
+
+		if (gridShape == GridShapes.Cube)
+		{
+			gridShape = GridShapes.Plane;
+			gridType = GridTypes.Square;
+			PrismQ = PrismP;
+			isCube = true;
+		}
+
 		switch (gridType)
 		{
 //			case GridTypes.Square:
@@ -492,11 +509,19 @@ public class PolyHydra : MonoBehaviour
 			case GridTypes.Polar:
 				conway = ConwayPoly.MakePolarGrid(PrismP, PrismQ);
 				break;
+		}
 
+		if (isCube)
+		{
+			conway = conway.AddMirrored(Vector3.up, 0.5f * PrismP);
+			ConwayPoly xPair = conway.Rotate(Vector3.forward, 90);
+			ConwayPoly zPair = conway.Rotate(Vector3.left, 90);
+			conway.Append(xPair);
+			conway.Append(zPair);
 		}
 
 		// Welding only seems to work reliably on simpler shapres
-		if (gridShape == GridShapes.Cylinder || gridShape == GridShapes.Torus) conway = conway.Weld(0.0001f);
+		if (gridShape != GridShapes.Plane) conway = conway.Weld(0.0001f);
 
 		return conway;
 	}
@@ -815,16 +840,13 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Join(amount);
 				break;
 			case Ops.Needle:
-				conway = conway.Dual();
-				conway = conway.Kis(amount, op.faceSelections, op.randomize);
+				conway = conway.Needle(amount, op.randomize);
 				break;
 			case Ops.Ortho:
 				conway = conway.Ortho();
 				break;
 			case Ops.Meta:
-				conway = conway.Join(amount);
-				conway = conway.Dual();
-				conway = conway.Kis(amount, op.faceSelections, op.randomize);
+				conway = conway.Meta(amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.Truncate:
 				conway = conway.Truncate(amount, op.faceSelections, op.randomize);
@@ -871,6 +893,9 @@ public class PolyHydra : MonoBehaviour
 			case Ops.Lace:
 				conway = conway.Lace(amount, op.faceSelections);
 				break;
+			case Ops.JoinKisKis:
+				conway = conway.JoinKisKis(amount);
+				break;
 			case Ops.Stake:
 				conway = conway.Stake(amount, op.faceSelections);
 				break;
@@ -892,6 +917,9 @@ public class PolyHydra : MonoBehaviour
 			case Ops.Volute:
 				conway = conway.Volute(amount);
 				break;
+			case Ops.Cross:
+				conway = conway.Cross(amount);
+				break;
 			case Ops.Shell:
 				// TODO do this properly with shared edges/vertices
 				conway = conway.Extrude(amount, false, op.randomize);
@@ -901,6 +929,7 @@ public class PolyHydra : MonoBehaviour
 				if ((op.faceSelections==ConwayPoly.FaceSelections.New || op.faceSelections==ConwayPoly.FaceSelections.NewAlt) && op.opType == PolyHydra.Ops.Skeleton)
 				{
 					// Nasty hack until I fix extrude
+					// Produces better results specific for PolyMidi
 					conway = conway.FaceScale(0f, ConwayPoly.FaceSelections.All, false);
 				}
 				conway = conway.Extrude(amount, false, op.randomize);

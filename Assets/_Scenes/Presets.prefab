@@ -489,6 +489,21 @@ MonoBehaviour:
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     ForceTwoSidedOff: 0
+  - Name: Cold Metal
+    PolyhedronMaterial: {fileID: 2100000, guid: f446fe272d555444f9e3d8d9a6de3e14,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps:
+    - {fileID: 2770511818260660741}
+    ActiveLights:
+    - {fileID: 2770511818399393424}
+    - {fileID: 2770511817441937825}
+    - {fileID: 2770511817357839183}
+    ActiveVolumeProfile: {fileID: 11400000, guid: c461889e2a8927d4d8bdefadf8107ec3,
+      type: 2}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    ForceTwoSidedOff: 0
   - Name: Tinted Glass
     PolyhedronMaterial: {fileID: 2100000, guid: 7d966c49445a5cb469bd0d46d8d6c8dd,
       type: 2}
@@ -593,7 +608,7 @@ MonoBehaviour:
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     ForceTwoSidedOff: 0
-  editorPresetIndex: 1
+  editorPresetIndex: 22
 --- !u!1 &2770511816713189262
 GameObject:
   m_ObjectHideFlags: 0
@@ -1396,7 +1411,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2770511817357839181
 Transform:
   m_ObjectHideFlags: 0
@@ -1595,7 +1610,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2770511817441937759
 Transform:
   m_ObjectHideFlags: 0
@@ -2486,7 +2501,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2770511818399393425
 Transform:
   m_ObjectHideFlags: 0
@@ -2877,10 +2892,6 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 5b3c6541358e988469fc3922e6d35d99, type: 3}
       propertyPath: m_Name
       value: CurvedPlane
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 5b3c6541358e988469fc3922e6d35d99, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5b3c6541358e988469fc3922e6d35d99, type: 3}
       propertyPath: m_LocalPosition.x

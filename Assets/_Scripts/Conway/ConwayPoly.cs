@@ -101,7 +101,6 @@ namespace Conway
 
 			faceRoles = Enumerable.Repeat(Roles.New, faceIndices.Count).ToList();
 			vertexRoles = Enumerable.Repeat(Roles.New, vertexPoints.Count).ToList();
-			Debug.Log($"Welded. Before: {Vertices.Count} After: {vertexPoints.Count}");
 
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
@@ -431,6 +430,16 @@ namespace Conway
 			mirror.Halfedges.Flip();
 			original.Append(mirror);
 			return original;
+		}
+
+		public ConwayPoly Rotate(Vector3 axis, float amount)
+		{
+			var copy = Duplicate();
+			foreach (var v in copy.Vertices)
+			{
+				v.Position = Quaternion.AngleAxis(amount, axis) * v.Position;
+			}
+			return copy;
 		}
 
 		public Vector3 GetCentroid()
@@ -967,6 +976,55 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 
+		public ConwayPoly Needle(float offset, bool randomize)
+		{
+			var faceIndices = new List<int[]>();
+			var vertexPoints = new List<Vector3>();
+			var existingVertices = new Dictionary<Vector3, int>();
+			var newCentroidVertices = new Dictionary<string, int>();
+			var rhombusFlags = new Dictionary<string, bool>(); // Track if we've created a face for joined edges
+
+			var faceRoles = new List<Roles>();
+			var vertexRoles = new List<Roles>();
+
+			for (var i = 0; i < Vertices.Count; i++)
+			{
+				vertexPoints.Add(Vertices[i].Position);
+				existingVertices[vertexPoints[i]] = i;
+				vertexRoles.Add(Roles.Existing);
+			}
+
+			int vertexIndex = vertexPoints.Count();
+
+			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
+			{
+				var face = Faces[faceIndex];
+				vertexPoints.Add(face.Centroid + face.Normal * (float)(offset * (randomize?random.NextDouble():1)));
+				newCentroidVertices[face.Name] = vertexIndex++;
+				vertexRoles.Add(Roles.New);
+			}
+
+			foreach (var edge in Halfedges)
+			{
+				if (!rhombusFlags.ContainsKey(edge.Name))
+				{
+					if (edge.Pair != null)
+					{
+						var rhombus = new[]
+						{
+							newCentroidVertices[edge.Pair.Face.Name],
+							existingVertices[edge.Vertex.Position],
+							newCentroidVertices[edge.Face.Name],
+						};
+						faceIndices.Add(rhombus);
+						faceRoles.Add(Roles.New);
+					}
+					rhombusFlags[edge.Name] = true;
+				}
+			}
+			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+		}
+
 		public ConwayPoly Kis(float offset, FaceSelections facesel, bool randomize, List<int> selectedFaces=null)
 		{
 			// vertices and faces to vertices
@@ -1014,6 +1072,8 @@ namespace Conway
 
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);;
 		}
+
+
 
 		public ConwayPoly Gyro(float ratio = 0.3333f)
 		{
@@ -1726,6 +1786,99 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 
+		public ConwayPoly JoinKisKis(float ratio)
+		{
+			var faceIndices = new List<int[]>();
+			var vertexPoints = new List<Vector3>();
+			var existingVertices = new Dictionary<Vector3, int>();
+			var newInnerVertices = new Dictionary<string, int>();
+			var newCentroidVertices = new Dictionary<string, int>();
+			var rhombusFlags = new Dictionary<string, bool>(); // Track if we've created a face for joined edges
+
+			var faceRoles = new List<Roles>();
+			var vertexRoles = new List<Roles>();
+
+			for (var i = 0; i < Vertices.Count; i++)
+			{
+				vertexPoints.Add(Vertices[i].Position);
+				vertexRoles.Add(Roles.Existing);
+				existingVertices[vertexPoints[i]] = i;
+			}
+
+			for (var i = 0; i < Faces.Count; i++)
+			{
+				var face = Faces[i];
+				var centroid = face.Centroid;
+				vertexPoints.Add(centroid);
+				vertexRoles.Add(Roles.Existing);
+				newCentroidVertices[face.Name] = vertexPoints.Count - 1;
+			}
+
+			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
+			{
+				var face = Faces[faceIndex];
+				var centroid = face.Centroid;
+				var edges = face.GetHalfedges();
+
+				for (int i = 0; i < edges.Count; i++)
+				{
+					var edge = edges[i];
+
+					var newVertex = Vector3.LerpUnclamped(
+						edge.Midpoint,
+						centroid,
+						ratio
+					);
+					vertexPoints.Add(newVertex);
+					vertexRoles.Add(Roles.New);
+					newInnerVertices[edge.Name] = vertexPoints.Count - 1;
+
+					var triangle1 = new[]
+					{
+						newCentroidVertices[edge.Face.Name],
+						newInnerVertices[edge.Name],
+						existingVertices[edge.Vertex.Position]
+					};
+					faceIndices.Add(triangle1);
+					faceRoles.Add(Roles.New);
+
+					var triangle2 = new[]
+					{
+						newInnerVertices[edge.Name],
+						newCentroidVertices[edge.Face.Name],
+						existingVertices[edge.Prev.Vertex.Position]
+					};
+					faceIndices.Add(triangle2);
+					faceRoles.Add(Roles.NewAlt);
+				}
+			}
+
+			// Create Rhombus faces
+			// TODO Make planar
+
+			foreach (var edge in Halfedges)
+			{
+				if (!rhombusFlags.ContainsKey(edge.PairedName))
+				{
+					if (edge.Pair != null)
+					{
+						var rhombus = new[]
+						{
+							existingVertices[edge.Prev.Vertex.Position],
+							newInnerVertices[edge.Pair.Name],
+							existingVertices[edge.Vertex.Position],
+							newInnerVertices[edge.Name]
+						};
+						faceIndices.Add(rhombus);
+						faceRoles.Add(Roles.New);
+					}
+					rhombusFlags[edge.PairedName] = true;
+				}
+			}
+
+			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+		}
+
 		public ConwayPoly Medial(int subdivisions)
 		{
 			return _Medial(subdivisions);
@@ -2003,6 +2156,7 @@ namespace Conway
 
 		public ConwayPoly Propeller(float ratio = 0.33333333f)
 		{
+			ratio = 1 - ratio;
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
@@ -2189,25 +2343,159 @@ namespace Conway
 			return Whirl(ratio).Dual();
 		}
 
-		public ConwayPoly Cross()
+		public ConwayPoly Meta(float offset, FaceSelections facesel, bool randomize)
 		{
-
 			var vertexPoints = new List<Vector3>();
 			var faceIndices = new List<IEnumerable<int>>();
+			var existingVertices = new Dictionary<Vector3, int>();
+			var newEdgeVertices = new Dictionary<string, int>();
+			var newCenterVertices = new Dictionary<string, int>();
 
 			var faceRoles = new List<Roles>();
 			var vertexRoles = new List<Roles>();
 
+			for (var i = 0; i < Vertices.Count; i++)
+			{
+				vertexPoints.Add(Vertices[i].Position);
+				vertexRoles.Add(Roles.Existing);
+				existingVertices[vertexPoints[i]] = i;
+			}
+
+			for (var i = 0; i < Faces.Count; i++)
+			{
+
+				if (!IncludeFace(i, facesel)) continue;
+
+				var face = Faces[i];
+				var centroid = face.Centroid;
+
+				vertexPoints.Add(centroid + face.Normal * (float) (offset * (randomize ? random.NextDouble() : 1)));
+				vertexRoles.Add(Roles.Existing);
+				newCenterVertices[face.Name] = vertexPoints.Count - 1;
+
+				var edges = face.GetHalfedges();
+
+				for (int j=0; j < edges.Count; j++)
+				{
+					var edge = edges[j];
+
+					if (!newEdgeVertices.ContainsKey(edge.PairedName))
+					{
+						vertexPoints.Add(edge.Midpoint);
+						vertexRoles.Add(Roles.New);
+						newEdgeVertices[edge.PairedName] = vertexPoints.Count - 1;
+					}
+				}
+
+				for (int j=0; j < edges.Count; j++)
+				{
+					var edge = edges[j];
+
+					var edgeFace1 = new List<int>
+					{
+						existingVertices[edge.Vertex.Position],
+						newEdgeVertices[edge.PairedName],
+						newCenterVertices[face.Name],
+					};
+					faceIndices.Add(edgeFace1);
+					faceRoles.Add(Roles.New);
+
+					var edgeFace2 = new List<int>
+					{
+						newEdgeVertices[edge.PairedName],
+						existingVertices[edge.Prev.Vertex.Position],
+						newCenterVertices[face.Name],
+					};
+					faceIndices.Add(edgeFace2);
+					faceRoles.Add(Roles.NewAlt);
+
+				}
+			}
+
+			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+		}
+
+		public ConwayPoly Cross(float amount)
+		{
+			amount = amount * 0.5f + 0.5f;
+
+			var vertexPoints = new List<Vector3>();
+			var faceIndices = new List<IEnumerable<int>>();
+			var existingVertices = new Dictionary<Vector3, int>();
+			var newEdgeVertices = new Dictionary<string, int>();
+			var newInnerVertices = new Dictionary<string, int>();
+			var newCentroidVertices = new Dictionary<string, int>();
+
+			var faceRoles = new List<Roles>();
+			var vertexRoles = new List<Roles>();
+
+			for (var i = 0; i < Vertices.Count; i++)
+			{
+				vertexPoints.Add(Vertices[i].Position);
+				vertexRoles.Add(Roles.Existing);
+				existingVertices[vertexPoints[i]] = i;
+			}
+
 			for (var i = 0; i < Faces.Count; i++)
 			{
 				var face = Faces[i];
-				vertexPoints.AddRange(face.GetVertices().Select(v => v.Position));
-				var mewVertIndices = Enumerable.Range(vertexPoints.Count - 1, face.Sides);
-				faceIndices.Add(mewVertIndices);
-			}
+				var centroid = face.Centroid;
 
-			faceRoles = Enumerable.Repeat(Roles.Existing, faceIndices.Count).ToList();
-			vertexRoles = Enumerable.Repeat(Roles.Existing, vertexPoints.Count).ToList();
+				vertexPoints.Add(centroid);
+				vertexRoles.Add(Roles.Existing);
+				newCentroidVertices[face.Name] = vertexPoints.Count - 1;
+
+				var edges = face.GetHalfedges();
+				for (int j=0; j < edges.Count; j++)
+				{
+					var edge = edges[j];
+
+					vertexPoints.Add(centroid - (centroid - edge.Vertex.Position) * amount);
+					vertexRoles.Add(Roles.NewAlt);
+					newInnerVertices[edge.Name] = vertexPoints.Count - 1;
+
+					if (!newEdgeVertices.ContainsKey(edge.PairedName))
+					{
+						vertexPoints.Add(edge.Midpoint);
+						vertexRoles.Add(Roles.New);
+						newEdgeVertices[edge.PairedName] = vertexPoints.Count - 1;
+					}
+				}
+
+				for (int j=0; j < edges.Count; j++)
+				{
+					var edge = edges[j];
+
+					var innerFace = new List<int>
+					{
+						newCentroidVertices[face.Name],
+						newInnerVertices[edge.Name],
+						newEdgeVertices[edge.PairedName],
+						newInnerVertices[edge.Prev.Name],
+					};
+					faceIndices.Add(innerFace);
+					faceRoles.Add(Roles.New);
+
+					var edgeFace1 = new List<int>
+					{
+						existingVertices[edge.Vertex.Position],
+						newEdgeVertices[edge.PairedName],
+						newInnerVertices[edge.Name],
+					};
+					faceIndices.Add(edgeFace1);
+					faceRoles.Add(Roles.NewAlt);
+
+					var edgeFace2 = new List<int>
+					{
+						newEdgeVertices[edge.PairedName],
+						existingVertices[edge.Prev.Vertex.Position],
+						newInnerVertices[edge.Prev.Name],
+					};
+					faceIndices.Add(edgeFace2);
+					faceRoles.Add(Roles.NewAlt);
+
+				}
+			}
 
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
@@ -2669,7 +2957,7 @@ namespace Conway
 			return _Extrude(offsetList, symmetric, randomize);
 		}
 
-		public ConwayPoly xxxxxxExtrude(float amount, FaceSelections facesel, bool randomize)
+		public ConwayPoly Extrude(float amount, FaceSelections facesel, bool randomize)
 		{
 			var debugFaces = new[] { 0, 1};
 
@@ -2855,7 +3143,7 @@ namespace Conway
 
 		public static ConwayPoly MakeUnitileGrid(int pattern, int gridShape, int rows = 5, int cols = 5, bool weld=false)
 		{
-			var ut = new Unitile(pattern, rows, cols);
+			var ut = new Unitile(pattern, rows, cols, true);
 			switch (gridShape)
 			{
 				case 0:
@@ -2868,7 +3156,7 @@ namespace Conway
 					ut.conic_frust(1);
 					break;
 				case 3:
-					ut.conic_frust(0.0001f);
+					ut.conic_frust(0.00001f);
 					break;
 				case 4:
 					ut.conic_frust();
