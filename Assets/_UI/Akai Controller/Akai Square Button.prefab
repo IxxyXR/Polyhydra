@@ -92,16 +92,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Akai Op SVG Image
       objectReference: {fileID: 0}
-    - target: {fileID: 1858675131508312382, guid: 17e2e1570feccdf46b7f1b732e3f9e94,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 29.840002
-      objectReference: {fileID: 0}
-    - target: {fileID: 1858675131508312382, guid: 17e2e1570feccdf46b7f1b732e3f9e94,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -21.5
-      objectReference: {fileID: 0}
     - target: {fileID: 6715675855568096956, guid: 17e2e1570feccdf46b7f1b732e3f9e94,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -206,26 +196,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6715675855568096956, guid: 17e2e1570feccdf46b7f1b732e3f9e94,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.0015
-      objectReference: {fileID: 0}
-    - target: {fileID: 6715675855568096956, guid: 17e2e1570feccdf46b7f1b732e3f9e94,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.0015
-      objectReference: {fileID: 0}
-    - target: {fileID: 6715675855568096956, guid: 17e2e1570feccdf46b7f1b732e3f9e94,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8954773769938585142, guid: 17e2e1570feccdf46b7f1b732e3f9e94,
-        type: 3}
-      propertyPath: opType
-      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17e2e1570feccdf46b7f1b732e3f9e94, type: 3}
