@@ -389,7 +389,7 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Medial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8, amountSafeMin = 1, amountSafeMax = 6}},
 			{Ops.EdgeMedial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8, amountSafeMin = 1, amountSafeMax = 6}},
 //			{Ops.JoinedMedial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8, amountSafeMin = 1, amountSafeMax = 4}},
-			{Ops.Propeller, new OpConfig{amountDefault = 0.75f, amountMin = -4, amountMax = 4, amountSafeMin = 0.5f, amountSafeMax = 1f}},
+			{Ops.Propeller, new OpConfig{amountDefault = 0.25f, amountMin = -4, amountMax = 4, amountSafeMin = 0f, amountSafeMax = 0.5f}},
 			{Ops.Whirl, new OpConfig{amountDefault = 0.25f, amountMin = -4, amountMax = 4, amountSafeMin = 0, amountSafeMax = 0.5f}},
 			{Ops.Volute, new OpConfig{amountDefault = 0.33f, amountMin = -4, amountMax = 4, amountSafeMin = 0, amountSafeMax = 1}},
 			{Ops.Exalt, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = 0, amountSafeMax = 1, usesRandomize=true}},
