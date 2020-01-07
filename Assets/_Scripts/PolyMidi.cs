@@ -19,7 +19,7 @@ public class PolyMidi : MonoBehaviour
    MidiInPort InPort;
 
    private int[] MidiColorValues = {1, 5, 3};
-   private const int MAXOPS = 7;
+   private const int MAXOPS = 4  ;
 
    private AkaiPrefabController akaiPrefab;
 
@@ -170,7 +170,7 @@ public class PolyMidi : MonoBehaviour
       // Bank 0
       PolyHydra.Ops.Kis,
       PolyHydra.Ops.Expand,
-      PolyHydra.Ops.Truncate,
+      PolyHydra.Ops.Chamfer,
       PolyHydra.Ops.Loft,
       PolyHydra.Ops.EdgeMedial,
       PolyHydra.Ops.Lace,
@@ -179,7 +179,7 @@ public class PolyMidi : MonoBehaviour
 
       // Bank 1
       PolyHydra.Ops.Meta,
-      PolyHydra.Ops.Chamfer,
+      PolyHydra.Ops.Truncate,
       PolyHydra.Ops.Zip,
       PolyHydra.Ops.Stake,
       PolyHydra.Ops.Cross,
@@ -195,28 +195,33 @@ public class PolyMidi : MonoBehaviour
    
    private PolyHydra.Ops[] SecondaryOps =
    {
-      PolyHydra.Ops.FaceScale,
-      PolyHydra.Ops.VertexScale,
-      PolyHydra.Ops.Extrude,
-      PolyHydra.Ops.Skeleton,
+//      PolyHydra.Ops.FaceScale,
+//      PolyHydra.Ops.FaceOffset,
+//      PolyHydra.Ops.Extrude,
+//      PolyHydra.Ops.Skeleton,
 
-////      PolyHydra.Ops.Shell,
-////      PolyHydra.Ops.VertexScale,
-////      PolyHydra.Ops.VertexRotate,
-////      PolyHydra.Ops.VertexFlex,
-////      PolyHydra.Ops.FaceRotate,
+//      PolyHydra.Ops.Shell,
+
+//      PolyHydra.Ops.VertexScale,
+//      PolyHydra.Ops.VertexRotate,
+//      PolyHydra.Ops.VertexFlex,
+//      PolyHydra.Ops.FaceRotate,
+
 //      PolyHydra.Ops.FaceKeep,
+//      PolyHydra.Ops.FaceRemove,
+
 ////      PolyHydra.Ops.FillHoles,
 ////      PolyHydra.Ops.Hinge,
-//      PolyHydra.Ops.AddDual,
-//      PolyHydra.Ops.AddMirrorX,
-////      PolyHydra.Ops.AddMirrorY,
-////      PolyHydra.Ops.AddMirrorZ,
+
+      PolyHydra.Ops.AddDual,
+      PolyHydra.Ops.AddMirrorX,
+//      PolyHydra.Ops.AddMirrorY,
+//      PolyHydra.Ops.AddMirrorZ,
 ////      PolyHydra.Ops.Canonicalize,
-//      PolyHydra.Ops.Spherize,
+      PolyHydra.Ops.Spherize,
 ////      PolyHydra.Ops.Recenter,
 ////      PolyHydra.Ops.SitLevel,
-////      PolyHydra.Ops.Stretch,
+      PolyHydra.Ops.Stretch,
 ////      PolyHydra.Ops.Weld
    };
 

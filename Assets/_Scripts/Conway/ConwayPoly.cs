@@ -596,9 +596,9 @@ namespace Conway
 //				}
 //				else
 //				{
-					vlookup[edge.Vertex.Name] = count++;
-					vertexPoints.Add(edge.Vertex.Position);
-					vertexRoles.Add(Roles.Ignored);
+//					vlookup[edge.Vertex.Name] = count++;
+//					vertexPoints.Add(edge.Vertex.Position);
+//					vertexRoles.Add(Roles.Ignored);
 //				}
 
 			}
