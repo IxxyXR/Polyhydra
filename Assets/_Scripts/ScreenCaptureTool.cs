@@ -1,9 +1,6 @@
 ﻿using System.Collections;
-using System.Runtime.Versioning;
-using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.Rendering.HighDefinition;
-using UnityEngine.SocialPlatforms.GameCenter;
+
 
 [ExecuteInEditMode]
 public class ScreenCaptureTool : MonoBehaviour

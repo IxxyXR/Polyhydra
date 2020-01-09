@@ -195,14 +195,14 @@ public class PolyMidi : MonoBehaviour
    
    private PolyHydra.Ops[] SecondaryOps =
    {
-//      PolyHydra.Ops.FaceScale,
+      PolyHydra.Ops.FaceScale,
 //      PolyHydra.Ops.FaceOffset,
-//      PolyHydra.Ops.Extrude,
-//      PolyHydra.Ops.Skeleton,
+      PolyHydra.Ops.Extrude,
+      PolyHydra.Ops.Skeleton,
 
 //      PolyHydra.Ops.Shell,
 
-//      PolyHydra.Ops.VertexScale,
+      PolyHydra.Ops.VertexScale,
 //      PolyHydra.Ops.VertexRotate,
 //      PolyHydra.Ops.VertexFlex,
 //      PolyHydra.Ops.FaceRotate,
@@ -213,16 +213,16 @@ public class PolyMidi : MonoBehaviour
 ////      PolyHydra.Ops.FillHoles,
 ////      PolyHydra.Ops.Hinge,
 
-      PolyHydra.Ops.AddDual,
-      PolyHydra.Ops.AddMirrorX,
-//      PolyHydra.Ops.AddMirrorY,
-//      PolyHydra.Ops.AddMirrorZ,
-////      PolyHydra.Ops.Canonicalize,
-      PolyHydra.Ops.Spherize,
-////      PolyHydra.Ops.Recenter,
-////      PolyHydra.Ops.SitLevel,
-      PolyHydra.Ops.Stretch,
-////      PolyHydra.Ops.Weld
+//      PolyHydra.Ops.AddDual,
+//      PolyHydra.Ops.AddMirrorX,
+////      PolyHydra.Ops.AddMirrorY,
+////      PolyHydra.Ops.AddMirrorZ,
+//////      PolyHydra.Ops.Canonicalize,
+//      PolyHydra.Ops.Spherize,
+//////      PolyHydra.Ops.Recenter,
+//////      PolyHydra.Ops.SitLevel,
+//      PolyHydra.Ops.Stretch,
+//////      PolyHydra.Ops.Weld
    };
 
    void Start()

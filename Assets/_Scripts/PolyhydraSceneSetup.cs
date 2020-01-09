@@ -39,13 +39,11 @@ public class PolyhydraSceneSetup : MonoBehaviour
     void Configure()
     {
         MidiController.gameObject.SetActive(MidiEnabled);
-
         VRPlayer.SetActive(VrEnabled);
         MainCamera.SetActive(!VrEnabled);
         
         if (RenderingPipeline==RenderingPipelines.URP)
         {
-            FindObjectOfType<Volume>().gameObject.SetActive(true);
             FindObjectsOfType<HDAdditionalCameraData>().Select(x => x.enabled = true);
             FindObjectsOfType<HDAdditionalLightData>().Select(x => x.enabled = true);
             FindObjectsOfType<UniversalAdditionalCameraData>().Select(x => x.enabled = false);
@@ -53,7 +51,6 @@ public class PolyhydraSceneSetup : MonoBehaviour
         }
         else if (RenderingPipeline == RenderingPipelines.URP)
         {
-            FindObjectOfType<Volume>().gameObject.SetActive(false);
             FindObjectsOfType<HDAdditionalCameraData>().Select(x => x.enabled = false);
             FindObjectsOfType<HDAdditionalLightData>().Select(x => x.enabled = false);
             FindObjectsOfType<UniversalAdditionalCameraData>().Select(x => x.enabled = true);
