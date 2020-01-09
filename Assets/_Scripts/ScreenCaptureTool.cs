@@ -1,9 +1,6 @@
 ﻿using System.Collections;
-using System.Runtime.Versioning;
-using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.Rendering.HighDefinition;
-using UnityEngine.SocialPlatforms.GameCenter;
+
 
 [ExecuteInEditMode]
 public class ScreenCaptureTool : MonoBehaviour
@@ -93,10 +90,13 @@ public class ScreenCaptureTool : MonoBehaviour
         RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
         camera.targetTexture = rt;
         Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+        float oldFov = camera.fieldOfView;
+        camera.fieldOfView = oldFov / 2.0f;
         camera.Render();
         RenderTexture.active = rt;
         screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
         camera.targetTexture = null;
+        camera.fieldOfView = oldFov;
         RenderTexture.active = null;
         if (Application.isPlaying)
         {

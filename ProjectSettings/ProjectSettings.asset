@@ -412,6 +412,7 @@ PlayerSettings:
   - m_BuildTarget: Standalone
     m_Enabled: 0
     m_Devices:
+    - MockHMD
     - Oculus
     - OpenVR
   - m_BuildTarget: Android
@@ -421,7 +422,6 @@ PlayerSettings:
   openGLRequireES31: 1
   openGLRequireES31AEP: 1
   openGLRequireES32: 0
-  vuforiaEnabled: 0
   m_TemplateCustomTags: {}
   mobileMTRendering:
     Android: 1

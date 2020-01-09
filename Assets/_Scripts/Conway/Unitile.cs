@@ -20,18 +20,17 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.ShortcutManagement;
 using UnityEngine;
 
 
 public class Unitile
 {
 
-    public Unitile(int pat=1, int xend=5, int yend=5, bool totile=false, Vector3? shr=null)
+    public Unitile(int pat=1, int cols=5, int rows=5, bool totile=false, Vector3? shr=null)
     {
         pattern = pat;
-        x_end = xend;
-        y_end = yend;
+        x_end = cols;
+        y_end = rows;
         to_tile = totile;
         shear = shr ?? Vector3.zero;
 
@@ -79,7 +78,7 @@ public class Unitile
     {
         poly.Clear();
         float ang = 2 * Mathf.PI / num_sides;
-        float rad = 0.5f / Mathf.Sin(ang / 2); // radius for unit edge polygon
+        float rad = 0.5f / Mathf.Sin(ang / 2F); // radius for unit edge polygon
 
         for (int i = num_sides - 1; i >= 0; i--)
             poly.Add(new Vector3(rad * Mathf.Cos(i * ang + rot_ang), 0, rad * Mathf.Sin(i * ang + rot_ang)));
@@ -87,13 +86,13 @@ public class Unitile
 
     void add_polygon(float x_start, float y_start)
     {
-        int x_steps = (int) Mathf.Floor((x_end - Mathf.Epsilon - x_start) / x_inc);
-        int y_steps = (int) Mathf.Floor((y_end - Mathf.Epsilon - y_start) / y_inc);
-        for (int i = 0; i <= x_steps; i++)
+        int x_steps = Mathf.CeilToInt((x_end - Mathf.Epsilon - x_start) / x_inc);
+        int y_steps = Mathf.CeilToInt((y_end - Mathf.Epsilon - y_start) / y_inc);
+        for (int i = 0; i < x_steps; i++)
         {
             float x = x_start + i * x_inc;
             if (x < -Mathf.Epsilon) continue;
-            for (int j = 0; j <= y_steps; j++)
+            for (int j = 0; j < y_steps; j++)
             {
                 float y = y_start + j * y_inc;
                 if (y < -Mathf.Epsilon) continue;
@@ -216,24 +215,33 @@ public class Unitile
         set_polygon(6, rot);
         add_polygon(0, 0);
         add_polygon(Mathf.Sqrt(7f) / 2f, Mathf.Sqrt(21f) / 2f);
-        for (float i = 0; i < 6; i++)
+        for (int i = 0; i < 6; i++)
         {
-            float rot2 = rot + Mathf.PI / 6f + i * Mathf.PI / 3f;
-            set_polygon(3, rot2);
-            var cent = RotatePointAroundPivot(
+            float rot2 = rot + Mathf.PI / 3f + i * Mathf.PI / 3f; //var trans = Matrix4x4.TRS(new Vector3(Mathf.Sqrt(3f) - 1f / Mathf.Sqrt(3f), 0, 0), Quaternion.identity, Vector3.one);
+            var trans = Matrix4x4.TRS(
                 new Vector3(Mathf.Sqrt(3f) - 1f / Mathf.Sqrt(3f), 0, 0),
-                Vector3.zero,
-                Quaternion.Euler(0, rot2 * Mathf.Rad2Deg, 0)
+                Quaternion.identity,
+                Vector3.one
             );
+            trans *= Matrix4x4.TRS(
+                Vector3.zero,
+                Quaternion.Euler(0, 0, rot2),
+                Vector3.one
+            );
+            set_polygon(3, rot2);
+            var cent = trans.MultiplyPoint3x4(Vector3.zero);
             add_polygon(cent.x, cent.z);
-            //add_polygon(cent.x + Mathf.Sqrt(7f) / 2f, cent.z + Mathf.Sqrt(21f) / 2f);
-//            if (i < 3)
-//            {
-//                trans = new Vector3(trans.x, trans.y, trans.z + 1);
-//                cent = trans;
-//                if (i == 1) add_polygon(cent.x, cent.z);
-//                add_polygon(cent.x + Mathf.Sqrt(7) / 2, cent.z + Mathf.Sqrt(21) / 2);
-//            }
+            add_polygon(cent.x + Mathf.Sqrt(7f) / 2f, cent.z + Mathf.Sqrt(21f) / 2f);
+            if (i < 3)
+            {
+                trans = Matrix4x4.TRS(
+                    new Vector3(0, 0, 1f),
+                    Quaternion.identity,
+                    Vector3.one) * trans;
+                cent = trans.MultiplyPoint3x4(Vector3.zero);
+                if (i == 1) add_polygon(cent.x, cent.z);
+                add_polygon(cent.x + Mathf.Sqrt(7f) / 2f, cent.z + Mathf.Sqrt(21f) / 2f);
+            }
         }
     }
 
@@ -445,7 +453,7 @@ public class Unitile
         return -1;
     }
 
-    public void conic_frust(float top_rad=0.25f, float bot_rad=1f, float ht=2f)
+    public void conic_frust(float top_rad=0.5f, float bot_rad=1f, float ht=2f)
     {
         plane(UT.ut_join, UT.ut_open);
         float a0, h, rad;

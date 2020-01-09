@@ -189,7 +189,7 @@ MonoBehaviour:
   m_RenderPipelineSettings:
     supportShadowMask: 0
     supportSSR: 0
-    supportSSAO: 1
+    supportSSAO: 0
     supportSubsurfaceScattering: 0
     increaseSssSampleCount: 0
     supportVolumetrics: 1
@@ -212,7 +212,7 @@ MonoBehaviour:
     customBufferFormat: 12
     supportedLitShaderMode: 1
     supportDecals: 0
-    msaaSampleCount: 8
+    msaaSampleCount: 4
     supportMotionVectors: 0
     supportRuntimeDebugDisplay: 0
     supportDitheringCrossFade: 0

@@ -3,8 +3,7 @@
 --- !u!1 &71153249122865252
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 1698175978889310, guid: 2237e6cd70896014992cb008a0e8df98,
-    type: 2}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
@@ -13,8 +12,6 @@ GameObject:
   - component: {fileID: 71153249122865255}
   - component: {fileID: 71153249122865250}
   - component: {fileID: 71153249122865254}
-  - component: {fileID: 71153249122865251}
-  - component: {fileID: 71153249122865249}
   - component: {fileID: 71153249122865277}
   - component: {fileID: 71153249122865276}
   m_Layer: 0
@@ -27,14 +24,13 @@ GameObject:
 --- !u!4 &71153249122865248
 Transform:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 4547120288405926, guid: 2237e6cd70896014992cb008a0e8df98,
-    type: 2}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 71153249122865252}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9999143, y: 0.9999143, z: 0.9999143}
+  m_LocalScale: {x: 0.604336, y: 0.604336, z: 0.604336}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -51,20 +47,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16fa6755628f34246af47ee2aab9e558, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShapeType: 2
-  UniformPolyType: 33
+  EnableLogging: 1
+  enableThreading: 0
+  enableCaching: 1
+  ShapeType: 0
+  UniformPolyType: 10
+  UniformPolyTypeCategory: 0
   ColorMethod: 1
-  JohnsonPolyType: 6
-  GridType: 2
+  JohnsonPolyType: 0
+  OtherPolyType: 0
+  GridType: 0
+  GridShape: 4
   WythoffSymbol: 
   PresetName: New Preset
-  APresetName: RGB
-  BypassOps: 1
-  TwoSided: 1
+  APresetName: Subtle
+  BypassOps: 0
+  TwoSided: 0
   Rescale: 1
-  PrismP: 4
+  PrismP: 3
   PrismQ: 2
-  ConwayOperators: []
+  ConwayOperators:
+  - opType: 30
+    faceSelections: 0
+    randomize: 0
+    amount: 0
+    animatedAmount: 0
+    disabled: 0
+    animate: 1
+    animationRate: 1
+    animationAmount: 1
+  - opType: 34
+    faceSelections: 22
+    randomize: 0
+    amount: 1.34
+    animatedAmount: 0
+    disabled: 0
+    animate: 0
+    animationRate: 0
+    animationAmount: 0
   wythoffVertexGizmos: 0
   conwayVertexGizmos: 0
   faceCenterGizmos: 0
@@ -98,7 +118,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 756d17fc7a02e1c4ea003575272634a7, type: 2}
+  - {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -127,44 +147,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 71153249122865252}
   m_Mesh: {fileID: 0}
---- !u!114 &71153249122865251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114455024611409364, guid: 2237e6cd70896014992cb008a0e8df98,
-    type: 2}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 71153249122865252}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1ee2fcdc1d06b348bf3bd66fd56b638, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  x: 0.1
-  y: 0.02
-  z: 0.04
-  active: 1
---- !u!114 &71153249122865249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 71153249122865252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0663b937573dd264f91a714c288cb27e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _displayWireframe: 0
-  _faceNormals:
-    _draw: 0
-    _length: 0.1
-    _normalColor: {r: 0.13333334, g: 0.8666667, b: 0.8666667, a: 0.60784316}
-  _vertexNormals:
-    _draw: 0
-    _length: 0.1
-    _normalColor: {r: 0.78431374, g: 1, b: 0.7647059, a: 0.49803922}
 --- !u!114 &71153249122865277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,17 +166,9 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 71153249122865252}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab8922f8f5274114381b0dc864f5a07f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PolyAnimators:
-  - OpIndex: 0
-    rate: 1
-    amplitude: 0.2
-    offset: 0
-  - OpIndex: 1
-    rate: 0.7
-    amplitude: 0.2
-    offset: 0
+  updateFrequency: 0.05
