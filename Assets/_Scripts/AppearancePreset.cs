@@ -4,31 +4,42 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class AppearancePreset
 {
     public string Name;
-    public Material PolyhedronMaterial;
+    [FormerlySerializedAs("PolyhedronMaterial")] public Material PolyhedronMaterialHDRP;
+    public Material PolyhedronMaterialURP;
     public PolyHydra.ColorMethods PolyhedronColorMethod;
     public List<GameObject> ActiveProps;
     public List<Light> ActiveLights;
-    public VolumeProfile ActiveVolumeProfile;
+    [FormerlySerializedAs("ActiveVolumeProfile")] public VolumeProfile ActiveVolumeProfileHDRP;
+    public VolumeProfile ActiveVolumeProfileURP;
     public HDAdditionalCameraData.ClearColorMode CameraClearColorMode;
     public Color CameraBackgroundColor;
     public bool ForceTwoSidedOff;
 
-    public void ApplyToPoly(ref PolyHydra poly, GameObject LightsParent, GameObject PropsParent, Volume activeVolume, Camera CurrentCamera)
+    public void ApplyToPoly(ref PolyHydra poly, GameObject LightsParent, GameObject PropsParent, Volume activeVolume, Camera CurrentCamera, PolyhydraSceneSetup.RenderingPipelines pipeline)
     {
         
         var hdCamData = CurrentCamera.gameObject.GetComponent<HDAdditionalCameraData>();
         
         poly.APresetName = Name;
-        poly.gameObject.GetComponent<MeshRenderer>().material = PolyhedronMaterial;
+        if (pipeline == PolyhydraSceneSetup.RenderingPipelines.HDRP)
+        {
+            poly.gameObject.GetComponent<MeshRenderer>().material = PolyhedronMaterialHDRP;
+            activeVolume.profile = ActiveVolumeProfileHDRP;
+        }
+        else
+        {
+            poly.gameObject.GetComponent<MeshRenderer>().material = PolyhedronMaterialURP;
+            activeVolume.profile = ActiveVolumeProfileURP;
+        }
         poly.ColorMethod = PolyhedronColorMethod;
         hdCamData.clearColorMode = CameraClearColorMode;
         hdCamData.backgroundColorHDR = CameraBackgroundColor;
-        activeVolume.profile = ActiveVolumeProfile;
 
         var lights = LightsParent.GetComponentsInChildren<Light>(includeInactive: true);
         foreach (var light in lights)

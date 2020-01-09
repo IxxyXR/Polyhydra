@@ -13,6 +13,8 @@ public class AppearancePresets : MonoBehaviour {
 	public List<AppearancePreset> Items;
 	public int editorPresetIndex;
 
+	private PolyhydraSceneSetup _setup;
+
 	private const string PresetFileNamePrefix = "AppearancePreset-";
 	
 	public AppearancePreset ApplyPresetToPoly(string presetName)
@@ -39,7 +41,11 @@ public class AppearancePresets : MonoBehaviour {
 
 	public void ApplyPresetToPoly(AppearancePreset preset)
 	{
-		preset.ApplyToPoly(ref _poly, LightsParent, PropsParent, Volume, CurrentCamera);
+		if (_setup == null)
+		{
+			_setup = FindObjectOfType<PolyhydraSceneSetup>();
+		}
+		preset.ApplyToPoly(ref _poly, LightsParent, PropsParent, Volume, CurrentCamera, _setup.RenderingPipeline);
 	}
 
 	[ContextMenu("Current preset")]
