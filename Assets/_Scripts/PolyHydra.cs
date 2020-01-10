@@ -44,8 +44,8 @@ public class PolyHydra : MonoBehaviour
 	public string PresetName;
 	public string APresetName;
 	public bool BypassOps;
-	public bool TwoSided;
 	public bool Rescale;
+	public bool SafeLimits = false;
 	private PolyCache polyCache;
 	private Coroutine geomCoroutine;
 
@@ -657,8 +657,17 @@ public class PolyHydra : MonoBehaviour
 			if (opconfigs[op.opType].usesAmount)
 			{
 				op.amount = Mathf.Round(op.amount * 1000) / 1000f;
-				float opMin = opconfigs[op.opType].amountMin;
-				float opMax = opconfigs[op.opType].amountMax;
+				float opMin, opMax;
+				if (SafeLimits)
+				{
+					opMin = opconfigs[op.opType].amountSafeMin;
+					opMax = opconfigs[op.opType].amountSafeMax;
+				}
+				else
+				{
+					opMin = opconfigs[op.opType].amountMin;
+					opMax = opconfigs[op.opType].amountMax;
+				}
 				if (op.amount < opMin) op.amount = opMin;
 				if (op.amount > opMax) op.amount = opMax;
 			}
@@ -741,14 +750,14 @@ public class PolyHydra : MonoBehaviour
 			var mesh = polyCache.GetMesh(key);
 			if (mesh == null)
 			{
-				mesh = BuildMeshFromConwayPoly(TwoSided);
+				mesh = BuildMeshFromConwayPoly();
 				polyCache.SetMesh(key, mesh);
 			}
 			AssignFinishedMesh(mesh);
 		}
 		else
 		{
-			var mesh = BuildMeshFromConwayPoly(TwoSided);
+			var mesh = BuildMeshFromConwayPoly();
 			AssignFinishedMesh(mesh);
 		}
 	}
@@ -1036,7 +1045,7 @@ public class PolyHydra : MonoBehaviour
 	public void ApplyOps()
 	{
 
-		var cacheKeySource = $"{ShapeType} {OtherPolyType} {JohnsonPolyType} {UniformPolyType} {PrismP} {PrismQ} {GridType} {GridShape} {TwoSided}";
+		var cacheKeySource = $"{ShapeType} {OtherPolyType} {JohnsonPolyType} {UniformPolyType} {PrismP} {PrismQ} {GridType} {GridShape}";
 		
 		foreach (var op in ConwayOperators.ToList())
 		{
@@ -1174,13 +1183,13 @@ public class PolyHydra : MonoBehaviour
 		return val + new Vector3(Random.value * jitter, Random.value * jitter, Random.value * jitter);
 	}
 
-	public Mesh BuildMeshFromConwayPoly(bool forceTwosided)
+	public Mesh BuildMeshFromConwayPoly()
 	{
-		return BuildMeshFromConwayPoly(this._conwayPoly, forceTwosided);
+		return BuildMeshFromConwayPoly(this._conwayPoly);
 	}
 
 
-	public Mesh BuildMeshFromConwayPoly(ConwayPoly conway, bool forceTwosided)
+	public Mesh BuildMeshFromConwayPoly(ConwayPoly conway)
 	{
 		
 		var target = new Mesh();
@@ -1299,67 +1308,6 @@ public class PolyHydra : MonoBehaviour
 				meshColors.AddRange(Enumerable.Repeat(color, 3));
 				miscUVs.AddRange(Enumerable.Repeat(miscUV, 3));
 			}
-
-
-			if (hasNaked || forceTwosided)
-			{
-
-				if (faceIndex.Count > 3)
-				{
-					for (var edgeIndex = 0; edgeIndex < faceIndex.Count; edgeIndex++)
-					{
-						meshVertices.Add(faceCentroid);
-						meshUVs.Add(calcUV(meshVertices[index]));
-						meshTriangles.Add(index++);
-						edgeUVs.Add(new Vector2(0, 0));
-						barycentricUVs.Add(new Vector3(0, 0, 1));
-
-
-						meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
-						meshUVs.Add(calcUV(meshVertices[index]));
-						meshTriangles.Add(index++);
-						edgeUVs.Add(new Vector2(1, 1));
-						barycentricUVs.Add(new Vector3(0, 1, 0));
-
-
-						meshVertices.Add(points[faceIndex[edgeIndex]]);
-						meshUVs.Add(calcUV(meshVertices[index]));
-						meshTriangles.Add(index++);
-						edgeUVs.Add(new Vector2(1, 1));					
-						barycentricUVs.Add(new Vector3(1, 0, 0));
-
-
-						meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
-						meshColors.AddRange(Enumerable.Repeat(color, 3));
-						miscUVs.AddRange(Enumerable.Repeat(miscUV, 3));
-					}
-				}
-				else
-				{
-					meshVertices.Add(points[faceIndex[0]]);
-					meshUVs.Add(calcUV(meshVertices[index]));
-					meshTriangles.Add(index++);
-					barycentricUVs.Add(new Vector3(0, 0, 1));
-
-
-					meshVertices.Add(points[faceIndex[2]]);
-					meshUVs.Add(calcUV(meshVertices[index]));
-					meshTriangles.Add(index++);
-					barycentricUVs.Add(new Vector3(0, 1, 0));
-
-
-					meshVertices.Add(points[faceIndex[1]]);
-					meshUVs.Add(calcUV(meshVertices[index]));
-					meshTriangles.Add(index++);
-					barycentricUVs.Add(new Vector3(1, 0, 0));
-
-
-					edgeUVs.AddRange(Enumerable.Repeat(new Vector2(1, 1), 3));
-					meshNormals.AddRange(Enumerable.Repeat(-faceNormal, 3));
-					meshColors.AddRange(Enumerable.Repeat(color, 3));
-					miscUVs.AddRange(Enumerable.Repeat(miscUV, 3));
-				}
-			}		
 		}
 		
 		target.vertices = meshVertices.Select(x => Jitter(x)).ToArray();
@@ -1370,11 +1318,7 @@ public class PolyHydra : MonoBehaviour
 		target.SetUVs(1, edgeUVs);
 		target.SetUVs(2, barycentricUVs);
 		target.SetUVs(3, miscUVs);
-
-		if (hasNaked || forceTwosided) {
-			target.RecalculateNormals();
-		}
-//		target.RecalculateNormals();
+		
 		target.RecalculateTangents();
 		return target;
 	}
