@@ -10,18 +10,17 @@ public class PolyMidi : MonoBehaviour
 {
 
    public PolyHydra poly;
-   public int UpdateEvery = 4;
-   private int LastFrameRendered = -1;
+   public int UpdateSliderEvery = 3;
    public AppearancePresets aPresets;
 
-   MidiProbe _probe;
-   MidiOutPort OutPort;
-   MidiInPort InPort;
-
+   private int LastFrameRendered = -1;
+   private MidiProbe _probe;
+   private MidiOutPort OutPort;
+   private MidiInPort InPort;
    private int[] MidiColorValues = {1, 5, 3};
    private const int MAXOPS = 4  ;
-
    private AkaiPrefabController akaiPrefab;
+   private float SliderDeadZone = 0.1f;
 
    private List<(int, PolyHydra.JohnsonPolyTypes)> Johnsons = new List<(int, PolyHydra.JohnsonPolyTypes)>
    {
@@ -523,14 +522,18 @@ public class PolyMidi : MonoBehaviour
 
       int slider = number - 48;
       akaiPrefab.SetSlider(slider, value);
+      float amount = value / 127f;
 
-      if (Time.frameCount % UpdateEvery != 0) return;
+      amount = amount < SliderDeadZone ? 0 : amount;
+      amount = amount > 1 - SliderDeadZone ? 1 : amount;
+
+      if (Time.frameCount % UpdateSliderEvery != 0) return;
       if (Time.frameCount == LastFrameRendered) return; // We've already rendered on this frame
       LastFrameRendered = Time.frameCount;
 
       if (slider == 8)
       {
-         int shapeIndex = Mathf.FloorToInt((value / 127f) * TotalShapeCount());
+         int shapeIndex = Mathf.FloorToInt(value/127f * TotalShapeCount());
          if (shapeIndex < Polys.Length)
          {
             poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
@@ -549,7 +552,7 @@ public class PolyMidi : MonoBehaviour
       }
       else if (slider == 7)
       {
-         int apresetIndex = Mathf.FloorToInt((value / 127f) * aPresets.Items.Count);
+         int apresetIndex = Mathf.FloorToInt(value/127f * aPresets.Items.Count);
          var apreset = aPresets.Items[apresetIndex];
          aPresets.ApplyPresetToPoly(apreset);
       }
@@ -558,7 +561,6 @@ public class PolyMidi : MonoBehaviour
          if (slider >= poly.ConwayOperators.Count) return;
          var op = poly.ConwayOperators[slider];
          var opconfig = poly.opconfigs[op.opType];
-         float amount = value / 127f;
          op.amount = Mathf.Lerp(opconfig.amountSafeMin, opconfig.amountSafeMax, amount);
          poly.ConwayOperators[slider] = op;
          FinalisePoly();
