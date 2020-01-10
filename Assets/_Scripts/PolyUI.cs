@@ -754,6 +754,24 @@ public class PolyUI : MonoBehaviour {
     void SafeLimitsToggleChanged()
     {
         poly.SafeLimits = SafeLimitsToggle.isOn;
+        var opSliders = OpContainer.GetComponentsInChildren<Slider>();
+        for (var i = 0; i < opSliders.Length; i++)
+        {
+            var opSlider = opSliders[i];
+            var op = poly.ConwayOperators[i];
+            var opConfig = poly.opconfigs[op.opType];
+            if (poly.SafeLimits)
+            {
+                opSlider.minValue = opConfig.amountSafeMin;
+                opSlider.maxValue = opConfig.amountSafeMax;
+            }
+            else
+            {
+                opSlider.minValue = opConfig.amountMin;
+                opSlider.maxValue = opConfig.amountMax;
+            }
+        }
+
         Rebuild();
     }
 

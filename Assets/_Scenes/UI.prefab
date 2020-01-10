@@ -12818,7 +12818,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Force two-sided\t"
+  m_Text: "Safe slider limits\t"
 --- !u!1 &3460530530983916436
 GameObject:
   m_ObjectHideFlags: 0
