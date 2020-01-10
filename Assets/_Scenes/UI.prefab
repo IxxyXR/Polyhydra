@@ -938,7 +938,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5889547641845228172
 Transform:
   m_ObjectHideFlags: 0
@@ -1159,7 +1159,7 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
-    ActiveVolumeProfileHDRP: {fileID: 11400000, guid: 55e4c4dca3381f34aa57507d6140e7ac,
+    ActiveVolumeProfileHDRP: {fileID: 11400000, guid: c461889e2a8927d4d8bdefadf8107ec3,
       type: 2}
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
