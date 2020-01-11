@@ -203,19 +203,22 @@ public class PolyHydra : MonoBehaviour
 //		FaceRotateY,
 		FaceRemove,
 		FaceKeep,
+		VertexRemove,
+		VertexKeep,
 		FillHoles,
 		Hinge,
 		AddDual,
 		AddMirrorX,
 		AddMirrorY,
 		AddMirrorZ,
+		Layer,
 		Canonicalize,
 //		CanonicalizeI,
 		Spherize,
 		Recenter,
 		SitLevel,
 		Stretch,
-		Weld
+		Weld,
 	}
 
 	public readonly int[] NonOrientablePolyTypes = {
@@ -413,6 +416,9 @@ public class PolyHydra : MonoBehaviour
 			{Ops.FaceRemove, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.FillHoles, new OpConfig{usesAmount=false}},
 			{Ops.FaceKeep, new OpConfig{usesFaces=true, usesAmount=false}},
+			{Ops.VertexRemove, new OpConfig{usesFaces=true, usesAmount=false}},
+			{Ops.VertexKeep, new OpConfig{usesFaces=true, usesAmount=false}},
+			{Ops.Layer, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -2f, amountMax = 2f, amountSafeMin = -2f, amountSafeMax = 2f, usesRandomize=true}},
 			{Ops.Hinge, new OpConfig{amountDefault = 15f, amountMin = -180, amountMax = 180, amountSafeMin = 0, amountSafeMax = 180}},
 			{Ops.AddDual, new OpConfig{amountDefault = 1f, amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2}},
 			{Ops.AddMirrorX, new OpConfig{amountDefault = 0, amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2}},
@@ -1000,6 +1006,12 @@ public class PolyHydra : MonoBehaviour
 			case Ops.FaceKeep:
 				conway = conway.FaceRemove(op.faceSelections, true);
 				break;
+			case Ops.VertexRemove:
+				conway = conway.VertexRemove(op.faceSelections, false);
+				break;
+			case Ops.VertexKeep:
+				conway = conway.VertexRemove(op.faceSelections, true);
+				break;
 			case Ops.FillHoles:
 				conway.FillHoles();
 				break;
@@ -1017,6 +1029,9 @@ public class PolyHydra : MonoBehaviour
 				break;
 			case Ops.AddMirrorZ:
 				conway = conway.AddMirrored(Vector3.forward, amount);
+				break;
+			case Ops.Layer:
+				conway = conway.Layer(4, 1f - amount, amount / 10f, ConwayPoly.FaceSelections.All);
 				break;
 			case Ops.Canonicalize:
 				conway = conway.Canonicalize(amount, amount);

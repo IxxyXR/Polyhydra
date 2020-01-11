@@ -2754,6 +2754,62 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 
+		public ConwayPoly VertexRemove(FaceSelections vertexsel, bool invertLogic)
+		{
+			var allFaceIndices = new List<List<int>>();
+			var faceRoles = new List<Roles>();
+			var vertexRoles = new List<Roles>();
+			
+			int vertexCount = 0;
+
+			var faces = ListFacesByVertexIndices();
+			for (var i = 0; i < faces.Length; i++)
+			{
+				var oldFaceIndices = faces[i];
+				var newFaceIndices = new List<int>();
+				foreach (var vertexIndex in oldFaceIndices)
+				{
+					bool keep = IncludeVertex(vertexIndex, vertexsel);
+					keep = invertLogic ? !keep : keep;
+					if (!keep)
+					{
+						newFaceIndices.Add(vertexIndex);
+						vertexCount++;
+					}
+				}
+
+				if (newFaceIndices.Count > 2)
+				{
+					allFaceIndices.Add(newFaceIndices);
+				}
+			}
+			faceRoles.AddRange(Enumerable.Repeat(Roles.Existing, allFaceIndices.Count));
+			vertexRoles.AddRange(Enumerable.Repeat(Roles.Existing, vertexCount));
+			return new ConwayPoly(Vertices.Select(x => x.Position), allFaceIndices, faceRoles, vertexRoles);
+		}
+		
+		public ConwayPoly Collapse(FaceSelections vertexsel, bool invertLogic)
+		{
+			var poly = VertexRemove(vertexsel, invertLogic);
+			poly.FillHoles();
+			return poly;
+		}
+
+		public ConwayPoly Layer(int layers, float scale, float offset, FaceSelections facesel)
+		{
+			var poly = Duplicate();
+			var layer = Duplicate();
+			for (int i=0; i <= layers; i++)
+			{
+				var newLayer = layer.Duplicate();
+				newLayer = newLayer.FaceScale(scale, facesel, false);
+				newLayer = newLayer.Offset(offset, facesel, false);
+				poly.Append(newLayer);
+				layer = newLayer;
+			}
+			return poly;
+		}
+
 		public ConwayPoly FaceRemove(FaceSelections facesel, bool invertLogic)
 		{
 
