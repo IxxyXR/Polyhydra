@@ -255,6 +255,8 @@ namespace Conway
 			Outer,
 			Random,
 			TopHalf,
+			Smaller,
+			Larger,
 		}
 
 		public bool IsValid
@@ -1125,11 +1127,19 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 
-		public ConwayPoly Kis(float offset, FaceSelections facesel, bool randomize, List<int> selectedFaces=null)
+		public ConwayPoly Kis(float offset, FaceSelections facesel, bool randomize, List<int> selectedFaces=null, bool scalebyArea=false)
 		{
 			// vertices and faces to vertices
 			var vertexRoles = Enumerable.Repeat(Roles.Existing, Vertices.Count());
-			var newVerts = Faces.Select(f => f.Centroid + f.Normal * (float)(offset * (randomize?random.NextDouble():1)));
+			IEnumerable<Vector3> newVerts;
+			if (scalebyArea)
+			{
+				newVerts = Faces.Select(f => f.Centroid + f.Normal * (float)((offset*f.GetArea()) * (randomize?random.NextDouble():1)));
+			}
+			else
+			{
+				newVerts = Faces.Select(f => f.Centroid + f.Normal * (float)(offset * (randomize?random.NextDouble():1)));
+			}
 			vertexRoles = vertexRoles.Concat(Enumerable.Repeat(Roles.New, newVerts.Count()));
 			var vertexPoints = Vertices.Select(v => v.Position).Concat(newVerts);
 
@@ -4226,6 +4236,10 @@ namespace Conway
 					return Faces[faceIndex].GetHalfedges().All(i=>i.Pair!=null);
 				case FaceSelections.Outer:
 					return Faces[faceIndex].GetHalfedges().Any(i=>i.Pair==null);
+				case FaceSelections.Smaller:
+					return Faces[faceIndex].GetArea() <= 0.05f;
+				case FaceSelections.Larger:
+					return Faces[faceIndex].GetArea() > 0.05f;
 				case FaceSelections.Random:
 					return random.NextDouble() < 0.5;
 				case FaceSelections.None:

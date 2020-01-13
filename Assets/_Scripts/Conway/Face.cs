@@ -26,6 +26,34 @@ namespace Conway {
 
             public Halfedge Halfedge { get; set; }
             public String Name { get; private set; }
+
+            public float GetArea()
+            {
+                float area = 0;
+                var edges = GetHalfedges();
+
+                if (edges.Count == 3)
+                {
+                    Vector3 v = Vector3.Cross(
+                        edges[0].Vertex.Position - edges[1].Vertex.Position, 
+                        edges[0].Vertex.Position - edges[2].Vertex.Position
+                    );
+                    area += v.magnitude * 0.5f;
+                }
+                else
+                {
+                    var centroid = Centroid;
+                    for(int i = 0; i < edges.Count; i += 2)
+                    {
+                        Vector3 a = centroid;
+                        Vector3 b = edges[i].Vertex.Position;
+                        Vector3 c = edges[i+1].Vertex.Position;
+                        Vector3 v = Vector3.Cross(a-b, a-c);
+                        area += v.magnitude * 0.5f;
+                    }
+                }
+                return area;
+            }
             
             public Vector3 Centroid {
                 get {
