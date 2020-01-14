@@ -40,6 +40,7 @@
     "com.unity.xr.oculus.android": "2.38.6",
     "com.unity.xr.oculus.standalone": "2.38.4",
     "com.unity.xr.openvr.standalone": "2.0.5",
+    "jp.keijiro.lasp": "https://github.com/keijiro/Lasp.git#upm",
     "jp.keijiro.rtmidi": "1.0.3",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
@@ -74,6 +75,10 @@
     "com.unity.modules.xr": "1.0.0"
   },
   "lock": {
+    "jp.keijiro.lasp": {
+      "revision": "upm",
+      "hash": "a5a36a85884782d60ef0614bef7f23525a17ad54"
+    },
     "com.unity.hdrp-measured-materials-car-paint": {
       "revision": "HEAD",
       "hash": "b6c49f9811326cccb73613356d90449fbeb6444c"
