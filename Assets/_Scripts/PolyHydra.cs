@@ -176,6 +176,7 @@ public class PolyHydra : MonoBehaviour
 		OppositeLace,
 		JoinKisKis,
 		Stake,
+		JoinStake,
 		Medial,
 		EdgeMedial,
 //		JoinedMedial,
@@ -394,6 +395,7 @@ public class PolyHydra : MonoBehaviour
 			{Ops.OppositeLace, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
 			{Ops.JoinKisKis, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
 			{Ops.Stake, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
+			{Ops.JoinStake, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
 			{Ops.Medial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8, amountSafeMin = 1, amountSafeMax = 6}},
 			{Ops.EdgeMedial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8, amountSafeMin = 1, amountSafeMax = 6}},
 //			{Ops.JoinedMedial, new OpConfig{amountDefault = 2f, amountMin = 2, amountMax = 8, amountSafeMin = 1, amountSafeMax = 4}},
@@ -404,8 +406,8 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Yank, new OpConfig{usesFaces=true, amountDefault = 0.33f, amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.999f, usesRandomize=true}},
 			{Ops.Cross, new OpConfig{amountDefault = 0.5f, amountMin = -1, amountMax = 1, amountSafeMin = -1, amountSafeMax = 0.999f, usesRandomize=true}},
 
-			{Ops.Squall, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.5f}},
-			{Ops.JoinSquall, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.5f}},
+			{Ops.Squall, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
+			{Ops.JoinSquall, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
 
 			{Ops.FaceOffset, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 0.999f, usesRandomize=true}},
 			//{Ops.Ribbon, new OpConfig{}},
@@ -920,6 +922,9 @@ public class PolyHydra : MonoBehaviour
 				break;
 			case Ops.Stake:
 				conway = conway.Stake(amount, op.faceSelections);
+				break;
+			case Ops.JoinStake:
+				conway = conway.Stake(amount, op.faceSelections, true);
 				break;
 			case Ops.Medial:
 				conway = conway.Medial((int)amount);

@@ -1892,7 +1892,7 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 
-		public ConwayPoly Stake(float ratio = 0.3333333f, FaceSelections facesel = FaceSelections.All)
+		public ConwayPoly Stake(float ratio = 0.3333333f, FaceSelections facesel = FaceSelections.All, bool join=false)
 		{
 
 			var faceIndices = new List<int[]>();
@@ -1916,7 +1916,7 @@ namespace Conway
 			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
 			{
 				var face = Faces[faceIndex];
-				if (IncludeFace(faceIndex, facesel))
+				if (join || IncludeFace(faceIndex, facesel))
 				{
 					var edge = face.Halfedge;
 					var centroid = face.Centroid;
@@ -1945,16 +1945,22 @@ namespace Conway
 
 					for (int i = 0; i < face.Sides; i++)
 					{
-						var triangle = new[]
+
+						if (!join)
 						{
-							newInnerVertices[edge.Name],
-							existingVertices[edge.Prev.Vertex.Position],
-							existingVertices[edge.Vertex.Position]
-						};
-						faceIndices.Add(triangle);
-						// Alternate roles but only for faces with an even number of sides
-						if (i % 2 == 0 || face.Sides % 2 != 0){faceRoles.Add(Roles.New);}
-						else {faceRoles.Add(Roles.NewAlt);}
+							
+							var triangle = new[]
+							{
+								newInnerVertices[edge.Name],
+								existingVertices[edge.Prev.Vertex.Position],
+								existingVertices[edge.Vertex.Position]
+							};
+							faceIndices.Add(triangle);
+							// Alternate roles but only for faces with an even number of sides
+							if (i % 2 == 0 || face.Sides % 2 != 0){faceRoles.Add(Roles.New);}
+							else {faceRoles.Add(Roles.NewAlt);}
+
+						}
 
 						var quad = new[]
 						{
@@ -1977,6 +1983,27 @@ namespace Conway
 						).ToArray()
 					);
 					faceRoles.Add(Roles.Ignored);
+				}
+			}
+
+ 			if (join)
+			{
+				var edgeFlags = new  HashSet<string>();
+				foreach (var edge in Halfedges)
+				{
+					if (!edgeFlags.Contains(edge.PairedName))
+					{
+						var quad = new[]
+						{
+							existingVertices[edge.Vertex.Position],
+							newInnerVertices[edge.Name],
+							existingVertices[edge.Pair.Vertex.Position],
+							newInnerVertices[edge.Pair.Name],
+						};
+						faceIndices.Add(quad);
+						faceRoles.Add(Roles.Existing);
+						edgeFlags.Add(edge.PairedName);
+					}
 				}
 			}
 
@@ -2728,7 +2755,7 @@ namespace Conway
 				{
 					var edge = edges[j];
 					
-					vertexPoints.Add(centroid - (centroid - edge.Vertex.Position) * amount);
+					vertexPoints.Add(Vector3.LerpUnclamped(centroid, edge.Vertex.Position, amount / 2f));
 					vertexRoles.Add(Roles.NewAlt);
 					newInnerVertices[face.Name + edge.Vertex.Name] = vertexPoints.Count - 1;
 
