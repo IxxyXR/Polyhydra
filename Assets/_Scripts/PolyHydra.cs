@@ -185,6 +185,9 @@ public class PolyHydra : MonoBehaviour
 		Volute,
 		Exalt,
 		Yank,
+		
+		Squall,
+		JoinSquall,
 
 		Cross,
 
@@ -306,6 +309,7 @@ public class PolyHydra : MonoBehaviour
 		public ConwayPoly.FaceSelections faceSelections;
 		public bool randomize;
 		public float amount;
+		public float amount2;
 		public float animatedAmount;
 		public bool disabled;
 		public bool animate;
@@ -316,9 +320,10 @@ public class PolyHydra : MonoBehaviour
 	
 	[Header("Gizmos")]
 	public bool wythoffVertexGizmos;
+	public bool wythoffEdgeGizmos;
 	public bool conwayVertexGizmos;
+	public bool conwayEdgeGizmos;
 	public bool faceCenterGizmos;
-	public bool edgeGizmos;
 	public bool faceGizmos;
 	public int[] faceGizmosList;
 	public bool dualGizmo;
@@ -397,8 +402,10 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Volute, new OpConfig{amountDefault = 0.33f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
 			{Ops.Exalt, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.999f, usesRandomize=true}},
 			{Ops.Yank, new OpConfig{usesFaces=true, amountDefault = 0.33f, amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.999f, usesRandomize=true}},
-
 			{Ops.Cross, new OpConfig{amountDefault = 0.5f, amountMin = -1, amountMax = 1, amountSafeMin = -1, amountSafeMax = 0.999f, usesRandomize=true}},
+
+			{Ops.Squall, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.5f}},
+			{Ops.JoinSquall, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.5f}},
 
 			{Ops.FaceOffset, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 0.999f, usesRandomize=true}},
 			//{Ops.Ribbon, new OpConfig{}},
@@ -663,6 +670,8 @@ public class PolyHydra : MonoBehaviour
 			if (opconfigs[op.opType].usesAmount)
 			{
 				op.amount = Mathf.Round(op.amount * 1000) / 1000f;
+				op.amount2 = Mathf.Round(op.amount2 * 1000) / 1000f;
+				
 				float opMin, opMax;
 				if (SafeLimits)
 				{
@@ -846,9 +855,8 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Expand(amount);
 				break;
 			case Ops.Bevel:
-				conway = conway.Join(amount);
-				conway = conway.Kis(amount, op.faceSelections, op.randomize);
-				conway = conway.Dual();
+				// conway = conway.Bevel(amount, op.amount2);
+				conway = conway.Bevel(amount);
 				break;
 			case Ops.Join:
 				conway = conway.Join(amount);
@@ -933,6 +941,12 @@ public class PolyHydra : MonoBehaviour
 				break;
 			case Ops.Cross:
 				conway = conway.Cross(amount);
+				break;
+			case Ops.Squall:
+				conway = conway.Squall(amount, false);
+				break;
+			case Ops.JoinSquall:
+				conway = conway.Squall(amount, true);
 				break;
 			case Ops.Shell:
 				// TODO do this properly with shared edges/vertices
@@ -1464,7 +1478,7 @@ public class PolyHydra : MonoBehaviour
 		}
 
 
-		if (edgeGizmos && WythoffPoly != null)
+		if (wythoffEdgeGizmos && WythoffPoly != null)
 		{
 			for (int i = 0; i < WythoffPoly.EdgeCount; i++)
 			{
@@ -1477,7 +1491,7 @@ public class PolyHydra : MonoBehaviour
 				);
 			}
 		}
-		else if (edgeGizmos && WythoffPoly == null)
+		if (conwayEdgeGizmos)
 		{
 			for (int i = 0; i < _conwayPoly.Halfedges.Count; i++)
 			{
@@ -1487,6 +1501,7 @@ public class PolyHydra : MonoBehaviour
 					transform.TransformPoint(edge.Vertex.Position),
 					transform.TransformPoint(edge.Next.Vertex.Position)
 				);
+				Gizmos.DrawWireCube(transform.TransformPoint(edge.PointAlongEdge(0.9f)), Vector3.one * 0.02f);
 			}
 		}
 
