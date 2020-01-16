@@ -9,6 +9,7 @@
     }
   ],
   "dependencies": {
+    "com.beans.deform": "https://github.com/keenanwoodall/Deform.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.ext.nunit": "1.0.0",
@@ -75,10 +76,6 @@
     "com.unity.modules.xr": "1.0.0"
   },
   "lock": {
-    "jp.keijiro.lasp": {
-      "revision": "upm",
-      "hash": "a5a36a85884782d60ef0614bef7f23525a17ad54"
-    },
     "com.unity.hdrp-measured-materials-car-paint": {
       "revision": "HEAD",
       "hash": "b6c49f9811326cccb73613356d90449fbeb6444c"
@@ -110,6 +107,14 @@
     "com.unity.hdrp-measured-materials-rubber": {
       "revision": "HEAD",
       "hash": "de3aa19e5ab888636d4c1a2924572c59621df5f1"
+    },
+    "com.beans.deform": {
+      "revision": "HEAD",
+      "hash": "c8fa347077eaa92234939ebfec0856c87e044423"
+    },
+    "jp.keijiro.lasp": {
+      "revision": "upm",
+      "hash": "a5a36a85884782d60ef0614bef7f23525a17ad54"
     }
   }
 }
