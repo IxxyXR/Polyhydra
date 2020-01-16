@@ -340,12 +340,12 @@ public class PolyUI : MonoBehaviour {
             AddOpItemToUI(conwayOperator);
         }
     }
-
+    
     void ConfigureOpControls(OpPrefabManager opPrefabManager)
     {
-        opPrefabManager.OpTypeDropdown.GetComponentInChildren<DropdownSVGIcon>().UpdateIcon();
 
         var opType = (PolyHydra.Ops)opPrefabManager.OpTypeDropdown.value;
+        opPrefabManager.OpTypeDropdown.GetComponentInChildren<DropdownIconManager>().SetIcon(opType);
         var opConfig = poly.opconfigs[opType];
         
         opPrefabManager.FaceSelectionDropdown.gameObject.SetActive(opConfig.usesFaces);
@@ -382,7 +382,7 @@ public class PolyUI : MonoBehaviour {
         var opPrefabManager = opPrefab.GetComponent<OpPrefabManager>();
         
         opPrefab.name = op.opType.ToString();
-        foreach (var item in Enum.GetValues(typeof(PolyHydra.Ops))) {
+        foreach (PolyHydra.Ops item in Enum.GetValues(typeof(PolyHydra.Ops))) {
             var label = new Dropdown.OptionData(CamelCaseSpaces(item.ToString()));
             opPrefabManager.OpTypeDropdown.options.Add(label);
         }

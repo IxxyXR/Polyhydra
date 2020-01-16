@@ -280,7 +280,6 @@ MonoBehaviour:
       type: 2}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Subtle
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
       type: 2}
@@ -298,7 +297,6 @@ MonoBehaviour:
       type: 2}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Gem
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: d8a4a6ef844931f45870fbcc07d957d1,
       type: 2}
@@ -313,7 +311,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: RGB
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 5c6e4256d39ccfe40ae83393b8d89c5c,
       type: 2}
@@ -330,7 +327,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Vectrex
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 55d7709d316e3e44c9b026a68ceaf744,
       type: 2}
@@ -344,7 +340,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Hologram
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: a9d8565cd2f99b04c94288f457b17456,
       type: 2}
@@ -358,7 +353,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Posterized
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 2751a1d4180942544ada7c4123b0971c,
       type: 2}
@@ -372,7 +366,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Grooves
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: ff47891f2ea45fc459041f7ff80c576e,
       type: 2}
@@ -387,7 +380,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Gray and Colorful
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 5c6e4256d39ccfe40ae83393b8d89c5c,
       type: 2}
@@ -405,7 +397,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Rich
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
       type: 2}
@@ -423,7 +414,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Graph Paper
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 040eaef198cabe643b89fb9a2b5f3341,
       type: 2}
@@ -440,7 +430,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Spiral Blush
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 2aeb841239f0b1945ba03f1608b7d319,
       type: 2}
@@ -457,7 +446,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
-    ForceTwoSidedOff: 1
   - Name: 'Colorful Dark Edges '
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: bf262dce8b4c5804eb4925cf9b111941,
       type: 2}
@@ -474,7 +462,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Black Mirror
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: b7854df036cf90f4ab5d51aa48a94b76,
       type: 2}
@@ -492,7 +479,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Dirty Metal
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 756d17fc7a02e1c4ea003575272634a7,
       type: 2}
@@ -510,7 +496,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Cold Metal
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: f446fe272d555444f9e3d8d9a6de3e14,
       type: 2}
@@ -528,7 +513,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Tinted Glass
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 7d966c49445a5cb469bd0d46d8d6c8dd,
       type: 2}
@@ -546,7 +530,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Showroom
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 4e47b9e41487ec54b8403c767d058840,
       type: 2}
@@ -564,7 +547,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Edged Glass
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: dd9ebca479b7b6444af9b560484c5958,
       type: 2}
@@ -582,7 +564,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Edged Tiles
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 80e51355e1e8c5d4eb4e7b7e7ab5baac,
       type: 2}
@@ -600,7 +581,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Cracked Ice
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 8f3e2e4e95151024fa4ab9e19055ca07,
       type: 2}
@@ -619,7 +599,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 0
   - Name: Thick Edges
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: ae788e1cd3cf54f4f9d5bccdb4d49dc9,
       type: 2}
@@ -636,7 +615,6 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
   - Name: Volumetric
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 33312f87b96d9994a8ff504d24ab19f2,
       type: 2}
@@ -652,8 +630,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    ForceTwoSidedOff: 1
-  editorPresetIndex: 22
+  editorPresetIndex: 2
 --- !u!1 &2770511816713189262
 GameObject:
   m_ObjectHideFlags: 0
@@ -671,7 +648,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2770511816713189264
 Transform:
   m_ObjectHideFlags: 0
@@ -679,13 +656,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2770511816713189262}
-  m_LocalRotation: {x: 0.21984623, y: 0.71984637, z: 0.2620026, w: -0.60402274}
+  m_LocalRotation: {x: -0.24184473, y: 0.66446304, z: 0.24184473, w: 0.66446304}
   m_LocalPosition: {x: -0.08708559, y: 10.042681, z: 0.04427712}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2770511817904737054}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: -40, y: 260, z: 0}
+  m_LocalEulerAnglesHint: {x: -40, y: 90, z: 0}
 --- !u!108 &2770511816713189263
 Light:
   m_ObjectHideFlags: 0
@@ -698,7 +675,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.08174743, g: 0.9264706, b: 0.15748122, a: 1}
-  m_Intensity: 3.1415927
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.802082
@@ -767,7 +744,7 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
-  m_Intensity: 3.1415927
+  m_Intensity: 1
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -1163,7 +1140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2770511817198488834
 Transform:
   m_ObjectHideFlags: 0
@@ -1171,13 +1148,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2770511817198488832}
-  m_LocalRotation: {x: 0.2620026, y: 0.60402274, z: -0.21984623, w: 0.71984637}
+  m_LocalRotation: {x: -0.14454393, y: 0.8516508, z: -0.30997548, w: -0.39713123}
   m_LocalPosition: {x: -0.08708559, y: 10.042681, z: 0.04427712}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2770511817904737054}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 40, y: 80, z: 0}
+  m_LocalEulerAnglesHint: {x: 40, y: 230, z: 0}
 --- !u!108 &2770511817198488833
 Light:
   m_ObjectHideFlags: 0
@@ -1190,7 +1167,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.9705882, g: 0.2854671, b: 0.2854671, a: 1}
-  m_Intensity: 3.1415927
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.802082
@@ -1259,7 +1236,7 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
-  m_Intensity: 3.1415927
+  m_Intensity: 1
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -1456,7 +1433,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2770511817357839181
 Transform:
   m_ObjectHideFlags: 0
@@ -1655,7 +1632,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2770511817441937759
 Transform:
   m_ObjectHideFlags: 0
@@ -2546,7 +2523,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2770511818399393425
 Transform:
   m_ObjectHideFlags: 0
@@ -2554,13 +2531,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2770511818399393423}
-  m_LocalRotation: {x: 0.06006784, y: 0.7276668, z: -0.34245893, w: -0.59128237}
+  m_LocalRotation: {x: 0.21254157, y: 0.93843037, z: -0.24976654, w: -0.10858763}
   m_LocalPosition: {x: -0.08708559, y: 10.042681, z: 0.04427712}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2770511817904737054}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 25.3, y: 265.8, z: 33}
+  m_LocalEulerAnglesHint: {x: 25, y: 200, z: 30}
 --- !u!108 &2770511818399393424
 Light:
   m_ObjectHideFlags: 0
@@ -2573,7 +2550,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
+  m_Intensity: 6
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.802082
@@ -2642,7 +2619,7 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
-  m_Intensity: 0.1
+  m_Intensity: 6
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -2745,7 +2722,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2770511818686268129
 Transform:
   m_ObjectHideFlags: 0
@@ -2753,13 +2730,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2770511818686268063}
-  m_LocalRotation: {x: -0.27165374, y: 0.69427216, z: 0.5825634, w: 0.3237444}
+  m_LocalRotation: {x: 0.9512512, y: -0.044943485, z: 0.16773131, w: 0.25488707}
   m_LocalPosition: {x: -0.08708559, y: 10.042681, z: 0.04427712}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2770511817904737054}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: -80, y: 130, z: 0}
+  m_LocalEulerAnglesHint: {x: 150, y: -20, z: 0}
 --- !u!108 &2770511818686268128
 Light:
   m_ObjectHideFlags: 0
@@ -2772,7 +2749,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.39705884, g: 0.45111534, b: 1, a: 1}
-  m_Intensity: 3.1415927
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.802082
@@ -2841,7 +2818,7 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
-  m_Intensity: 3.1415927
+  m_Intensity: 1
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -2937,6 +2914,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 5b3c6541358e988469fc3922e6d35d99, type: 3}
       propertyPath: m_Name
       value: CurvedPlane
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 5b3c6541358e988469fc3922e6d35d99, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5b3c6541358e988469fc3922e6d35d99, type: 3}
       propertyPath: m_LocalPosition.x

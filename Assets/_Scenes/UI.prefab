@@ -967,7 +967,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poly: {fileID: 0}
-  UpdateEvery: 2
+  UpdateSliderEvery: 3
   aPresets: {fileID: 2159657810675799105}
 --- !u!114 &2159657810675799105
 MonoBehaviour:
