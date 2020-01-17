@@ -21,6 +21,7 @@ public class PolyMidi : MonoBehaviour
    private const int MAXOPS = 4  ;
    private AkaiPrefabController akaiPrefab;
    private float SliderDeadZone = 0.05f;
+   private byte[] LastSliderValue;
 
    private int slider;
    private float amount;
@@ -190,6 +191,15 @@ public class PolyMidi : MonoBehaviour
       PolyHydra.Ops.Whirl,
       PolyHydra.Ops.Propeller,
 
+      // New Ops Bank
+      // PolyHydra.Ops.JoinKisKis,
+      // PolyHydra.Ops.JoinStake,
+      // PolyHydra.Ops.Squall,
+      // PolyHydra.Ops.JoinSquall,
+      // PolyHydra.Ops.Spherize,
+      // PolyHydra.Ops.Canonicalize,
+      // PolyHydra.Ops.Stretch,
+      // PolyHydra.Ops.VertexRotate,
 
 
 
@@ -236,6 +246,7 @@ public class PolyMidi : MonoBehaviour
       InitOps(MAXOPS);
       SetLEDs();
       FinalisePoly();
+      LastSliderValue = new byte[64];
 
 //      OutPort.SendAllOff(0);
 
@@ -414,6 +425,7 @@ public class PolyMidi : MonoBehaviour
          }
 
          SetLEDs();
+         HandleControlChange(0, Convert.ToByte(column+48), LastSliderValue[column+48]);
          FinalisePoly();
       }
       else if (note >= 64 && note <= 71)
@@ -428,6 +440,7 @@ public class PolyMidi : MonoBehaviour
          op.amount = opconfig.amountDefault;
          poly.ConwayOperators[column] = op;
          SetLEDs();
+         HandleControlChange(0, Convert.ToByte(column+48), LastSliderValue[column+48]);
          FinalisePoly();
       }
       else if (note >= 82 && note <= 89)
@@ -524,6 +537,7 @@ public class PolyMidi : MonoBehaviour
    void HandleControlChange(byte channel, byte number, byte value)
    {
       slider = number - 48;
+      LastSliderValue[number] = value;
       akaiPrefab.SetSlider(slider, value);
       amount = value / 127f;
       amount = Remap(amount, SliderDeadZone, 1 - SliderDeadZone, 0, 1);

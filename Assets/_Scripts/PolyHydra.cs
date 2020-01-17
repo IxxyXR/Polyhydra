@@ -378,7 +378,7 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Ambo, new OpConfig{usesAmount=false}},
 			{Ops.Zip, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = 0.0001f, amountSafeMax = .99999f, usesRandomize=true}},
 			{Ops.Expand, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
-			{Ops.Bevel, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.999f, usesRandomize=true}},
+			{Ops.Bevel, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.999f, usesRandomize=false}},
 			{Ops.Join, new OpConfig{amountDefault = 0.5f, amountMin = -1f, amountMax = 2f, amountSafeMin = -0.5f, amountSafeMax = 0.999f}},  // TODO Support random
 			{Ops.Needle, new OpConfig{amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 0.5f, usesRandomize=true}},
 			{Ops.Ortho, new OpConfig{usesAmount=false}},
@@ -436,7 +436,7 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Canonicalize, new OpConfig{amountDefault = 0.1f, amountMin = 0.0001f, amountMax = 1f, amountSafeMin = .1f, amountSafeMax = .2f}},
 //			{Ops.CanonicalizeI, new OpConfig{amountDefault = 200, amountMin = 1, amountMax = 400}},
 			{Ops.Spherize, new OpConfig{usesFaces=true, amountDefault = 1.0f, amountMin = -2, amountMax = 2, amountSafeMin = -2, amountSafeMax = 2f}},
-			{Ops.Stretch, new OpConfig{amountDefault = 1.0f, amountMin = 0, amountMax = 3f, amountSafeMin = 0, amountSafeMax = 1.5f}},
+			{Ops.Stretch, new OpConfig{amountDefault = 1.0f, amountMin = -3f, amountMax = 3f, amountSafeMin = -1.5f, amountSafeMax = 1.5f}},
 			{Ops.Recenter, new OpConfig{usesAmount=false}},
 			{Ops.SitLevel, new OpConfig{usesAmount=false}},
 			{Ops.Weld, new OpConfig{amountDefault = 0.001f, amountMin = 0, amountMax = .25f, amountSafeMin = 0.001f, amountSafeMax = 0.1f}}
