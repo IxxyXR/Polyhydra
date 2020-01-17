@@ -246,7 +246,7 @@ public class PolyMidi : MonoBehaviour
       InitOps(MAXOPS);
       SetLEDs();
       FinalisePoly();
-      LastSliderValue = new byte[64];
+      LastSliderValue = Enumerable.Repeat((byte)63, 64).ToArray();
 
 //      OutPort.SendAllOff(0);
 
