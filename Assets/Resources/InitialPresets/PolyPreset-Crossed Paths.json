@@ -8,7 +8,7 @@
   "GridType": "Square",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": false,
+  "SafeLimits": false,
   "PrismP": 3,
   "PrismQ": 3,
   "AppearancePresetName": "Thick Edges",

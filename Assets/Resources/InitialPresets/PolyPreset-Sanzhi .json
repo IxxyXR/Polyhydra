@@ -8,7 +8,7 @@
   "GridType": "Polar",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": false,
+  "SafeLimits": false,
   "PrismP": 16,
   "PrismQ": 12,
   "AppearancePresetName": "RGB",

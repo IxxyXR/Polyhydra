@@ -8,10 +8,10 @@
   "GridType": "Square",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": false,
+  "SafeLimits": false,
   "PrismP": 0,
   "PrismQ": 0,
-  "AppearancePresetName": "Dirty Metal",
+  "AppearancePresetName": "Cold Metal",
   "Ops": [
     {
       "OpType": "Lace",

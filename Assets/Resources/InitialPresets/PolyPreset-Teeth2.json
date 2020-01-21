@@ -8,7 +8,7 @@
   "GridType": "Square",
   "GridShape": "Torus",
   "BypassOps": false,
-  "TwoSided": false,
+  "SafeLimits": false,
   "PrismP": 18,
   "PrismQ": 18,
   "AppearancePresetName": "Cracked Ice",

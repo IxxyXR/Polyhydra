@@ -2133,7 +2133,7 @@ namespace Conway
 			for (var i = 0; i < Vertices.Count; i++)
 			{
 				vertexPoints.Add(Vertices[i].Position);
-				vertexRoles.Add(Roles.New);
+				vertexRoles.Add(Roles.Existing);
 				existingVertices[vertexPoints[i]] = i;
 			}
 
@@ -2143,7 +2143,7 @@ namespace Conway
 			foreach (var face in Faces)
 			{
 				vertexPoints.Add(face.Centroid);
-				vertexRoles.Add(Roles.NewAlt);
+				vertexRoles.Add(Roles.New);
 				int centroidIndex = vertexIndex;
 				newCentroidVertices[face.Name] = vertexIndex++;
 
@@ -3040,6 +3040,9 @@ namespace Conway
 			var vertexRoles = new List<Roles>();
 			var facesToRemove = new List<Face>();
 			var newPoly = Duplicate();
+			var faceIndices = ListFacesByVertexIndices();
+			var existingFaceRoles = new Dictionary<Vector3, Roles>();
+			var existingVertexRoles = new Dictionary<Vector3, Roles>();
 
 			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
 			{
@@ -3047,23 +3050,41 @@ namespace Conway
 				includeFace = invertLogic ? includeFace : !includeFace;
 				if (includeFace)
 				{
-					faceRoles.Add(includeFace ? FaceRoles[faceIndex] : Roles.Ignored);
-					var vertexRole = includeFace ? Roles.Existing : Roles.Ignored;
-					vertexRoles.AddRange(Enumerable.Repeat(vertexRole, newPoly.Faces[faceIndex].Sides));
+					var face = Faces[faceIndex];
+					existingFaceRoles[face.Centroid] = FaceRoles[faceIndex];
+					var list = face.GetVertices();
+					for (var vertIndex = 0; vertIndex < list.Count; vertIndex++)
+					{
+						var vert = list[vertIndex];
+						existingVertexRoles[vert.Position] = VertexRoles[faceIndices[faceIndex][vertIndex]];
+					}
 				}
 				else
 				{
 					facesToRemove.Add(newPoly.Faces[faceIndex]);
 				}
+				
 			}
 
 			foreach (var face in facesToRemove)
 			{
 				newPoly.Faces.Remove(face);
 			}
-
-			newPoly.FaceRoles = faceRoles;
+			
 			newPoly.Vertices.CullUnused();
+			
+			foreach (var face in newPoly.Faces)
+			{
+				faceRoles.Add(existingFaceRoles[face.Centroid]);
+			}
+			newPoly.FaceRoles = faceRoles;
+			
+			foreach (var vert in newPoly.Vertices)
+			{
+				vertexRoles.Add(existingVertexRoles[vert.Position]);
+			}
+			newPoly.VertexRoles = vertexRoles;
+
 			return newPoly;
 		}
 

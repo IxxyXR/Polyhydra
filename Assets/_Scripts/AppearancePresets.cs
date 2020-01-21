@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 
 public class AppearancePresets : MonoBehaviour {
 	
 	public PolyHydra _poly;
 	public Camera CurrentCamera;
-	public GameObject LightsParent;
 	public GameObject PropsParent;
-	public Volume Volume;
+	public Volume ActiveVolume;
+	public Transform LightingPrefab;
 	public List<AppearancePreset> Items;
 	public int editorPresetIndex;
 
@@ -45,9 +45,49 @@ public class AppearancePresets : MonoBehaviour {
 		{
 			_setup = FindObjectOfType<PolyhydraSceneSetup>();
 		}
-		preset.ApplyToPoly(ref _poly, LightsParent, PropsParent, Volume, CurrentCamera, _setup.RenderingPipeline);
-	}
 
+		_poly.APresetName = preset.Name;
+		
+		if (LightingPrefab != null)
+		{
+			if (Application.isPlaying)
+			{
+				Destroy(LightingPrefab.gameObject);
+			}
+			else
+			{
+				DestroyImmediate(LightingPrefab.gameObject);
+			}
+		}
+        
+		if (_setup.RenderingPipeline == PolyhydraSceneSetup.RenderingPipelines.HDRP)
+		{
+			_poly.gameObject.GetComponent<MeshRenderer>().material = preset.PolyhedronMaterialHDRP;
+			if (preset.LightingPrefabHDRP != null) LightingPrefab = Instantiate(preset.LightingPrefabHDRP);
+			ActiveVolume.profile = preset.ActiveVolumeProfileHDRP;
+			var hdCamData = CurrentCamera.gameObject.GetComponent<HDAdditionalCameraData>();
+			hdCamData.clearColorMode = preset.CameraClearColorMode;
+			hdCamData.backgroundColorHDR = preset.CameraBackgroundColor;
+		}
+		else
+		{
+			_poly.gameObject.GetComponent<MeshRenderer>().material = preset.PolyhedronMaterialURP;
+			if (preset.LightingPrefabURP != null) LightingPrefab = Instantiate(preset.LightingPrefabURP);
+			ActiveVolume.profile = preset.ActiveVolumeProfileURP;
+			CurrentCamera.clearFlags = ConvertClearFlags(preset.CameraClearColorMode);
+			CurrentCamera.backgroundColor = preset.CameraBackgroundColor;
+		}
+		_poly.ColorMethod = preset.PolyhedronColorMethod;
+
+
+		var props = PropsParent.GetComponentsInChildren<Transform>(includeInactive: true);
+		foreach (var prop in props)
+		{
+			if (preset.ActiveProps.Contains(prop.gameObject)) {prop.gameObject.SetActive(true);}
+			else {prop.gameObject.SetActive(false);}
+		}
+	}
+	
 	[ContextMenu("Current preset")]
 	public void ApplyPresetAtRuntime()
 	{
@@ -61,4 +101,19 @@ public class AppearancePresets : MonoBehaviour {
 		editorPresetIndex++;
 		editorPresetIndex %= Items.Count;
 	}
+	
+	private CameraClearFlags ConvertClearFlags(HDAdditionalCameraData.ClearColorMode cameraClearColorMode)
+    {
+        switch (cameraClearColorMode)
+        {
+            case HDAdditionalCameraData.ClearColorMode.Color:
+                return CameraClearFlags.Color;
+            case HDAdditionalCameraData.ClearColorMode.None:
+                return CameraClearFlags.Nothing;
+            case HDAdditionalCameraData.ClearColorMode.Sky:
+                return CameraClearFlags.Skybox;
+            default:
+                return CameraClearFlags.Nothing;
+        }
+    }
 }

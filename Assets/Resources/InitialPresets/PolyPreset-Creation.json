@@ -8,7 +8,7 @@
   "GridType": "Isometric",
   "GridShape": "Cylinder",
   "BypassOps": false,
-  "TwoSided": false,
+  "SafeLimits": false,
   "PrismP": 6,
   "PrismQ": 4,
   "AppearancePresetName": "Tinted Glass",

@@ -8,14 +8,36 @@
   "GridType": "Isometric",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": false,
+  "SafeLimits": false,
   "PrismP": 5,
   "PrismQ": 5,
   "AppearancePresetName": "Thick Edges",
   "Ops": [
     {
-      "OpType": "Bevel",
+      "OpType": "Join",
       "FaceSelections": "Outer",
+      "Amount": 0.5,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "Outer",
+      "Amount": 0.0,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
+      "OpType": "Dual",
+      "FaceSelections": "All",
       "Amount": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
