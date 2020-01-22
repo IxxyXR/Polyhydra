@@ -25,8 +25,19 @@
       "AnimationAmount": 0.0
     },
     {
+      "OpType": "VertexScale",
+      "FaceSelections": "Existing",
+      "Amount": 0.7,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0
+    },
+    {
       "OpType": "FaceRemove",
-      "FaceSelections": "New",
+      "FaceSelections": "NewAlt",
       "Amount": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
@@ -36,12 +47,12 @@
       "AnimationAmount": 0.0
     },
     {
-      "OpType": "VertexScale",
-      "FaceSelections": "Existing",
-      "Amount": 0.85,
+      "OpType": "Identity",
+      "FaceSelections": "All",
+      "Amount": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
-      "Disabled": false,
+      "Disabled": true,
       "Animate": false,
       "AnimationRate": 0.0,
       "AnimationAmount": 0.0
