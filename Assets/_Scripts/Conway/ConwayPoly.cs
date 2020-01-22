@@ -698,9 +698,9 @@ namespace Conway
 //				}
 //				else
 //				{
-//					vlookup[edge.Vertex.Name] = count++;
-//					vertexPoints.Add(edge.Vertex.Position);
-//					vertexRoles.Add(Roles.Ignored);
+					vlookup[edge.Vertex.Name] = count++;
+					vertexPoints.Add(edge.Vertex.Position);
+					vertexRoles.Add(Roles.Ignored);
 //				}
 
 			}
@@ -801,13 +801,21 @@ namespace Conway
 
 			foreach (var vertex in Vertices)
 			{
+				bool skip = false;
 				var edges = vertex.Halfedges;
 				var list = new List<int>();
 				foreach (var edge in edges)
 				{
+					if (edge.Pair == null)
+					{
+						skip = true;
+						break;
+					}
 					list.Add(newInnerVertsL[edge.Name]);
 					list.Add(newInnerVertsR[edge.Pair.Name]);
 				}
+
+				if (skip) continue;
 				// list.Reverse();
 				faceIndices.Add(list);
 				faceRoles.Add(Roles.New);
@@ -816,6 +824,7 @@ namespace Conway
 			var edgeFlags = new HashSet<string>();
 			foreach (var edge in Halfedges)
 			{
+				if (edge.Pair == null) continue;
 				if (edgeFlags.Contains(edge.PairedName)) continue;
 				var list = new List<int>
 				{

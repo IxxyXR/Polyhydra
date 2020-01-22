@@ -1,0 +1,50 @@
+{
+  "Name": "Thang",
+  "ShapeType": "Johnson",
+  "PolyTypeCategory": "All",
+  "PolyType": "Cuboctahedron",
+  "JohnsonPolyType": "Antiprism",
+  "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Cube",
+  "BypassOps": false,
+  "SafeLimits": false,
+  "PrismP": 8,
+  "PrismQ": 2,
+  "AppearancePresetName": "Thick Edges",
+  "Ops": [
+    {
+      "OpType": "Gyro",
+      "FaceSelections": "All",
+      "Amount": 0.33,
+      "AnimatedAmount": -0.00999999,
+      "Randomize": false,
+      "Disabled": true,
+      "Animate": true,
+      "AnimationRate": 1.0,
+      "AnimationAmount": 0.4
+    },
+    {
+      "OpType": "Layer",
+      "FaceSelections": "All",
+      "Amount": 1.25,
+      "AnimatedAmount": 1.33,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": true,
+      "AnimationRate": 1.0,
+      "AnimationAmount": 0.1
+    },
+    {
+      "OpType": "Kis",
+      "FaceSelections": "All",
+      "Amount": 0.4,
+      "AnimatedAmount": 1.14,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": true,
+      "AnimationRate": 0.5,
+      "AnimationAmount": 0.82
+    }
+  ]
+}

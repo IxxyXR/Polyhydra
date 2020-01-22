@@ -14,30 +14,8 @@
   "AppearancePresetName": "Thick Edges",
   "Ops": [
     {
-      "OpType": "Join",
+      "OpType": "Bevel",
       "FaceSelections": "Outer",
-      "Amount": 0.5,
-      "AnimatedAmount": 0.0,
-      "Randomize": false,
-      "Disabled": false,
-      "Animate": false,
-      "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
-    },
-    {
-      "OpType": "Kis",
-      "FaceSelections": "Outer",
-      "Amount": 0.0,
-      "AnimatedAmount": 0.0,
-      "Randomize": false,
-      "Disabled": false,
-      "Animate": false,
-      "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
-    },
-    {
-      "OpType": "Dual",
-      "FaceSelections": "All",
       "Amount": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,

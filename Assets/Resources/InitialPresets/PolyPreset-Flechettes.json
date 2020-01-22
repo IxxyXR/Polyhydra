@@ -25,9 +25,9 @@
       "AnimationAmount": 0.0
     },
     {
-      "OpType": "VertexScale",
-      "FaceSelections": "Existing",
-      "Amount": 0.85,
+      "OpType": "FaceRemove",
+      "FaceSelections": "New",
+      "Amount": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
@@ -36,9 +36,9 @@
       "AnimationAmount": 0.0
     },
     {
-      "OpType": "FaceRemove",
-      "FaceSelections": "NewAlt",
-      "Amount": 0.0,
+      "OpType": "VertexScale",
+      "FaceSelections": "Existing",
+      "Amount": 0.85,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,

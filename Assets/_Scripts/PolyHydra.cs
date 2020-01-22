@@ -376,7 +376,7 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Kis, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 0.999f, usesRandomize=true}},
 			{Ops.Dual, new OpConfig{usesAmount=false}},
 			{Ops.Ambo, new OpConfig{usesAmount=false}},
-			{Ops.Zip, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = 0.0001f, amountSafeMax = .99999f, usesRandomize=true}},
+			{Ops.Zip, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -2f, amountMax = 2f, amountSafeMin = 0.0001f, amountSafeMax = .99999f, usesRandomize=true}},
 			{Ops.Expand, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
 			{Ops.Bevel, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.999f, usesRandomize=false}},
 			{Ops.Join, new OpConfig{amountDefault = 0.5f, amountMin = -1f, amountMax = 2f, amountSafeMin = -0.5f, amountSafeMax = 0.999f}},  // TODO Support random
@@ -533,6 +533,7 @@ public class PolyHydra : MonoBehaviour
 			ConwayPoly zPair = conway.Rotate(Vector3.left, 90);
 			conway.Append(xPair);
 			conway.Append(zPair);
+			conway = conway.Weld(0.0001f);
 		}
 
 		// Welding only seems to work reliably on simpler shapres

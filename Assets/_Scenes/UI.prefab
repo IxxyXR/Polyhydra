@@ -968,7 +968,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poly: {fileID: 0}
   UpdateSliderEvery: 3
-  aPresets: {fileID: 0}
+  aPresets: {fileID: 8047096334286982819}
 --- !u!114 &8047096334286982819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1295,9 +1295,9 @@ MonoBehaviour:
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
   - Name: Volumetric
-    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 6266e77c2c812274d83769a4c38bf7a3,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 33312f87b96d9994a8ff504d24ab19f2,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 33312f87b96d9994a8ff504d24ab19f2,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 6266e77c2c812274d83769a4c38bf7a3,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:

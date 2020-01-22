@@ -38,7 +38,7 @@
     {
       "OpType": "Zip",
       "FaceSelections": "All",
-      "Amount": 0.33,
+      "Amount": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,

@@ -69,7 +69,7 @@ MonoBehaviour:
   - Name: Flat
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: a5bdc2c19f0e79f40a716a029473c671,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: a5bdc2c19f0e79f40a716a029473c671,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps: []
@@ -421,9 +421,9 @@ MonoBehaviour:
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
   - Name: Volumetric
-    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 6266e77c2c812274d83769a4c38bf7a3,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 33312f87b96d9994a8ff504d24ab19f2,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 33312f87b96d9994a8ff504d24ab19f2,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 6266e77c2c812274d83769a4c38bf7a3,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
