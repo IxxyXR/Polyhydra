@@ -210,6 +210,7 @@ public class PolyHydra : MonoBehaviour
 		VertexRemove,
 		VertexKeep,
 		FillHoles,
+		FaceMerge,
 		Hinge,
 		AddDual,
 		AddMirrorX,
@@ -378,7 +379,7 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Ambo, new OpConfig{usesAmount=false}},
 			{Ops.Zip, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -2f, amountMax = 2f, amountSafeMin = 0.0001f, amountSafeMax = .99999f, usesRandomize=true}},
 			{Ops.Expand, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
-			{Ops.Bevel, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.999f, usesRandomize=false}},
+			{Ops.Bevel, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.4999f, usesRandomize=false}},
 			{Ops.Join, new OpConfig{amountDefault = 0.5f, amountMin = -1f, amountMax = 2f, amountSafeMin = -0.5f, amountSafeMax = 0.999f}},  // TODO Support random
 			{Ops.Needle, new OpConfig{amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 0.5f, usesRandomize=true}},
 			{Ops.Ortho, new OpConfig{usesAmount=false}},
@@ -424,6 +425,7 @@ public class PolyHydra : MonoBehaviour
 //			{Ops.FaceRotateY, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -180, amountMax = 180}},
 			{Ops.FaceRemove, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.FillHoles, new OpConfig{usesAmount=false}},
+			{Ops.FaceMerge, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.FaceKeep, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.VertexRemove, new OpConfig{usesFaces=true, usesAmount=false}},
 			{Ops.VertexKeep, new OpConfig{usesFaces=true, usesAmount=false}},
@@ -988,8 +990,11 @@ public class PolyHydra : MonoBehaviour
 			case Ops.VertexScale:
 				conway = conway.VertexScale(amount, op.faceSelections, op.randomize);
 				break;
+			case Ops.FaceMerge:
+				conway = conway.FaceMerge(op.faceSelections);
+				break;
 			case Ops.VertexRotate:
-				conway = conway.VertexRotate(amount, op.faceSelections, op.randomize);
+//				conway = conway.VertexRotate(amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.VertexFlex:
 				conway = conway.VertexFlex(amount, op.faceSelections, op.randomize);

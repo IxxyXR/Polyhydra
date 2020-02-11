@@ -2000,6 +2000,8 @@ namespace Conway
 				var edgeFlags = new  HashSet<string>();
 				foreach (var edge in Halfedges)
 				{
+					if (edge.Pair == null) continue;
+
 					if (!edgeFlags.Contains(edge.PairedName))
 					{
 						var quad = new[]
@@ -3042,7 +3044,7 @@ namespace Conway
 			return poly;
 		}
 
-		public ConwayPoly FaceRemove(FaceSelections facesel, bool invertLogic)
+		public ConwayPoly FaceRemove(FaceSelections facesel, bool invertLogic=false)
 		{
 
 			var faceRoles = new List<Roles>();
@@ -3057,6 +3059,7 @@ namespace Conway
 			{
 				var includeFace = IncludeFace(faceIndex, facesel);
 				includeFace = invertLogic ? includeFace : !includeFace;
+
 				if (includeFace)
 				{
 					var face = Faces[faceIndex];
@@ -3126,6 +3129,16 @@ namespace Conway
 			}
 
 			return Offset(offsetList, randomize);
+		}
+
+		public ConwayPoly FaceMerge(FaceSelections facesel)
+		{
+			// TODO Breaks if the poly already has holes.
+			var newPoly = Duplicate();
+			newPoly = newPoly.FaceRemove(facesel);
+			newPoly = newPoly.FaceRemove(FaceSelections.Outer);
+			newPoly.FillHoles();
+			return newPoly;
 		}
 
 		public ConwayPoly Offset(List<double> offset, bool randomize)
@@ -4264,41 +4277,45 @@ namespace Conway
 
 		public List<List<Halfedge>> FindBoundaries()
 		{
-			var looped = new Dictionary<string, Halfedge>();
+			var looped = new HashSet<Halfedge>();
 			var loops = new List<List<Halfedge>>();
 			
-			foreach (var halfedge in Halfedges)
+			foreach (var startHalfedge in Halfedges)
 			{
-				if (halfedge.Pair == null && !looped.ContainsKey(halfedge.Name))
-				{
-					var loop = new List<Halfedge>();
-					var startHalfedge = halfedge;
-					var currHalfedge = halfedge;
-					int escapeClause = 0;
-					bool invalidLoop = false;
-					do
-					{
-						loop.Add(currHalfedge);
-						looped[currHalfedge.Name] = currHalfedge;
-						do
-						{
-							if (currHalfedge.Next == null || currHalfedge.Next.Pair == null ||
-							    currHalfedge.Next.Pair.Next == null)
-							{
-								invalidLoop = true;
-								break;
-							}
-							currHalfedge = currHalfedge.Next.Pair.Next;
-							if (invalidLoop) break;
-						} while (currHalfedge.Pair != null);
-						escapeClause++;
-					} while (currHalfedge != startHalfedge && escapeClause < 1000);
+				// If it's not a bare edge or we've already checked it
+				if (startHalfedge.Pair != null || looped.Contains(startHalfedge)) continue;
 
-					if (loop.Count >= 3)
+				var loop = new List<Halfedge>();
+				var currLoopEdge = startHalfedge;
+				int escapeClause = 0;
+				do
+				{
+					loop.Add(currLoopEdge);
+					looped.Add(currLoopEdge);
+					Halfedge nextLoopEdge = null;
+					var possibleEdges = currLoopEdge.Prev.Vertex.Halfedges;
+					//possibleEdges.Reverse();
+					foreach (var edgeToTest in possibleEdges)
 					{
-						loops.Add(loop);
+						if (currLoopEdge != edgeToTest && edgeToTest.Pair == null)
+						{
+							nextLoopEdge = edgeToTest;
+							break;
+						};
 					}
+
+					if (nextLoopEdge != null)
+					{
+						currLoopEdge = nextLoopEdge;
+					}
+					escapeClause++;
+				} while (currLoopEdge != startHalfedge && escapeClause < 1000);
+
+				if (loop.Count >= 3)
+				{
+					loops.Add(loop);
 				}
+
 				
 			}
 
