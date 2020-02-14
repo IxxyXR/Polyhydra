@@ -44,17 +44,18 @@ public class PolyhydraSceneSetup : MonoBehaviour
         
         if (RenderingPipeline==RenderingPipelines.URP)
         {
-            FindObjectsOfType<HDAdditionalCameraData>().Select(x => x.enabled = true);
-            FindObjectsOfType<HDAdditionalLightData>().Select(x => x.enabled = true);
-            FindObjectsOfType<UniversalAdditionalCameraData>().Select(x => x.enabled = false);
-            FindObjectsOfType<UniversalAdditionalLightData>().Select(x => x.enabled = false);
+            Debug.Log(Resources.FindObjectsOfTypeAll<HDAdditionalCameraData>());
+            Resources.FindObjectsOfTypeAll<HDAdditionalCameraData>().Select(x => x.enabled = true);
+            Resources.FindObjectsOfTypeAll<HDAdditionalLightData>().Select(x => x.enabled = true);
+            Resources.FindObjectsOfTypeAll<UniversalAdditionalCameraData>().Select(x => x.enabled = false);
+            Resources.FindObjectsOfTypeAll<UniversalAdditionalLightData>().Select(x => x.enabled = false);
         }
         else if (RenderingPipeline == RenderingPipelines.URP)
         {
-            FindObjectsOfType<HDAdditionalCameraData>().Select(x => x.enabled = false);
-            FindObjectsOfType<HDAdditionalLightData>().Select(x => x.enabled = false);
-            FindObjectsOfType<UniversalAdditionalCameraData>().Select(x => x.enabled = true);
-            FindObjectsOfType<UniversalAdditionalLightData>().Select(x => x.enabled = true);
+            Resources.FindObjectsOfTypeAll<HDAdditionalCameraData>().Select(x => x.enabled = false);
+            Resources.FindObjectsOfTypeAll<HDAdditionalLightData>().Select(x => x.enabled = false);
+            Resources.FindObjectsOfTypeAll<UniversalAdditionalCameraData>().Select(x => x.enabled = true);
+            Resources.FindObjectsOfTypeAll<UniversalAdditionalLightData>().Select(x => x.enabled = true);
         }
     }
 }

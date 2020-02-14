@@ -8,7 +8,7 @@
   "GridType": "Square",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": false,
+  "SafeLimits": false,
   "PrismP": 0,
   "PrismQ": 0,
   "AppearancePresetName": "Edged Tiles",
@@ -38,7 +38,7 @@
     {
       "OpType": "Bevel",
       "FaceSelections": "All",
-      "Amount": 0.0,
+      "Amount": 0.4,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,

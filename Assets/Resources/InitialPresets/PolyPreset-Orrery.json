@@ -8,7 +8,7 @@
   "GridType": "Hex",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": false,
+  "SafeLimits": false,
   "PrismP": 11,
   "PrismQ": 2,
   "AppearancePresetName": "Subtle",

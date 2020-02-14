@@ -10,18 +10,22 @@ public class PolyMidi : MonoBehaviour
 {
 
    public PolyHydra poly;
-   public int UpdateEvery = 4;
-   private int LastFrameRendered = -1;
+   public int UpdateSliderEvery = 3;
    public AppearancePresets aPresets;
 
-   MidiProbe _probe;
-   MidiOutPort OutPort;
-   MidiInPort InPort;
-
+   private int LastFrameRendered = -1;
+   private MidiProbe _probe;
+   private MidiOutPort OutPort;
+   private MidiInPort InPort;
    private int[] MidiColorValues = {1, 5, 3};
    private const int MAXOPS = 4  ;
-
    private AkaiPrefabController akaiPrefab;
+   private float SliderDeadZone = 0.05f;
+   private byte[] LastSliderValue;
+
+   private int slider;
+   private float amount;
+   private bool ControlHasChanged;
 
    private List<(int, PolyHydra.JohnsonPolyTypes)> Johnsons = new List<(int, PolyHydra.JohnsonPolyTypes)>
    {
@@ -187,6 +191,15 @@ public class PolyMidi : MonoBehaviour
       PolyHydra.Ops.Whirl,
       PolyHydra.Ops.Propeller,
 
+      // New Ops Bank
+      // PolyHydra.Ops.JoinKisKis,
+      // PolyHydra.Ops.JoinStake,
+      // PolyHydra.Ops.Squall,
+      // PolyHydra.Ops.JoinSquall,
+      // PolyHydra.Ops.Spherize,
+      // PolyHydra.Ops.Canonicalize,
+      // PolyHydra.Ops.Stretch,
+      // PolyHydra.Ops.VertexRotate,
 
 
 
@@ -233,6 +246,7 @@ public class PolyMidi : MonoBehaviour
       InitOps(MAXOPS);
       SetLEDs();
       FinalisePoly();
+      LastSliderValue = Enumerable.Repeat((byte)63, 64).ToArray();
 
 //      OutPort.SendAllOff(0);
 
@@ -411,6 +425,7 @@ public class PolyMidi : MonoBehaviour
          }
 
          SetLEDs();
+         HandleControlChange(0, Convert.ToByte(column+48), LastSliderValue[column+48]);
          FinalisePoly();
       }
       else if (note >= 64 && note <= 71)
@@ -425,6 +440,7 @@ public class PolyMidi : MonoBehaviour
          op.amount = opconfig.amountDefault;
          poly.ConwayOperators[column] = op;
          SetLEDs();
+         HandleControlChange(0, Convert.ToByte(column+48), LastSliderValue[column+48]);
          FinalisePoly();
       }
       else if (note >= 82 && note <= 89)
@@ -520,17 +536,24 @@ public class PolyMidi : MonoBehaviour
 
    void HandleControlChange(byte channel, byte number, byte value)
    {
-
-      int slider = number - 48;
+      slider = number - 48;
+      LastSliderValue[number] = value;
       akaiPrefab.SetSlider(slider, value);
+      amount = value / 127f;
+      amount = Remap(amount, SliderDeadZone, 1 - SliderDeadZone, 0, 1);
+      amount = amount < 0 ? 0 : amount;
+      amount = amount > 1 ? 1 : amount;
 
-      if (Time.frameCount % UpdateEvery != 0) return;
-      if (Time.frameCount == LastFrameRendered) return; // We've already rendered on this frame
-      LastFrameRendered = Time.frameCount;
+      ControlHasChanged = true;
+   }
 
+   void RenderControlChange()
+   {
+      ControlHasChanged = false;
+  
       if (slider == 8)
       {
-         int shapeIndex = Mathf.FloorToInt((value / 127f) * TotalShapeCount());
+         int shapeIndex = Mathf.FloorToInt(amount * TotalShapeCount());
          if (shapeIndex < Polys.Length)
          {
             poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
@@ -549,7 +572,7 @@ public class PolyMidi : MonoBehaviour
       }
       else if (slider == 7)
       {
-         int apresetIndex = Mathf.FloorToInt((value / 127f) * aPresets.Items.Count);
+         int apresetIndex = Mathf.FloorToInt(amount * aPresets.Items.Count);
          var apreset = aPresets.Items[apresetIndex];
          aPresets.ApplyPresetToPoly(apreset);
       }
@@ -558,7 +581,6 @@ public class PolyMidi : MonoBehaviour
          if (slider >= poly.ConwayOperators.Count) return;
          var op = poly.ConwayOperators[slider];
          var opconfig = poly.opconfigs[op.opType];
-         float amount = value / 127f;
          op.amount = Mathf.Lerp(opconfig.amountSafeMin, opconfig.amountSafeMax, amount);
          poly.ConwayOperators[slider] = op;
          FinalisePoly();
@@ -603,6 +625,14 @@ public class PolyMidi : MonoBehaviour
       if (InPort != null)
       {
          InPort.ProcessMessages();
+      }
+
+      if (ControlHasChanged)
+      {
+         if (Time.frameCount % UpdateSliderEvery != 0) return;
+         if (Time.frameCount == LastFrameRendered) return; // We've already rendered on this frame
+         LastFrameRendered = Time.frameCount;
+         RenderControlChange();
       }
    }
 

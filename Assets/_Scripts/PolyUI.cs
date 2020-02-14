@@ -27,7 +27,7 @@ public class PolyUI : MonoBehaviour {
     public Slider XRotateSlider;
     public Slider YRotateSlider;
     public Slider ZRotateSlider;
-    public Toggle TwoSidedToggle;
+    public Toggle SafeLimitsToggle;
     public Button PrevPolyButton;
     public Button NextPolyButton;
     public Text InfoText;
@@ -120,7 +120,7 @@ public class PolyUI : MonoBehaviour {
         BasePolyDropdown.onValueChanged.AddListener(delegate{BasePolyDropdownChanged(BasePolyDropdown);});
         PrevPolyButton.onClick.AddListener(PrevPolyButtonClicked);
         NextPolyButton.onClick.AddListener(NextPolyButtonClicked);
-        TwoSidedToggle.onValueChanged.AddListener(delegate{TwoSidedToggleChanged();});
+        SafeLimitsToggle.onValueChanged.AddListener(delegate{SafeLimitsToggleChanged();});
         GridTypeDropdown.onValueChanged.AddListener(delegate{GridTypeDropdownChanged(GridTypeDropdown);});
         GridShapeDropdown.onValueChanged.AddListener(delegate{GridShapeDropdownChanged(GridShapeDropdown);});
         JohnsonTypeDropdown.onValueChanged.AddListener(delegate{JohnsonTypeDropdownChanged(JohnsonTypeDropdown);});
@@ -287,7 +287,7 @@ public class PolyUI : MonoBehaviour {
     void UpdatePolyUI()
     {
         _shouldReBuild = false;
-        TwoSidedToggle.isOn = poly.TwoSided;
+        SafeLimitsToggle.isOn = poly.SafeLimits;
         ShapeTypesDropdown.value = (int) poly.ShapeType;
         BasePolyCategoryDropdown.value = (int) poly.UniformPolyTypeCategory;
 //        BasePolyCategoryDropdown.value = 1;
@@ -340,12 +340,12 @@ public class PolyUI : MonoBehaviour {
             AddOpItemToUI(conwayOperator);
         }
     }
-
+    
     void ConfigureOpControls(OpPrefabManager opPrefabManager)
     {
-        opPrefabManager.OpTypeDropdown.GetComponentInChildren<DropdownSVGIcon>().UpdateIcon();
 
         var opType = (PolyHydra.Ops)opPrefabManager.OpTypeDropdown.value;
+        opPrefabManager.OpTypeDropdown.GetComponentInChildren<DropdownIconManager>().SetIcon(opType);
         var opConfig = poly.opconfigs[opType];
         
         opPrefabManager.FaceSelectionDropdown.gameObject.SetActive(opConfig.usesFaces);
@@ -356,9 +356,18 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.ToggleAnimate.gameObject.SetActive(opConfig.usesAmount);
         opPrefabManager.GetComponent<RectTransform>().sizeDelta = new Vector2(200, opConfig.usesAmount?238:100);
 
-        opPrefabManager.AmountSlider.minValue = opConfig.amountMin;
-        opPrefabManager.AmountSlider.maxValue = opConfig.amountMax;
         opPrefabManager.AmountSlider.value = opConfig.amountDefault;
+
+        if (poly.SafeLimits)
+        {
+            opPrefabManager.AmountSlider.minValue = opConfig.amountSafeMin;
+            opPrefabManager.AmountSlider.maxValue = opConfig.amountSafeMax;
+        }
+        else
+        {
+            opPrefabManager.AmountSlider.minValue = opConfig.amountMin;
+            opPrefabManager.AmountSlider.maxValue = opConfig.amountMax;
+        }
     }
 
     static string  CamelCaseSpaces(string str)
@@ -373,7 +382,7 @@ public class PolyUI : MonoBehaviour {
         var opPrefabManager = opPrefab.GetComponent<OpPrefabManager>();
         
         opPrefab.name = op.opType.ToString();
-        foreach (var item in Enum.GetValues(typeof(PolyHydra.Ops))) {
+        foreach (PolyHydra.Ops item in Enum.GetValues(typeof(PolyHydra.Ops))) {
             var label = new Dropdown.OptionData(CamelCaseSpaces(item.ToString()));
             opPrefabManager.OpTypeDropdown.options.Add(label);
         }
@@ -742,9 +751,27 @@ public class PolyUI : MonoBehaviour {
         poly.gameObject.transform.eulerAngles = new Vector3(r.x, r.y, ZRotateSlider.value);
     }
 
-    void TwoSidedToggleChanged()
+    void SafeLimitsToggleChanged()
     {
-        poly.TwoSided = TwoSidedToggle.isOn;
+        poly.SafeLimits = SafeLimitsToggle.isOn;
+        var opSliders = OpContainer.GetComponentsInChildren<Slider>();
+        for (var i = 0; i < opSliders.Length; i++)
+        {
+            var opSlider = opSliders[i];
+            var op = poly.ConwayOperators[i];
+            var opConfig = poly.opconfigs[op.opType];
+            if (poly.SafeLimits)
+            {
+                opSlider.minValue = opConfig.amountSafeMin;
+                opSlider.maxValue = opConfig.amountSafeMax;
+            }
+            else
+            {
+                opSlider.minValue = opConfig.amountMin;
+                opSlider.maxValue = opConfig.amountMax;
+            }
+        }
+
         Rebuild();
     }
 

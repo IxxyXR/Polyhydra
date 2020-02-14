@@ -10,7 +10,7 @@
 	}
 	SubShader
 	{
-		Tags { "RenderType"="Opaque" }
+		Tags { "RenderType"="Opaque"  "RenderPipeline"="HDPipeline"}
 		LOD 100
 		Cull Off
 

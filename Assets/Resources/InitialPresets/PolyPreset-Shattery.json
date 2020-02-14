@@ -8,10 +8,10 @@
   "GridType": "Isometric",
   "GridShape": "Cylinder",
   "BypassOps": false,
-  "TwoSided": false,
+  "SafeLimits": false,
   "PrismP": 3,
   "PrismQ": 4,
-  "AppearancePresetName": "Black Mirror",
+  "AppearancePresetName": "Colorful Dark Edges ",
   "Ops": [
     {
       "OpType": "Whirl",

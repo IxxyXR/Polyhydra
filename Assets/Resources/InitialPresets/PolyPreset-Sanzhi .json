@@ -8,7 +8,7 @@
   "GridType": "Polar",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": false,
+  "SafeLimits": false,
   "PrismP": 16,
   "PrismQ": 12,
   "AppearancePresetName": "RGB",
@@ -60,7 +60,7 @@
     {
       "OpType": "Bevel",
       "FaceSelections": "All",
-      "Amount": 0.0,
+      "Amount": 0.38,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,

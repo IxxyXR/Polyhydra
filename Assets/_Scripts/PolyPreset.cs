@@ -22,7 +22,7 @@ public class PolyPreset {
 	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.GridTypes GridType;
 	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.GridShapes GridShape;
 	public bool BypassOps;
-	public bool TwoSided;
+	public bool SafeLimits;
 	public int PrismP;
 	public int PrismQ;
 	public string AppearancePresetName;
@@ -56,7 +56,7 @@ public class PolyPreset {
 		BypassOps = poly.BypassOps;
 		PrismP = poly.PrismP;
 		PrismQ = poly.PrismQ;
-		TwoSided = poly.TwoSided;
+		SafeLimits = poly.SafeLimits;
 		Ops = new Op[poly.ConwayOperators.Count];
 		
 		for (var index = 0; index < poly.ConwayOperators.Count; index++)
@@ -86,7 +86,7 @@ public class PolyPreset {
 		poly.JohnsonPolyType = JohnsonPolyType;
 		poly.OtherPolyType = OtherPolyType;
 		poly.BypassOps = BypassOps;
-		poly.TwoSided = TwoSided;
+		poly.SafeLimits = SafeLimits;
 		poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();
 		poly.GridType = GridType;
 		poly.GridShape = GridShape;

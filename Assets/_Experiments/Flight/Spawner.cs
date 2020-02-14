@@ -65,7 +65,6 @@ public class Spawner : MonoBehaviour
 
         preset.PolyType = (PolyTypes)Random.Range(5,39);
         preset.BypassOps = false;
-        preset.TwoSided = true;
         preset.PrismP = Random.Range(3,12);
         preset.PrismQ = 2;
         preset.Ops = new PolyPreset.Op[3];

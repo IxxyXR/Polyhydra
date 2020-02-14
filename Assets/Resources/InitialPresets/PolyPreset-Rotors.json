@@ -8,7 +8,7 @@
   "GridType": "Square",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": false,
+  "SafeLimits": false,
   "PrismP": 0,
   "PrismQ": 0,
   "AppearancePresetName": "Gem",
@@ -25,9 +25,9 @@
       "AnimationAmount": 0.0
     },
     {
-      "OpType": "Zip",
+      "OpType": "Kis",
       "FaceSelections": "All",
-      "Amount": -1.61049128,
+      "Amount": -1.6,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
@@ -36,12 +36,12 @@
       "AnimationAmount": 0.0
     },
     {
-      "OpType": "Exalt",
+      "OpType": "Dual",
       "FaceSelections": "All",
-      "Amount": 0.120536089,
+      "Amount": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
-      "Disabled": true,
+      "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
       "AnimationAmount": 0.0

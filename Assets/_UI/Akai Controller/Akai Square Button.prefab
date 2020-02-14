@@ -92,12 +92,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Akai Op SVG Image
       objectReference: {fileID: 0}
-    - target: {fileID: 1428722900758179081, guid: 17e2e1570feccdf46b7f1b732e3f9e94,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 852d4865fd1433c40b655821e60a344d,
-        type: 3}
     - target: {fileID: 6715675855568096956, guid: 17e2e1570feccdf46b7f1b732e3f9e94,
         type: 3}
       propertyPath: m_LocalPosition.x

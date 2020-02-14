@@ -52,7 +52,6 @@ public class DropRandomPoly : MonoBehaviour
 
         poly.enableThreading = false;
         poly.enableCaching = true;
-        poly.TwoSided = true;
         poly.Rebuild();
         poly.gameObject.GetComponent<MeshRenderer>().material = Materials[Random.Range(0, Materials.Length)];
         recentPoly = poly;

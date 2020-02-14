@@ -8,7 +8,7 @@
   "GridType": "Square",
   "GridShape": "Plane",
   "BypassOps": false,
-  "TwoSided": false,
+  "SafeLimits": false,
   "PrismP": 5,
   "PrismQ": 5,
   "AppearancePresetName": "RGB",
@@ -49,7 +49,7 @@
     {
       "OpType": "Zip",
       "FaceSelections": "All",
-      "Amount": 0.0,
+      "Amount": 0.45,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,

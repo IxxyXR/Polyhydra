@@ -8,7 +8,7 @@
   "GridType": "Square",
   "GridShape": "Torus",
   "BypassOps": false,
-  "TwoSided": false,
+  "SafeLimits": false,
   "PrismP": 12,
   "PrismQ": 12,
   "AppearancePresetName": "Showroom",
