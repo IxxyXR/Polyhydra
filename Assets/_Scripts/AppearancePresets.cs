@@ -76,6 +76,7 @@ public class AppearancePresets : MonoBehaviour {
 			ActiveVolume.profile = preset.ActiveVolumeProfileURP;
 			CurrentCamera.clearFlags = ConvertClearFlags(preset.CameraClearColorMode);
 			CurrentCamera.backgroundColor = preset.CameraBackgroundColor;
+			RenderSettings.skybox = preset.SkyBoxURP;
 		}
 		_poly.ColorMethod = preset.PolyhedronColorMethod;
 

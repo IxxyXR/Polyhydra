@@ -1004,6 +1004,7 @@ MonoBehaviour:
       type: 2}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Gem
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: d8a4a6ef844931f45870fbcc07d957d1,
       type: 2}
@@ -1020,6 +1021,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: RGB
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 5c6e4256d39ccfe40ae83393b8d89c5c,
       type: 2}
@@ -1036,6 +1038,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Vectrex
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 55d7709d316e3e44c9b026a68ceaf744,
       type: 2}
@@ -1050,6 +1053,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Posterized
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 2751a1d4180942544ada7c4123b0971c,
       type: 2}
@@ -1064,6 +1068,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Grooves
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: ff47891f2ea45fc459041f7ff80c576e,
       type: 2}
@@ -1080,6 +1085,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Gray and Colorful
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 5c6e4256d39ccfe40ae83393b8d89c5c,
       type: 2}
@@ -1096,6 +1102,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Rich
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
       type: 2}
@@ -1112,6 +1119,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Spiral Blush
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 2aeb841239f0b1945ba03f1608b7d319,
       type: 2}
@@ -1126,6 +1134,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: 'Colorful Dark Edges '
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: bf262dce8b4c5804eb4925cf9b111941,
       type: 2}
@@ -1142,6 +1151,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Black Mirror
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: b7854df036cf90f4ab5d51aa48a94b76,
       type: 2}
@@ -1159,6 +1169,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Dirty Metal
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 756d17fc7a02e1c4ea003575272634a7,
       type: 2}
@@ -1176,6 +1187,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Cold Metal
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: f446fe272d555444f9e3d8d9a6de3e14,
       type: 2}
@@ -1193,6 +1205,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Tinted Glass
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 7d966c49445a5cb469bd0d46d8d6c8dd,
       type: 2}
@@ -1210,6 +1223,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Showroom
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 4e47b9e41487ec54b8403c767d058840,
       type: 2}
@@ -1227,6 +1241,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Edged Glass
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: dd9ebca479b7b6444af9b560484c5958,
       type: 2}
@@ -1244,6 +1259,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Edged Tiles
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 80e51355e1e8c5d4eb4e7b7e7ab5baac,
       type: 2}
@@ -1261,6 +1277,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Cracked Ice
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 8f3e2e4e95151024fa4ab9e19055ca07,
       type: 2}
@@ -1278,6 +1295,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Thick Edges
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: ae788e1cd3cf54f4f9d5bccdb4d49dc9,
       type: 2}
@@ -1294,6 +1312,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Volumetric
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 33312f87b96d9994a8ff504d24ab19f2,
       type: 2}
@@ -1310,6 +1329,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   editorPresetIndex: 0
 --- !u!1 &2026187188542107841
 GameObject:

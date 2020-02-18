@@ -319,9 +319,10 @@ namespace Wythoff {
         // number of triangle edges, and V = Vp+ Vq+ Vr, with Vp = g/(2*np) being the
         // number of vertices with angle pi/p (np is the numerator of p)
 
-        private void FindMoebiusTri() {
-            
-            int twos = 0, j;
+        private void FindMoebiusTri()
+        {
+            int twos = 0;
+            int j;
 
             // Arrange Wythoff symbol in a presentable form. In the same time check the
             // restrictions on the three fractions: They all have to be greater then one,

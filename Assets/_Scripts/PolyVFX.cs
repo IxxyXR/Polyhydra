@@ -9,33 +9,35 @@ using Random = UnityEngine.Random;
 public class PolyVFX : MonoBehaviour
 {
 
-    private VisualEffect _vfx;    
     private Texture2D texture;
+    private PolyHydra polyhydra;
+    private Transform RotationParent;
 
+    public VisualEffect _vfx;
     public bool ContinuousUpdate;
-
+    public int RenderEvery = 2;
+    public bool MatchScale;
+    public float ScaleOffset;
     public bool Randomize;
     public float RandomChangeFrequency = 5f;
+    public bool wythoffOnly;
 
     [InspectorButton("UpdateWythoffVFX", "Wythoff")]
     public string Bar;
     [InspectorButton("UpdateConwayVFX", "Conway")]
     public string Foo;
-    
-    public bool wythoffOnly;
-    public PolyHydra polyhydra;
-    public Transform RotationParent;
-    
+
     void Start()
     {
-        _vfx = gameObject.GetComponent<VisualEffect>();
+        polyhydra = gameObject.GetComponent<PolyHydra>();
+        RotationParent = polyhydra.transform.parent;
         UpdatePolyVFX();
     }
 
     void Update()
     {
         _vfx.SetVector3("Rotation Angle", RotationParent.localEulerAngles);
-        if (ContinuousUpdate)
+        if (ContinuousUpdate && Time.frameCount % RenderEvery == 0)
         {
             UpdatePolyVFX();
         }
@@ -88,19 +90,17 @@ public class PolyVFX : MonoBehaviour
 
     private static float CalcEdgeColor(Halfedge x)
     {
-        float edgeColor = 1.0f;
-        return edgeColor;
-        
-        
-        try
-        {
-            edgeColor = (x.Face.Sides + x.Pair.Face.Sides) / 2f;
-        }
-        catch (NullReferenceException e)
-        {
-            Debug.Log("Failed to calculate edge color");
-        }
-        return edgeColor;
+        return x.Vertex.Halfedges.Count - 3;
+
+//        try
+//        {
+//            edgeColor = (x.Face.Sides + x.Pair.Face.Sides) / 2f;
+//        }
+//        catch (NullReferenceException e)
+//        {
+//            Debug.Log("Failed to calculate edge color");
+//        }
+//        return edgeColor;
     }
 
     public void UpdateConwayVFX()
@@ -116,6 +116,13 @@ public class PolyVFX : MonoBehaviour
             polyhydra.ConwayOperators.Add(new PolyHydra.ConwayOperator(){opType = PolyHydra.Ops.Identity});
             polyhydra.Rebuild();
         }
+
+        if (MatchScale)
+        {
+            _vfx.SetFloat("Scale", polyhydra.transform.localScale.x + ScaleOffset);
+        }
+
+
         var edges = polyhydra._conwayPoly.Halfedges.GetUnique().ToArray();
         
         texture = new Texture2D(edges.Length, 2, TextureFormat.RGBAFloat, false);
@@ -128,14 +135,23 @@ public class PolyVFX : MonoBehaviour
         for (var i = 0; i < numEdges; i++)
         {
             var start = edges[i].Vertex.Position;
-            var edgeColor = CalcEdgeColor(edges[i]);            
+            var edgeColor = i; //CalcEdgeColor(edges[i]);
             pixelData[i] = new Color(start.x, start.y, start.z, edgeColor);
         }
         
         for (var i = 0; i < numEdges; i++)
         {
-            var end = edges[i].Pair.Vertex.Position;
-            var edgeColor = CalcEdgeColor(edges[i]);
+            Vector3 end;
+            if (edges[i].Pair != null)
+            {
+                end = edges[i].Pair.Vertex.Position;
+            }
+            else
+            {
+                end = edges[i].Next.Vertex.Position;
+            }
+
+            var edgeColor = i; //CalcEdgeColor(edges[i]);
             pixelData[i + edges.Length] = new Color(end.x, end.y, end.z, edgeColor);
         }
         

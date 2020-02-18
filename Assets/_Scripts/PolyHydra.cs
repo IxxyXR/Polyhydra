@@ -329,7 +329,8 @@ public class PolyHydra : MonoBehaviour
 	public bool faceGizmos;
 	public int[] faceGizmosList;
 	public bool dualGizmo;
-	
+	public bool symmetryGizmo;
+
 	private int[] meshFaces;
 	public WythoffPoly WythoffPoly;
 	public ConwayPoly _conwayPoly;
@@ -994,7 +995,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.FaceMerge(op.faceSelections);
 				break;
 			case Ops.VertexRotate:
-//				conway = conway.VertexRotate(amount, op.faceSelections, op.randomize);
+				conway = conway.VertexRotate(amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.VertexFlex:
 				conway = conway.VertexFlex(amount, op.faceSelections, op.randomize);
@@ -1540,6 +1541,38 @@ public class PolyHydra : MonoBehaviour
 				);
 			}
 		}
+
+		if (symmetryGizmo)
+		{
+			string wythoffSymbol;
+			if (WythoffPoly.SymmetryType == 2)
+			{
+				wythoffSymbol = $"2 {PrismP} | 2";
+			}
+			else
+			{
+				wythoffSymbol = $"{WythoffPoly.SymmetryType} | 2 3";
+			}
+			var wythoffGizmoPoly = new WythoffPoly(wythoffSymbol);
+
+			for (int i = 0; i < wythoffGizmoPoly.EdgeCount; i++)
+			{
+				Gizmos.color = Color.yellow;
+				var edgeStart = wythoffGizmoPoly.Edges[0, i] ;
+				var edgeEnd = wythoffGizmoPoly.Edges[1, i];
+				var v0 = wythoffGizmoPoly.Vertices[edgeStart].getVector3();
+				var v1 = wythoffGizmoPoly.Vertices[edgeEnd].getVector3();
+//				var q = Quaternion.AngleAxis(Convert.ToSingle(WythoffPoly.FundementalAngles[0] * Mathf.Rad2Deg), Vector3.zero);
+//				var q = Quaternion.LookRotation(WythoffPoly.FaceCenters[0].getVector3(), Vector3.up);
+//				v0 = q * v0;
+//				v1 = q * v1;
+				Gizmos.DrawLine(
+					transform.TransformPoint(v0),
+					transform.TransformPoint(v1)
+				);
+			}
+		}
+
 	}
 
 	private void ConwayFaceGizmos()

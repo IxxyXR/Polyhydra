@@ -14,6 +14,9 @@ GameObject:
   - component: {fileID: 71153249122865254}
   - component: {fileID: 71153249122865277}
   - component: {fileID: 71153249122865276}
+  - component: {fileID: 71153248184264848}
+  - component: {fileID: 71153248184264847}
+  - component: {fileID: 117492468}
   m_Layer: 0
   m_Name: Polyhedron
   m_TagString: Untagged
@@ -30,7 +33,7 @@ Transform:
   m_GameObject: {fileID: 71153249122865252}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9999137, y: 0.9999137, z: 0.9999137}
+  m_LocalScale: {x: 0.99991107, y: 0.99991107, z: 0.99991107}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -47,14 +50,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16fa6755628f34246af47ee2aab9e558, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnableLogging: 1
+  EnableLogging: 0
   enableThreading: 0
   enableCaching: 1
-  ShapeType: 2
+  ShapeType: 0
   UniformPolyType: 10
   UniformPolyTypeCategory: 0
-  ColorMethod: 1
-  JohnsonPolyType: 1
+  ColorMethod: 0
+  JohnsonPolyType: 3
   OtherPolyType: 0
   GridType: 0
   GridShape: 0
@@ -64,19 +67,29 @@ MonoBehaviour:
   BypassOps: 0
   Rescale: 1
   SafeLimits: 1
-  PrismP: 9
+  PrismP: 5
   PrismQ: 2
   ConwayOperators:
-  - opType: 23
+  - opType: 15
     faceSelections: 0
     randomize: 0
-    amount: 0.61
-    amount2: 0.46
+    amount: 0
+    amount2: 0
     animatedAmount: 0
     disabled: 0
     animate: 0
-    animationRate: 1
-    animationAmount: 1
+    animationRate: 0
+    animationAmount: 0
+  - opType: 2
+    faceSelections: 0
+    randomize: 0
+    amount: 0
+    amount2: 0
+    animatedAmount: 0
+    disabled: 0
+    animate: 0
+    animationRate: 0
+    animationAmount: 0
   wythoffVertexGizmos: 0
   wythoffEdgeGizmos: 0
   conwayVertexGizmos: 0
@@ -85,6 +98,7 @@ MonoBehaviour:
   faceGizmos: 0
   faceGizmosList: 
   dualGizmo: 0
+  symmetryGizmo: 0
   polyUI: {fileID: 0}
   gizmoPallette:
   - {r: 1, g: 0, b: 0, a: 1}
@@ -165,3 +179,113 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateFrequency: 0.05
+--- !u!114 &71153248184264848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71153249122865252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9daa88fb3879e4accac09e69dab2578c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OpIndex: 0
+  Scale: 0.5
+  Offset: 0.01
+  DecayTime: 0.5
+  TriggerTheshold: 1
+  Sample: 0
+  Filter: 1
+  Curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RenderEvery: 2
+--- !u!114 &71153248184264847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71153249122865252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9daa88fb3879e4accac09e69dab2578c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OpIndex: 1
+  Scale: 0.5
+  Offset: 0.01
+  DecayTime: 0.75
+  TriggerTheshold: 1
+  Sample: 0
+  Filter: 1
+  Curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RenderEvery: 2
+--- !u!114 &117492468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71153249122865252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 140402033c7c85e4fa9e266157a338df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _vfx: {fileID: 0}
+  ContinuousUpdate: 1
+  RenderEvery: 2
+  MatchScale: 0
+  ScaleOffset: 0
+  Randomize: 0
+  RandomChangeFrequency: 10
+  wythoffOnly: 0
+  Bar: 
+  Foo: 

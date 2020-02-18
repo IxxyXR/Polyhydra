@@ -19,4 +19,5 @@ public class AppearancePreset
     public VolumeProfile ActiveVolumeProfileURP;
     public HDAdditionalCameraData.ClearColorMode CameraClearColorMode;
     public Color CameraBackgroundColor;
+    public Material SkyBoxURP;
 }

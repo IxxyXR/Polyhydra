@@ -16,7 +16,8 @@ public class PolyMidi : MonoBehaviour
    private int LastFrameRendered = -1;
    private MidiProbe _probe;
    private MidiOutPort OutPort;
-   private MidiInPort InPort;
+   private MidiInPort AkaiInPort;
+   private MidiInPort NovationInPort;
    private int[] MidiColorValues = {1, 5, 3};
    private const int MAXOPS = 4  ;
    private AkaiPrefabController akaiPrefab;
@@ -379,6 +380,7 @@ public class PolyMidi : MonoBehaviour
 
    void HandleNoteOn(byte channel, byte note, byte velocity)
    {
+      Debug.Log($"note: {note}");
 
       int column;
       int row;
@@ -526,7 +528,7 @@ public class PolyMidi : MonoBehaviour
 
    void HandleNoteOff(byte channel, byte note)
    {
-      //Debug.Log($"{note} off");
+      Debug.Log($"{note} off");
    }
 
    private int TotalShapeCount()
@@ -536,6 +538,8 @@ public class PolyMidi : MonoBehaviour
 
    void HandleControlChange(byte channel, byte number, byte value)
    {
+      Debug.Log("gsfdgsfdgsfg");
+      Debug.Log($"{channel} {number} {value}");
       slider = number - 48;
       LastSliderValue[number] = value;
       akaiPrefab.SetSlider(slider, value);
@@ -600,9 +604,21 @@ public class PolyMidi : MonoBehaviour
       _probe = new MidiProbe(MidiProbe.Mode.In);
       for (var i = 0; i < _probe.PortCount; i++)
       {
+         Debug.Log(_probe.GetPortName(i));
          if (_probe.GetPortName(i).Contains("APC MINI"))
          {
-            InPort = new MidiInPort(i)
+            AkaiInPort = new MidiInPort(i)
+            {
+               OnNoteOn = (channel, note, velocity) => HandleNoteOn(channel, note, velocity),
+               OnNoteOff = (channel, note) => HandleNoteOff(channel, note),
+               OnControlChange = (channel, number, value) => HandleControlChange(channel, number, value)
+            };
+            break;
+         }
+         else if (_probe.GetPortName(i) == "Launch Control XL 3")
+         {
+            Debug.Log($"Init Novation");
+            AkaiInPort = new MidiInPort(i)
             {
                OnNoteOn = (channel, note, velocity) => HandleNoteOn(channel, note, velocity),
                OnNoteOff = (channel, note) => HandleNoteOff(channel, note),
@@ -622,9 +638,9 @@ public class PolyMidi : MonoBehaviour
          SetLEDs();
       }
 
-      if (InPort != null)
+      if (AkaiInPort != null)
       {
-         InPort.ProcessMessages();
+         AkaiInPort.ProcessMessages();
       }
 
       if (ControlHasChanged)
