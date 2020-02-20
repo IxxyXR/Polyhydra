@@ -29,7 +29,7 @@
     },
     {
       "OpType": "FaceRemove",
-      "FaceSelections": "New",
+      "FaceSelections": "NewAlt",
       "Amount": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,

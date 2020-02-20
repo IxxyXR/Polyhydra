@@ -84,6 +84,7 @@ public class AppearancePresets : MonoBehaviour {
 		var props = PropsParent.GetComponentsInChildren<Transform>(includeInactive: true);
 		foreach (var prop in props)
 		{
+			if (prop.gameObject == PropsParent.gameObject) continue;
 			if (preset.ActiveProps.Contains(prop.gameObject)) {prop.gameObject.SetActive(true);}
 			else {prop.gameObject.SetActive(false);}
 		}

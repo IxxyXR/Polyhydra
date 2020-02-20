@@ -9,13 +9,13 @@
   "GridShape": "Plane",
   "BypassOps": false,
   "SafeLimits": false,
-  "PrismP": 5,
-  "PrismQ": 5,
+  "PrismP": 3,
+  "PrismQ": 4,
   "AppearancePresetName": "Hologram",
   "Ops": [
     {
       "OpType": "Loft",
-      "FaceSelections": "Alternate",
+      "FaceSelections": "Random",
       "Amount": 0.5,
       "AnimatedAmount": 0.0,
       "Randomize": false,
@@ -44,7 +44,7 @@
     {
       "OpType": "Extrude",
       "FaceSelections": "All",
-      "Amount": 0.1,
+      "Amount": 0.2,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,

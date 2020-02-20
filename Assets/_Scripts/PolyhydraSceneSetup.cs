@@ -53,7 +53,6 @@ public class PolyhydraSceneSetup : MonoBehaviour
         
         if (RenderingPipeline==RenderingPipelines.URP)
         {
-            Debug.Log(Resources.FindObjectsOfTypeAll<HDAdditionalCameraData>());
             Resources.FindObjectsOfTypeAll<HDAdditionalCameraData>().Select(x => x.enabled = true);
             Resources.FindObjectsOfTypeAll<HDAdditionalLightData>().Select(x => x.enabled = true);
             Resources.FindObjectsOfTypeAll<UniversalAdditionalCameraData>().Select(x => x.enabled = false);

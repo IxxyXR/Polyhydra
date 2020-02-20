@@ -9,11 +9,11 @@ using Random = UnityEngine.Random;
 public class PolyVFX : MonoBehaviour
 {
 
+    private VisualEffect _vfx;
     private Texture2D texture;
-    private PolyHydra polyhydra;
     private Transform RotationParent;
 
-    public VisualEffect _vfx;
+    public PolyHydra polyhydra;
     public bool ContinuousUpdate;
     public int RenderEvery = 2;
     public bool MatchScale;
@@ -29,7 +29,7 @@ public class PolyVFX : MonoBehaviour
 
     void Start()
     {
-        polyhydra = gameObject.GetComponent<PolyHydra>();
+        _vfx = gameObject.GetComponent<VisualEffect>();
         RotationParent = polyhydra.transform.parent;
         UpdatePolyVFX();
     }
