@@ -1,5 +1,4 @@
-﻿    using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 public class PolyAnimate : MonoBehaviour
@@ -28,11 +27,34 @@ public class PolyAnimate : MonoBehaviour
             if (op.disabled) continue;
             if (!_poly.opconfigs[op.opType].usesAmount) continue;
             isAnimating = true;
-            var amplitude = op.animationAmount;
-            var rate = op.animationRate;
-            float offset = Mathf.Sin(frame * rate * adjustment) * amplitude;
-            offset = Mathf.Round(offset * 100) / 100f;
-            op.animatedAmount = op.amount + offset;
+
+            float sinAnimOffset = 0, audioOffsetLow = 0, audioOffsetMid = 0, audioOffsetHigh = 0;
+
+            if (op.audioLowAmount != 0 || op.audioMidAmount != 0 || op.audioHighAmount !=0)
+            {
+                audioOffsetLow = GetComponent<PolyAudio>().AmountLow;
+                audioOffsetLow -= op.audioLowAmount / 2f;
+                audioOffsetLow *= op.audioLowAmount;
+
+                audioOffsetMid = GetComponent<PolyAudio>().AmountMid;
+                audioOffsetMid -= op.audioMidAmount / 2f;
+                audioOffsetMid *= op.audioMidAmount;
+
+                audioOffsetHigh = GetComponent<PolyAudio>().AmountHigh;
+                audioOffsetHigh -= op.audioHighAmount / 2f;
+                audioOffsetHigh *= op.audioHighAmount;
+            }
+
+            if (op.animationAmount != 0)
+            {
+                var rate = op.animationRate;
+                sinAnimOffset = Mathf.Sin(frame * rate * adjustment);
+                sinAnimOffset *= op.animationAmount;
+            }
+
+            float totalOffset = audioOffsetLow + audioOffsetMid + audioOffsetHigh + sinAnimOffset;
+            totalOffset = Mathf.Round(totalOffset * 100) / 100f;
+            op.animatedAmount = op.amount + totalOffset;
             _poly.ConwayOperators[i] = op;
             frame++;
         }

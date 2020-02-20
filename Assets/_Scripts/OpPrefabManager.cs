@@ -20,6 +20,9 @@ public class OpPrefabManager : MonoBehaviour
     public Transform AnimationControls;
     public InputField AnimRateInput;
     public InputField AnimAmountInput;
+    public InputField AudioLowAmountInput;
+    public InputField AudioMidAmountInput;
+    public InputField AudioHighAmountInput;
 
 //    public void DisableAll()
 //    {

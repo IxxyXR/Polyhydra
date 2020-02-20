@@ -36,6 +36,79 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &507295869468212682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5873867689306186737}
+  - component: {fileID: 276191544891917730}
+  - component: {fileID: 6563824060772921676}
+  m_Layer: 5
+  m_Name: Item Checkmark
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5873867689306186737
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507295869468212682}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3917517492259335637}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 10, y: 0}
+  m_SizeDelta: {x: 20, y: 20}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &276191544891917730
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507295869468212682}
+  m_CullTransparentMesh: 0
+--- !u!114 &6563824060772921676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507295869468212682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &591656223554743168
 GameObject:
   m_ObjectHideFlags: 0
@@ -774,6 +847,92 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &2702707334433185246
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3917517492259335637}
+  - component: {fileID: 1532571636216493011}
+  m_Layer: 5
+  m_Name: Item
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3917517492259335637
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2702707334433185246}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3235224619439924866}
+  - {fileID: 5873867689306186737}
+  - {fileID: 8722346410247103460}
+  m_Father: {fileID: 4627384792258871608}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 40}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1532571636216493011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2702707334433185246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Highlighted
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 8862126722709935143}
+  toggleTransition: 1
+  graphic: {fileID: 6563824060772921676}
+  m_Group: {fileID: 0}
+  onValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_IsOn: 1
 --- !u!1 &3592632172866289491
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,6 +1055,94 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 28}
   m_Pivot: {x: 0.5, y: 1}
+--- !u!1 &3789759837906165642
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2171849557493691546}
+  - component: {fileID: 8029850490793319442}
+  - component: {fileID: 3905872098948884290}
+  - component: {fileID: 4762648229125704905}
+  m_Layer: 5
+  m_Name: Viewport
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2171849557493691546
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3789759837906165642}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4627384792258871608}
+  m_Father: {fileID: 2453933659523958506}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -18, y: 0}
+  m_Pivot: {x: 0, y: 1}
+--- !u!114 &8029850490793319442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3789759837906165642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 0
+--- !u!222 &3905872098948884290
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3789759837906165642}
+  m_CullTransparentMesh: 0
+--- !u!114 &4762648229125704905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3789759837906165642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &3796921642822613407
 GameObject:
   m_ObjectHideFlags: 0
@@ -1104,6 +1351,173 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: Option A
+--- !u!1 &4215443432823696466
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4627384792258871608}
+  m_Layer: 5
+  m_Name: Content
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4627384792258871608
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4215443432823696466}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3917517492259335637}
+  m_Father: {fileID: 2171849557493691546}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 28}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!1 &4369384068900212484
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6037408093243350129}
+  - component: {fileID: 8938812385577737835}
+  - component: {fileID: 2747172744352751272}
+  - component: {fileID: 6884469271380102031}
+  m_Layer: 5
+  m_Name: Other Type Dropdown
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6037408093243350129
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369384068900212484}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 868804081612560072}
+  - {fileID: 2102309046422599299}
+  - {fileID: 2453933659523958506}
+  m_Father: {fileID: 5625648285264853615}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -106.9}
+  m_SizeDelta: {x: 200, y: 40}
+  m_Pivot: {x: 0, y: 0}
+--- !u!222 &8938812385577737835
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369384068900212484}
+  m_CullTransparentMesh: 0
+--- !u!114 &2747172744352751272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369384068900212484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6884469271380102031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369384068900212484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d0b652f32a2cc243917e4028fa0f046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Highlighted
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 2747172744352751272}
+  m_Template: {fileID: 2453933659523958506}
+  m_CaptionText: {fileID: 3990957750511645087}
+  m_CaptionImage: {fileID: 0}
+  m_ItemText: {fileID: 1415963068897997563}
+  m_ItemImage: {fileID: 0}
+  m_Value: 1
+  m_Options:
+    m_Options:
+    - m_Text: 
+      m_Image: {fileID: 0}
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_AlphaFadeSpeed: 0.15
 --- !u!1 &4544072262089157477
 GameObject:
   m_ObjectHideFlags: 0
@@ -1536,6 +1950,83 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &5522239838887424259
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8722346410247103460}
+  - component: {fileID: 407727766066515617}
+  - component: {fileID: 1415963068897997563}
+  m_Layer: 5
+  m_Name: Item Label
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8722346410247103460
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5522239838887424259}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3917517492259335637}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -20, y: -2}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &407727766066515617
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5522239838887424259}
+  m_CullTransparentMesh: 0
+--- !u!114 &1415963068897997563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5522239838887424259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: b15f861ebd459854795082384965e7c9, type: 3}
+    m_FontSize: 12
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 1
+    m_MaxSize: 40
+    m_Alignment: 3
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 1
+    m_LineSpacing: 1
+  m_Text: Option A
 --- !u!1 &5593925875361520361
 GameObject:
   m_ObjectHideFlags: 0
@@ -1738,14 +2229,14 @@ MonoBehaviour:
   Items:
   - Name: A Gift
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 21
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Gray and Colorful
@@ -1753,23 +2244,37 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 6
       Amount: 0.07198691
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 4
       Amount: 0.9681475
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Alien Eggs
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 0
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 0
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: RGB
@@ -1777,33 +2282,61 @@ MonoBehaviour:
     - OpType: 32
       FaceSelections: 0
       Amount: -0.2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: 0.8750002
+      AnimatedAmount: 0
       Randomize: 1
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 27
       FaceSelections: 0
       Amount: 0.25625
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 4
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Altair
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 0
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Flat
@@ -1811,43 +2344,85 @@ MonoBehaviour:
     - OpType: 2
       FaceSelections: 2
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 2
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 2
       FaceSelections: 2
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 4
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 17
       FaceSelections: 0
       Amount: 0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 18
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: An Album Cover
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 11
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Rich
@@ -1855,28 +2430,49 @@ MonoBehaviour:
     - OpType: 15
       FaceSelections: 0
       Amount: 0.4849997
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 15
       Amount: 0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 14
       Amount: -1.5999995
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Artifact
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 12
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 10
     PrismQ: 10
     AppearancePresetName: Posterized
@@ -1884,23 +2480,37 @@ MonoBehaviour:
     - OpType: 19
       FaceSelections: 0
       Amount: 0.6
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 14
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Attack Ship
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 10
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: RGB
@@ -1908,38 +2518,73 @@ MonoBehaviour:
     - OpType: 2
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 15
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 38
       FaceSelections: 0
       Amount: 0.01
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 7
       FaceSelections: 0
       Amount: -0.0224998
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 38
       FaceSelections: 0
       Amount: 0.0001
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Bipod
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 11
     JohnsonPolyType: 3
     OtherPolyType: 0
     GridType: 2
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 2
     AppearancePresetName: Grooves
@@ -1947,33 +2592,61 @@ MonoBehaviour:
     - OpType: 34
       FaceSelections: 8
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 9
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 29
       FaceSelections: 0
       Amount: 1.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 16
       FaceSelections: 0
       Amount: 0.7
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Bismuth
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 19
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Gray and Colorful
@@ -1981,33 +2654,61 @@ MonoBehaviour:
     - OpType: 23
       FaceSelections: 0
       Amount: 0.3333333
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 2
       FaceSelections: 0
       Amount: 0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 38
       FaceSelections: 0
       Amount: 0.06
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 0
       Amount: -0.06
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Blade Star
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 57
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Rich
@@ -2015,23 +2716,37 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 0
       Amount: -4.75
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 1
       Amount: 0.11
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Bracketed
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 1
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 5
     AppearancePresetName: Gray and Colorful
@@ -2039,33 +2754,61 @@ MonoBehaviour:
     - OpType: 28
       FaceSelections: 0
       Amount: 1.125
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 0
       Amount: -0.1875
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 33
       FaceSelections: 0
       Amount: 70.62501
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: 0.375
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Caltrop
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 41
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 3
     AppearancePresetName: Gem
@@ -2073,23 +2816,37 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 0
       Amount: 1.39
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 0
       Amount: -0.47
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Candyhedron
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 28
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Rich
@@ -2097,23 +2854,37 @@ MonoBehaviour:
     - OpType: 27
       FaceSelections: 0
       Amount: 2.25
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 26
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Chocolate Slabs
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 77
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Monolith
@@ -2121,28 +2892,49 @@ MonoBehaviour:
     - OpType: 34
       FaceSelections: 1
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 0
       Amount: -0.68
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: -0.05
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: City Block
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 0
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 0
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Subtle
@@ -2150,28 +2942,49 @@ MonoBehaviour:
     - OpType: 24
       FaceSelections: 0
       Amount: 0.25625
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 0
       Amount: -0.2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 1
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Clam
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 11
     JohnsonPolyType: 3
     OtherPolyType: 0
     GridType: 2
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 2
     AppearancePresetName: Grooves
@@ -2179,38 +2992,73 @@ MonoBehaviour:
     - OpType: 34
       FaceSelections: 8
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 9
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 29
       FaceSelections: 0
       Amount: 1.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 21
       FaceSelections: 0
       Amount: 4
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 39
       FaceSelections: 0
       Amount: 0.65
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Cut and Glue
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 10
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Graph Paper
@@ -2218,23 +3066,37 @@ MonoBehaviour:
     - OpType: 24
       FaceSelections: 0
       Amount: 0.25
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 1
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Daisyhedron
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 29
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Grooves
@@ -2242,33 +3104,61 @@ MonoBehaviour:
     - OpType: 17
       FaceSelections: 0
       Amount: -1.025
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 15
       Amount: 0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 14
       Amount: -1.4125
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 2
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Dark Star
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 21
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: RGB
@@ -2276,23 +3166,37 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 4
       Amount: -2.497768
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 0
       Amount: 0.01
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Delicate
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 11
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Subtle
@@ -2300,28 +3204,49 @@ MonoBehaviour:
     - OpType: 18
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 18
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 31
       FaceSelections: 16
       Amount: 0.01
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Devi
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 49
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Grooves
@@ -2329,38 +3254,73 @@ MonoBehaviour:
     - OpType: 15
       FaceSelections: 0
       Amount: 0.725
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 2
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 0
       Amount: -0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 33
       FaceSelections: 1
       Amount: 20
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: 0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Dice
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 14
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Spectrum
@@ -2368,23 +3328,37 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 0
       Amount: -0.05
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 0
       Amount: 0.01
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Disquette
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 63
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 2
     AppearancePresetName: Gray and Colorful
@@ -2392,38 +3366,73 @@ MonoBehaviour:
     - OpType: 2
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 12
       FaceSelections: 0
       Amount: 0.140625
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 38
       FaceSelections: 0
       Amount: 0.0001
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 15
       FaceSelections: 0
       Amount: 0.34375
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 3
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Dodecapinwheel
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 35
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Spectrum
@@ -2431,28 +3440,49 @@ MonoBehaviour:
     - OpType: 2
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 12
       FaceSelections: 0
       Amount: 0.3333333
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 38
       FaceSelections: 0
       Amount: 0.01
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Dwemer
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 33
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Rich
@@ -2460,38 +3490,73 @@ MonoBehaviour:
     - OpType: 15
       FaceSelections: 0
       Amount: 0.725
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 2
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 2
       Amount: -0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 33
       FaceSelections: 1
       Amount: 20
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: 0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Empire
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 14
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 5
     AppearancePresetName: Gray and Colorful
@@ -2499,23 +3564,37 @@ MonoBehaviour:
     - OpType: 22
       FaceSelections: 0
       Amount: 2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 15
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Fleur
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 0
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Subtle
@@ -2523,33 +3602,61 @@ MonoBehaviour:
     - OpType: 8
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 17
       FaceSelections: 0
       Amount: 0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 18
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Flux
     ShapeType: 1
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 14
     JohnsonPolyType: 4
     OtherPolyType: 0
     GridType: 1
     GridShape: 0
     BypassOps: 0
-    TwoSided: 0
+    SafeLimits: 0
     PrismP: 3
     PrismQ: 2
     AppearancePresetName: Posterized
@@ -2557,38 +3664,73 @@ MonoBehaviour:
     - OpType: 15
       FaceSelections: 0
       Amount: 0.4
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 15
       FaceSelections: 0
       Amount: 0.4
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 15
       FaceSelections: 0
       Amount: 0.4
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 14
       FaceSelections: 0
       Amount: 0.3
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 14
       FaceSelections: 0
       Amount: 0.3
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Force Field
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 0
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 1
     GridShape: 0
     BypassOps: 0
-    TwoSided: 0
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 5
     AppearancePresetName: Hologram
@@ -2596,28 +3738,49 @@ MonoBehaviour:
     - OpType: 15
       FaceSelections: 18
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 1
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: 0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Gee 20
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 27
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 10
     PrismQ: 10
     AppearancePresetName: Grooves
@@ -2625,18 +3788,25 @@ MonoBehaviour:
     - OpType: 17
       FaceSelections: 0
       Amount: 0.33333334
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Geodesic
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 28
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 0
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Gem
@@ -2644,28 +3814,49 @@ MonoBehaviour:
     - OpType: 32
       FaceSelections: 0
       Amount: -0.2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 27
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 4
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Godwin's Pouffe
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 2
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 0
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 5
     AppearancePresetName: Rich
@@ -2673,23 +3864,37 @@ MonoBehaviour:
     - OpType: 24
       FaceSelections: 0
       Amount: 0.3333
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 22
       FaceSelections: 0
       Amount: 2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Goldberg
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 0
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 2
     AppearancePresetName: Gem
@@ -2697,58 +3902,121 @@ MonoBehaviour:
     - OpType: 14
       FaceSelections: 0
       Amount: 0.05
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 2
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 0
       Amount: 0.0001
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 2
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 2
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 4
       Amount: -0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 6
       Amount: -0.05
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 2
       Amount: -0.05
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Goldsugi
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 28
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 0
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Gem
@@ -2756,48 +4024,97 @@ MonoBehaviour:
     - OpType: 14
       FaceSelections: 0
       Amount: 0.05
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 2
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 0
       Amount: 0.0001
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 11
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 4
       Amount: 0.01
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 6
       Amount: -0.05
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 2
       Amount: -0.05
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Hexellite
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 14
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 0
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 5
     AppearancePresetName: Rich
@@ -2805,33 +4122,61 @@ MonoBehaviour:
     - OpType: 15
       FaceSelections: 0
       Amount: 0.2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 30
       FaceSelections: 15
       Amount: -0.3
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 16
       FaceSelections: 0
       Amount: 0.65
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 39
       FaceSelections: 14
       Amount: 0.2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Inlaid
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 16
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Rich
@@ -2839,28 +4184,49 @@ MonoBehaviour:
     - OpType: 18
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 18
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 31
       FaceSelections: 16
       Amount: 0.01
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Inlaid2
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 13
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Grooves
@@ -2868,28 +4234,49 @@ MonoBehaviour:
     - OpType: 18
       FaceSelections: 0
       Amount: 0.33
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 18
       FaceSelections: 0
       Amount: 0.33
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 33
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Inout
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 28
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Subtle
@@ -2897,38 +4284,73 @@ MonoBehaviour:
     - OpType: 4
       FaceSelections: 0
       Amount: 0.33333334
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 15
       FaceSelections: 4
       Amount: 0.33333334
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 4
       Amount: -0.2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 15
       FaceSelections: 3
       Amount: 0.3333333
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 3
       Amount: 0.2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Interlocking
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 17
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Spectrum
@@ -2936,28 +4358,49 @@ MonoBehaviour:
     - OpType: 12
       FaceSelections: 0
       Amount: 0.3333333
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 33
       FaceSelections: 0
       Amount: -39.375
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: 0.1875
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: It might be a bomb
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 18
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: RGB
@@ -2965,28 +4408,49 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 1
       Amount: 3.7818086
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 9
       FaceSelections: 0
       Amount: -3.25
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 6
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Jewel Core
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 21
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Grooves
@@ -2994,33 +4458,61 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 6
       Amount: 0.07198691
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 4
       Amount: 0.9681475
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 0
       Amount: 0.01
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: -0.33203125
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Jewelberries
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 34
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Gem
@@ -3028,33 +4520,61 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 0
       Amount: 1.39
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 0
       Amount: -0.47
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 3
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 9
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Joining
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 27
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 10
     PrismQ: 10
     AppearancePresetName: Rich
@@ -3062,18 +4582,25 @@ MonoBehaviour:
     - OpType: 16
       FaceSelections: 0
       Amount: 0.33333334
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Junctions
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 66
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: RGB
@@ -3081,38 +4608,73 @@ MonoBehaviour:
     - OpType: 2
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 12
       FaceSelections: 0
       Amount: 0.19
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 38
       FaceSelections: 0
       Amount: 0.0001
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 15
       FaceSelections: 0
       Amount: 0.12
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 3
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Katamari
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 65
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Subtle
@@ -3120,23 +4682,37 @@ MonoBehaviour:
     - OpType: 15
       FaceSelections: 0
       Amount: 0.58
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 30
       FaceSelections: 15
       Amount: 0.2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Knotiles
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 0
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 2
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Subtle
@@ -3144,23 +4720,37 @@ MonoBehaviour:
     - OpType: 3
       FaceSelections: 0
       Amount: 0.3
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 13
       FaceSelections: 4
       Amount: 0.125
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Kryptonite
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 22
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 2
     AppearancePresetName: Rich
@@ -3168,43 +4758,85 @@ MonoBehaviour:
     - OpType: 27
       FaceSelections: 0
       Amount: 0.333333
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 5
       FaceSelections: 0
       Amount: -14.308036
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 0
       Amount: 0.39794445
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: -4.112723
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 3
       Amount: 1.6305828
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 4
       Amount: 0.789063
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Lampwork
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 18
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Spectrum
@@ -3212,33 +4844,61 @@ MonoBehaviour:
     - OpType: 12
       FaceSelections: 0
       Amount: 0.3333333
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 15
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 0
       Amount: -0.08
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: -0.03
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Manx
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 22
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: RGB
@@ -3246,38 +4906,73 @@ MonoBehaviour:
     - OpType: 2
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 12
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 38
       FaceSelections: 0
       Amount: 0.0001
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 15
       FaceSelections: 0
       Amount: 0.34375
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 3
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Maroc
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 0
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Flat
@@ -3285,33 +4980,61 @@ MonoBehaviour:
     - OpType: 4
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 17
       FaceSelections: 0
       Amount: 0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 18
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Meccano
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 30
     JohnsonPolyType: 4
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 2
     AppearancePresetName: Monolith
@@ -3319,38 +5042,73 @@ MonoBehaviour:
     - OpType: 15
       FaceSelections: 0
       Amount: 0.2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 14
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 29
       FaceSelections: 0
       Amount: 0.2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 24
       FaceSelections: 0
       Amount: 0.3
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 14
       Amount: 0.3
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Moar Points
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 40
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Subtle
@@ -3358,28 +5116,49 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 3
       Amount: 0.56863904
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 8
       FaceSelections: 0
       Amount: -0.20703137
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 26
       FaceSelections: 0
       Amount: 0.12053609
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Move the Extrude Slider
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 22
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Spectrum
@@ -3387,23 +5166,37 @@ MonoBehaviour:
     - OpType: 32
       FaceSelections: 0
       Amount: -0.03
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: 0.13
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Multistorey
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 35
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Gray and Colorful
@@ -3411,28 +5204,49 @@ MonoBehaviour:
     - OpType: 18
       FaceSelections: 0
       Amount: 2.407813
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 2
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 38
       FaceSelections: 0
       Amount: 0.58
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Nemesis
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 40
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Grooves
@@ -3440,28 +5254,49 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 3
       Amount: -2.9854898
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 4
       FaceSelections: 0
       Amount: -1.6104913
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 26
       FaceSelections: 0
       Amount: 2.4748886
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Op Art
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 28
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Subtle
@@ -3469,38 +5304,73 @@ MonoBehaviour:
     - OpType: 13
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 3
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 3
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 3
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 3
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Peekaboo
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 58
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: RGB
@@ -3508,33 +5378,61 @@ MonoBehaviour:
     - OpType: 17
       FaceSelections: 0
       Amount: 2.225
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 15
       Amount: 0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 14
       Amount: 0.4625001
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 2
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Pentacrossed
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 3
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 2
     AppearancePresetName: Rich
@@ -3542,38 +5440,73 @@ MonoBehaviour:
     - OpType: 2
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 12
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 38
       FaceSelections: 0
       Amount: 0.0001
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 15
       FaceSelections: 0
       Amount: 0.28125
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 3
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Pentagrams
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 41
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Spectrum
@@ -3581,23 +5514,37 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 0
       Amount: -0.05
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 0
       Amount: 0.01
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Pentalattice
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 39
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: RGB
@@ -3605,38 +5552,73 @@ MonoBehaviour:
     - OpType: 2
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 12
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 38
       FaceSelections: 0
       Amount: 0.0001
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 15
       FaceSelections: 0
       Amount: 0.34375
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 3
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Posy
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 53
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Spectrum
@@ -3644,28 +5626,49 @@ MonoBehaviour:
     - OpType: 2
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 15
       FaceSelections: 0
       Amount: 0.4427083
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 38
       FaceSelections: 0
       Amount: 0.01
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Quirky Bathroom
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 0
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Flat
@@ -3673,23 +5676,37 @@ MonoBehaviour:
     - OpType: 12
       FaceSelections: 0
       Amount: 0.33333334
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 18
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Radiation Warning
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 11
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: RGB
@@ -3697,33 +5714,61 @@ MonoBehaviour:
     - OpType: 15
       FaceSelections: 0
       Amount: -1.0999999
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 15
       Amount: -2.900001
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 14
       Amount: -0.28749955
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 2
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Rotors
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 40
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Gem
@@ -3731,28 +5776,49 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 3
       Amount: 0.56863904
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 4
       FaceSelections: 0
       Amount: -1.6104913
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 26
       FaceSelections: 0
       Amount: 0.12053609
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Sarlacc
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 11
     JohnsonPolyType: 3
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 2
     AppearancePresetName: Subtle
@@ -3760,33 +5826,61 @@ MonoBehaviour:
     - OpType: 34
       FaceSelections: 8
       Amount: 0.26
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 29
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 22
       FaceSelections: 0
       Amount: 4
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 38
       FaceSelections: 0
       Amount: 0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Shards
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 0
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 2
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Subtle
@@ -3794,23 +5888,37 @@ MonoBehaviour:
     - OpType: 3
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 13
       FaceSelections: 4
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Shri
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 0
     JohnsonPolyType: 3
     OtherPolyType: 0
     GridType: 2
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 2
     AppearancePresetName: Grooves
@@ -3818,38 +5926,73 @@ MonoBehaviour:
     - OpType: 34
       FaceSelections: 8
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 9
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 29
       FaceSelections: 0
       Amount: 1.6
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 21
       FaceSelections: 0
       Amount: 4
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 39
       FaceSelections: 0
       Amount: 0.83
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Slabs
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 11
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 5
     AppearancePresetName: Rich
@@ -3857,33 +6000,61 @@ MonoBehaviour:
     - OpType: 20
       FaceSelections: 0
       Amount: 0.99
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 14
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 36
       FaceSelections: 0
       Amount: 45
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: 0.2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Smooth
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 17
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Subtle
@@ -3891,28 +6062,49 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 1
       Amount: -0.21
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 9
       FaceSelections: 0
       Amount: -3.25
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 6
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Snowball
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 35
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Gray and Colorful
@@ -3920,28 +6112,49 @@ MonoBehaviour:
     - OpType: 18
       FaceSelections: 0
       Amount: 0.0078125
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 2
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 38
       FaceSelections: 0
       Amount: 0.58
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Solar Panels
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 30
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 2
     AppearancePresetName: RGB
@@ -3949,33 +6162,61 @@ MonoBehaviour:
     - OpType: 15
       FaceSelections: 0
       Amount: 0.58
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 30
       FaceSelections: 15
       Amount: 0.2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 15
       FaceSelections: 3
       Amount: 1.25
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 30
       FaceSelections: 1
       Amount: -0.1875
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Some Assembly Required
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 13
     JohnsonPolyType: 4
     OtherPolyType: 0
     GridType: 2
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 3
     PrismQ: 2
     AppearancePresetName: Rich
@@ -3983,33 +6224,61 @@ MonoBehaviour:
     - OpType: 28
       FaceSelections: 0
       Amount: 0.46
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 32
       FaceSelections: 0
       Amount: -0.68
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: 0.12
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 2
       FaceSelections: 0
       Amount: 0.12
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Sphube
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 11
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 0
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 5
     AppearancePresetName: Subtle
@@ -4017,28 +6286,49 @@ MonoBehaviour:
     - OpType: 26
       FaceSelections: 0
       Amount: 0.33333
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 22
       FaceSelections: 0
       Amount: 2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 39
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Spikey
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 11
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Rich
@@ -4046,28 +6336,49 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 0
       Amount: -1.01
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 4
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 0
       Amount: 0.81
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Starfish
     ShapeType: 2
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 11
     JohnsonPolyType: 3
     OtherPolyType: 0
     GridType: 2
     GridShape: 0
     BypassOps: 0
-    TwoSided: 0
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 2
     AppearancePresetName: Rich
@@ -4075,38 +6386,73 @@ MonoBehaviour:
     - OpType: 11
       FaceSelections: 2
       Amount: 0.25
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 15
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 17
       Amount: 0.25
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 17
       FaceSelections: 0
       Amount: 0.25
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 25
       FaceSelections: 0
       Amount: 0.6
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Stargate
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 11
     JohnsonPolyType: 3
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 2
     AppearancePresetName: Gem
@@ -4114,33 +6460,61 @@ MonoBehaviour:
     - OpType: 34
       FaceSelections: 8
       Amount: 0.26
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 29
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 23
       FaceSelections: 0
       Amount: 4
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 39
       FaceSelections: 0
       Amount: -0.31
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Taught Us
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 0
     JohnsonPolyType: 3
     OtherPolyType: 0
     GridType: 2
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 5
     PrismQ: 2
     AppearancePresetName: Vectrex
@@ -4148,38 +6522,73 @@ MonoBehaviour:
     - OpType: 34
       FaceSelections: 8
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 34
       FaceSelections: 9
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 29
       FaceSelections: 0
       Amount: 1.6
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 21
       FaceSelections: 0
       Amount: 4
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 39
       FaceSelections: 0
       Amount: 0.83
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Tetrapod
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 6
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 0
+    SafeLimits: 0
     PrismP: 10
     PrismQ: 10
     AppearancePresetName: Grooves
@@ -4187,28 +6596,49 @@ MonoBehaviour:
     - OpType: 14
       FaceSelections: 0
       Amount: 0.5
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 39
       FaceSelections: 0
       Amount: 0.2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 5
       FaceSelections: 0
       Amount: 0.77
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Tiles
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 11
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Rich
@@ -4216,28 +6646,49 @@ MonoBehaviour:
     - OpType: 20
       FaceSelections: 0
       Amount: 0.33
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 18
       FaceSelections: 0
       Amount: 0.33
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 33
       FaceSelections: 0
       Amount: 1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 1
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Tings
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 40
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Rich
@@ -4245,23 +6696,37 @@ MonoBehaviour:
     - OpType: 17
       FaceSelections: 0
       Amount: 0.333333
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 38
       FaceSelections: 0
       Amount: 0.0001
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Trypophobia
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 17
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Posterized
@@ -4269,28 +6734,49 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 1
       Amount: -0.2
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 9
       FaceSelections: 0
       Amount: 0
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 6
       FaceSelections: 0
       Amount: 0.1
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Why
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 0
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 2
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Subtle
@@ -4298,23 +6784,37 @@ MonoBehaviour:
     - OpType: 3
       FaceSelections: 0
       Amount: 0.3
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 20
       FaceSelections: 0
       Amount: 0.75
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Wigwam
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 10
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: Subtle
@@ -4322,33 +6822,61 @@ MonoBehaviour:
     - OpType: 15
       FaceSelections: 0
       Amount: -2.045
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 31
       FaceSelections: 14
       Amount: 0.2874999
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 31
       FaceSelections: 15
       Amount: -0.08750045
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 28
       FaceSelections: 0
       Amount: 0.15
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
   - Name: Xmas Star
     ShapeType: 0
-    UniformPolyTypeCategory: 0
+    PolyTypeCategory: 0
     PolyType: 46
     JohnsonPolyType: 0
     OtherPolyType: 0
     GridType: 0
     GridShape: 0
     BypassOps: 0
-    TwoSided: 1
+    SafeLimits: 0
     PrismP: 0
     PrismQ: 0
     AppearancePresetName: RGB
@@ -4356,13 +6884,27 @@ MonoBehaviour:
     - OpType: 1
       FaceSelections: 0
       Amount: -0.05
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
     - OpType: 1
       FaceSelections: 0
       Amount: 0.01
+      AnimatedAmount: 0
       Randomize: 0
       Disabled: 0
+      Animate: 0
+      AnimationRate: 0
+      AnimationAmount: 0
+      AudioLowAmount: 0
+      AudioMidAmount: 0
+      AudioHighAmount: 0
 --- !u!114 &5625648284318572265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4377,242 +6919,261 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _poly: {fileID: 0}
   CurrentCamera: {fileID: 0}
-  LightsParent: {fileID: 0}
   PropsParent: {fileID: 0}
-  Volume: {fileID: 0}
+  ActiveVolume: {fileID: 0}
+  LightingPrefab: {fileID: 0}
   Items:
   - Name: Spectrum
-    PolyhedronMaterial: {fileID: 2100000, guid: 33312f87b96d9994a8ff504d24ab19f2,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 33312f87b96d9994a8ff504d24ab19f2,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 0
     ActiveProps: []
-    ActiveLights: []
-    ActiveVolumeProfile: {fileID: 11400000, guid: 9ec87e738b0ac4a7f931575536ebc3ee,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Flat
-    PolyhedronMaterial: {fileID: 2100000, guid: a5bdc2c19f0e79f40a716a029473c671,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: a5bdc2c19f0e79f40a716a029473c671,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps: []
-    ActiveLights: []
-    ActiveVolumeProfile: {fileID: 11400000, guid: c625964941f7f4dde9dd87b7daebd7aa,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Subtle
-    PolyhedronMaterial: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps: []
-    ActiveLights:
-    - {fileID: 0}
-    ActiveVolumeProfile: {fileID: 11400000, guid: c625964941f7f4dde9dd87b7daebd7aa,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Gem
-    PolyhedronMaterial: {fileID: 2100000, guid: d8a4a6ef844931f45870fbcc07d957d1,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: d8a4a6ef844931f45870fbcc07d957d1,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps: []
-    ActiveLights:
-    - {fileID: 0}
-    ActiveVolumeProfile: {fileID: 11400000, guid: 2b5451699aaa22b4f87bdd15ca624562,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: RGB
-    PolyhedronMaterial: {fileID: 2100000, guid: 5c6e4256d39ccfe40ae83393b8d89c5c,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 5c6e4256d39ccfe40ae83393b8d89c5c,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps: []
-    ActiveLights:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    ActiveVolumeProfile: {fileID: 11400000, guid: ed93b40c5e1c74df48f635d54aa61476,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Vectrex
-    PolyhedronMaterial: {fileID: 2100000, guid: 55d7709d316e3e44c9b026a68ceaf744,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 55d7709d316e3e44c9b026a68ceaf744,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps: []
-    ActiveLights: []
-    ActiveVolumeProfile: {fileID: 11400000, guid: ed93b40c5e1c74df48f635d54aa61476,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Hologram
-    PolyhedronMaterial: {fileID: 2100000, guid: a9d8565cd2f99b04c94288f457b17456,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: a9d8565cd2f99b04c94288f457b17456,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps: []
-    ActiveLights: []
-    ActiveVolumeProfile: {fileID: 11400000, guid: ed93b40c5e1c74df48f635d54aa61476,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Posterized
-    PolyhedronMaterial: {fileID: 2100000, guid: 2751a1d4180942544ada7c4123b0971c,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 2751a1d4180942544ada7c4123b0971c,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps: []
-    ActiveLights: []
-    ActiveVolumeProfile: {fileID: 11400000, guid: ed93b40c5e1c74df48f635d54aa61476,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Grooves
-    PolyhedronMaterial: {fileID: 2100000, guid: ff47891f2ea45fc459041f7ff80c576e,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: ff47891f2ea45fc459041f7ff80c576e,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps: []
-    ActiveLights:
-    - {fileID: 0}
-    ActiveVolumeProfile: {fileID: 11400000, guid: ab31740888bf2f74ca589b2864cf3895,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Gray and Colorful
-    PolyhedronMaterial: {fileID: 2100000, guid: 5c6e4256d39ccfe40ae83393b8d89c5c,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 5c6e4256d39ccfe40ae83393b8d89c5c,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps: []
-    ActiveLights:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    ActiveVolumeProfile: {fileID: 11400000, guid: c625964941f7f4dde9dd87b7daebd7aa,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Rich
-    PolyhedronMaterial: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps: []
-    ActiveLights:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    ActiveVolumeProfile: {fileID: 11400000, guid: ab31740888bf2f74ca589b2864cf3895,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Monolith
-    PolyhedronMaterial: {fileID: 2100000, guid: babd5a74636dd0f4c9442aeb11a88248,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: babd5a74636dd0f4c9442aeb11a88248,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps: []
-    ActiveLights:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    ActiveVolumeProfile: {fileID: 11400000, guid: ab31740888bf2f74ca589b2864cf3895,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Graph Paper
-    PolyhedronMaterial: {fileID: 2100000, guid: 040eaef198cabe643b89fb9a2b5f3341,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 040eaef198cabe643b89fb9a2b5f3341,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps: []
-    ActiveLights:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    ActiveVolumeProfile: {fileID: 11400000, guid: ab31740888bf2f74ca589b2864cf3895,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Spiral Blush
-    PolyhedronMaterial: {fileID: 2100000, guid: 2aeb841239f0b1945ba03f1608b7d319,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 2aeb841239f0b1945ba03f1608b7d319,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps: []
-    ActiveLights:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    ActiveVolumeProfile: {fileID: 11400000, guid: fd024336bc3d4124483efd708b82db30,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: 'Colorful Dark Edges '
-    PolyhedronMaterial: {fileID: 2100000, guid: bf262dce8b4c5804eb4925cf9b111941,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: bf262dce8b4c5804eb4925cf9b111941,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps: []
-    ActiveLights:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    ActiveVolumeProfile: {fileID: 11400000, guid: ed93b40c5e1c74df48f635d54aa61476,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Black Mirror
-    PolyhedronMaterial: {fileID: 2100000, guid: c61dc1129ee6d094a848576246ada2b7,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: c61dc1129ee6d094a848576246ada2b7,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps:
     - {fileID: 0}
-    ActiveLights:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    ActiveVolumeProfile: {fileID: 11400000, guid: 68c5df209f4180544a698b9d6f2f0333,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Dirty Metal
-    PolyhedronMaterial: {fileID: 2100000, guid: f446fe272d555444f9e3d8d9a6de3e14,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: f446fe272d555444f9e3d8d9a6de3e14,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps:
     - {fileID: 0}
-    ActiveLights:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    ActiveVolumeProfile: {fileID: 11400000, guid: 68c5df209f4180544a698b9d6f2f0333,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Tinted Glass
-    PolyhedronMaterial: {fileID: 2100000, guid: 7d966c49445a5cb469bd0d46d8d6c8dd,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 7d966c49445a5cb469bd0d46d8d6c8dd,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps:
     - {fileID: 0}
-    ActiveLights:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    ActiveVolumeProfile: {fileID: 11400000, guid: 68c5df209f4180544a698b9d6f2f0333,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   - Name: Showroom
-    PolyhedronMaterial: {fileID: 2100000, guid: 4e47b9e41487ec54b8403c767d058840,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 4e47b9e41487ec54b8403c767d058840,
       type: 2}
+    PolyhedronMaterialURP: {fileID: 0}
     PolyhedronColorMethod: 1
     ActiveProps:
     - {fileID: 0}
-    ActiveLights:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    ActiveVolumeProfile: {fileID: 11400000, guid: 68c5df209f4180544a698b9d6f2f0333,
-      type: 2}
+    LightingPrefabHDRP: {fileID: 0}
+    LightingPrefabURP: {fileID: 0}
+    ActiveVolumeProfileHDRP: {fileID: 0}
+    ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 0}
   editorPresetIndex: 5
 --- !u!1 &5625648284324689255
 GameObject:
@@ -5994,7 +8555,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5625648285264853615}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6150,7 +8711,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5625648285264853615}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -7074,7 +9635,7 @@ RectTransform:
   m_Children:
   - {fileID: 5625648285905394120}
   m_Father: {fileID: 5625648285264853615}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8902,7 +11463,7 @@ RectTransform:
   - {fileID: 5625648286309106155}
   - {fileID: 5625648286274363291}
   m_Father: {fileID: 5625648285264853615}
-  m_RootOrder: 18
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -10089,7 +12650,7 @@ RectTransform:
   m_Children:
   - {fileID: 5625648284813058232}
   m_Father: {fileID: 5625648285264853615}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -10826,7 +13387,7 @@ RectTransform:
   - {fileID: 5625648285591186819}
   - {fileID: 5625648285693736812}
   m_Father: {fileID: 5625648285264853615}
-  m_RootOrder: 19
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -10932,7 +13493,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5625648285264853615}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -11215,6 +13776,7 @@ RectTransform:
   - {fileID: 5625648284471914834}
   - {fileID: 5125536747562717894}
   - {fileID: 5625648284864761944}
+  - {fileID: 6037408093243350129}
   - {fileID: 5625648286381703804}
   - {fileID: 5625648284669280680}
   - {fileID: 5625648285751475293}
@@ -12502,7 +15064,7 @@ RectTransform:
   - {fileID: 5625648284525695220}
   - {fileID: 5625648284794147724}
   m_Father: {fileID: 5625648285264853615}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -14302,7 +16864,7 @@ RectTransform:
   m_Children:
   - {fileID: 5625648285015633252}
   m_Father: {fileID: 5625648285264853615}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -15581,7 +18143,7 @@ RectTransform:
   - {fileID: 5625648285180748170}
   - {fileID: 5625648284315792104}
   m_Father: {fileID: 5625648285264853615}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -16683,7 +19245,7 @@ MonoBehaviour:
   XRotateSlider: {fileID: 5625648285952972111}
   YRotateSlider: {fileID: 5625648284703082135}
   ZRotateSlider: {fileID: 5625648285650398942}
-  TwoSidedToggle: {fileID: 5625648286381703805}
+  SafeLimitsToggle: {fileID: 5625648286381703805}
   PrevPolyButton: {fileID: 5625648284669280681}
   NextPolyButton: {fileID: 5625648285751475294}
   InfoText: {fileID: 5625648285890317621}
@@ -16703,7 +19265,7 @@ MonoBehaviour:
   GridTypeDropdown: {fileID: 5625648284471914835}
   GridShapeDropdown: {fileID: 4780850857435399300}
   JohnsonTypeDropdown: {fileID: 5625648284864761945}
-  OtherTypeDropdown: {fileID: 0}
+  OtherTypeDropdown: {fileID: 6884469271380102031}
   PrismPInput: {fileID: 5625648285567847697}
   PrismQInput: {fileID: 5625648285946684241}
   LoadMatchingAppearanceToggle: {fileID: 5625648284822127211}
@@ -17939,7 +20501,7 @@ GameObject:
   - component: {fileID: 5625648286381703804}
   - component: {fileID: 5625648286381703805}
   m_Layer: 5
-  m_Name: Two Sided Toggle
+  m_Name: Safe Limits Toggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17960,7 +20522,7 @@ RectTransform:
   - {fileID: 5625648284512676544}
   - {fileID: 5625648284608914694}
   m_Father: {fileID: 5625648285264853615}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -18047,7 +20609,7 @@ RectTransform:
   m_Children:
   - {fileID: 5625648284548759331}
   m_Father: {fileID: 5625648285264853615}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -18291,6 +20853,185 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Base Shape:'
+--- !u!1 &5923518701101809046
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7477557232258948767}
+  - component: {fileID: 3365964798322337195}
+  - component: {fileID: 5261088015723911796}
+  m_Layer: 5
+  m_Name: Handle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7477557232258948767
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5923518701101809046}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5795310025491276876}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0.2}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 20, y: 20}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &3365964798322337195
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5923518701101809046}
+  m_CullTransparentMesh: 0
+--- !u!114 &5261088015723911796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5923518701101809046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!1 &6001399651841597816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2453933659523958506}
+  - component: {fileID: 8616989404544216478}
+  - component: {fileID: 4109539082474618456}
+  - component: {fileID: 7720847997458117631}
+  m_Layer: 5
+  m_Name: Template
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &2453933659523958506
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6001399651841597816}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2171849557493691546}
+  - {fileID: 4687403431885490470}
+  m_Father: {fileID: 6037408093243350129}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 0, y: 2}
+  m_SizeDelta: {x: 0, y: 400}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!222 &8616989404544216478
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6001399651841597816}
+  m_CullTransparentMesh: 0
+--- !u!114 &4109539082474618456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6001399651841597816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7720847997458117631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6001399651841597816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Content: {fileID: 4627384792258871608}
+  m_Horizontal: 0
+  m_Vertical: 1
+  m_MovementType: 2
+  m_Elasticity: 0.1
+  m_Inertia: 1
+  m_DecelerationRate: 0.135
+  m_ScrollSensitivity: 12
+  m_Viewport: {fileID: 2171849557493691546}
+  m_HorizontalScrollbar: {fileID: 0}
+  m_VerticalScrollbar: {fileID: 4807270796440310288}
+  m_HorizontalScrollbarVisibility: 0
+  m_VerticalScrollbarVisibility: 2
+  m_HorizontalScrollbarSpacing: 0
+  m_VerticalScrollbarSpacing: -3
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6319316044252981712
 GameObject:
   m_ObjectHideFlags: 0
@@ -18414,6 +21155,79 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &6416464455363482396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3235224619439924866}
+  - component: {fileID: 378278256627293465}
+  - component: {fileID: 8862126722709935143}
+  m_Layer: 5
+  m_Name: Item Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3235224619439924866
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6416464455363482396}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3917517492259335637}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &378278256627293465
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6416464455363482396}
+  m_CullTransparentMesh: 0
+--- !u!114 &8862126722709935143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6416464455363482396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &7236532620589980092
 GameObject:
   m_ObjectHideFlags: 0
@@ -18527,6 +21341,119 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: Option A
+--- !u!1 &7929297272342657103
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5795310025491276876}
+  m_Layer: 5
+  m_Name: Sliding Area
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5795310025491276876
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7929297272342657103}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7477557232258948767}
+  m_Father: {fileID: 4687403431885490470}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -20, y: -20}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &8262630237757337615
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 868804081612560072}
+  - component: {fileID: 2589602753092353154}
+  - component: {fileID: 3990957750511645087}
+  m_Layer: 5
+  m_Name: Label
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &868804081612560072
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8262630237757337615}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6037408093243350129}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -7.5, y: -0.5}
+  m_SizeDelta: {x: -35, y: -13}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2589602753092353154
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8262630237757337615}
+  m_CullTransparentMesh: 0
+--- !u!114 &3990957750511645087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8262630237757337615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: b15f861ebd459854795082384965e7c9, type: 3}
+    m_FontSize: 12
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 1
+    m_MaxSize: 40
+    m_Alignment: 3
+    m_AlignByGeometry: 0
+    m_RichText: 0
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 1
+    m_LineSpacing: 1
+  m_Text: 
 --- !u!1 &8401716334314522368
 GameObject:
   m_ObjectHideFlags: 0
@@ -18600,6 +21527,129 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &8720137283213950831
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4687403431885490470}
+  - component: {fileID: 4941044071432938141}
+  - component: {fileID: 5796084971506210240}
+  - component: {fileID: 4807270796440310288}
+  m_Layer: 5
+  m_Name: Scrollbar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &4687403431885490470
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8720137283213950831}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5795310025491276876}
+  m_Father: {fileID: 2453933659523958506}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 20, y: 0}
+  m_Pivot: {x: 1, y: 1}
+--- !u!222 &4941044071432938141
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8720137283213950831}
+  m_CullTransparentMesh: 0
+--- !u!114 &5796084971506210240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8720137283213950831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4807270796440310288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8720137283213950831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a4db7a114972834c8e4117be1d82ba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Highlighted
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 5261088015723911796}
+  m_HandleRect: {fileID: 7477557232258948767}
+  m_Direction: 2
+  m_Value: 0
+  m_Size: 0.2
+  m_NumberOfSteps: 0
+  m_OnValueChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8746879371657439573
 GameObject:
   m_ObjectHideFlags: 0
@@ -18677,6 +21727,79 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 
+--- !u!1 &8893044363726915128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2102309046422599299}
+  - component: {fileID: 6403203411444332790}
+  - component: {fileID: 4743436195085962049}
+  m_Layer: 5
+  m_Name: Arrow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2102309046422599299
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8893044363726915128}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6037408093243350129}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -15, y: 0}
+  m_SizeDelta: {x: 20, y: 20}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6403203411444332790
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8893044363726915128}
+  m_CullTransparentMesh: 0
+--- !u!114 &4743436195085962049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8893044363726915128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &9113933369084472301
 GameObject:
   m_ObjectHideFlags: 0

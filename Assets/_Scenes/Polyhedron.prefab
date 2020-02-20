@@ -13,9 +13,8 @@ GameObject:
   - component: {fileID: 71153249122865250}
   - component: {fileID: 71153249122865254}
   - component: {fileID: 71153249122865277}
-  - component: {fileID: 71153249122865276}
+  - component: {fileID: 2200039816364941521}
   - component: {fileID: 71153248184264848}
-  - component: {fileID: 71153248184264847}
   - component: {fileID: 117492468}
   m_Layer: 0
   m_Name: Polyhedron
@@ -33,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 71153249122865252}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.99991107, y: 0.99991107, z: 0.99991107}
+  m_LocalScale: {x: 0.9999049, y: 0.9999049, z: 0.9999049}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -166,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18eb2a1eb9faac4449991efd86087914, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &71153249122865276
+--- !u!114 &2200039816364941521
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,10 +174,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 71153249122865252}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab8922f8f5274114381b0dc864f5a07f, type: 3}
+  m_Script: {fileID: 11500000, guid: b9a5de9e180311c4fa535c37adbecde2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   updateFrequency: 0.05
+  AudioReactive: 1
 --- !u!114 &71153248184264848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,14 +191,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9daa88fb3879e4accac09e69dab2578c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OpIndex: 0
-  Scale: 0.5
-  Offset: 0.01
-  DecayTime: 0.5
-  TriggerTheshold: 1
   Sample: 0
-  Filter: 1
-  Curve:
+  RenderEvery: 2
+  CurveLow:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -222,27 +217,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  RenderEvery: 2
---- !u!114 &71153248184264847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 71153249122865252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9daa88fb3879e4accac09e69dab2578c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OpIndex: 1
-  Scale: 0.5
-  Offset: 0.01
-  DecayTime: 0.75
-  TriggerTheshold: 1
-  Sample: 0
-  Filter: 1
-  Curve:
+  ScaleLow: 0.5
+  OffsetLow: 0.01
+  DecayTimeLow: 0.75
+  TriggerThesholdLow: 1
+  CurveMid:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -266,7 +245,38 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  RenderEvery: 2
+  ScaleMid: 0.5
+  OffsetMid: 0.01
+  DecayTimeMid: 0.5
+  TriggerThesholdMid: 1
+  CurveHigh:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ScaleHigh: 0.5
+  OffsetHigh: 0.01
+  DecayTimeHigh: 0.25
+  TriggerThesholdHigh: 1
 --- !u!114 &117492468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,7 +292,7 @@ MonoBehaviour:
   _vfx: {fileID: 0}
   ContinuousUpdate: 1
   RenderEvery: 2
-  MatchScale: 0
+  MatchScale: 1
   ScaleOffset: 0
   Randomize: 0
   RandomChangeFrequency: 10

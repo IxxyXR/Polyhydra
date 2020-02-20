@@ -22,7 +22,10 @@
       "Disabled": false,
       "Animate": true,
       "AnimationRate": 2.0,
-      "AnimationAmount": 0.49
+      "AnimationAmount": 0.49,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     }
   ]
 }

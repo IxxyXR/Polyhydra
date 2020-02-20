@@ -22,7 +22,10 @@
       "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "EdgeMedial",
@@ -33,7 +36,10 @@
       "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     }
   ]
 }

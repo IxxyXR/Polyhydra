@@ -22,7 +22,10 @@
       "Disabled": true,
       "Animate": true,
       "AnimationRate": 1.0,
-      "AnimationAmount": 0.4
+      "AnimationAmount": 0.4,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "Layer",
@@ -33,7 +36,10 @@
       "Disabled": false,
       "Animate": true,
       "AnimationRate": 1.0,
-      "AnimationAmount": 0.1
+      "AnimationAmount": 0.1,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "Kis",
@@ -44,7 +50,10 @@
       "Disabled": false,
       "Animate": true,
       "AnimationRate": 0.5,
-      "AnimationAmount": 0.82
+      "AnimationAmount": 0.82,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     }
   ]
 }

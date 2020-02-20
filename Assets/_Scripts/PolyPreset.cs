@@ -38,6 +38,9 @@ public class PolyPreset {
 		public bool Animate;
 		public float AnimationRate;
 		public float AnimationAmount;
+		public float AudioLowAmount;
+		public float AudioMidAmount;
+		public float AudioHighAmount;
 	}
 	
 	public Op[] Ops;
@@ -73,6 +76,9 @@ public class PolyPreset {
 				Animate = polyOp.animate,
 				AnimationRate = polyOp.animationRate,
 				AnimationAmount = polyOp.animationAmount,
+				AudioLowAmount = polyOp.audioLowAmount,
+				AudioMidAmount = polyOp.audioMidAmount,
+				AudioHighAmount = polyOp.audioHighAmount,
 			};
 			Ops[index] = op;
 		}
@@ -108,6 +114,9 @@ public class PolyPreset {
 				animate = presetOp.Animate,
 				animationRate = presetOp.AnimationRate,
 				animationAmount = presetOp.AnimationAmount,
+				audioLowAmount = presetOp.AudioLowAmount,
+				audioMidAmount = presetOp.AudioMidAmount,
+				audioHighAmount = presetOp.AudioHighAmount,
 			};
 			poly.ConwayOperators.Add(op);
 		}

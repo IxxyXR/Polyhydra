@@ -403,6 +403,9 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.ToggleAnimate.isOn = op.animate;
         opPrefabManager.AnimRateInput.text = op.animationRate.ToString();
         opPrefabManager.AnimAmountInput.text = op.animationAmount.ToString();
+        opPrefabManager.AudioLowAmountInput.text = op.audioLowAmount.ToString();
+        opPrefabManager.AudioMidAmountInput.text = op.audioMidAmount.ToString();
+        opPrefabManager.AudioHighAmountInput.text = op.audioHighAmount.ToString();
         AnimateToggleChanged(op.animate);
 
         opPrefabManager.OpTypeDropdown.onValueChanged.AddListener(delegate{OpTypeChanged();});
@@ -419,7 +422,10 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.ToggleAnimate.onValueChanged.AddListener(AnimateToggleChanged);
         opPrefabManager.AnimRateInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
         opPrefabManager.AnimAmountInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
-        
+        opPrefabManager.AudioLowAmountInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opPrefabManager.AudioMidAmountInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opPrefabManager.AudioHighAmountInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+
         opPrefabManager.Index = opPrefabs.Count;
         
         void AnimateToggleChanged(bool value)
@@ -494,6 +500,9 @@ public class PolyUI : MonoBehaviour {
             float tempVal;
             if (float.TryParse(opPrefabManager.AnimRateInput.text, out tempVal)) op.animationRate = tempVal;
             if (float.TryParse(opPrefabManager.AnimAmountInput.text, out tempVal)) op.animationAmount = tempVal;
+            if (float.TryParse(opPrefabManager.AudioLowAmountInput.text, out tempVal)) op.audioLowAmount = tempVal;
+            if (float.TryParse(opPrefabManager.AudioMidAmountInput.text, out tempVal)) op.audioMidAmount = tempVal;
+            if (float.TryParse(opPrefabManager.AudioHighAmountInput.text, out tempVal)) op.audioHighAmount = tempVal;
             poly.ConwayOperators[index] = op;
 
         }

@@ -317,6 +317,9 @@ public class PolyHydra : MonoBehaviour
 		public bool animate;
 		public float animationRate;
 		public float animationAmount;
+		public float audioLowAmount;
+		public float audioMidAmount;
+		public float audioHighAmount;
 	}
 	public List<ConwayOperator> ConwayOperators;
 	

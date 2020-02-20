@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-
+﻿using System;
+using Lasp;
+using UnityEngine;
 
 public class PolyAudio : MonoBehaviour
 {
@@ -12,70 +13,87 @@ public class PolyAudio : MonoBehaviour
         RMSDb,
     }
 
-    public int OpIndex;
-    public float Scale = -0.05f;
-    public float Offset = 0.5f;
-    public float DecayTime = 1f;
-    public float TriggerTheshold = 0.5f;
     public SampleType Sample;
-    public Lasp.FilterType Filter = Lasp.FilterType.LowPass;
-    public AnimationCurve Curve;
+
     public int RenderEvery = 3;
 
-    private float _lastTriggerTime = 99999f;
-    private float _maxLevel = 0.1f;
-    private PolyHydra _poly;
-    private float _amount;
-    
-    
-    void Start()
-    {
-        _poly = GetComponent<PolyHydra>();
-    }
+    [Header("Low Pass")]
+    public AnimationCurve CurveLow;
+    public float ScaleLow = -0.05f;
+    public float OffsetLow = 0.5f;
+    public float DecayTimeLow = 1f;
+    public float TriggerThesholdLow = 0.5f;
+
+    private float _lastTriggerTimeLow = 99999f;
+    private float _maxLevelLow = 0.1f;
+    [NonSerialized] public float AmountLow;
+
+    [Header("Band Pass")]
+    public AnimationCurve CurveMid;
+    public float ScaleMid = -0.05f;
+    public float OffsetMid = 0.5f;
+    public float DecayTimeMid = 1f;
+    public float TriggerThesholdMid = 0.5f;
+
+    private float _lastTriggerTimeMid = 99999f;
+    private float _maxLevelMid = 0.1f;
+    [NonSerialized] public float AmountMid;
+
+    [Header("High Pass")]
+    public AnimationCurve CurveHigh;
+    public float ScaleHigh = -0.05f;
+    public float OffsetHigh = 0.5f;
+    public float DecayTimeHigh = 1f;
+    public float TriggerThesholdHigh = 0.5f;
+
+    private float _lastTriggerTimeHigh = 99999f;
+    private float _maxLevelHigh = 0.1f;
+    [NonSerialized] public float AmountHigh;
 
     void Update()
     {
         if (Time.frameCount % RenderEvery != 0) return;
-        if (OpIndex >= _poly.ConwayOperators.Count) return;
-        var op = _poly.ConwayOperators[OpIndex];
-        if (op.disabled) return;
-        if (!_poly.opconfigs[op.opType].usesAmount) return;
+        AmountLow = Calc(FilterType.LowPass, ref _maxLevelLow, ref _lastTriggerTimeLow, TriggerThesholdLow, DecayTimeLow, CurveLow, ScaleLow, OffsetLow);
+        AmountMid = Calc(FilterType.BandPass, ref _maxLevelMid, ref _lastTriggerTimeMid, TriggerThesholdMid, DecayTimeMid, CurveMid, ScaleMid, OffsetMid);
+        AmountHigh = Calc(FilterType.HighPass, ref _maxLevelHigh, ref _lastTriggerTimeHigh, TriggerThesholdHigh, DecayTimeHigh, CurveHigh, ScaleHigh, OffsetHigh);
+    }
+
+    public float Calc(FilterType filter, ref float maxLevel, ref float lastTriggerTime, float triggerTheshold,
+        float decayTime, AnimationCurve curve, float scale, float offset)
+    {
         float rawValue = 0;
         switch (Sample)
         {
             case SampleType.Peak:
-                rawValue = Lasp.MasterInput.GetPeakLevel(Filter);
+                rawValue = MasterInput.GetPeakLevel(filter);
                 break;
             case SampleType.PeakDb:
-                rawValue = Lasp.MasterInput.GetPeakLevelDecibel(Filter);
+                rawValue = MasterInput.GetPeakLevelDecibel(filter);
                 break;
             case SampleType.RMS:
-                rawValue = Lasp.MasterInput.CalculateRMS(Filter);
+                rawValue = MasterInput.CalculateRMS(filter);
                 break;
             case SampleType.RMSDb:
-                rawValue = Lasp.MasterInput.CalculateRMSDecibel(Filter);
+                rawValue = MasterInput.CalculateRMSDecibel(filter);
                 break;
         }
 
         rawValue = Mathf.Abs(rawValue);
         if (rawValue > 254) rawValue = 0;  // Ignore spike on start
-        if (rawValue > _maxLevel) _maxLevel = rawValue;
-        _maxLevel *= .95f;
-//        _maxLevel = _maxLevel < 0.1f ? 0.1f : _maxLevel;
-        float peak = rawValue / _maxLevel;
-        if (peak > TriggerTheshold)
+        if (rawValue > maxLevel) maxLevel = rawValue;
+        maxLevel *= .95f;
+        float peak = rawValue / maxLevel;
+        if (peak > triggerTheshold)
         {
-            _lastTriggerTime = Time.time;
+            lastTriggerTime = Time.time;
         }
-        float timeSinceTrigger = Time.time - _lastTriggerTime;
-        _amount = Mathf.Lerp(0, 1, (DecayTime - timeSinceTrigger) / DecayTime);
-        Debug.Log($"MaxLevel: {_maxLevel} peak: {peak} amount: {_amount}");
-        _amount = Curve.Evaluate(_amount);
-        _amount *= Scale;
-        _amount += Offset;
-        _amount = Mathf.Round(_amount * 100) / 100f;
-        op.amount = _amount;
-        _poly.ConwayOperators[OpIndex] = op;
-        _poly.Rebuild();
+        float timeSinceTrigger = Time.time - lastTriggerTime;
+        float result;
+        result = Mathf.Lerp(0, 1, (decayTime - timeSinceTrigger) / decayTime);
+        result = curve.Evaluate(result);
+        result *= scale;
+        result += offset;
+        result = Mathf.Round(result * 100) / 100f;
+        return result;
     }
 }
