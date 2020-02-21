@@ -197,9 +197,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.12650284"
-     inkscape:cx="3726.7635"
-     inkscape:cy="-63.337623"
+     inkscape:zoom="0.25300568"
+     inkscape:cx="2007.4345"
+     inkscape:cy="936.63993"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -411,7 +411,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -709,7 +709,7 @@
          inkscape:connector-curvature="0" />
     </g>
     <g
-       transform="translate(-207.35177,362.94574)"
+       transform="translate(-207.35177,364.00508)"
        id="Subdivide"
        style="stroke-width:5.0047617;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none"
        inkscape:label="#g4753">
@@ -863,7 +863,7 @@
     </g>
     <g
        id="JoinLace"
-       transform="translate(-207.35177,394.66205)"
+       transform="translate(-207.35177,400.48842)"
        style="stroke-width:5.0047617;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none"
        inkscape:label="#g4869">
       <g
@@ -1768,7 +1768,7 @@
        inkscape:label="#g1022"
        style="stroke-width:5.0047617;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none"
        transform="translate(-590.08368,331.02712)"
-       id="g1250">
+       id="Gyro">
       <path
          inkscape:connector-curvature="0"
          id="path1240"
@@ -1787,7 +1787,7 @@
     </g>
     <g
        id="g1264"
-       transform="translate(-1530.3895,3.3776438)"
+       transform="translate(-1530.3895,-170.35387)"
        style="stroke-width:5.0047617;stroke-miterlimit:4;stroke-dasharray:none">
       <g
          inkscape:label="#g4695"

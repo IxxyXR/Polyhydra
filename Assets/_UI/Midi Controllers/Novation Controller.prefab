@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2812888914515996601}
   - component: {fileID: 7621598035644605528}
   - component: {fileID: 698918859812190694}
-  - component: {fileID: 554511518908143699}
   m_Layer: 0
   m_Name: Body 1
   m_TagString: Untagged
@@ -82,38 +81,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &554511518908143699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4941647869167655420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67cb3827536a559419467bd9635ee5a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WideButtonPrefab: {fileID: -4216859302048453862, guid: 563b470b106d5d64cbb8d0dbe5d467ae,
-    type: 3}
-  SquareButtonPrefab: {fileID: 3914211949350754260, guid: 740651754e1a95c448267d32ba10df09,
-    type: 3}
-  SliderPrefab: {fileID: -4216859302048453862, guid: 30789b9645021044aa822c892f1c6b44,
-    type: 3}
-  DialPrefab: {fileID: -4216859302048453862, guid: d1c39ecb34441864d8d958b58b18a879,
-    type: 3}
-  SquareButtonScale: 10
-  SquareButtonRotation: {x: -90, y: 0, z: 0}
-  WideButtonOrigin: {x: 11, y: 3, z: 1.23}
-  ShiftButtonOrigin: {x: -0.99, y: 0.12, z: -0.09}
-  SelectButtonOrigin: {x: -1.07, y: 0.12, z: 0.42}
-  SliderOrigin: {x: -0.69, y: -0.56, z: 0.18}
-  DialOrigin: {x: -0.68, y: 0.16, z: 0.69}
-  WideButtonOffset: {x: 0.238, y: -0.145}
-  DialOffset: {x: 0.23, y: -0.26}
-  SliderOffset: 0.235
-  ShiftButtonOffset: -0.19
-  SelectButtonOffset: {x: 0.15, y: -0.25}
 --- !u!1 &5543759106190795270
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,6 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4812291396800639815}
+  - component: {fileID: 4492238480035242070}
   m_Layer: 0
   m_Name: Novation Controller
   m_TagString: Untagged
@@ -176,3 +144,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &4492238480035242070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8400313227689230676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67cb3827536a559419467bd9635ee5a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WideButtonPrefab: {fileID: -4216859302048453862, guid: 563b470b106d5d64cbb8d0dbe5d467ae,
+    type: 3}
+  SquareButtonPrefab: {fileID: 3914211949350754260, guid: 740651754e1a95c448267d32ba10df09,
+    type: 3}
+  SliderPrefab: {fileID: -4216859302048453862, guid: 30789b9645021044aa822c892f1c6b44,
+    type: 3}
+  DialPrefab: {fileID: -4216859302048453862, guid: d1c39ecb34441864d8d958b58b18a879,
+    type: 3}
+  SquareButtonScale: 10
+  SquareButtonRotation: {x: -90, y: 0, z: 0}
+  WideButtonOrigin: {x: 11, y: 2.53, z: 1.23}
+  ShiftButtonOrigin: {x: -0.99, y: -0.34, z: -0.09}
+  SelectButtonOrigin: {x: -1.07, y: -0.34, z: 0.42}
+  SliderOrigin: {x: -0.69, y: -0.56, z: -0.3}
+  DialOrigin: {x: -0.68, y: -0.34, z: 0.69}
+  WideButtonOffset: {x: 0.238, y: -0.145}
+  DialOffset: {x: 0.23, y: -0.26}
+  SliderOffset: 0.235
+  ShiftButtonOffset: -0.19
+  SelectButtonOffset: {x: 0.15, y: -0.25}

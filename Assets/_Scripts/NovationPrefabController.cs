@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using ADBannerView = UnityEngine.iOS.ADBannerView;
 
 
 public class NovationPrefabController : MonoBehaviour
@@ -65,10 +64,11 @@ public class NovationPrefabController : MonoBehaviour
                 WideButtons.Add(wideButton);
             }
         }
+        WideButtons.Reverse();
 
-        for (float i = 0; i < 8; i++)
+        for (float j = 0; j < 3; j++)
         {
-            for (float j = 0; j < 3; j++)
+            for (float i = 0; i < 8; i++)
             {
                 var dial = Instantiate(DialPrefab, transform);
                 var dialPos = new Vector3(
@@ -80,6 +80,7 @@ public class NovationPrefabController : MonoBehaviour
                 Dials.Add(dial);
             }
         }
+        Dials.Reverse();
 
         for (float i = 0; i < 4; i++)
         {
@@ -94,6 +95,7 @@ public class NovationPrefabController : MonoBehaviour
             shiftButton.rotation = Quaternion.Euler(SquareButtonRotation);
             ShiftButtons.Add(shiftButton);
         }
+        ShiftButtons.Reverse();
 
         for (float i = 0; i < 2; i++)
         {
@@ -111,6 +113,7 @@ public class NovationPrefabController : MonoBehaviour
                 SelectButtons.Add(selectButton);
             }
         }
+        SelectButtons.Reverse();
 
         for (float i = 0; i < 8; i++)
         {
@@ -123,7 +126,9 @@ public class NovationPrefabController : MonoBehaviour
             slider.transform.localPosition = sliderPos;
             Sliders.Add(slider);
         }
+        Sliders.Reverse();
     }
+
 
     private void SetButtonColor(Transform button, int colorIndex)
     {
@@ -132,7 +137,7 @@ public class NovationPrefabController : MonoBehaviour
         mat.SetColor("_EmissiveColor", ButtonColors[colorIndex + 1]);
     }
 
-//    public void SetSjiftButton(int column, int colorIndex)
+//    public void SetShiftButton(int column, int colorIndex)
 //    {
 //        SetButtonColor(ColumnButtons[column], colorIndex);
 //    }
@@ -153,12 +158,21 @@ public class NovationPrefabController : MonoBehaviour
     public void SetSlider(int slider, byte value)
     {
         var pos = Sliders[slider].localPosition;
-        pos.z = SliderOrigin.y + (value / 3500f) - 0.135f;
+        pos.y = SliderOrigin.y + (value * 0.004f);
         Sliders[slider].localPosition = pos;
+    }
+
+    public void SetDial(int row, int dial, byte value)
+    {
+        int index = (row * 8) + dial;
+        var rot = Dials[index].rotation.eulerAngles;
+        rot.y = DialOrigin.y + (value * 2.25f - 160f);
+        Dials[index].rotation = Quaternion.Euler(rot);
     }
 
     private void OnValidate()
     {
+        return;  // Only use this for tweaking layout
         if (!Application.isPlaying) return;
         foreach (var slider in Sliders)
         {

@@ -21,6 +21,7 @@ public class PolyMidi : MonoBehaviour
    private int[] MidiColorValues = {1, 5, 3};
    private const int MAXOPS = 4  ;
    private AkaiPrefabController akaiPrefab;
+   private NovationPrefabController novationPrefab;
    private float SliderDeadZone = 0.05f;
    private byte[] LastSliderValue;
 
@@ -242,6 +243,7 @@ public class PolyMidi : MonoBehaviour
    void Start()
    {
       akaiPrefab = GetComponentInChildren<AkaiPrefabController>();
+      novationPrefab = GetComponentInChildren<NovationPrefabController>();
       ScanPorts();
       poly.ConwayOperators.Clear();
       InitOps(MAXOPS);
@@ -380,7 +382,6 @@ public class PolyMidi : MonoBehaviour
 
    void HandleNoteOn(byte channel, byte note, byte velocity)
    {
-      Debug.Log($"note: {note}");
 
       int column;
       int row;
@@ -538,15 +539,37 @@ public class PolyMidi : MonoBehaviour
 
    void HandleControlChange(byte channel, byte number, byte value)
    {
-      Debug.Log("gsfdgsfdgsfg");
       Debug.Log($"{channel} {number} {value}");
-      slider = number - 48;
-      LastSliderValue[number] = value;
-      akaiPrefab.SetSlider(slider, value);
-      amount = value / 127f;
-      amount = Remap(amount, SliderDeadZone, 1 - SliderDeadZone, 0, 1);
-      amount = amount < 0 ? 0 : amount;
-      amount = amount > 1 ? 1 : amount;
+      if (channel == 0)
+      {
+         slider = number - 48;
+         LastSliderValue[number] = value;
+         akaiPrefab.SetSlider(slider, value);
+         amount = value / 127f;
+         amount = Remap(amount, SliderDeadZone, 1 - SliderDeadZone, 0, 1);
+         amount = amount < 0 ? 0 : amount;
+         amount = amount > 1 ? 1 : amount;
+      }
+      else if (channel == 8 && number >= 77 && number <= 84)
+      {
+         slider = number - 77;
+         novationPrefab.SetSlider(slider, value);
+      }
+      else if (channel == 8 && number >= 13 && number <= 20)
+      {
+         slider = number - 13;
+         novationPrefab.SetDial(2, slider, value);
+      }
+      else if (channel == 8 && number >= 29 && number <= 36)
+      {
+         slider = number - 29;
+         novationPrefab.SetDial(1, slider, value);
+      }
+      else if (channel == 8 && number >= 49 && number <= 56)
+      {
+         slider = number - 49;
+         novationPrefab.SetDial(0, slider, value);
+      }
 
       ControlHasChanged = true;
    }
@@ -604,7 +627,6 @@ public class PolyMidi : MonoBehaviour
       _probe = new MidiProbe(MidiProbe.Mode.In);
       for (var i = 0; i < _probe.PortCount; i++)
       {
-         Debug.Log(_probe.GetPortName(i));
          if (_probe.GetPortName(i).Contains("APC MINI"))
          {
             AkaiInPort = new MidiInPort(i)
@@ -615,10 +637,9 @@ public class PolyMidi : MonoBehaviour
             };
             break;
          }
-         else if (_probe.GetPortName(i) == "Launch Control XL 3")
+         if (_probe.GetPortName(i) == "Launch Control XL 3")
          {
-            Debug.Log($"Init Novation");
-            AkaiInPort = new MidiInPort(i)
+            NovationInPort = new MidiInPort(i)
             {
                OnNoteOn = (channel, note, velocity) => HandleNoteOn(channel, note, velocity),
                OnNoteOff = (channel, note) => HandleNoteOff(channel, note),
@@ -641,6 +662,11 @@ public class PolyMidi : MonoBehaviour
       if (AkaiInPort != null)
       {
          AkaiInPort.ProcessMessages();
+      }
+
+      if (NovationInPort != null)
+      {
+         NovationInPort.ProcessMessages();
       }
 
       if (ControlHasChanged)
