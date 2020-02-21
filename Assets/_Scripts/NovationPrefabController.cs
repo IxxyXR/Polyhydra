@@ -6,25 +6,32 @@ using ADBannerView = UnityEngine.iOS.ADBannerView;
 
 public class NovationPrefabController : MonoBehaviour
 {
+    [Header("Prefabs")]
     public Transform WideButtonPrefab;
     public Transform SquareButtonPrefab;
-    public Transform SmallButtonPrefab;
     public Transform SliderPrefab;
     public Transform DialPrefab;
 
 
+    [Header("Scale")]
+    public float SquareButtonScale;
+
+    [Header("Rotations")]
+    public Vector3 SquareButtonRotation;
+
+    [Header("Origins")]
     public Vector3 WideButtonOrigin = new Vector3(0.2969f, 0.0079f, 0.0585f);
     public Vector3 ShiftButtonOrigin = new Vector3(0.2961f, 0.022f, 0.05787034f);
     public Vector3 SelectButtonOrigin = new Vector3(0.298f, 0.022f, 0.05787034f);
     public Vector3 SliderOrigin = new Vector3(0.2961f, 0.05870106f, -0.075f);
     public Vector3 DialOrigin = new Vector3(0.4980748f, 0.02149916f, 0.05770105f);
 
+    [Header("Offsets")]
     public Vector2 WideButtonOffset = new Vector2(0.0248f, 0.02f);
     public Vector2 DialOffset = new Vector2(0.0248f, 0.02f);
-
-    public float ShiftButtonOffset = 0.0248f;
     public float SliderOffset = 0.0248f;
-    public float SelectButtonOffset = 0.02f;
+    public float ShiftButtonOffset = 0.0248f;
+    public Vector2 SelectButtonOffset = new Vector2(0.0248f, 0.02f);
 
     [NonSerialized] public List<Transform> Sliders = new List<Transform>();
     [NonSerialized] public List<Transform> WideButtons = new List<Transform>();
@@ -74,29 +81,36 @@ public class NovationPrefabController : MonoBehaviour
             }
         }
 
-//        for (float i = 0; i < 4; i++)
-//        {
-//            var shiftButton = Instantiate(SquareButtonPrefab, transform);
-//            var shiftButtonPos = new Vector3(
-//                ShiftButtonOrigin.x,
-//                ShiftButtonOrigin.y,
-//                ShiftButtonOrigin.z + i * ShiftButtonOffset
-//            );
-//            shiftButton.transform.localPosition = shiftButtonPos;
-//            ShiftButtons.Add(shiftButton);
-//        }
-//
-//        for (float i = 0; i < 2; i++)
-//        {
-//            var selectButton = Instantiate(SquareButtonPrefab, transform);
-//            var selectButtonPos = new Vector3(
-//                SelectButtonOrigin.x + i * SelectButtonOffset,
-//                SelectButtonOrigin.y,
-//                SelectButtonOrigin.z
-//            );
-//            selectButton.transform.localPosition = selectButtonPos;
-//            SelectButtons.Add(selectButton);
-//        }
+        for (float i = 0; i < 4; i++)
+        {
+            var shiftButton = Instantiate(SquareButtonPrefab, transform);
+            var shiftButtonPos = new Vector3(
+                ShiftButtonOrigin.x,
+                ShiftButtonOrigin.z + i * ShiftButtonOffset,
+                ShiftButtonOrigin.y
+            );
+            shiftButton.transform.localScale *= SquareButtonScale;
+            shiftButton.transform.localPosition = shiftButtonPos;
+            shiftButton.rotation = Quaternion.Euler(SquareButtonRotation);
+            ShiftButtons.Add(shiftButton);
+        }
+
+        for (float i = 0; i < 2; i++)
+        {
+            for (float j = 0; j < 2; j++)
+            {
+                var selectButton = Instantiate(SquareButtonPrefab, transform);
+                var selectButtonPos = new Vector3(
+                    SelectButtonOrigin.x + i * SelectButtonOffset.x,
+                    SelectButtonOrigin.z + j * SelectButtonOffset.y,
+                    SelectButtonOrigin.y
+                );
+                selectButton.transform.localScale *= SquareButtonScale;
+                selectButton.transform.localPosition = selectButtonPos;
+                selectButton.rotation = Quaternion.Euler(SquareButtonRotation);
+                SelectButtons.Add(selectButton);
+            }
+        }
 
         for (float i = 0; i < 8; i++)
         {
@@ -161,14 +175,16 @@ public class NovationPrefabController : MonoBehaviour
             Destroy(btn.gameObject);
         }
         WideButtons.Clear();
-//        foreach (var btn in ShiftButtons)
-//        {
-//            Destroy(btn.gameObject);
-//        }
-//        foreach (var btn in SelectButtons)
-//        {
-//            Destroy(btn.gameObject);
-//        }
+        foreach (var btn in ShiftButtons)
+        {
+            Destroy(btn.gameObject);
+        }
+        ShiftButtons.Clear();
+        foreach (var btn in SelectButtons)
+        {
+            Destroy(btn.gameObject);
+        }
+        SelectButtons.Clear();
 
         Layout();
     }
