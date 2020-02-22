@@ -23,11 +23,23 @@ public class PolyMidi : MonoBehaviour
    private AkaiPrefabController akaiPrefab;
    private NovationPrefabController novationPrefab;
    private float SliderDeadZone = 0.05f;
-   private byte[] LastSliderValue;
+   private byte[][] LastSliderValue;
 
-   private int slider;
-   private float amount;
+
+   private int currentControl;
+   private float currentControlValue;
    private bool ControlHasChanged;
+
+   private enum controlBanks
+   {
+      AkaiSlider,
+      NovationSlider,
+      NovationDialSendA,
+      NovationDialSendB,
+      NovationDialPan,
+   }
+
+   private controlBanks currentControlBank;
 
    private List<(int, PolyHydra.JohnsonPolyTypes)> Johnsons = new List<(int, PolyHydra.JohnsonPolyTypes)>
    {
@@ -249,10 +261,11 @@ public class PolyMidi : MonoBehaviour
       InitOps(MAXOPS);
       SetLEDs();
       FinalisePoly();
-      LastSliderValue = Enumerable.Repeat((byte)63, 64).ToArray();
-
-//      OutPort.SendAllOff(0);
-
+      LastSliderValue = new byte[16][];
+      for (int i = 0; i < 16; i++)
+      {
+         LastSliderValue[i] = Enumerable.Repeat((byte)63, 127).ToArray();
+      }
    }
 
    private void InitOps(int count)
@@ -428,7 +441,7 @@ public class PolyMidi : MonoBehaviour
          }
 
          SetLEDs();
-         HandleControlChange(0, Convert.ToByte(column+48), LastSliderValue[column+48]);
+         HandleControlChange(0, Convert.ToByte(column+48), LastSliderValue[channel][column+48]);
          FinalisePoly();
       }
       else if (note >= 64 && note <= 71)
@@ -443,7 +456,7 @@ public class PolyMidi : MonoBehaviour
          op.amount = opconfig.amountDefault;
          poly.ConwayOperators[column] = op;
          SetLEDs();
-         HandleControlChange(0, Convert.ToByte(column+48), LastSliderValue[column+48]);
+         HandleControlChange(0, Convert.ToByte(column+48), LastSliderValue[channel][column+48]);
          FinalisePoly();
       }
       else if (note >= 82 && note <= 89)
@@ -540,35 +553,41 @@ public class PolyMidi : MonoBehaviour
    void HandleControlChange(byte channel, byte number, byte value)
    {
       Debug.Log($"{channel} {number} {value}");
+      LastSliderValue[channel][number] = value;
+      currentControlValue = value / 127f;
+      currentControlValue = Remap(currentControlValue, SliderDeadZone, 1 - SliderDeadZone, 0, 1);
+      currentControlValue = currentControlValue < 0 ? 0 : currentControlValue;
+      currentControlValue = currentControlValue > 1 ? 1 : currentControlValue;
+
       if (channel == 0)
       {
-         slider = number - 48;
-         LastSliderValue[number] = value;
-         akaiPrefab.SetSlider(slider, value);
-         amount = value / 127f;
-         amount = Remap(amount, SliderDeadZone, 1 - SliderDeadZone, 0, 1);
-         amount = amount < 0 ? 0 : amount;
-         amount = amount > 1 ? 1 : amount;
+         currentControl = number - 48;
+         currentControlBank = controlBanks.AkaiSlider;
+         akaiPrefab.SetSlider(currentControl, value);
       }
       else if (channel == 8 && number >= 77 && number <= 84)
       {
-         slider = number - 77;
-         novationPrefab.SetSlider(slider, value);
+         currentControl = number - 77;
+         currentControlBank = controlBanks.NovationSlider;
+         novationPrefab.SetSlider(currentControl, value);
       }
       else if (channel == 8 && number >= 13 && number <= 20)
       {
-         slider = number - 13;
-         novationPrefab.SetDial(2, slider, value);
+         currentControl = number - 13;
+         currentControlBank = controlBanks.NovationDialSendA;
+         novationPrefab.SetDial(2, currentControl, value);
       }
       else if (channel == 8 && number >= 29 && number <= 36)
       {
-         slider = number - 29;
-         novationPrefab.SetDial(1, slider, value);
+         currentControl = number - 29;
+         currentControlBank = controlBanks.NovationDialSendB;
+         novationPrefab.SetDial(1, currentControl, value);
       }
       else if (channel == 8 && number >= 49 && number <= 56)
       {
-         slider = number - 49;
-         novationPrefab.SetDial(0, slider, value);
+         currentControl = number - 49;
+         currentControlBank = controlBanks.NovationDialPan;
+         novationPrefab.SetDial(0, currentControl, value);
       }
 
       ControlHasChanged = true;
@@ -577,40 +596,68 @@ public class PolyMidi : MonoBehaviour
    void RenderControlChange()
    {
       ControlHasChanged = false;
-  
-      if (slider == 8)
+
+      if (currentControlBank == controlBanks.AkaiSlider)
       {
-         int shapeIndex = Mathf.FloorToInt(amount * TotalShapeCount());
-         if (shapeIndex < Polys.Length)
+         if (currentControl == 8)
          {
-            poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
-            var polyType = Polys[shapeIndex];
-            poly.UniformPolyType = polyType;
+            int shapeIndex = Mathf.FloorToInt(currentControlValue * TotalShapeCount());
+            if (shapeIndex < Polys.Length)
+            {
+               poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+               var polyType = Polys[shapeIndex];
+               poly.UniformPolyType = polyType;
+            }
+            else
+            {
+               poly.ShapeType = PolyHydra.ShapeTypes.Johnson;
+               int johnsonIndex = shapeIndex - Polys.Length;
+               var johnsonType = Johnsons[johnsonIndex];
+               poly.JohnsonPolyType = johnsonType.Item2;
+               poly.PrismP = johnsonType.Item1;
+            }
+            FinalisePoly();
+         }
+         else if (currentControl == 7)
+         {
+            int apresetIndex = Mathf.FloorToInt(currentControlValue * aPresets.Items.Count);
+            var apreset = aPresets.Items[apresetIndex];
+            aPresets.ApplyPresetToPoly(apreset);
          }
          else
          {
-            poly.ShapeType = PolyHydra.ShapeTypes.Johnson;
-            int johnsonIndex = shapeIndex - Polys.Length;
-            var johnsonType = Johnsons[johnsonIndex];
-            poly.JohnsonPolyType = johnsonType.Item2;
-            poly.PrismP = johnsonType.Item1;
+            if (currentControl >= poly.ConwayOperators.Count) return;
+            var op = poly.ConwayOperators[currentControl];
+            var opconfig = poly.opconfigs[op.opType];
+            op.amount = Mathf.Lerp(opconfig.amountSafeMin, opconfig.amountSafeMax, currentControlValue);
+            poly.ConwayOperators[currentControl] = op;
+            FinalisePoly();
          }
-         FinalisePoly();
       }
-      else if (slider == 7)
+      else if (currentControlBank == controlBanks.NovationSlider)
       {
-         int apresetIndex = Mathf.FloorToInt(amount * aPresets.Items.Count);
-         var apreset = aPresets.Items[apresetIndex];
-         aPresets.ApplyPresetToPoly(apreset);
-      }
-      else
-      {
-         if (slider >= poly.ConwayOperators.Count) return;
-         var op = poly.ConwayOperators[slider];
+         if (currentControl >= poly.ConwayOperators.Count) return;
+         Debug.Log(currentControl);
+         var op = poly.ConwayOperators[currentControl];
          var opconfig = poly.opconfigs[op.opType];
-         op.amount = Mathf.Lerp(opconfig.amountSafeMin, opconfig.amountSafeMax, amount);
-         poly.ConwayOperators[slider] = op;
+         op.amount = Mathf.Lerp(opconfig.amountSafeMin, opconfig.amountSafeMax, currentControlValue);
+         poly.ConwayOperators[currentControl] = op;
          FinalisePoly();
+      }
+      else if (currentControlBank == controlBanks.NovationDialPan)
+      {
+         var op = poly.ConwayOperators[currentControl];
+         var opconfig = poly.opconfigs[op.opType];
+         op.animationAmount = currentControlValue * 3f - 1.5f;
+         op.animate = op.animationAmount != 0;
+         poly.ConwayOperators[currentControl] = op;
+      }
+      else if (currentControlBank == controlBanks.NovationDialSendB)
+      {
+         var op = poly.ConwayOperators[currentControl];
+         var opconfig = poly.opconfigs[op.opType];
+         op.animationRate = currentControlValue * 3f;
+         poly.ConwayOperators[currentControl] = op;
       }
    }
 
