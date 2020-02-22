@@ -552,7 +552,6 @@ public class PolyMidi : MonoBehaviour
 
    void HandleControlChange(byte channel, byte number, byte value)
    {
-      Debug.Log($"{channel} {number} {value}");
       LastSliderValue[channel][number] = value;
       currentControlValue = value / 127f;
       currentControlValue = Remap(currentControlValue, SliderDeadZone, 1 - SliderDeadZone, 0, 1);
@@ -637,7 +636,6 @@ public class PolyMidi : MonoBehaviour
       else if (currentControlBank == controlBanks.NovationSlider)
       {
          if (currentControl >= poly.ConwayOperators.Count) return;
-         Debug.Log(currentControl);
          var op = poly.ConwayOperators[currentControl];
          var opconfig = poly.opconfigs[op.opType];
          op.amount = Mathf.Lerp(opconfig.amountSafeMin, opconfig.amountSafeMax, currentControlValue);
@@ -647,17 +645,30 @@ public class PolyMidi : MonoBehaviour
       else if (currentControlBank == controlBanks.NovationDialPan)
       {
          var op = poly.ConwayOperators[currentControl];
-         var opconfig = poly.opconfigs[op.opType];
          op.animationAmount = currentControlValue * 3f - 1.5f;
-         op.animate = op.animationAmount != 0;
+         if (op.animationAmount != 0 && !op.animate)
+         {
+            // Assume we're starting to animate here so set rate to somethine visible
+            // Otherwise it will look like this dial doesn't do anything
+            op.animate = true;
+            if (op.animationRate < 0.1f) op.animationRate = 0.5f;
+         }
          poly.ConwayOperators[currentControl] = op;
       }
       else if (currentControlBank == controlBanks.NovationDialSendB)
       {
          var op = poly.ConwayOperators[currentControl];
-         var opconfig = poly.opconfigs[op.opType];
          op.animationRate = currentControlValue * 3f;
          poly.ConwayOperators[currentControl] = op;
+      }
+      else if (currentControlBank == controlBanks.NovationDialSendA)
+      {
+         if (currentControl >= poly.ConwayOperators.Count) return;
+         var op = poly.ConwayOperators[currentControl];
+         op.opType = (PolyHydra.Ops) (currentControlValue * Enum.GetNames(typeof(PolyHydra.Ops)).Length - 1);
+         op.disabled = false;
+         poly.ConwayOperators[currentControl] = op;
+         FinalisePoly();
       }
    }
 

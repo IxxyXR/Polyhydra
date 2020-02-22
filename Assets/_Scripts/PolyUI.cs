@@ -353,10 +353,13 @@ public class PolyUI : MonoBehaviour {
 
         opPrefabManager.AmountSlider.gameObject.SetActive(opConfig.usesAmount);
         opPrefabManager.AmountInput.gameObject.SetActive(opConfig.usesAmount);
+        opPrefabManager.Amount2Slider.gameObject.SetActive(opConfig.usesAmount2);
+        opPrefabManager.Amount2Input.gameObject.SetActive(opConfig.usesAmount2);
         opPrefabManager.ToggleAnimate.gameObject.SetActive(opConfig.usesAmount);
         opPrefabManager.GetComponent<RectTransform>().sizeDelta = new Vector2(200, opConfig.usesAmount?238:100);
 
         opPrefabManager.AmountSlider.value = opConfig.amountDefault;
+        opPrefabManager.Amount2Slider.value = opConfig.amount2Default;
 
         if (poly.SafeLimits)
         {
@@ -399,6 +402,8 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.FaceSelectionDropdown.value = (int) op.faceSelections;
         opPrefabManager.AmountSlider.value = op.amount;
         opPrefabManager.AmountInput.text = op.amount.ToString();
+        opPrefabManager.Amount2Slider.value = op.amount2;
+        opPrefabManager.Amount2Input.text = op.amount2.ToString();
         opPrefabManager.RandomizeToggle.isOn = op.randomize;
         opPrefabManager.ToggleAnimate.isOn = op.animate;
         opPrefabManager.AnimRateInput.text = op.animationRate.ToString();
@@ -413,6 +418,8 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.DisabledToggle.onValueChanged.AddListener(delegate{OpsUIToPoly();});
         opPrefabManager.AmountSlider.onValueChanged.AddListener(delegate{AmountSliderChanged();});
         opPrefabManager.AmountInput.onValueChanged.AddListener(delegate{AmountInputChanged();});
+        opPrefabManager.Amount2Slider.onValueChanged.AddListener(delegate{Amount2SliderChanged();});
+        opPrefabManager.Amount2Input.onValueChanged.AddListener(delegate{Amount2InputChanged();});
         opPrefabManager.RandomizeToggle.onValueChanged.AddListener(delegate{OpsUIToPoly();});
 
         opPrefabManager.UpButton.onClick.AddListener(MoveOpUp);
@@ -459,19 +466,42 @@ public class PolyUI : MonoBehaviour {
 
     void AmountSliderChanged()
     {
-        //if (!poly.disableThreading && !poly.done) return;
         var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountSlider;
         var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountInput;
-        slider.value = Mathf.Round(slider.value * 100) / 100f;
-        input.text = slider.value.ToString();
-        // Not needed if we also modify the text field
-        // OpsUIToPoly();
+        _AmountSliderChanged(slider, input);
     }
 
     void AmountInputChanged()
     {
         var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountSlider;
         var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountInput;
+        _AmountInputChanged(slider, input);
+    }
+
+    void Amount2SliderChanged()
+    {
+        var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().Amount2Slider;
+        var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().Amount2Input;
+        _AmountSliderChanged(slider, input);
+    }
+
+    void Amount2InputChanged()
+    {
+        var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().Amount2Slider;
+        var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().Amount2Input;
+        _AmountInputChanged(slider, input);
+    }
+
+    void _AmountSliderChanged(Slider slider, InputField input)
+    {
+        slider.value = Mathf.Round(slider.value * 100) / 100f;
+        input.text = slider.value.ToString();
+        // Not needed if we also modify the text field
+        // OpsUIToPoly();
+    }
+
+    void _AmountInputChanged(Slider slider, InputField input)
+    {
         float value;
         if (float.TryParse(input.text, out value))
         {
@@ -495,6 +525,7 @@ public class PolyUI : MonoBehaviour {
             op.faceSelections = (ConwayPoly.FaceSelections) opPrefabManager.FaceSelectionDropdown.value;
             op.disabled = opPrefabManager.DisabledToggle.isOn;
             op.amount = opPrefabManager.AmountSlider.value;
+            op.amount2 = opPrefabManager.Amount2Slider.value;
             op.randomize = opPrefabManager.RandomizeToggle.isOn;
             op.animate = opPrefabManager.ToggleAnimate.isOn;
             float tempVal;

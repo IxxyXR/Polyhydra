@@ -32,6 +32,7 @@ public class PolyPreset {
 		[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.Ops OpType;
 		[JsonConverter(typeof(StringEnumConverter))] public ConwayPoly.FaceSelections FaceSelections;
 		public float Amount;
+		public float Amount2;
 		public float AnimatedAmount; // Not needed for presets but needed for cache key generation
 		public bool Randomize;
 		public bool Disabled;
@@ -70,6 +71,7 @@ public class PolyPreset {
 				OpType = polyOp.opType,
 				FaceSelections = polyOp.faceSelections,
 				Amount = polyOp.amount,
+				Amount2 = polyOp.amount2,
 				AnimatedAmount = polyOp.animatedAmount,
 				Randomize = polyOp.randomize,
 				Disabled = polyOp.disabled,
@@ -108,6 +110,7 @@ public class PolyPreset {
 				opType = presetOp.OpType,
 				faceSelections = presetOp.FaceSelections,
 				amount = presetOp.Amount,
+				amount2 = presetOp.Amount2,
 				animatedAmount = presetOp.AnimatedAmount,
 				randomize = presetOp.Randomize,
 				disabled = presetOp.Disabled,

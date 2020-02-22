@@ -293,9 +293,11 @@ public class PolyHydra : MonoBehaviour
 		public float amountMax = 20;
 		public float amountSafeMin = -10;
 		public float amountSafeMax = 0.999f;
+		public bool usesAmount2 = false;
+		public float amount2Default = 0;
 		public bool usesFaces = false;
 		public bool usesRandomize = false;
-		public ConwayPoly.FaceSelections faceSelection = ConwayPoly.FaceSelections.All;	
+		public ConwayPoly.FaceSelections faceSelection = ConwayPoly.FaceSelections.All;
 	}
 
 	public ConwayPoly GetConwayPoly()
@@ -383,21 +385,21 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Ambo, new OpConfig{usesAmount=false}},
 			{Ops.Zip, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -2f, amountMax = 2f, amountSafeMin = 0.0001f, amountSafeMax = .99999f, usesRandomize=true}},
 			{Ops.Expand, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
-			{Ops.Bevel, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.4999f, usesRandomize=false}},
+			{Ops.Bevel, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.4999f, usesAmount2 = true, amount2Default = 0.5f, usesRandomize=false}},
 			{Ops.Join, new OpConfig{amountDefault = 0.5f, amountMin = -1f, amountMax = 2f, amountSafeMin = -0.5f, amountSafeMax = 0.999f}},  // TODO Support random
 			{Ops.Needle, new OpConfig{amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 0.5f, usesRandomize=true}},
-			{Ops.Ortho, new OpConfig{usesAmount=false}},
+			{Ops.Ortho, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 0.999f, usesRandomize=true}},
 			{Ops.Meta, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = -0.333f, amountSafeMax = 0.666f, usesRandomize=true}},
 			{Ops.Truncate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.5f, usesRandomize=true}},
-			{Ops.Gyro, new OpConfig{amountDefault = 0.33f, amountMin = -.5f, amountMax = 0.5f, amountSafeMin = 0.001f, amountSafeMax = 0.5f}},
+			{Ops.Gyro, new OpConfig{amountDefault = 0.33f, amountMin = -.5f, amountMax = 0.5f, amountSafeMin = 0.001f, amountSafeMax = 0.5f, usesAmount2 = true}},
 			{Ops.Snub, new OpConfig{amountDefault = 0.5f, amountMin = -1f, amountMax = 1f, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
 			{Ops.Subdivide, new OpConfig {usesAmount=false}},
-			{Ops.Loft, new OpConfig {usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
+			{Ops.Loft, new OpConfig {usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f, usesAmount2 = true, usesRandomize=true}},
 			{Ops.Chamfer, new OpConfig {amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
-			{Ops.Quinto, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
-			{Ops.Lace, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
-			{Ops.JoinedLace, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
-			{Ops.OppositeLace, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
+			{Ops.Quinto, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f, usesAmount2 = true, usesRandomize=true}},
+			{Ops.Lace, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f, usesAmount2 = true, usesRandomize=true}},
+			{Ops.JoinedLace, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f, usesAmount2 = true, usesRandomize=true}},
+			{Ops.OppositeLace, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f, usesAmount2 = true, usesRandomize=true}},
 			{Ops.JoinKisKis, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
 			{Ops.Stake, new OpConfig{usesFaces=true, amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
 			{Ops.JoinStake, new OpConfig{amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
@@ -864,8 +866,8 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Expand(amount);
 				break;
 			case Ops.Bevel:
-				// conway = conway.Bevel(amount, op.amount2);
-				conway = conway.Bevel(amount);
+				conway = conway.Bevel(amount, op.amount2);
+//				conway = conway.Bevel(amount);
 				break;
 			case Ops.Join:
 				conway = conway.Join(amount);
@@ -874,7 +876,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Needle(amount, op.randomize);
 				break;
 			case Ops.Ortho:
-				conway = conway.Ortho();
+				conway = conway.Ortho(amount, op.randomize);
 				break;
 			case Ops.Meta:
 				conway = conway.Meta(amount, op.faceSelections, op.randomize);
@@ -883,7 +885,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Truncate(amount, op.faceSelections, op.randomize);
 				break;
 			case Ops.Gyro:
-				conway = conway.Gyro(amount);
+				conway = conway.Gyro(amount, op.amount2);
 				break;
 			case Ops.Snub:
 				conway = conway.Gyro(amount);
@@ -907,22 +909,22 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Subdivide();
 				break;
 			case Ops.Loft:
-				conway = conway.Loft(amount, op.faceSelections);
+				conway = conway.Loft(amount, op.amount2, op.faceSelections, op.randomize);
 				break;					
 			case Ops.Chamfer:
 				conway = conway.Chamfer(amount);
 				break;					
 			case Ops.Quinto:
-				conway = conway.Quinto(amount);
+				conway = conway.Quinto(amount, op.amount2, op.randomize);
 				break;
 			case Ops.JoinedLace:
-				conway = conway.JoinedLace(amount);
+				conway = conway.JoinedLace(amount, op.amount2, op.randomize);
 				break;
 			case Ops.OppositeLace:
-				conway = conway.OppositeLace(amount);
+				conway = conway.OppositeLace(amount, op.amount2, op.randomize);
 				break;
 			case Ops.Lace:
-				conway = conway.Lace(amount, op.faceSelections);
+				conway = conway.Lace(amount, op.faceSelections, op.amount2, op.randomize);
 				break;
 			case Ops.JoinKisKis:
 				conway = conway.JoinKisKis(amount);
