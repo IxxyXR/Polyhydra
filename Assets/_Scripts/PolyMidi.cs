@@ -693,9 +693,8 @@ public class PolyMidi : MonoBehaviour
                OnNoteOff = (channel, note) => HandleNoteOff(channel, note),
                OnControlChange = (channel, number, value) => HandleControlChange(channel, number, value)
             };
-            break;
          }
-         if (_probe.GetPortName(i) == "Launch Control XL 3")
+         if (_probe.GetPortName(i).StartsWith("Launch Control XL"))
          {
             NovationInPort = new MidiInPort(i)
             {
@@ -703,7 +702,6 @@ public class PolyMidi : MonoBehaviour
                OnNoteOff = (channel, note) => HandleNoteOff(channel, note),
                OnControlChange = (channel, number, value) => HandleControlChange(channel, number, value)
             };
-            break;
          }
       }
    }
