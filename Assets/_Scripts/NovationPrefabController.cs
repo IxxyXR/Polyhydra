@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using RtMidi.LowLevel;
 using UnityEngine;
 
 
@@ -10,7 +11,6 @@ public class NovationPrefabController : MonoBehaviour
     public Transform SquareButtonPrefab;
     public Transform SliderPrefab;
     public Transform DialPrefab;
-
 
     [Header("Scale")]
     public float SquareButtonScale;
@@ -32,13 +32,51 @@ public class NovationPrefabController : MonoBehaviour
     public float ShiftButtonOffset = 0.0248f;
     public Vector2 SelectButtonOffset = new Vector2(0.0248f, 0.02f);
 
+    [NonSerialized]  public MidiOutPort MidiOut;
+
     [NonSerialized] public List<Transform> Sliders = new List<Transform>();
     [NonSerialized] public List<Transform> WideButtons = new List<Transform>();
     [NonSerialized] public List<Transform> ShiftButtons = new List<Transform>();
     [NonSerialized] public List<Transform> SelectButtons = new List<Transform>();
     [NonSerialized] public List<Transform> Dials = new List<Transform>();
 
-    private Color[] ButtonColors = {Color.gray, Color.green, Color.yellow, Color.red};
+    public List<byte> SliderStates;
+    public List<int> WideButtonStates;
+    public List<int> ShiftButtonStates;
+    public List<int> SelectButtonStates;
+    public List<byte> DialStates;
+
+    public int[] ButtonIds =
+    {
+        41, 42, 43, 44,
+        57, 58, 59, 60,
+        73, 74, 75, 76,
+        89, 90, 91, 92,
+    };
+
+    public int[] ButtonColorCodes = {12, 13, 15, 28, 60, 29, 62, 63};
+
+    private Color[] ButtonColors =
+    {
+    //    12 Off Off
+    //    13 Red Low
+    //    15 Red Full
+    //    28 Green Low
+    //    60 Green Full
+    //    29 Amber Low
+    //    63 Amber Full
+    //    62 Yellow Full
+        Color.gray * 0.4f,
+        Color.red * 0.4f,
+        Color.red,
+        Color.green * 0.4f,
+        Color.green,
+        Color.yellow * 0.4f,
+        Color.yellow * 0.6f,
+        Color.yellow,
+    };
+
+
 
     void Start()
     {
@@ -50,9 +88,9 @@ public class NovationPrefabController : MonoBehaviour
 //        var shiftButton = Instantiate(ShiftButtonPrefab, transform);
 //        shiftButton.transform.localPosition = ShiftButtonOrigin;
 
-        for (float i = 0; i < 8; i++)
+        for (float j = 0; j < 2; j++)
         {
-            for (float j = 0; j < 2; j++)
+            for (float i = 0; i < 8; i++)
             {
                 var wideButton = Instantiate(WideButtonPrefab, transform);
                 var wideButtonPos = new Vector3(
@@ -61,10 +99,10 @@ public class NovationPrefabController : MonoBehaviour
                     WideButtonOrigin.y
                 );
                 wideButton.transform.localPosition = wideButtonPos;
-                WideButtons.Add(wideButton);
+                WideButtons.Insert(0, wideButton);
+                WideButtonStates.Add(0);
             }
         }
-        WideButtons.Reverse();
 
         for (float j = 0; j < 3; j++)
         {
@@ -78,6 +116,7 @@ public class NovationPrefabController : MonoBehaviour
                 );
                 dial.transform.localPosition = dialPos;
                 Dials.Add(dial);
+                DialStates.Add(0);
             }
         }
         Dials.Reverse();
@@ -94,6 +133,7 @@ public class NovationPrefabController : MonoBehaviour
             shiftButton.transform.localPosition = shiftButtonPos;
             shiftButton.rotation = Quaternion.Euler(SquareButtonRotation);
             ShiftButtons.Add(shiftButton);
+            ShiftButtonStates.Add(0);
         }
         ShiftButtons.Reverse();
 
@@ -111,6 +151,7 @@ public class NovationPrefabController : MonoBehaviour
                 selectButton.transform.localPosition = selectButtonPos;
                 selectButton.rotation = Quaternion.Euler(SquareButtonRotation);
                 SelectButtons.Add(selectButton);
+                SelectButtonStates.Add(0);
             }
         }
         SelectButtons.Reverse();
@@ -125,38 +166,44 @@ public class NovationPrefabController : MonoBehaviour
             );
             slider.transform.localPosition = sliderPos;
             Sliders.Add(slider);
+            SliderStates.Add(0);
         }
         Sliders.Reverse();
     }
 
-
-    private void SetButtonColor(Transform button, int colorIndex)
+    private void SetButtonColor(Transform button, int buttonId, int colorIndex)
     {
-        var mat = button.gameObject.GetComponent<MeshRenderer>().material;
-        mat.SetColor("_BaseColor", ButtonColors[colorIndex + 1]);
-        mat.SetColor("_EmissiveColor", ButtonColors[colorIndex + 1]);
+        MidiOut.SendNoteOn(8, ButtonIds[buttonId], ButtonColorCodes[colorIndex]);
+        var mat = button.gameObject.GetComponentInChildren<MeshRenderer>().material;
+        mat.SetColor("_BaseColor", ButtonColors[colorIndex]);
+        mat.SetColor("_EmissiveColor", ButtonColors[colorIndex] * 2f);
     }
 
-//    public void SetShiftButton(int column, int colorIndex)
-//    {
-//        SetButtonColor(ColumnButtons[column], colorIndex);
-//    }
+    public void SetShiftButton(int index, int colorIndex)
+    {
+        ShiftButtonStates[index] = 1 - ShiftButtonStates[index];
+        SetButtonColor(ShiftButtons[index], index, colorIndex);
+    }
 
-//    public void SetGridButtonIcon(int column, int row, PolyHydra.Ops opType)
-//    {
-//        var btn = WideButtons[column * 8 + row];
-//        var img = btn.GetComponentInChildren<Image>();
-//        img.sprite = Resources.Load<Sprite>("Icons/" + opType);
-//    }
-//
-//    public void SetGridButtonLED(int column, int row, int colorIndex)
-//    {
-//        var btn = WideButtons[column * 8 + row];
-//        SetButtonColor(btn, colorIndex);
-//    }
+    public void SetSelectButtonColor(int column, int row, int colorIndex)
+    {
+        int btnIndex = column * 2 + row;
+        var btn = SelectButtons[btnIndex];
+        ShiftButtonStates[btnIndex] = 1 - ShiftButtonStates[btnIndex];
+        SetButtonColor(btn, btnIndex, colorIndex);
+    }
+
+    public void SetWideButton(int column, int row, int colorIndex)
+    {
+        int btnIndex = (row * 8) + column;
+        WideButtonStates[btnIndex] = colorIndex;
+        var btn = WideButtons[(btnIndex + 8) % 16]; // Fix the row order
+        SetButtonColor(btn, btnIndex, colorIndex);
+    }
 
     public void SetSlider(int slider, byte value)
     {
+        SliderStates[slider] = value;
         var pos = Sliders[slider].localPosition;
         pos.y = SliderOrigin.y + (value * 0.004f);
         Sliders[slider].localPosition = pos;
@@ -165,6 +212,7 @@ public class NovationPrefabController : MonoBehaviour
     public void SetDial(int row, int dial, byte value)
     {
         int index = (row * 8) + dial;
+        DialStates[index] = value;
         var rot = Dials[index].rotation.eulerAngles;
         rot.y = DialOrigin.y + (value * 2.25f - 160f);
         Dials[index].rotation = Quaternion.Euler(rot);
