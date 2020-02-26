@@ -150,6 +150,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7670219205249968458, guid: c38b1f982884d0a49ae6307d73ac55a7,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7670219205635566500, guid: c38b1f982884d0a49ae6307d73ac55a7,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7670219206802041845, guid: c38b1f982884d0a49ae6307d73ac55a7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -208,7 +218,7 @@ PrefabInstance:
     - target: {fileID: 7670219206802041846, guid: c38b1f982884d0a49ae6307d73ac55a7,
         type: 3}
       propertyPath: m_Name
-      value: '[URP Lights]'
+      value: '[Lights URP White]'
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1279519551553573649, guid: c38b1f982884d0a49ae6307d73ac55a7, type: 3}

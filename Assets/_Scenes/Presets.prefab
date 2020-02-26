@@ -83,7 +83,7 @@ MonoBehaviour:
       type: 2}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    SkyBoxURP: {fileID: 0}
+    SkyBoxURP: {fileID: 2100000, guid: 0da8d58e3584c48f3877c2c0ef2f0182, type: 2}
   - Name: Subtle
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
       type: 2}
@@ -101,7 +101,7 @@ MonoBehaviour:
       type: 2}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    SkyBoxURP: {fileID: 0}
+    SkyBoxURP: {fileID: 2100000, guid: 0da8d58e3584c48f3877c2c0ef2f0182, type: 2}
   - Name: Gem
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: d8a4a6ef844931f45870fbcc07d957d1,
       type: 2}
@@ -118,7 +118,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    SkyBoxURP: {fileID: 0}
+    SkyBoxURP: {fileID: 2100000, guid: 70bd22de4377d9144894f43eeef4469f, type: 2}
   - Name: RGB
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 5c6e4256d39ccfe40ae83393b8d89c5c,
       type: 2}
@@ -199,7 +199,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    SkyBoxURP: {fileID: 0}
+    SkyBoxURP: {fileID: 2100000, guid: bc4e2c2c6f5934598a196d7494726d23, type: 2}
   - Name: Gray and Colorful
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 5c6e4256d39ccfe40ae83393b8d89c5c,
       type: 2}
@@ -233,7 +233,7 @@ MonoBehaviour:
     ActiveVolumeProfileURP: {fileID: 0}
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0.735849, g: 0.735849, b: 0.735849, a: 0}
-    SkyBoxURP: {fileID: 0}
+    SkyBoxURP: {fileID: 2100000, guid: bc4e2c2c6f5934598a196d7494726d23, type: 2}
   - Name: Graph Paper
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 040eaef198cabe643b89fb9a2b5f3341,
       type: 2}
@@ -1045,6 +1045,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2610514318310113261, guid: ccd7027bb8ca3a74aaeece113795f3db,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2610514318310113263, guid: ccd7027bb8ca3a74aaeece113795f3db,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1104,6 +1109,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PolyVFX 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2610514318310113266, guid: ccd7027bb8ca3a74aaeece113795f3db,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ccd7027bb8ca3a74aaeece113795f3db, type: 3}
