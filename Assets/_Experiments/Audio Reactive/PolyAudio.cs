@@ -16,6 +16,8 @@ public class PolyAudio : MonoBehaviour
     public SampleType Sample;
 
     public int RenderEvery = 3;
+    [Range(.5f, 1.5f)]
+    public float MaxLevelDropoff = .98f;
 
     [Header("Low Pass")]
     public AnimationCurve CurveLow;
@@ -81,7 +83,7 @@ public class PolyAudio : MonoBehaviour
         rawValue = Mathf.Abs(rawValue);
         if (rawValue > 254) rawValue = 0;  // Ignore spike on start
         if (rawValue > maxLevel) maxLevel = rawValue;
-        maxLevel *= .95f;
+        maxLevel *= MaxLevelDropoff;
         float peak = rawValue / maxLevel;
         if (peak > triggerTheshold)
         {
@@ -93,7 +95,6 @@ public class PolyAudio : MonoBehaviour
         result = curve.Evaluate(result);
         result *= scale;
         result += offset;
-        result = Mathf.Round(result * 100) / 100f;
         return result;
     }
 }

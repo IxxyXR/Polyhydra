@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Conway;
 using RtMidi.LowLevel;
+using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
 
@@ -685,9 +686,22 @@ public class PolyMidi : MonoBehaviour
             if (currentControl >= poly.ConwayOperators.Count) return;
             var op = poly.ConwayOperators[currentControl];
             var opconfig = poly.opconfigs[op.opType];
-            op.amount = Mathf.Lerp(opconfig.amountSafeMin, opconfig.amountSafeMax, currentControlValue);
+            var currentState = novationPrefab.WideButtonStates[currentControl + 8];
+            if (currentState == 5)
+            {
+               float amount = Mathf.Lerp(opconfig.amountSafeMin, opconfig.amountSafeMax, currentControlValue);
+               amount = Mathf.Round(amount * 100) / 100f;
+               op.amount = amount;
+            }
+            else
+            {
+               float amount = Mathf.Lerp(0.01f, .99f, currentControlValue);
+               amount = Mathf.Round(amount * 100) / 100f;
+               op.amount2 = amount;
+            }
             poly.ConwayOperators[currentControl] = op;
             FinalisePoly();
+
          }
       }
       else if (currentControlBank == controlBanks.NovationDialPan)
@@ -729,7 +743,8 @@ public class PolyMidi : MonoBehaviour
       {
          if (currentControl >= poly.ConwayOperators.Count) return;
          var op = poly.ConwayOperators[currentControl];
-         op.opType = (PolyHydra.Ops) (currentControlValue * Enum.GetNames(typeof(PolyHydra.Ops)).Length - 1);
+         op.opType = (PolyHydra.Ops) (currentControlValue * (Enum.GetNames(typeof(PolyHydra.Ops)).Length - 5));
+         op.amount2 = poly.opconfigs[op.opType].amount2Default;
          op.disabled = false;
          poly.ConwayOperators[currentControl] = op;
          FinalisePoly();
