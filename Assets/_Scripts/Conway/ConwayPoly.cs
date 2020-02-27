@@ -2490,7 +2490,7 @@ namespace Conway
 			return Whirl(ratio).Dual();
 		}
 
-		public ConwayPoly Meta(float offset, FaceSelections facesel, bool randomize)
+		public ConwayPoly Meta(float offset, float offset2, FaceSelections facesel, bool randomize)
 		{
 			var vertexPoints = new List<Vector3>();
 			var faceIndices = new List<IEnumerable<int>>();
@@ -2503,9 +2503,10 @@ namespace Conway
 
 			for (var i = 0; i < Vertices.Count; i++)
 			{
-				vertexPoints.Add(Vertices[i].Position);
+				var vert = Vertices[i];
+				vertexPoints.Add(vert.Position + (vert.Normal * (offset2 + 1f)));
 				vertexRoles.Add(Roles.Existing);
-				existingVertices[vertexPoints[i]] = i;
+				existingVertices[vert.Position] = i;
 			}
 
 			for (var i = 0; i < Faces.Count; i++)

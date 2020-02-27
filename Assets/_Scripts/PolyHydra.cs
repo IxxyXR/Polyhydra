@@ -389,7 +389,7 @@ public class PolyHydra : MonoBehaviour
 			{Ops.Join, new OpConfig{amountDefault = 0.5f, amountMin = -1f, amountMax = 2f, amountSafeMin = -0.5f, amountSafeMax = 0.999f}},  // TODO Support random
 			{Ops.Needle, new OpConfig{amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 0.5f, usesRandomize=true}},
 			{Ops.Ortho, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 0.999f, usesRandomize=true}},
-			{Ops.Meta, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = -0.333f, amountSafeMax = 0.666f, usesRandomize=true}},
+			{Ops.Meta, new OpConfig{usesFaces=true, amountDefault = 0f, amountMin = -6, amountMax = 6, amountSafeMin = -0.333f, amountSafeMax = 0.666f, usesAmount2 = true, amount2Default = 0f, usesRandomize=true}},
 			{Ops.Truncate, new OpConfig{usesFaces=true, amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.5f, usesRandomize=true}},
 			{Ops.Gyro, new OpConfig{amountDefault = 0.33f, amountMin = -.5f, amountMax = 0.5f, amountSafeMin = 0.001f, amountSafeMax = 0.5f, usesAmount2 = true}},
 			{Ops.Snub, new OpConfig{amountDefault = 0.5f, amountMin = -1f, amountMax = 1f, amountSafeMin = 0.001f, amountSafeMax = 0.999f}},
@@ -879,7 +879,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Ortho(amount, op.randomize);
 				break;
 			case Ops.Meta:
-				conway = conway.Meta(amount, op.faceSelections, op.randomize);
+				conway = conway.Meta(amount, op.amount2, op.faceSelections, op.randomize);
 				break;
 			case Ops.Truncate:
 				conway = conway.Truncate(amount, op.faceSelections, op.randomize);
@@ -1095,7 +1095,7 @@ public class PolyHydra : MonoBehaviour
 		foreach (var op in ConwayOperators.ToList())
 		{
 			
-			if (op.disabled) continue;
+			if (op.disabled || op.opType==Ops.Identity) continue;
 
 			if (enableCaching)
 			{
