@@ -19,15 +19,15 @@ public class AppearancePresets : MonoBehaviour {
 	
 	public AppearancePreset ApplyPresetToPoly(string presetName)
 	{
-		AppearancePreset preset;
+		AppearancePreset preset = null;
 		if (presetName != null)
 		{
-			preset = Items[Items.FindIndex(x => x.Name == presetName)];
-			ApplyPresetToPoly(preset);
-		}
-		else
-		{
-			preset = null;
+			int index = Items.FindIndex(x => x.Name == presetName);
+			if (index >= 0)
+			{
+				preset = Items[index];
+				ApplyPresetToPoly(preset);
+			}
 		}
 		return preset;
 	}
