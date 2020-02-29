@@ -36,13 +36,13 @@
     "com.unity.textmeshpro": "2.0.1",
     "com.unity.timeline": "1.3.0-preview.7",
     "com.unity.ugui": "1.0.0",
-    "com.unity.urp-measured-materials-car-paint": "https://github.com/Unity-Repackages/urp-measured-materials-car-paint.git",
-    "com.unity.urp-measured-materials-common": "https://github.com/Unity-Repackages/urp-measured-materials-common.git",
-    "com.unity.urp-measured-materials-glass": "https://github.com/Unity-Repackages/urp-measured-materials-glass.git",
-    "com.unity.urp-measured-materials-metals": "https://github.com/Unity-Repackages/urp-measured-materials-metals.git",
-    "com.unity.urp-measured-materials-others": "https://github.com/Unity-Repackages/urp-measured-materials-others.git",
-    "com.unity.urp-measured-materials-plastic": "https://github.com/Unity-Repackages/urp-measured-materials-plastic.git",
-    "com.unity.urp-measured-materials-rubber": "https://github.com/Unity-Repackages/urp-measured-materials-rubber.git",
+    "com.unity.urp-measured-materials-car-paint": "https://github.com/Unity-Repackages/urp-measured-materials-car-paint.git#bare",
+    "com.unity.urp-measured-materials-common": "https://github.com/Unity-Repackages/urp-measured-materials-common.git#bare",
+    "com.unity.urp-measured-materials-glass": "https://github.com/Unity-Repackages/urp-measured-materials-glass.git#bare",
+    "com.unity.urp-measured-materials-metals": "https://github.com/Unity-Repackages/urp-measured-materials-metals.git#bare",
+    "com.unity.urp-measured-materials-others": "https://github.com/Unity-Repackages/urp-measured-materials-others.git#bare",
+    "com.unity.urp-measured-materials-plastic": "https://github.com/Unity-Repackages/urp-measured-materials-plastic.git#bare",
+    "com.unity.urp-measured-materials-rubber": "https://github.com/Unity-Repackages/urp-measured-materials-rubber.git#bare",
     "com.unity.vectorgraphics": "2.0.0-preview.11",
     "com.unity.visualeffectgraph": "7.2.1",
     "com.unity.xr.oculus.android": "2.38.6",
@@ -119,32 +119,32 @@
       "hash": "de3aa19e5ab888636d4c1a2924572c59621df5f1"
     },
     "com.unity.urp-measured-materials-car-paint": {
-      "revision": "HEAD",
-      "hash": "110d5af8e2616582b1ac517b111482c87131bfc9"
+      "revision": "bare",
+      "hash": "6c659b4a4121ec053b0d8aa0a9b237b406449576"
     },
     "com.unity.urp-measured-materials-common": {
-      "revision": "HEAD",
-      "hash": "6887527d9a277060647d9855fe4f4130881b8a91"
+      "revision": "bare",
+      "hash": "85adfdb7d1bd28b0246a7a6c2e8e28da9786025e"
     },
     "com.unity.urp-measured-materials-glass": {
-      "revision": "HEAD",
-      "hash": "bd120bbcc5e918c7b0959986992229dc861fb356"
+      "revision": "bare",
+      "hash": "126e2a585484dffb566f5fc56441f85ff5ef655f"
     },
     "com.unity.urp-measured-materials-metals": {
-      "revision": "HEAD",
-      "hash": "8605bda248958d026fed252fc20b93b9dd99a559"
+      "revision": "bare",
+      "hash": "83b15819a623113d43a157abd45c2ec17a486522"
     },
     "com.unity.urp-measured-materials-others": {
-      "revision": "HEAD",
-      "hash": "80cb187dc9faca82221a44fdd4b451c524d8ec98"
+      "revision": "bare",
+      "hash": "4a88abeb77a92373de48a60650a495e6db88038b"
     },
     "com.unity.urp-measured-materials-plastic": {
-      "revision": "HEAD",
-      "hash": "3e947e54a10764fca823594339a05cd81f5ce6f7"
+      "revision": "bare",
+      "hash": "fb1e880e060f55b8d9368794f625b13d941dd926"
     },
     "com.unity.urp-measured-materials-rubber": {
-      "revision": "HEAD",
-      "hash": "29b98f426b1454c38efc424328dbeaf7cbd7ff83"
+      "revision": "bare",
+      "hash": "9122dbbd413c47d4bbed5081556a742ce8fa20cf"
     },
     "jp.keijiro.lasp": {
       "revision": "upm",
