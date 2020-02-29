@@ -105,7 +105,7 @@ MonoBehaviour:
   - Name: Gem
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: d8a4a6ef844931f45870fbcc07d957d1,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: d8a4a6ef844931f45870fbcc07d957d1,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: efdf69a004a8e944dbd544a58b62c51c,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps: []
@@ -116,7 +116,7 @@ MonoBehaviour:
     ActiveVolumeProfileHDRP: {fileID: 11400000, guid: 2b5451699aaa22b4f87bdd15ca624562,
       type: 2}
     ActiveVolumeProfileURP: {fileID: 0}
-    CameraClearColorMode: 1
+    CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     SkyBoxURP: {fileID: 2100000, guid: 70bd22de4377d9144894f43eeef4469f, type: 2}
   - Name: RGB
@@ -459,7 +459,7 @@ MonoBehaviour:
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     SkyBoxURP: {fileID: 0}
-  editorPresetIndex: 3
+  editorPresetIndex: 14
 --- !u!1 &2770511816918282493
 GameObject:
   m_ObjectHideFlags: 0
@@ -1048,7 +1048,7 @@ PrefabInstance:
     - target: {fileID: 2610514318310113261, guid: ccd7027bb8ca3a74aaeece113795f3db,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2610514318310113263, guid: ccd7027bb8ca3a74aaeece113795f3db,
         type: 3}
@@ -1113,7 +1113,7 @@ PrefabInstance:
     - target: {fileID: 2610514318310113266, guid: ccd7027bb8ca3a74aaeece113795f3db,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ccd7027bb8ca3a74aaeece113795f3db, type: 3}
