@@ -17,23 +17,31 @@
       "OpType": "Lace",
       "FaceSelections": "All",
       "Amount": 0.5,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "VertexScale",
       "FaceSelections": "AllNew",
       "Amount": 0.15,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     }
   ]
 }

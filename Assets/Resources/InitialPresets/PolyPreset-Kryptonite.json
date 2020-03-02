@@ -17,67 +17,91 @@
       "OpType": "Yank",
       "FaceSelections": "All",
       "Amount": 0.333333,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": true,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "Expand",
       "FaceSelections": "All",
       "Amount": -14.3080359,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": true,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "FaceScale",
       "FaceSelections": "All",
       "Amount": 0.39794445,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "Extrude",
       "FaceSelections": "All",
       "Amount": -4.112723,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "Kis",
       "FaceSelections": "FiveSided",
       "Amount": 1.63058281,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": true,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "Kis",
       "FaceSelections": "SixSided",
       "Amount": 0.789063,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": true,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     }
   ]
 }

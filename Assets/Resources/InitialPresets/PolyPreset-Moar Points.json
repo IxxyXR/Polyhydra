@@ -17,34 +17,46 @@
       "OpType": "Kis",
       "FaceSelections": "FiveSided",
       "Amount": 0.56863904,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "Needle",
       "FaceSelections": "All",
       "Amount": -0.207031369,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "Exalt",
       "FaceSelections": "All",
       "Amount": 0.120536089,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     }
   ]
 }

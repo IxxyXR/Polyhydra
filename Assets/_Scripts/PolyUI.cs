@@ -353,20 +353,27 @@ public class PolyUI : MonoBehaviour {
 
         opPrefabManager.AmountSlider.gameObject.SetActive(opConfig.usesAmount);
         opPrefabManager.AmountInput.gameObject.SetActive(opConfig.usesAmount);
+        opPrefabManager.Amount2Slider.gameObject.SetActive(opConfig.usesAmount2);
+        opPrefabManager.Amount2Input.gameObject.SetActive(opConfig.usesAmount2);
         opPrefabManager.ToggleAnimate.gameObject.SetActive(opConfig.usesAmount);
         opPrefabManager.GetComponent<RectTransform>().sizeDelta = new Vector2(200, opConfig.usesAmount?238:100);
 
         opPrefabManager.AmountSlider.value = opConfig.amountDefault;
+        opPrefabManager.Amount2Slider.value = opConfig.amount2Default;
 
         if (poly.SafeLimits)
         {
             opPrefabManager.AmountSlider.minValue = opConfig.amountSafeMin;
             opPrefabManager.AmountSlider.maxValue = opConfig.amountSafeMax;
+            opPrefabManager.Amount2Slider.minValue = opConfig.amount2SafeMin;
+            opPrefabManager.Amount2Slider.maxValue = opConfig.amount2SafeMax;
         }
         else
         {
             opPrefabManager.AmountSlider.minValue = opConfig.amountMin;
             opPrefabManager.AmountSlider.maxValue = opConfig.amountMax;
+            opPrefabManager.Amount2Slider.minValue = opConfig.amount2Min;
+            opPrefabManager.Amount2Slider.maxValue = opConfig.amount2Max;
         }
     }
 
@@ -399,10 +406,15 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.FaceSelectionDropdown.value = (int) op.faceSelections;
         opPrefabManager.AmountSlider.value = op.amount;
         opPrefabManager.AmountInput.text = op.amount.ToString();
+        opPrefabManager.Amount2Slider.value = op.amount2;
+        opPrefabManager.Amount2Input.text = op.amount2.ToString();
         opPrefabManager.RandomizeToggle.isOn = op.randomize;
         opPrefabManager.ToggleAnimate.isOn = op.animate;
         opPrefabManager.AnimRateInput.text = op.animationRate.ToString();
         opPrefabManager.AnimAmountInput.text = op.animationAmount.ToString();
+        opPrefabManager.AudioLowAmountInput.text = op.audioLowAmount.ToString();
+        opPrefabManager.AudioMidAmountInput.text = op.audioMidAmount.ToString();
+        opPrefabManager.AudioHighAmountInput.text = op.audioHighAmount.ToString();
         AnimateToggleChanged(op.animate);
 
         opPrefabManager.OpTypeDropdown.onValueChanged.AddListener(delegate{OpTypeChanged();});
@@ -410,6 +422,8 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.DisabledToggle.onValueChanged.AddListener(delegate{OpsUIToPoly();});
         opPrefabManager.AmountSlider.onValueChanged.AddListener(delegate{AmountSliderChanged();});
         opPrefabManager.AmountInput.onValueChanged.AddListener(delegate{AmountInputChanged();});
+        opPrefabManager.Amount2Slider.onValueChanged.AddListener(delegate{Amount2SliderChanged();});
+        opPrefabManager.Amount2Input.onValueChanged.AddListener(delegate{Amount2InputChanged();});
         opPrefabManager.RandomizeToggle.onValueChanged.AddListener(delegate{OpsUIToPoly();});
 
         opPrefabManager.UpButton.onClick.AddListener(MoveOpUp);
@@ -419,7 +433,10 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.ToggleAnimate.onValueChanged.AddListener(AnimateToggleChanged);
         opPrefabManager.AnimRateInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
         opPrefabManager.AnimAmountInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
-        
+        opPrefabManager.AudioLowAmountInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opPrefabManager.AudioMidAmountInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opPrefabManager.AudioHighAmountInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+
         opPrefabManager.Index = opPrefabs.Count;
         
         void AnimateToggleChanged(bool value)
@@ -453,19 +470,42 @@ public class PolyUI : MonoBehaviour {
 
     void AmountSliderChanged()
     {
-        //if (!poly.disableThreading && !poly.done) return;
         var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountSlider;
         var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountInput;
-        slider.value = Mathf.Round(slider.value * 100) / 100f;
-        input.text = slider.value.ToString();
-        // Not needed if we also modify the text field
-        // OpsUIToPoly();
+        _AmountSliderChanged(slider, input);
     }
 
     void AmountInputChanged()
     {
         var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountSlider;
         var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountInput;
+        _AmountInputChanged(slider, input);
+    }
+
+    void Amount2SliderChanged()
+    {
+        var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().Amount2Slider;
+        var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().Amount2Input;
+        _AmountSliderChanged(slider, input);
+    }
+
+    void Amount2InputChanged()
+    {
+        var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().Amount2Slider;
+        var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().Amount2Input;
+        _AmountInputChanged(slider, input);
+    }
+
+    void _AmountSliderChanged(Slider slider, InputField input)
+    {
+        slider.value = Mathf.Round(slider.value * 100) / 100f;
+        input.text = slider.value.ToString();
+        // Not needed if we also modify the text field
+        // OpsUIToPoly();
+    }
+
+    void _AmountInputChanged(Slider slider, InputField input)
+    {
         float value;
         if (float.TryParse(input.text, out value))
         {
@@ -489,11 +529,15 @@ public class PolyUI : MonoBehaviour {
             op.faceSelections = (ConwayPoly.FaceSelections) opPrefabManager.FaceSelectionDropdown.value;
             op.disabled = opPrefabManager.DisabledToggle.isOn;
             op.amount = opPrefabManager.AmountSlider.value;
+            op.amount2 = opPrefabManager.Amount2Slider.value;
             op.randomize = opPrefabManager.RandomizeToggle.isOn;
             op.animate = opPrefabManager.ToggleAnimate.isOn;
             float tempVal;
             if (float.TryParse(opPrefabManager.AnimRateInput.text, out tempVal)) op.animationRate = tempVal;
             if (float.TryParse(opPrefabManager.AnimAmountInput.text, out tempVal)) op.animationAmount = tempVal;
+            if (float.TryParse(opPrefabManager.AudioLowAmountInput.text, out tempVal)) op.audioLowAmount = tempVal;
+            if (float.TryParse(opPrefabManager.AudioMidAmountInput.text, out tempVal)) op.audioMidAmount = tempVal;
+            if (float.TryParse(opPrefabManager.AudioHighAmountInput.text, out tempVal)) op.audioHighAmount = tempVal;
             poly.ConwayOperators[index] = op;
 
         }
@@ -755,20 +799,23 @@ public class PolyUI : MonoBehaviour {
     {
         poly.SafeLimits = SafeLimitsToggle.isOn;
         var opSliders = OpContainer.GetComponentsInChildren<Slider>();
-        for (var i = 0; i < opSliders.Length; i++)
+        for (var i = 0; i < opSliders.Length; i+=2)
         {
-            var opSlider = opSliders[i];
-            var op = poly.ConwayOperators[i];
+            var op = poly.ConwayOperators[i/2];
             var opConfig = poly.opconfigs[op.opType];
             if (poly.SafeLimits)
             {
-                opSlider.minValue = opConfig.amountSafeMin;
-                opSlider.maxValue = opConfig.amountSafeMax;
+                opSliders[i].minValue = opConfig.amountSafeMin;
+                opSliders[i].maxValue = opConfig.amountSafeMax;
+                opSliders[i+1].minValue = opConfig.amount2SafeMin;
+                opSliders[i+1].maxValue = opConfig.amount2SafeMax;
             }
             else
             {
-                opSlider.minValue = opConfig.amountMin;
-                opSlider.maxValue = opConfig.amountMax;
+                opSliders[i].minValue = opConfig.amountMin;
+                opSliders[i].maxValue = opConfig.amountMax;
+                opSliders[i+1].minValue = opConfig.amount2Min;
+                opSliders[i+1].maxValue = opConfig.amount2Max;
             }
         }
 

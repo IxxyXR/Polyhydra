@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using RtMidi.LowLevel;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -23,6 +24,8 @@ public class AkaiPrefabController : MonoBehaviour
     public float SliderOffset = 0.0248f;
     public float RowButtonOffset = 0.02f;
     public float ColumnButtonOffset = 0.0248f;
+
+    [NonSerialized]  public MidiOutPort MidiOut;
 
     [NonSerialized] public List<Transform> Sliders = new List<Transform>();
     [NonSerialized] public List<Transform> MainButtons = new List<Transform>();

@@ -17,89 +17,121 @@
       "OpType": "Whirl",
       "FaceSelections": "All",
       "Amount": 0.05905512,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "Expand",
       "FaceSelections": "All",
       "Amount": 0.5,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": true,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "Stake",
       "FaceSelections": "All",
       "Amount": 0.409448832,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "Chamfer",
       "FaceSelections": "All",
       "Amount": 0.5,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": true,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "OppositeLace",
       "FaceSelections": "All",
       "Amount": 0.5905512,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "OppositeLace",
       "FaceSelections": "All",
       "Amount": 0.5,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": true,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "Stake",
       "FaceSelections": "All",
       "Amount": 0.5,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": true,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "Whirl",
       "FaceSelections": "All",
       "Amount": 0.25,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": true,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     }
   ]
 }

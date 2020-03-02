@@ -1,0 +1,47 @@
+{
+  "Name": "Jamnitzer",
+  "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
+  "PolyType": "Icosahedron",
+  "JohnsonPolyType": "ElongatedPyramid",
+  "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Plane",
+  "BypassOps": false,
+  "SafeLimits": true,
+  "PrismP": 3,
+  "PrismQ": 2,
+  "AppearancePresetName": "Cold Metal",
+  "Ops": [
+    {
+      "OpType": "OppositeLace",
+      "FaceSelections": "All",
+      "Amount": 0.13,
+      "Amount2": 0.0,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 1.0,
+      "AnimationAmount": 1.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
+    },
+    {
+      "OpType": "VertexRotate",
+      "FaceSelections": "Existing",
+      "Amount": 50.0,
+      "Amount2": 0.0,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 1.0,
+      "AnimationAmount": 1.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
+    }
+  ]
+}

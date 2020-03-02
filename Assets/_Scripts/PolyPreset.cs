@@ -32,12 +32,16 @@ public class PolyPreset {
 		[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.Ops OpType;
 		[JsonConverter(typeof(StringEnumConverter))] public ConwayPoly.FaceSelections FaceSelections;
 		public float Amount;
+		public float Amount2;
 		public float AnimatedAmount; // Not needed for presets but needed for cache key generation
 		public bool Randomize;
 		public bool Disabled;
 		public bool Animate;
 		public float AnimationRate;
 		public float AnimationAmount;
+		public float AudioLowAmount;
+		public float AudioMidAmount;
+		public float AudioHighAmount;
 	}
 	
 	public Op[] Ops;
@@ -67,12 +71,16 @@ public class PolyPreset {
 				OpType = polyOp.opType,
 				FaceSelections = polyOp.faceSelections,
 				Amount = polyOp.amount,
+				Amount2 = polyOp.amount2,
 				AnimatedAmount = polyOp.animatedAmount,
 				Randomize = polyOp.randomize,
 				Disabled = polyOp.disabled,
 				Animate = polyOp.animate,
 				AnimationRate = polyOp.animationRate,
 				AnimationAmount = polyOp.animationAmount,
+				AudioLowAmount = polyOp.audioLowAmount,
+				AudioMidAmount = polyOp.audioMidAmount,
+				AudioHighAmount = polyOp.audioHighAmount,
 			};
 			Ops[index] = op;
 		}
@@ -102,12 +110,16 @@ public class PolyPreset {
 				opType = presetOp.OpType,
 				faceSelections = presetOp.FaceSelections,
 				amount = presetOp.Amount,
+				amount2 = presetOp.Amount2,
 				animatedAmount = presetOp.AnimatedAmount,
 				randomize = presetOp.Randomize,
 				disabled = presetOp.Disabled,
 				animate = presetOp.Animate,
 				animationRate = presetOp.AnimationRate,
 				animationAmount = presetOp.AnimationAmount,
+				audioLowAmount = presetOp.AudioLowAmount,
+				audioMidAmount = presetOp.AudioMidAmount,
+				audioHighAmount = presetOp.AudioHighAmount,
 			};
 			poly.ConwayOperators.Add(op);
 		}

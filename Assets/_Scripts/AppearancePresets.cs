@@ -19,15 +19,15 @@ public class AppearancePresets : MonoBehaviour {
 	
 	public AppearancePreset ApplyPresetToPoly(string presetName)
 	{
-		AppearancePreset preset;
+		AppearancePreset preset = null;
 		if (presetName != null)
 		{
-			preset = Items[Items.FindIndex(x => x.Name == presetName)];
-			ApplyPresetToPoly(preset);
-		}
-		else
-		{
-			preset = null;
+			int index = Items.FindIndex(x => x.Name == presetName);
+			if (index >= 0)
+			{
+				preset = Items[index];
+				ApplyPresetToPoly(preset);
+			}
 		}
 		return preset;
 	}
@@ -76,6 +76,7 @@ public class AppearancePresets : MonoBehaviour {
 			ActiveVolume.profile = preset.ActiveVolumeProfileURP;
 			CurrentCamera.clearFlags = ConvertClearFlags(preset.CameraClearColorMode);
 			CurrentCamera.backgroundColor = preset.CameraBackgroundColor;
+			RenderSettings.skybox = preset.SkyBoxURP;
 		}
 		_poly.ColorMethod = preset.PolyhedronColorMethod;
 
@@ -83,6 +84,7 @@ public class AppearancePresets : MonoBehaviour {
 		var props = PropsParent.GetComponentsInChildren<Transform>(includeInactive: true);
 		foreach (var prop in props)
 		{
+			if (prop.gameObject == PropsParent.gameObject) continue;
 			if (preset.ActiveProps.Contains(prop.gameObject)) {prop.gameObject.SetActive(true);}
 			else {prop.gameObject.SetActive(false);}
 		}

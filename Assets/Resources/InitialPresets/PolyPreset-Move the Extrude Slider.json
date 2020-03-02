@@ -17,23 +17,31 @@
       "OpType": "FaceScale",
       "FaceSelections": "All",
       "Amount": -0.03,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": false,
       "AnimationRate": 0.0,
-      "AnimationAmount": 0.0
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     },
     {
       "OpType": "Extrude",
       "FaceSelections": "All",
       "Amount": 0.0,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
       "Animate": true,
       "AnimationRate": 0.5,
-      "AnimationAmount": 0.75
+      "AnimationAmount": 0.75,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
     }
   ]
 }

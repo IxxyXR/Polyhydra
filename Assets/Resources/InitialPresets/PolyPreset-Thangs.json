@@ -1,0 +1,47 @@
+{
+  "Name": "Thangs",
+  "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
+  "PolyType": "Cuboctahedron",
+  "JohnsonPolyType": "Rotunda",
+  "OtherPolyType": "L1",
+  "GridType": "Square",
+  "GridShape": "Cube",
+  "BypassOps": false,
+  "SafeLimits": false,
+  "PrismP": 3,
+  "PrismQ": 2,
+  "AppearancePresetName": "Vectrex",
+  "Ops": [
+    {
+      "OpType": "Kis",
+      "FaceSelections": "All",
+      "Amount": 1.0,
+      "Amount2": 0.0,
+      "AnimatedAmount": 0.399999976,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": true,
+      "AnimationRate": 2.0,
+      "AnimationAmount": 0.9,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
+    },
+    {
+      "OpType": "Layer",
+      "FaceSelections": "All",
+      "Amount": 1.11,
+      "Amount2": 0.0,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
+    }
+  ]
+}

@@ -41,10 +41,18 @@ public class PolyhydraSceneSetup : MonoBehaviour
         MidiController.gameObject.SetActive(MidiEnabled);
         VRPlayer.SetActive(VrEnabled);
         MainCamera.SetActive(!VrEnabled);
+
+        if (VrEnabled)
+        {
+            UnityEngine.XR.XRSettings.LoadDeviceByName("Oculus");
+        }
+        else
+        {
+            UnityEngine.XR.XRSettings.LoadDeviceByName("MockHMD");
+        }
         
         if (RenderingPipeline==RenderingPipelines.URP)
         {
-            Debug.Log(Resources.FindObjectsOfTypeAll<HDAdditionalCameraData>());
             Resources.FindObjectsOfTypeAll<HDAdditionalCameraData>().Select(x => x.enabled = true);
             Resources.FindObjectsOfTypeAll<HDAdditionalLightData>().Select(x => x.enabled = true);
             Resources.FindObjectsOfTypeAll<UniversalAdditionalCameraData>().Select(x => x.enabled = false);

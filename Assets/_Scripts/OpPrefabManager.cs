@@ -12,6 +12,8 @@ public class OpPrefabManager : MonoBehaviour
     public Toggle RandomizeToggle;
     public Slider AmountSlider;
     public InputField AmountInput;
+    public Slider Amount2Slider;
+    public InputField Amount2Input;
     public Toggle DisabledToggle;
     public Button UpButton;
     public Button DownButton;
@@ -20,6 +22,9 @@ public class OpPrefabManager : MonoBehaviour
     public Transform AnimationControls;
     public InputField AnimRateInput;
     public InputField AnimAmountInput;
+    public InputField AudioLowAmountInput;
+    public InputField AudioMidAmountInput;
+    public InputField AudioHighAmountInput;
 
 //    public void DisableAll()
 //    {

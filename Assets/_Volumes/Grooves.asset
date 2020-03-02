@@ -71,6 +71,9 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0.66917866
     min: 0
+  upperHemisphereLuxColor:
+    m_OverrideState: 0
+    m_Value: {x: 0, y: 0, z: 0}
   desiredLuxValue:
     m_OverrideState: 0
     m_Value: 20000
@@ -87,6 +90,55 @@ MonoBehaviour:
   hdriSky:
     m_OverrideState: 1
     m_Value: {fileID: 8900000, guid: ea92cdd070a44cf49bc26ad396767ea1, type: 3}
+  enableBackplate:
+    m_OverrideState: 0
+    m_Value: 0
+  backplateType:
+    m_OverrideState: 0
+    m_Value: 0
+  groundLevel:
+    m_OverrideState: 0
+    m_Value: 0
+  scale:
+    m_OverrideState: 0
+    m_Value: {x: 32, y: 32}
+  projectionDistance:
+    m_OverrideState: 0
+    m_Value: 16
+    min: 0.0000001
+  plateRotation:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+    max: 360
+  plateTexRotation:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+    max: 360
+  plateTexOffset:
+    m_OverrideState: 0
+    m_Value: {x: 0, y: 0}
+  blendAmount:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+    max: 100
+  shadowTint:
+    m_OverrideState: 0
+    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    hdr: 0
+    showAlpha: 1
+    showEyeDropper: 1
+  pointLightShadow:
+    m_OverrideState: 0
+    m_Value: 0
+  dirLightShadow:
+    m_OverrideState: 0
+    m_Value: 0
+  rectLightShadow:
+    m_OverrideState: 0
+    m_Value: 0
 --- !u!114 &-6763096911889931384
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -101,6 +153,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 0
   m_AdvancedMode: 0
+  quality:
+    m_OverrideState: 0
+    m_Value: 1
   enable:
     m_OverrideState: 1
     m_Value: 1
@@ -127,7 +182,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 5
     min: 0
-  sampleCount:
+  m_SampleCount:
     m_OverrideState: 1
     m_Value: 8
     min: 4
@@ -146,6 +201,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 0
   m_AdvancedMode: 0
+  quality:
+    m_OverrideState: 0
+    m_Value: 1
   spectralLut:
     m_OverrideState: 0
     m_Value: {fileID: 0}
@@ -154,7 +212,7 @@ MonoBehaviour:
     m_Value: 0.7
     min: 0
     max: 1
-  maxSamples:
+  m_MaxSamples:
     m_OverrideState: 0
     m_Value: 8
     min: 3
@@ -177,6 +235,11 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 500
     min: 0
+  directionalTransmissionMultiplier:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0
+    max: 1
   cascadeShadowSplitCount:
     m_OverrideState: 0
     m_Value: 4
@@ -300,6 +363,12 @@ MonoBehaviour:
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
+  tint:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 1
+    showAlpha: 0
+    showEyeDropper: 1
   density:
     m_OverrideState: 0
     m_Value: 1
@@ -365,6 +434,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 0
   m_AdvancedMode: 0
+  quality:
+    m_OverrideState: 0
+    m_Value: 1
+  threshold:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
   intensity:
     m_OverrideState: 1
     m_Value: 0.3
@@ -388,16 +464,13 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
     min: 0
-  highQualityFiltering:
+  anamorphic:
     m_OverrideState: 0
     m_Value: 1
-  resolution:
+  m_Resolution:
     m_OverrideState: 0
     m_Value: 2
-  prefilter:
-    m_OverrideState: 0
-    m_Value: 0
-  anamorphic:
+  m_HighQualityFiltering:
     m_OverrideState: 0
     m_Value: 1
 --- !u!114 &11400000

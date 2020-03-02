@@ -15,17 +15,32 @@ public class PolyMidi : MonoBehaviour
 
    private int LastFrameRendered = -1;
    private MidiProbe _probe;
-   private MidiOutPort OutPort;
-   private MidiInPort InPort;
+   private MidiOutPort AkaiOutPort;
+   private MidiInPort AkaiInPort;
+   private MidiOutPort NovationOutPort;
+   private MidiInPort NovationInPort;
    private int[] MidiColorValues = {1, 5, 3};
    private const int MAXOPS = 4  ;
    private AkaiPrefabController akaiPrefab;
+   private NovationPrefabController novationPrefab;
    private float SliderDeadZone = 0.05f;
-   private byte[] LastSliderValue;
+   private byte[][] LastSliderValue;
 
-   private int slider;
-   private float amount;
+
+   private int currentControl;
+   private float currentControlValue;
    private bool ControlHasChanged;
+
+   private enum controlBanks
+   {
+      AkaiSlider,
+      NovationSlider,
+      NovationDialSendA,
+      NovationDialSendB,
+      NovationDialPan,
+   }
+
+   private controlBanks currentControlBank;
 
    private List<(int, PolyHydra.JohnsonPolyTypes)> Johnsons = new List<(int, PolyHydra.JohnsonPolyTypes)>
    {
@@ -240,16 +255,21 @@ public class PolyMidi : MonoBehaviour
 
    void Start()
    {
-      akaiPrefab = GetComponentInChildren<AkaiPrefabController>();
       ScanPorts();
+      akaiPrefab = GetComponentInChildren<AkaiPrefabController>();
+      akaiPrefab.MidiOut = AkaiOutPort;
+      novationPrefab = GetComponentInChildren<NovationPrefabController>();
+      novationPrefab.MidiOut = NovationOutPort;
       poly.ConwayOperators.Clear();
       InitOps(MAXOPS);
-      SetLEDs();
+      SetAkaiLEDs();
+      SetNovationLEDs();
       FinalisePoly();
-      LastSliderValue = Enumerable.Repeat((byte)63, 64).ToArray();
-
-//      OutPort.SendAllOff(0);
-
+      LastSliderValue = new byte[16][];
+      for (int i = 0; i < 16; i++)
+      {
+         LastSliderValue[i] = Enumerable.Repeat((byte)63, 127).ToArray();
+      }
    }
 
    private void InitOps(int count)
@@ -286,19 +306,32 @@ public class PolyMidi : MonoBehaviour
       }
    }
 
-   void SetLEDs()
+   void SetNovationLEDs()
    {
+
+      if (NovationOutPort == null) return;
+
+      for (int column = 0; column < 8; column++)
+      {
+         novationPrefab.SetWideButton(column, 0, 3);
+         novationPrefab.SetWideButton(column, 1, 5);
+      }
+   }
+
+   void SetAkaiLEDs()
+   {
+      if (AkaiOutPort == null) return;
       for (var column = 0; column < MAXOPS; column++)
       {
 
          if (!poly.ConwayOperators[column].disabled)
          {
-            OutPort.SendNoteOn(0, column+64, 1);
+            AkaiOutPort.SendNoteOn(0, column+64, 1);
             akaiPrefab.SetColumnButton(column, 2);
          }
          else
          {
-            OutPort.SendNoteOn(0, column+64, 0);
+            AkaiOutPort.SendNoteOn(0, column+64, 0);
             akaiPrefab.SetColumnButton(column, -1);
          }
 
@@ -316,20 +349,20 @@ public class PolyMidi : MonoBehaviour
                {
                   if ((row % 2 == 0) && (op.faceSelections == ConwayPoly.FaceSelections.Existing || op.faceSelections == ConwayPoly.FaceSelections.New))
                   {
-                     OutPort.SendNoteOn(0, note, MidiColorValues[colorIndex]);
+                     AkaiOutPort.SendNoteOn(0, note, MidiColorValues[colorIndex]);
                      akaiPrefab.SetGridButtonLED(column, row, colorIndex);
                      akaiPrefab.SetGridButtonIcon(column, row, op.opType);
 
                   }
                   else if ((row % 2 == 1) && (op.faceSelections == ConwayPoly.FaceSelections.AllNew || op.faceSelections == ConwayPoly.FaceSelections.NewAlt))
                   {
-                     OutPort.SendNoteOn(0, note, MidiColorValues[colorIndex]);
+                     AkaiOutPort.SendNoteOn(0, note, MidiColorValues[colorIndex]);
                      akaiPrefab.SetGridButtonLED(column, row, colorIndex);
                      akaiPrefab.SetGridButtonIcon(column, row, op.opType);
                   }
                   else
                   {
-                     OutPort.SendNoteOn(0, note, 0);
+                     AkaiOutPort.SendNoteOn(0, note, 0);
                      akaiPrefab.SetGridButtonLED(column, row, -1);
                      akaiPrefab.SetGridButtonIcon(column, row, PolyHydra.Ops.Identity);
 
@@ -338,7 +371,7 @@ public class PolyMidi : MonoBehaviour
                }
                else
                {
-                  OutPort.SendNoteOn(0, note, MidiColorValues[colorIndex]);
+                  AkaiOutPort.SendNoteOn(0, note, MidiColorValues[colorIndex]);
                   akaiPrefab.SetGridButtonLED(column, row, colorIndex);
                   akaiPrefab.SetGridButtonIcon(column, row, op.opType);
                }
@@ -346,7 +379,7 @@ public class PolyMidi : MonoBehaviour
             }
             else
             {
-               OutPort.SendNoteOn(0, note, 0);
+               AkaiOutPort.SendNoteOn(0, note, 0);
                akaiPrefab.SetGridButtonLED(column, row, -1);
                akaiPrefab.SetGridButtonIcon(column, row, PolyHydra.Ops.Identity);
             }
@@ -383,11 +416,48 @@ public class PolyMidi : MonoBehaviour
       int column;
       int row;
 
-      if (note <= 63)
+      if (channel==8 && novationPrefab.ButtonIds.Contains(note))
       {
+         int buttonIndex = Array.IndexOf(novationPrefab.ButtonIds, note);
+         row = buttonIndex / 8;
+         column = buttonIndex % 8;
+         int newState = novationPrefab.WideButtonStates[buttonIndex];
 
+         if (row == 0)
+         {
+            var op = poly.ConwayOperators[column];
+            if (newState == 3)
+            {
+               newState = 4;
+               op.audioLowAmount = op.animationAmount;
+               op.animationAmount = 0;
+            }
+            else
+            {
+               newState = 3;
+               op.animationAmount = op.audioLowAmount;
+               op.audioLowAmount = 0;
+            }
+            poly.ConwayOperators[column] = op;
+         }
+         else if (row == 1)
+         {
+            if (newState == 5)
+            {
+               newState = 7;
+            }
+            else
+            {
+               newState = 5;
+            }
+//            newState = novationPrefab.WideButtonStates[buttonIndex];
+//            newState = (newState + 1) % 8;
+         }
+         novationPrefab.SetWideButton(column, row, newState);
+      }
+      else if (channel == 0 && note <= 63)
+      {
          // Normal buttons
-
          var pos = NoteToButtonPos(note);
          row = pos[0];
          column = pos[1];
@@ -424,30 +494,30 @@ public class PolyMidi : MonoBehaviour
             }
          }
 
-         SetLEDs();
-         HandleControlChange(0, Convert.ToByte(column+48), LastSliderValue[column+48]);
+         SetAkaiLEDs();
+         if (AkaiInPort != null)
+         {
+            // Simulate setting the sliders to their last known value
+            HandleControlChange(0, Convert.ToByte(column+48), LastSliderValue[channel][column+48]);
+         }
          FinalisePoly();
       }
       else if (note >= 64 && note <= 71)
       {
-
          // Main Column buttons
-
          column = note - 64;
          var op = poly.ConwayOperators[column];
          var opconfig = poly.opconfigs[op.opType];
          op.disabled = !op.disabled;
          op.amount = opconfig.amountDefault;
          poly.ConwayOperators[column] = op;
-         SetLEDs();
-         HandleControlChange(0, Convert.ToByte(column+48), LastSliderValue[column+48]);
+         SetAkaiLEDs();
+         HandleControlChange(0, Convert.ToByte(column+48), LastSliderValue[channel][column+48]);
          FinalisePoly();
       }
       else if (note >= 82 && note <= 89)
       {
-
          // Main Row Buttons
-
          row = 7 - (note - 82);
       }
       else if (note==98)
@@ -526,7 +596,7 @@ public class PolyMidi : MonoBehaviour
 
    void HandleNoteOff(byte channel, byte note)
    {
-      //Debug.Log($"{note} off");
+      Debug.Log($"{note} off");
    }
 
    private int TotalShapeCount()
@@ -536,13 +606,42 @@ public class PolyMidi : MonoBehaviour
 
    void HandleControlChange(byte channel, byte number, byte value)
    {
-      slider = number - 48;
-      LastSliderValue[number] = value;
-      akaiPrefab.SetSlider(slider, value);
-      amount = value / 127f;
-      amount = Remap(amount, SliderDeadZone, 1 - SliderDeadZone, 0, 1);
-      amount = amount < 0 ? 0 : amount;
-      amount = amount > 1 ? 1 : amount;
+      LastSliderValue[channel][number] = value;
+      currentControlValue = value / 127f;
+      currentControlValue = Remap(currentControlValue, SliderDeadZone, 1 - SliderDeadZone, 0, 1);
+      currentControlValue = currentControlValue < 0 ? 0 : currentControlValue;
+      currentControlValue = currentControlValue > 1 ? 1 : currentControlValue;
+
+      if (channel == 0)
+      {
+         currentControl = number - 48;
+         currentControlBank = controlBanks.AkaiSlider;
+         akaiPrefab.SetSlider(currentControl, value);
+      }
+      else if (channel == 8 && number >= 77 && number <= 84)
+      {
+         currentControl = number - 77;
+         currentControlBank = controlBanks.NovationSlider;
+         novationPrefab.SetSlider(currentControl, value);
+      }
+      else if (channel == 8 && number >= 13 && number <= 20)
+      {
+         currentControl = number - 13;
+         currentControlBank = controlBanks.NovationDialSendA;
+         novationPrefab.SetDial(2, currentControl, value);
+      }
+      else if (channel == 8 && number >= 29 && number <= 36)
+      {
+         currentControl = number - 29;
+         currentControlBank = controlBanks.NovationDialSendB;
+         novationPrefab.SetDial(1, currentControl, value);
+      }
+      else if (channel == 8 && number >= 49 && number <= 56)
+      {
+         currentControl = number - 49;
+         currentControlBank = controlBanks.NovationDialPan;
+         novationPrefab.SetDial(0, currentControl, value);
+      }
 
       ControlHasChanged = true;
    }
@@ -550,41 +649,132 @@ public class PolyMidi : MonoBehaviour
    void RenderControlChange()
    {
       ControlHasChanged = false;
-  
-      if (slider == 8)
+
+      if (currentControlBank == controlBanks.AkaiSlider)
       {
-         int shapeIndex = Mathf.FloorToInt(amount * TotalShapeCount());
-         if (shapeIndex < Polys.Length)
+         if (currentControl == 8)
          {
-            poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
-            var polyType = Polys[shapeIndex];
-            poly.UniformPolyType = polyType;
+            ModifyBaseOp();
+         }
+         else if (currentControl == 7)
+         {
+            ModifyAPreset();
          }
          else
          {
-            poly.ShapeType = PolyHydra.ShapeTypes.Johnson;
-            int johnsonIndex = shapeIndex - Polys.Length;
-            var johnsonType = Johnsons[johnsonIndex];
-            poly.JohnsonPolyType = johnsonType.Item2;
-            poly.PrismP = johnsonType.Item1;
+            if (currentControl >= poly.ConwayOperators.Count) return;
+            var op = poly.ConwayOperators[currentControl];
+            var opconfig = poly.opconfigs[op.opType];
+            op.amount = Mathf.Lerp(opconfig.amountSafeMin, opconfig.amountSafeMax, currentControlValue);
+            poly.ConwayOperators[currentControl] = op;
+            FinalisePoly();
          }
+      }
+      else if (currentControlBank == controlBanks.NovationSlider)
+      {
+         if (currentControl == 7)
+         {
+            ModifyBaseOp();
+         }
+         else if (currentControl == 6)
+         {
+            ModifyAPreset();
+         }
+         else
+         {
+            if (currentControl >= poly.ConwayOperators.Count) return;
+            var op = poly.ConwayOperators[currentControl];
+            var opconfig = poly.opconfigs[op.opType];
+            var currentState = novationPrefab.WideButtonStates[currentControl + 8];
+            if (currentState == 5)
+            {
+               float amount = Mathf.Lerp(opconfig.amountSafeMin, opconfig.amountSafeMax, currentControlValue);
+               amount = Mathf.Round(amount * 100) / 100f;
+               op.amount = amount;
+            }
+            else
+            {
+               float amount = Mathf.Lerp(0.01f, .99f, currentControlValue);
+               amount = Mathf.Round(amount * 100) / 100f;
+               op.amount2 = amount;
+            }
+            poly.ConwayOperators[currentControl] = op;
+            FinalisePoly();
+
+         }
+      }
+      else if (currentControlBank == controlBanks.NovationDialPan)
+      {
+         var op = poly.ConwayOperators[currentControl];
+         var currentState = novationPrefab.WideButtonStates[currentControl];
+         float animAmount = currentControlValue * 3f - 1.5f;
+         animAmount = Mathf.Round(animAmount * 100) / 100f;
+         if (Mathf.Abs(animAmount) <= 0.15f) animAmount = 0; // Snap to zero
+         if (currentState == 3)
+         {
+            op.animationAmount = animAmount;
+            op.audioLowAmount = 0;
+         }
+         else
+         {
+            op.audioLowAmount = animAmount;
+            op.animationAmount = 0;
+         }
+         if (op.animationAmount != 0 && !op.animate)
+         {
+            // Assume we're starting to animate here so set rate to somethine visible
+            // Otherwise it will look like this dial doesn't do anything
+            op.animate = true;
+            if (op.animationRate < 0.1f) op.animationRate = 0.5f;
+         }
+         op.animate = true;
+         poly.ConwayOperators[currentControl] = op;
+      }
+      else if (currentControlBank == controlBanks.NovationDialSendB)
+      {
+         var op = poly.ConwayOperators[currentControl];
+         float animationRate = currentControlValue * 5f;
+         animationRate = Mathf.Round(animationRate * 100) / 100f;
+         op.animationRate = animationRate;
+         poly.ConwayOperators[currentControl] = op;
+      }
+      else if (currentControlBank == controlBanks.NovationDialSendA)
+      {
+         if (currentControl >= poly.ConwayOperators.Count) return;
+         var op = poly.ConwayOperators[currentControl];
+         op.opType = (PolyHydra.Ops) (currentControlValue * (Enum.GetNames(typeof(PolyHydra.Ops)).Length - 5));
+         op.amount2 = poly.opconfigs[op.opType].amount2Default;
+         op.disabled = false;
+         poly.ConwayOperators[currentControl] = op;
          FinalisePoly();
       }
-      else if (slider == 7)
-      {
-         int apresetIndex = Mathf.FloorToInt(amount * aPresets.Items.Count);
-         var apreset = aPresets.Items[apresetIndex];
-         aPresets.ApplyPresetToPoly(apreset);
-      }
-      else
-      {
-         if (slider >= poly.ConwayOperators.Count) return;
-         var op = poly.ConwayOperators[slider];
-         var opconfig = poly.opconfigs[op.opType];
-         op.amount = Mathf.Lerp(opconfig.amountSafeMin, opconfig.amountSafeMax, amount);
-         poly.ConwayOperators[slider] = op;
-         FinalisePoly();
-      }
+   }
+
+   private void ModifyAPreset()
+   {
+            int apresetIndex = Mathf.FloorToInt(currentControlValue * aPresets.Items.Count);
+            var apreset = aPresets.Items[apresetIndex];
+            aPresets.ApplyPresetToPoly(apreset);
+   }
+
+   private void ModifyBaseOp()
+   {
+            int shapeIndex = Mathf.FloorToInt(currentControlValue * TotalShapeCount());
+            if (shapeIndex < Polys.Length)
+            {
+               poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+               var polyType = Polys[shapeIndex];
+               poly.UniformPolyType = polyType;
+            }
+            else
+            {
+               poly.ShapeType = PolyHydra.ShapeTypes.Johnson;
+               int johnsonIndex = shapeIndex - Polys.Length;
+               var johnsonType = Johnsons[johnsonIndex];
+               poly.JohnsonPolyType = johnsonType.Item2;
+               poly.PrismP = johnsonType.Item1;
+            }
+            FinalisePoly();
    }
 
    void ScanPorts()
@@ -592,8 +782,14 @@ public class PolyMidi : MonoBehaviour
       _probe = new MidiProbe(MidiProbe.Mode.Out);
       for (var i = 0; i < _probe.PortCount; i++)
       {
+         if (_probe.GetPortName(i).Contains("APC MINI"))
          {
-            OutPort = new MidiOutPort(i);
+            AkaiOutPort = new MidiOutPort(i);
+         }
+
+         if (_probe.GetPortName(i).StartsWith("Launch Control XL"))
+         {
+            NovationOutPort = new MidiOutPort(i);
          }
       }
 
@@ -602,13 +798,21 @@ public class PolyMidi : MonoBehaviour
       {
          if (_probe.GetPortName(i).Contains("APC MINI"))
          {
-            InPort = new MidiInPort(i)
+            AkaiInPort = new MidiInPort(i)
             {
                OnNoteOn = (channel, note, velocity) => HandleNoteOn(channel, note, velocity),
                OnNoteOff = (channel, note) => HandleNoteOff(channel, note),
                OnControlChange = (channel, number, value) => HandleControlChange(channel, number, value)
             };
-            break;
+         }
+         if (_probe.GetPortName(i).StartsWith("Launch Control XL"))
+         {
+            NovationInPort = new MidiInPort(i)
+            {
+               OnNoteOn = (channel, note, velocity) => HandleNoteOn(channel, note, velocity),
+               OnNoteOff = (channel, note) => HandleNoteOff(channel, note),
+               OnControlChange = (channel, number, value) => HandleControlChange(channel, number, value)
+            };
          }
       }
    }
@@ -619,12 +823,17 @@ public class PolyMidi : MonoBehaviour
       if (poly.ConwayOperators.Count < MAXOPS)
       {
          InitOps(MAXOPS);
-         SetLEDs();
+         SetAkaiLEDs();
       }
 
-      if (InPort != null)
+      if (AkaiInPort != null)
       {
-         InPort.ProcessMessages();
+         AkaiInPort.ProcessMessages();
+      }
+
+      if (NovationInPort != null)
+      {
+         NovationInPort.ProcessMessages();
       }
 
       if (ControlHasChanged)
@@ -638,7 +847,10 @@ public class PolyMidi : MonoBehaviour
 
    void DisposePort()
    {
-      OutPort.Dispose();
+      if (AkaiOutPort!=null) AkaiOutPort.Dispose();
+      if (NovationOutPort!=null) NovationOutPort.Dispose();
+      if (AkaiInPort!=null) AkaiInPort.Dispose();
+      if (NovationInPort!=null) NovationInPort.Dispose();
    }
 
    void OnDestroy()
