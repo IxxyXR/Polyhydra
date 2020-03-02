@@ -443,6 +443,24 @@ MonoBehaviour:
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     SkyBoxURP: {fileID: 2100000, guid: ecb3953c08f94fe48a28a21bcd8a9151, type: 2}
+  - Name: Golden
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: b7854df036cf90f4ab5d51aa48a94b76,
+      type: 2}
+    PolyhedronMaterialURP: {fileID: 2100000, guid: c455a48766edf7c45bec7bc70d2e1af5,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps:
+    - {fileID: 0}
+    LightingPrefabHDRP: {fileID: 585132436217273184, guid: ab5275cf612cc4046b57aacf620eaf46,
+      type: 3}
+    LightingPrefabURP: {fileID: 3802874855569752408, guid: a59669744e0f2ff46bf9ea830d762d7d,
+      type: 3}
+    ActiveVolumeProfileHDRP: {fileID: 11400000, guid: ab31740888bf2f74ca589b2864cf3895,
+      type: 2}
+    ActiveVolumeProfileURP: {fileID: 0}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 2100000, guid: bc4e2c2c6f5934598a196d7494726d23, type: 2}
   - Name: Volumetric
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 33312f87b96d9994a8ff504d24ab19f2,
       type: 2}
@@ -459,7 +477,7 @@ MonoBehaviour:
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     SkyBoxURP: {fileID: 0}
-  editorPresetIndex: 14
+  editorPresetIndex: 13
 --- !u!1 &2770511816918282493
 GameObject:
   m_ObjectHideFlags: 0
@@ -1042,6 +1060,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2610514318310113261, guid: ccd7027bb8ca3a74aaeece113795f3db,
         type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2610514318310113261, guid: ccd7027bb8ca3a74aaeece113795f3db,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 0}
@@ -1294,6 +1317,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Overridden
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2610514318310113261, guid: ccd7027bb8ca3a74aaeece113795f3db,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2610514318310113261, guid: ccd7027bb8ca3a74aaeece113795f3db,
         type: 3}

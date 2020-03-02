@@ -202,6 +202,12 @@ namespace Conway
 			return new ConwayPoly(ListVerticesByPoints(), ListFacesByVertexIndices(), FaceRoles, VertexRoles);
 		}
 
+		public ConwayPoly Duplicate(Vector3 transform, Quaternion rotation, float scale)
+		{
+			IEnumerable<Vector3> verts = ListVerticesByPoints().Select(i => rotation * i * scale + transform);
+			return new ConwayPoly(verts, ListFacesByVertexIndices(), FaceRoles, VertexRoles);
+		}
+
 		#endregion
 
 		#region properties
@@ -2752,7 +2758,7 @@ namespace Conway
 
 		#region geometry methods
 
-				public ConwayPoly AddMirrored(Vector3 axis, float amount)
+		public ConwayPoly AddMirrored(Vector3 axis, float amount)
 		{
 			var original = Duplicate();
 			var mirror = Duplicate();
@@ -2767,6 +2773,18 @@ namespace Conway
 			}
 			mirror.Halfedges.Flip();
 			original.Append(mirror);
+			return original;
+		}
+
+		public ConwayPoly Stack(Vector3 axis, int copies, float offset, float scale)
+		{
+			var original = Duplicate();
+			Vector3 offsetVector = offset * axis;
+			for (int i = 0; i < copies; i++)
+			{
+				original.Append(original.Duplicate(offsetVector, Quaternion.identity, scale));
+
+			}
 			return original;
 		}
 
@@ -3055,7 +3073,7 @@ namespace Conway
 			return poly;
 		}
 
-		public ConwayPoly FaceRemove(FaceSelections facesel, bool invertLogic=false)
+		public ConwayPoly FaceRemove(FaceSelections facesel, bool invertLogic=false, Func<Face, bool> filter=null)
 		{
 
 			var faceRoles = new List<Roles>();
@@ -3068,12 +3086,19 @@ namespace Conway
 
 			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
 			{
-				var includeFace = IncludeFace(faceIndex, facesel);
+				var face = Faces[faceIndex];
+				bool includeFace;
+				if (filter != null)
+				{
+					includeFace = filter(face);
+				}
+				else
+				{
+					includeFace = IncludeFace(faceIndex, facesel);
+				}
 				includeFace = invertLogic ? includeFace : !includeFace;
-
 				if (includeFace)
 				{
-					var face = Faces[faceIndex];
 					existingFaceRoles[face.Centroid] = FaceRoles[faceIndex];
 					var list = face.GetVertices();
 					for (var vertIndex = 0; vertIndex < list.Count; vertIndex++)
@@ -3574,6 +3599,22 @@ namespace Conway
 
 		}
 
+		public ConwayPoly Slice(float lower, float upper)
+		{
+
+			if (lower > upper) (upper, lower) = (lower, upper);
+			float yMax = Vertices.Max(v => v.Position.y);
+			float yMin = Vertices.Min(v => v.Position.y);
+			lower = Mathf.Lerp(yMin, yMax, lower);
+			upper = Mathf.Lerp(yMin, yMax, upper);
+			Func<Face, bool> slice = x => x.Centroid.y > lower && x.Centroid.y < upper;
+			return FaceRemove(FaceSelections.All, true, slice);
+		}
+
+		#endregion
+
+		#region Grids
+
 		public static ConwayPoly MakeUnitileGrid(int pattern, int gridShape, int rows = 5, int cols = 5, bool weld=false)
 		{
 			var ut = new Unitile(pattern, rows, cols, true);
@@ -3632,6 +3673,8 @@ namespace Conway
 			if (gridShape > 0 && weld) poly = poly.Weld(0.001f);
 			return poly;
 		}
+
+
 
 		public static ConwayPoly MakeGrid(int rows = 5, int cols = 5, float rowScale = .3f, float colScale = .3f)
 		{
@@ -3879,7 +3922,7 @@ namespace Conway
 
 		#endregion
 
-		#region canonicalize
+		#region Canonicalize
 
 		public void SetVertexPositions(List<Vector3> newPositions)
 		{
@@ -4259,7 +4302,7 @@ namespace Conway
 
 		#endregion
 
-		#region methods
+		#region General Methods
 
 		/// <summary>
 		/// A string representation of the mesh.
@@ -4416,7 +4459,12 @@ namespace Conway
 		/// <param name="other">Mesh to append to this one.</param>
 		public void Append(ConwayPoly other)
 		{
-			ConwayPoly dup = other.Duplicate();
+			Append(other, Vector3.zero, Quaternion.identity, 1.0f);
+		}
+
+		public void Append(ConwayPoly other, Vector3 transform, Quaternion rotation, float scale)
+		{
+			ConwayPoly dup = other.Duplicate(transform, rotation, scale);
 
 			Vertices.AddRange(dup.Vertices);
 			foreach (Halfedge edge in dup.Halfedges)
@@ -4431,6 +4479,7 @@ namespace Conway
 			FaceRoles.AddRange(dup.FaceRoles);
 			VertexRoles.AddRange(dup.VertexRoles);
 		}
+
 
 		private int FaceSelectionToSides(FaceSelections facesel)
 		{
@@ -4578,5 +4627,38 @@ namespace Conway
 
 		#endregion
 
+		public ConwayPoly AppendMany(ConwayPoly stashed, FaceSelections facesel, float scale, float angle, bool toFaces)
+		{
+			var result = Duplicate();
+			float offset = 0;
+
+			if (toFaces)
+			{
+				for (var i = 0; i < Faces.Count; i++)
+				{
+					var face = Faces[i];
+					if (IncludeFace(i, facesel))
+					{
+						Vector3 transform = face.Centroid;
+						var rot = Quaternion.AngleAxis(angle, face.Normal);
+						result.Append(stashed, transform, rot, scale);
+					}
+				}
+			}
+			else
+			{
+				for (var i = 0; i < Vertices.Count; i++)
+				{
+					var vert = Vertices[i];
+					if (IncludeVertex(i, facesel))
+					{
+						Vector3 transform = vert.Position;
+						var rot = Quaternion.AngleAxis(angle, vert.Normal);
+						result.Append(stashed, transform, rot, scale);
+					}
+				}
+			}
+			return result;
+		}
 	}
 }

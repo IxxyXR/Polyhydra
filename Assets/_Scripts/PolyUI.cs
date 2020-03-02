@@ -365,11 +365,15 @@ public class PolyUI : MonoBehaviour {
         {
             opPrefabManager.AmountSlider.minValue = opConfig.amountSafeMin;
             opPrefabManager.AmountSlider.maxValue = opConfig.amountSafeMax;
+            opPrefabManager.Amount2Slider.minValue = opConfig.amount2SafeMin;
+            opPrefabManager.Amount2Slider.maxValue = opConfig.amount2SafeMax;
         }
         else
         {
             opPrefabManager.AmountSlider.minValue = opConfig.amountMin;
             opPrefabManager.AmountSlider.maxValue = opConfig.amountMax;
+            opPrefabManager.Amount2Slider.minValue = opConfig.amount2Min;
+            opPrefabManager.Amount2Slider.maxValue = opConfig.amount2Max;
         }
     }
 
@@ -795,20 +799,23 @@ public class PolyUI : MonoBehaviour {
     {
         poly.SafeLimits = SafeLimitsToggle.isOn;
         var opSliders = OpContainer.GetComponentsInChildren<Slider>();
-        for (var i = 0; i < opSliders.Length; i++)
+        for (var i = 0; i < opSliders.Length; i+=2)
         {
-            var opSlider = opSliders[i];
-            var op = poly.ConwayOperators[i];
+            var op = poly.ConwayOperators[i/2];
             var opConfig = poly.opconfigs[op.opType];
             if (poly.SafeLimits)
             {
-                opSlider.minValue = opConfig.amountSafeMin;
-                opSlider.maxValue = opConfig.amountSafeMax;
+                opSliders[i].minValue = opConfig.amountSafeMin;
+                opSliders[i].maxValue = opConfig.amountSafeMax;
+                opSliders[i+1].minValue = opConfig.amount2SafeMin;
+                opSliders[i+1].maxValue = opConfig.amount2SafeMax;
             }
             else
             {
-                opSlider.minValue = opConfig.amountMin;
-                opSlider.maxValue = opConfig.amountMax;
+                opSliders[i].minValue = opConfig.amountMin;
+                opSliders[i].maxValue = opConfig.amountMax;
+                opSliders[i+1].minValue = opConfig.amount2Min;
+                opSliders[i+1].maxValue = opConfig.amount2Max;
             }
         }
 
