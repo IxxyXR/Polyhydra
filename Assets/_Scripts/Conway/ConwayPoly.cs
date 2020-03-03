@@ -4627,10 +4627,9 @@ namespace Conway
 
 		#endregion
 
-		public ConwayPoly AppendMany(ConwayPoly stashed, FaceSelections facesel, float scale, float angle, bool toFaces)
+		public ConwayPoly AppendMany(ConwayPoly stashed, FaceSelections facesel, float scale, float angle=0, float offset=0, bool toFaces=true)
 		{
 			var result = Duplicate();
-			float offset = 0;
 
 			if (toFaces)
 			{
@@ -4639,7 +4638,7 @@ namespace Conway
 					var face = Faces[i];
 					if (IncludeFace(i, facesel))
 					{
-						Vector3 transform = face.Centroid;
+						Vector3 transform = face.Centroid + face.Normal * offset;
 						var rot = Quaternion.AngleAxis(angle, face.Normal);
 						result.Append(stashed, transform, rot, scale);
 					}
@@ -4652,7 +4651,7 @@ namespace Conway
 					var vert = Vertices[i];
 					if (IncludeVertex(i, facesel))
 					{
-						Vector3 transform = vert.Position;
+						Vector3 transform = vert.Position + vert.Normal * offset;
 						var rot = Quaternion.AngleAxis(angle, vert.Normal);
 						result.Append(stashed, transform, rot, scale);
 					}
