@@ -2356,7 +2356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   VrEnabled: 0
-  MidiEnabled: 1
+  MidiEnabled: 0
   RenderingPipeline: 1
   VRPlayer: {fileID: 1202485616}
   MainCamera: {fileID: 1951043830}
@@ -4313,6 +4313,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1603054320978070728, guid: d2c056480e7bc6b4b869c5d070b88d32,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4442156894784562603, guid: d2c056480e7bc6b4b869c5d070b88d32,
         type: 3}
       propertyPath: m_AnchorMax.x
