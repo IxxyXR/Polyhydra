@@ -1324,11 +1324,11 @@ namespace Conway
 
 		// Add Vertices at edge midpoints and new faces around each vertex
 		// Equivalent to ambo without removing vertices
-		public ConwayPoly Subdivide()
+		public ConwayPoly Subdivide(float offset)
 		{
 
 			var faceIndices = new List<int[]>();
-			var vertexPoints = Vertices.Select(x => x.Position).ToList(); // Existing vertices
+			var vertexPoints = Vertices.Select(x => x.Position + x.Normal * offset).ToList(); // Existing vertices
 			var vertexRoles = Enumerable.Repeat(Roles.Existing, vertexPoints.Count).ToList();
 
 			var faceRoles = new List<Roles>();
@@ -1939,7 +1939,7 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 
-		public ConwayPoly JoinKisKis(float ratio)
+		public ConwayPoly JoinKisKis(float ratio, float offset)
 		{
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
@@ -1953,16 +1953,17 @@ namespace Conway
 
 			for (var i = 0; i < Vertices.Count; i++)
 			{
-				vertexPoints.Add(Vertices[i].Position);
+				var vert = Vertices[i];
+				vertexPoints.Add(vert.Position);
 				vertexRoles.Add(Roles.Existing);
-				existingVertices[vertexPoints[i]] = i;
+				existingVertices[vert.Position] = i;
 			}
 
 			for (var i = 0; i < Faces.Count; i++)
 			{
 				var face = Faces[i];
 				var centroid = face.Centroid;
-				vertexPoints.Add(centroid);
+				vertexPoints.Add(centroid + face.Normal * offset);
 				vertexRoles.Add(Roles.Existing);
 				newCentroidVertices[face.Name] = vertexPoints.Count - 1;
 			}
@@ -1982,7 +1983,7 @@ namespace Conway
 						centroid,
 						ratio
 					);
-					vertexPoints.Add(newVertex);
+					vertexPoints.Add(newVertex + face.Normal * offset);
 					vertexRoles.Add(Roles.New);
 					newInnerVertices[edge.Name] = vertexPoints.Count - 1;
 
@@ -2032,17 +2033,17 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 
-		public ConwayPoly Medial(int subdivisions)
+		public ConwayPoly Medial(int subdivisions, float offset)
 		{
-			return _Medial(subdivisions);
+			return _Medial(subdivisions, offset);
 		}
 
-		public ConwayPoly EdgeMedial(int subdivisions)
+		public ConwayPoly EdgeMedial(int subdivisions, float offset)
 		{
-			return _Medial(subdivisions, true);
+			return _Medial(subdivisions, offset, true);
 		}
 
-		private ConwayPoly _Medial(int subdivisions, bool edgeMedial = false)
+		private ConwayPoly _Medial(int subdivisions, float offset, bool edgeMedial = false)
 		{
 
 			subdivisions = subdivisions < 1 ? 1 : subdivisions;
@@ -2061,17 +2062,18 @@ namespace Conway
 			
 			for (var i = 0; i < Vertices.Count; i++)
 			{
-				vertexPoints.Add(Vertices[i].Position);
+				var vert = Vertices[i];
+				vertexPoints.Add(vert.Position);
 				vertexRoles.Add(Roles.Existing);
-				existingVertices[vertexPoints[i]] = i;
+				existingVertices[vert.Position] = i;
 			}
 
-			int vertexIndex = vertexPoints.Count();
+			int vertexIndex = vertexPoints.Count;
 
 			// Create new edge vertices
 			foreach (var face in Faces)
 			{
-				vertexPoints.Add(face.Centroid);
+				vertexPoints.Add(face.Centroid + face.Normal * offset);
 				vertexRoles.Add(Roles.New);
 				int centroidIndex = vertexIndex;
 				newCentroidVertices[face.Name] = vertexIndex++;
@@ -2203,109 +2205,109 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 		
-		public ConwayPoly JoinedMedial(int subdivisions)
-		{
-
-			var faceIndices = new List<int[]>();
-			var vertexPoints = new List<Vector3>();
-			var existingVertices = new Dictionary<Vector3, int>();
-			var newEdgeVertices = new Dictionary<string, int[]>();
-
-			var faceRoles = new List<Roles>();
-			var vertexRoles = new List<Roles>();
-
-			for (var i = 0; i < Vertices.Count; i++)
-			{
-				vertexPoints.Add(Vertices[i].Position);
-				vertexRoles.Add(Roles.Existing);
-				existingVertices[vertexPoints[i]] = i;
-			}
-
-			int vertexIndex = vertexPoints.Count();
-
-			foreach (var face in Faces)
-			{
-				foreach (var edge in face.GetHalfedges())
-				{
-					if (!newEdgeVertices.ContainsKey(edge.PairedName))
-					{
-						newEdgeVertices[edge.PairedName] = new int[subdivisions];
-						for (int i = 0; i < subdivisions; i++)
-						{
-							vertexPoints.Add(edge.PointAlongEdge((1f / (subdivisions + 1)) * (i + 1)));
-							vertexRoles.Add(Roles.New);
-							newEdgeVertices[edge.PairedName][i] = vertexIndex++;
-						}
-					}
-				}
-			}
-
-			// Create rhombic faces
-			foreach (var edge in Halfedges)
-			{
-				for (int i=0; i < subdivisions; i++)
-				{
-					int v0 = newEdgeVertices[edge.PairedName][i];
-					int v2 = newEdgeVertices[edge.PairedName][i];
-					var rhombus = new[]
-					{
-						v0,
-						existingVertices[edge.Vertex.Position],
-						v2,
-						existingVertices[edge.Next.Vertex.Position]
-					};
-					faceIndices.Add(rhombus);
-					faceRoles.Add(Roles.New);
-				}
-			}
-
-			// Generate triangular faces
-			foreach (var face in Faces)
-			{
-				var centroid = face.Centroid;
-				vertexPoints.Add(centroid);
-				vertexRoles.Add(Roles.New);
-
-				var edges = face.GetHalfedges();
-				var prevEnds = edges[face.Sides - 1].getEnds();
-				for (int i = 0; i < subdivisions; i++)
-				{
-					int prevVertex = newEdgeVertices[edges[0].PairedName][i];
-
-					for (var j = 0; i < edges.Count; j++)
-					{
-						Halfedge edge = edges[j];
-						var ends = edge.getEnds();
-						int currVertex = newEdgeVertices[edge.PairedName][i];
-
-						var triangle1 = new int[]
-						{
-							vertexIndex,
-							existingVertices[edges[j].Vertex.Position],
-							currVertex
-						};
-						var triangle2 = new int[]
-						{
-							vertexIndex,
-							prevVertex,
-							existingVertices[edges[j].Vertex.Position]
-						};
-
-						faceIndices.Add(triangle1);
-						faceRoles.Add(Roles.New);
-						faceIndices.Add(triangle2);
-						faceRoles.Add(Roles.New);
-
-						prevVertex = currVertex;
-						edge = edge.Next;
-					}
-					vertexIndex++;
-				}
-			}
-
-			//medialPolyhedron.setVertexNormalsToFaceNormals();
-			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
-		}
+		// public ConwayPoly JoinedMedial(int subdivisions, float offset)
+		// {
+		//
+		// 	var faceIndices = new List<int[]>();
+		// 	var vertexPoints = new List<Vector3>();
+		// 	var existingVertices = new Dictionary<Vector3, int>();
+		// 	var newEdgeVertices = new Dictionary<string, int[]>();
+		//
+		// 	var faceRoles = new List<Roles>();
+		// 	var vertexRoles = new List<Roles>();
+		//
+		// 	for (var i = 0; i < Vertices.Count; i++)
+		// 	{
+		// 		vertexPoints.Add(Vertices[i].Position);
+		// 		vertexRoles.Add(Roles.Existing);
+		// 		existingVertices[vertexPoints[i]] = i;
+		// 	}
+		//
+		// 	int vertexIndex = vertexPoints.Count();
+		//
+		// 	foreach (var face in Faces)
+		// 	{
+		// 		foreach (var edge in face.GetHalfedges())
+		// 		{
+		// 			if (!newEdgeVertices.ContainsKey(edge.PairedName))
+		// 			{
+		// 				newEdgeVertices[edge.PairedName] = new int[subdivisions];
+		// 				for (int i = 0; i < subdivisions; i++)
+		// 				{
+		// 					vertexPoints.Add(edge.PointAlongEdge((1f / (subdivisions + 1)) * (i + 1)));
+		// 					vertexRoles.Add(Roles.New);
+		// 					newEdgeVertices[edge.PairedName][i] = vertexIndex++;
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		//
+		// 	// Create rhombic faces
+		// 	foreach (var edge in Halfedges)
+		// 	{
+		// 		for (int i=0; i < subdivisions; i++)
+		// 		{
+		// 			int v0 = newEdgeVertices[edge.PairedName][i];
+		// 			int v2 = newEdgeVertices[edge.PairedName][i];
+		// 			var rhombus = new[]
+		// 			{
+		// 				v0,
+		// 				existingVertices[edge.Vertex.Position],
+		// 				v2,
+		// 				existingVertices[edge.Next.Vertex.Position]
+		// 			};
+		// 			faceIndices.Add(rhombus);
+		// 			faceRoles.Add(Roles.New);
+		// 		}
+		// 	}
+		//
+		// 	// Generate triangular faces
+		// 	foreach (var face in Faces)
+		// 	{
+		// 		var centroid = face.Centroid;
+		// 		vertexPoints.Add(centroid);
+		// 		vertexRoles.Add(Roles.New);
+		//
+		// 		var edges = face.GetHalfedges();
+		// 		var prevEnds = edges[face.Sides - 1].getEnds();
+		// 		for (int i = 0; i < subdivisions; i++)
+		// 		{
+		// 			int prevVertex = newEdgeVertices[edges[0].PairedName][i];
+		//
+		// 			for (var j = 0; i < edges.Count; j++)
+		// 			{
+		// 				Halfedge edge = edges[j];
+		// 				var ends = edge.getEnds();
+		// 				int currVertex = newEdgeVertices[edge.PairedName][i];
+		//
+		// 				var triangle1 = new int[]
+		// 				{
+		// 					vertexIndex,
+		// 					existingVertices[edges[j].Vertex.Position],
+		// 					currVertex
+		// 				};
+		// 				var triangle2 = new int[]
+		// 				{
+		// 					vertexIndex,
+		// 					prevVertex,
+		// 					existingVertices[edges[j].Vertex.Position]
+		// 				};
+		//
+		// 				faceIndices.Add(triangle1);
+		// 				faceRoles.Add(Roles.New);
+		// 				faceIndices.Add(triangle2);
+		// 				faceRoles.Add(Roles.New);
+		//
+		// 				prevVertex = currVertex;
+		// 				edge = edge.Next;
+		// 			}
+		// 			vertexIndex++;
+		// 		}
+		// 	}
+		//
+		// 	//medialPolyhedron.setVertexNormalsToFaceNormals();
+		// 	return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
+		// }
 
 		public ConwayPoly Propeller(float ratio = 0.33333333f)
 		{
@@ -2510,7 +2512,7 @@ namespace Conway
 			for (var i = 0; i < Vertices.Count; i++)
 			{
 				var vert = Vertices[i];
-				vertexPoints.Add(vert.Position + (vert.Normal * (offset2 + 1f)));
+				vertexPoints.Add(vert.Position + vert.Normal * offset2);
 				vertexRoles.Add(Roles.Existing);
 				existingVertices[vert.Position] = i;
 			}

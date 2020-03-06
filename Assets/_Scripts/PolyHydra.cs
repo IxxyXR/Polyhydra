@@ -412,7 +412,7 @@ public class PolyHydra : MonoBehaviour
 				new OpConfig
 				{
 					usesFaces = true,
-					amountDefault = 0f,
+					amountDefault = 0.5f,
 					amountMin = -2f, amountMax = 2f, amountSafeMin = 0.0001f, amountSafeMax = .99999f,
 					usesRandomize = true
 				}
@@ -430,10 +430,11 @@ public class PolyHydra : MonoBehaviour
 				new OpConfig
 				{
 					usesFaces = true,
-					amountDefault = 0f,
+					amountDefault = 0.25f,
 					amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.4999f,
 					usesAmount2 = true,
-					amount2Default = 0.5f,
+					amount2Default = 0.25f,
+					amount2Min = -6, amount2Max = 6, amount2SafeMin = 0.001f, amount2SafeMax = 0.4999f,
 					usesRandomize = false
 				}
 			},
@@ -444,8 +445,8 @@ public class PolyHydra : MonoBehaviour
 					amountDefault = 0.5f,
 					amountMin = -1f, amountMax = 2f, amountSafeMin = -0.5f, amountSafeMax = 0.999f
 				}
-			}, // TODO Support random
-			{
+			},
+			{ // TODO Support random
 				Ops.Needle,
 				new OpConfig
 				{
@@ -473,6 +474,7 @@ public class PolyHydra : MonoBehaviour
 					amountMin = -6, amountMax = 6, amountSafeMin = -0.333f, amountSafeMax = 0.666f,
 					usesAmount2 = true,
 					amount2Default = 0f,
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 0.99f,
 					usesRandomize = true
 				}
 			},
@@ -482,7 +484,7 @@ public class PolyHydra : MonoBehaviour
 				{
 					usesFaces = true,
 					amountDefault = 0.1f,
-					amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.5f,
+					amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.499f,
 					usesRandomize = true
 				}
 			},
@@ -491,8 +493,9 @@ public class PolyHydra : MonoBehaviour
 				new OpConfig
 				{
 					amountDefault = 0.33f,
-					amountMin = -.5f, amountMax = 0.5f, amountSafeMin = 0.001f, amountSafeMax = 0.5f,
-					usesAmount2 = true
+					amountMin = -.5f, amountMax = 0.5f, amountSafeMin = 0.001f, amountSafeMax = 0.499f,
+					usesAmount2 = true,
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1
 				}
 			},
 			{
@@ -503,7 +506,11 @@ public class PolyHydra : MonoBehaviour
 					amountMin = -1f, amountMax = 1f, amountSafeMin = 0.001f, amountSafeMax = 0.999f
 				}
 			},
-			{Ops.Subdivide, new OpConfig {usesAmount = false}},
+			{Ops.Subdivide, new OpConfig
+			{
+				amountDefault = 0,
+				amountMin = -3, amountMax = 3, amountSafeMin = -0.5f, amountSafeMax = 1,
+			}},
 			{
 				Ops.Loft,
 				new OpConfig
@@ -512,6 +519,7 @@ public class PolyHydra : MonoBehaviour
 					amountDefault = 0.5f,
 					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
 					usesAmount2 = true,
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -1, amount2SafeMax = 1,
 					usesRandomize = true
 				}
 			},
@@ -530,6 +538,7 @@ public class PolyHydra : MonoBehaviour
 					amountDefault = 0.5f,
 					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
 					usesAmount2 = true,
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
 					usesRandomize = true
 				}
 			},
@@ -541,6 +550,7 @@ public class PolyHydra : MonoBehaviour
 					amountDefault = 0.5f,
 					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
 					usesAmount2 = true,
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
 					usesRandomize = true
 				}
 			},
@@ -551,6 +561,7 @@ public class PolyHydra : MonoBehaviour
 					amountDefault = 0.5f,
 					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
 					usesAmount2 = true,
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
 					usesRandomize = true
 				}
 			},
@@ -561,6 +572,7 @@ public class PolyHydra : MonoBehaviour
 					amountDefault = 0.5f,
 					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
 					usesAmount2 = true,
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
 					usesRandomize = true
 				}
 			},
@@ -569,7 +581,9 @@ public class PolyHydra : MonoBehaviour
 				new OpConfig
 				{
 					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f
+					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
+					usesAmount2 = true,
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
 				}
 			},
 			{
@@ -593,7 +607,9 @@ public class PolyHydra : MonoBehaviour
 				new OpConfig
 				{
 					amountDefault = 2f,
-					amountMin = 2, amountMax = 8, amountSafeMin = 1, amountSafeMax = 6
+					amountMin = 2, amountMax = 8, amountSafeMin = 1, amountSafeMax = 6,
+					usesAmount2 = true,
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
 				}
 			},
 			{
@@ -601,7 +617,9 @@ public class PolyHydra : MonoBehaviour
 				new OpConfig
 				{
 					amountDefault = 2f,
-					amountMin = 2, amountMax = 8, amountSafeMin = 1, amountSafeMax = 6
+					amountMin = 2, amountMax = 8, amountSafeMin = 1, amountSafeMax = 6,
+					usesAmount2 = true,
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
 				}
 			},
 			// {
@@ -609,7 +627,9 @@ public class PolyHydra : MonoBehaviour
 			// 	new OpConfig
 			// 	{
 			// 		amountDefault=2f,
-			// 		amountMin=2, amountMax=8, amountSafeMin=1, amountSafeMax=4
+			// 		amountMin=2, amountMax=8, amountSafeMin=1, amountSafeMax=4,
+			// 		usesAmount2 = true,
+			// 		amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
 			// 	}
 			// },
 			{
@@ -787,6 +807,7 @@ public class PolyHydra : MonoBehaviour
 					amountDefault = 0.1f,
 					amountMin = -2f, amountMax = 2f, amountSafeMin = -2f, amountSafeMax = 2f,
 					usesAmount2 = true,
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -1, amount2SafeMax = 1,
 					usesRandomize = true
 				}
 			},
@@ -847,7 +868,7 @@ public class PolyHydra : MonoBehaviour
 					amountDefault = 0,
 					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2,
 					usesAmount2 = true,
-					amount2Min = -180, amount2Max = 180, amount2SafeMin = -45, amount2SafeMax = 45
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -1, amount2SafeMax = 1
 				}
 			},
 			{
@@ -858,8 +879,7 @@ public class PolyHydra : MonoBehaviour
 					amountDefault = 0,
 					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2,
 					usesAmount2 = true,
-					amount2Min = -180, amount2Max = 180, amount2SafeMin = -45,
-					amount2SafeMax = 45
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -1, amount2SafeMax = 1
 				}
 			},
 			{
@@ -868,7 +888,8 @@ public class PolyHydra : MonoBehaviour
 				{
 					amountDefault = 0.5f,
 					amountMin = -2f, amountMax = 2f, amountSafeMin = -2f, amountSafeMax = 2f,
-					usesAmount2 = true
+					usesAmount2 = true,
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -1, amount2SafeMax = 1
 				}
 			},
 			{
@@ -902,7 +923,9 @@ public class PolyHydra : MonoBehaviour
 				new OpConfig
 				{
 					amountDefault = 0.5f,
-					amountMin = 0f, amountMax = 1f, amountSafeMin = 0f, usesAmount2 = true, amountSafeMax = 1f
+					amountMin = 0f, amountMax = 1f, amountSafeMin = 0f, amountSafeMax = 1f,
+					usesAmount2 = true,
+					amount2Min = -3, amount2Max = 3, amount2SafeMin = -1, amount2SafeMax = 1
 				}
 			},
 			{Ops.Recenter, new OpConfig {usesAmount = false}},
@@ -1374,7 +1397,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Dual();
 				break;
 			case Ops.Subdivide:
-				conway = conway.Subdivide();
+				conway = conway.Subdivide(amount);
 				break;
 			case Ops.Loft:
 				conway = conway.Loft(amount, op.amount2, op.faceSelections, op.randomize);
@@ -1395,7 +1418,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Lace(amount, op.faceSelections, op.amount2, op.randomize);
 				break;
 			case Ops.JoinKisKis:
-				conway = conway.JoinKisKis(amount);
+				conway = conway.JoinKisKis(amount, op.amount2);
 				break;
 			case Ops.Stake:
 				conway = conway.Stake(amount, op.faceSelections);
@@ -1404,14 +1427,14 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Stake(amount, op.faceSelections, true);
 				break;
 			case Ops.Medial:
-				conway = conway.Medial((int)amount);
+				conway = conway.Medial((int)amount, op.amount2);
 				break;
 			case Ops.EdgeMedial:
-				conway = conway.EdgeMedial((int)amount);
+				conway = conway.EdgeMedial((int)amount, op.amount2);
 				break;
-//			case Ops.JoinedMedial:
-//				conway = conway.JoinedMedial((int)amount);
-//				break;
+			// case Ops.JoinedMedial:
+			// 	conway = conway.JoinedMedial((int)amount, op.amount2);
+			// 	break;
 			case Ops.Propeller:
 				conway = conway.Propeller(amount);
 				break;
@@ -1538,11 +1561,11 @@ public class PolyHydra : MonoBehaviour
 				break;
 			case Ops.UnstashToFaces:
 				if (stash == null) return conway;
-				conway = conway.AppendMany(stash, op.faceSelections, amount, op.amount2, true);
+				conway = conway.AppendMany(stash, op.faceSelections, amount, 0, op.amount2, true);
 				break;
 			case Ops.UnstashToVerts:
 				if (stash == null) return conway;
-				conway = conway.AppendMany(stash, op.faceSelections, amount, op.amount2, false);
+				conway = conway.AppendMany(stash, op.faceSelections, amount, 0, op.amount2, false);
 				break;
 			case Ops.Layer:
 				conway = conway.Layer(4, 1f - amount, amount / 10f, ConwayPoly.FaceSelections.All);
@@ -1737,10 +1760,10 @@ public class PolyHydra : MonoBehaviour
 		var edgeUVs = new List<Vector2>();
 		var barycentricUVs = new List<Vector3>();
 		var miscUVs = new List<Vector4>();
-		
-		var hasNaked = conway.HasNaked();
-		hasNaked = false;  // TODO
-		
+
+		// TODO
+		// var hasNaked = conway.HasNaked();
+
 		// Strip down to Face-Vertex structure
 		var points = conway.ListVerticesByPoints();
 		var faceIndices = conway.ListFacesByVertexIndices();

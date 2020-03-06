@@ -477,7 +477,7 @@ MonoBehaviour:
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     SkyBoxURP: {fileID: 0}
-  editorPresetIndex: 13
+  editorPresetIndex: 21
 --- !u!1 &2770511816918282493
 GameObject:
   m_ObjectHideFlags: 0
@@ -1061,7 +1061,7 @@ PrefabInstance:
     - target: {fileID: 2610514318310113261, guid: ccd7027bb8ca3a74aaeece113795f3db,
         type: 3}
       propertyPath: m_Materials.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2610514318310113261, guid: ccd7027bb8ca3a74aaeece113795f3db,
         type: 3}
@@ -1321,7 +1321,7 @@ PrefabInstance:
     - target: {fileID: 2610514318310113261, guid: ccd7027bb8ca3a74aaeece113795f3db,
         type: 3}
       propertyPath: m_Materials.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2610514318310113261, guid: ccd7027bb8ca3a74aaeece113795f3db,
         type: 3}
