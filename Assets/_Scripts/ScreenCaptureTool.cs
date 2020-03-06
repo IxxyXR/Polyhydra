@@ -7,6 +7,7 @@ public class ScreenCaptureTool : MonoBehaviour
 {
     public int resWidth = 500;
     public int resHeight = 500;
+    public float ZoomFactor = 2.0f;
 
     private string filename;
     private Camera camera;
@@ -91,7 +92,7 @@ public class ScreenCaptureTool : MonoBehaviour
         camera.targetTexture = rt;
         Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
         float oldFov = camera.fieldOfView;
-        camera.fieldOfView = oldFov / 2.0f;
+        camera.fieldOfView = oldFov / ZoomFactor;
         camera.Render();
         RenderTexture.active = rt;
         screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
