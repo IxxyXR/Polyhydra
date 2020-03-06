@@ -189,7 +189,7 @@ public class PolyHydra : MonoBehaviour
 		Volute,
 		Exalt,
 		Yank,
-		
+
 		Squall,
 		JoinSquall,
 
@@ -319,7 +319,7 @@ public class PolyHydra : MonoBehaviour
 	}
 
 	public Dictionary<Ops, OpConfig> opconfigs;
-	
+
 	[Serializable]
 	public struct ConwayOperator {
 		public Ops opType;
@@ -337,7 +337,7 @@ public class PolyHydra : MonoBehaviour
 		public float audioHighAmount;
 	}
 	public List<ConwayOperator> ConwayOperators;
-	
+
 	[Header("Gizmos")]
 	public bool wythoffVertexGizmos;
 	public bool wythoffEdgeGizmos;
@@ -371,15 +371,15 @@ public class PolyHydra : MonoBehaviour
 		Color.blue,
 		Color.magenta
 	};
-	
-	private Color32[] faceColors = 
+
+	private Color32[] faceColors =
 	{
 		new Color(1.0f, 0.5f, 0.5f),
 		new Color(0.8f, 0.8f, 0.8f),
 		new Color(0.5f, 0.6f, 0.6f),
 		new Color(1.0f, 0.94f, 0.9f),
 		new Color(0.66f, 0.2f, 0.2f),
-		new Color(0.6f, 0.0f, 0.0f), 
+		new Color(0.6f, 0.0f, 0.0f),
 		new Color(1.0f, 1.0f, 1.0f),
 		new Color(0.6f, 0.6f, 0.6f),
 		new Color(0.5f, 1.0f, 0.5f),
@@ -702,83 +702,15 @@ public class PolyHydra : MonoBehaviour
 				}
 			},
 			//{Ops.Ribbon, new OpConfig{}},
-			{
-				Ops.Extrude,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.1f,
-					amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.Shell,
-				new OpConfig
-				{
-					amountDefault = 0.1f,
-					amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.999f
-				}
-			},
-			{
-				Ops.Skeleton,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.1f,
-					amountMin = -6, amountSafeMin = 0.001f, amountSafeMax = 0.999f, amountMax = 6
-				}
-			},
-			{
-				Ops.VertexScale,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.5f,
-					amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 0.999f,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.VertexRotate,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.1f,
-					amountMin = -180, amountMax = 180, amountSafeMin = -45, amountSafeMax = 45,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.VertexFlex,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 0.999f,
-					usesRandomize = true
-				}
-			},
+			{Ops.Extrude, new OpConfig{usesFaces=true, amountDefault=0.1f, amountMin=-6, amountMax=6, amountSafeMin=0.001f, amountSafeMax=0.999f, usesRandomize=true}},
+			{Ops.Shell, new OpConfig{amountDefault=0.1f, amountMin=-6, amountMax=6, amountSafeMin=0.001f, amountSafeMax=0.999f}},
+			{Ops.Skeleton, new OpConfig{usesFaces=true, amountDefault=0.1f, amountMin=-6, amountSafeMin=0.001f, amountSafeMax=0.999f, amountMax=6}},
+			{Ops.VertexScale, new OpConfig{usesFaces=true, amountDefault=0.5f, amountMin=-6, amountMax=6, amountSafeMin=-1, amountSafeMax=0.999f, usesRandomize=true}},
+			{Ops.VertexRotate, new OpConfig{usesFaces=true, amountDefault=0.1f, amountMin=-180, amountMax=180, amountSafeMin=-45, amountSafeMax=45, usesRandomize=true}},
+			{Ops.VertexFlex, new OpConfig{usesFaces=true, amountDefault=0.1f, amountMin=-6, amountMax=6, amountSafeMin=-1, amountSafeMax=0.999f, usesRandomize=true}},
 			//{Ops.FaceTranslate, new OpConfig{usesFaces=true, amountDefault=0.1f, amountMin=-6, amountMax=6}},
-			{
-				Ops.FaceScale,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = -0.5f,
-					amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 0,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.FaceRotate,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 45f,
-					amountMin = -180, amountMax = 180, amountSafeMin = -180, amountSafeMax = 180,
-					usesRandomize = true
-				}
-			},
+			{Ops.FaceScale, new OpConfig{usesFaces=true, amountDefault=-0.5f, amountMin=-6, amountMax=6, amountSafeMin=-1, amountSafeMax=0, usesRandomize=true}},
+			{Ops.FaceRotate, new OpConfig{usesFaces=true, amountDefault=45f, amountMin=-180, amountMax=180, amountSafeMin=-180, amountSafeMax=180, usesRandomize=true}},
 //			{Ops.FaceRotateX, new OpConfig{usesFaces=true, amountDefault=0.1f, amountMin=-180, amountMax=180}},
 //			{Ops.FaceRotateY, new OpConfig{usesFaces=true, amountDefault=0.1f, amountMin=-180, amountMax=180}},
 			{Ops.FaceRemove, new OpConfig {usesFaces = true, usesAmount = false}},
@@ -1085,7 +1017,7 @@ public class PolyHydra : MonoBehaviour
 				return null;
 		}
 	}
-	
+
 	private void MakePolyhedron(bool disableThreading=false)
 	{
 		if (ShapeType == ShapeTypes.Uniform)
@@ -1105,7 +1037,7 @@ public class PolyHydra : MonoBehaviour
 		{
 			_conwayPoly = MakeGrid(GridType, GridShape);
 		}
-		
+
 		else if (ShapeType == ShapeTypes.Johnson)
 		{
 			_conwayPoly = MakeJohnsonPoly(JohnsonPolyType);
@@ -1160,7 +1092,7 @@ public class PolyHydra : MonoBehaviour
 			{
 				op.amount = Mathf.Round(op.amount * 1000) / 1000f;
 				op.amount2 = Mathf.Round(op.amount2 * 1000) / 1000f;
-				
+
 				float opMin, opMax;
 				if (SafeLimits)
 				{
@@ -1180,7 +1112,7 @@ public class PolyHydra : MonoBehaviour
 				op.amount = 0;
 			}
 		}
-		
+
 		if (!gameObject.activeInHierarchy) return;
 		Rebuild();
 
@@ -1199,7 +1131,7 @@ public class PolyHydra : MonoBehaviour
 	}
 
 	public void MakeWythoff() {
-		
+
 		if (!String.IsNullOrEmpty(WythoffSymbol))
 		{
 			MakeWythoff(WythoffSymbol);
@@ -1218,7 +1150,7 @@ public class PolyHydra : MonoBehaviour
 
 	public void MakeWythoff(string symbol)
 	{
-		
+
 		symbol = symbol.Replace("p", PrismP.ToString());
 		symbol = symbol.Replace("q", PrismQ.ToString());
 
@@ -1241,12 +1173,12 @@ public class PolyHydra : MonoBehaviour
 		//_faceCount = WythoffPoly.FaceCount;
 		//_vertexCount = WythoffPoly.VertexCount;
 	}
-	
+
 	public void FinishedApplyOps()
 	{
 		_faceCount = _conwayPoly.Faces.Count;
 		_vertexCount = _conwayPoly.Vertices.Count;
-		
+
 		if (enableCaching)
 		{
 			var cacheKeySource = PolyToJson();
@@ -1296,7 +1228,7 @@ public class PolyHydra : MonoBehaviour
 			}
 		}
 	}
-	
+
 	// This is a helper coroutine
 	IEnumerator RunOffMainThread(Action toRun, Action callback)
 	{
@@ -1389,10 +1321,10 @@ public class PolyHydra : MonoBehaviour
 				break;
 			case Ops.Loft:
 				conway = conway.Loft(amount, op.amount2, op.faceSelections, op.randomize);
-				break;					
+				break;
 			case Ops.Chamfer:
 				conway = conway.Chamfer(amount);
-				break;					
+				break;
 			case Ops.Quinto:
 				conway = conway.Quinto(amount, op.amount2, op.randomize);
 				break;
@@ -1617,16 +1549,16 @@ public class PolyHydra : MonoBehaviour
 			}
 		}
 	}
-	
+
 	public Mesh BuildMeshFromWythoffPoly(WythoffPoly source)
 	{
-		
+
 		var meshVertices = new List<Vector3>();
 		var meshTriangles = new List<int>();
 		var MeshVertexToVertex = new List<int>(); // Mapping of mesh vertices to poly vertices (one to many as we duplicate verts)
 		var meshColors = new List<Color>();
 		var meshUVs = new List<Vector2>();
-		
+
 		var mesh = new Mesh();
 		int meshVertexIndex = 0;
 
@@ -1645,7 +1577,7 @@ public class PolyHydra : MonoBehaviour
 					var c = face.center.getVector3();
 					var yAxis = c - v0;
 					var xAxis = Vector3.Cross(yAxis, normal);
-					
+
 					var faceColor = faceColors[(int) ((face.configuration + 2) % faceColors.Length)];
 					// Vertices
 					for (int i = 0; i < face.triangles.Length; i++) {
@@ -1656,7 +1588,7 @@ public class PolyHydra : MonoBehaviour
 						var u = Vector3.Project(vcoords, xAxis).magnitude;
 						var v = Vector3.Project(vcoords, yAxis).magnitude;
 						meshUVs.Add(new Vector2(u, v));
-						
+
 						meshTriangles.Add(meshVertexIndex);
 						MeshVertexToVertex.Add(face.triangles[i]);
 						meshVertexIndex++;
@@ -1675,20 +1607,20 @@ public class PolyHydra : MonoBehaviour
 		return mesh;
 
 	}
-	
+
 	// Essentially Kis only on non-triangular faces
 	// Returns the original number of sides of each face to be used elsewhere
 	// TODO Detect convex faces and use fan triangulation to save on a vertex?
 	public List<int> KisTriangulate() {
-        
+
 		var faceRoles = new List<ConwayPoly.Roles>();
 		var vertexRoles = new List<ConwayPoly.Roles>();
-		
+
 		var newVerts = _conwayPoly.Faces.Select(f => f.Centroid);
 		var vertexPoints = Enumerable.Concat(_conwayPoly.Vertices.Select(v => v.Position), newVerts);
 		vertexRoles.Concat(Enumerable.Repeat(ConwayPoly.Roles.Existing, vertexPoints.Count()));
 		var originalFaceSides = new List<int>();
-            
+
 		// vertex lookup
 		var vlookup = new Dictionary<string, int>();
 		int n = _conwayPoly.Vertices.Count;
@@ -1717,9 +1649,9 @@ public class PolyHydra : MonoBehaviour
 		}
 
 		_conwayPoly = new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
-		
-		
-		
+
+
+
 		return originalFaceSides;
 	}
 
@@ -1738,7 +1670,7 @@ public class PolyHydra : MonoBehaviour
 
 	public Mesh BuildMeshFromConwayPoly(ConwayPoly conway)
 	{
-		
+
 		var target = new Mesh();
 		var meshTriangles = new List<int>();
 		var meshVertices = new List<Vector3>();
@@ -1748,17 +1680,17 @@ public class PolyHydra : MonoBehaviour
 		var edgeUVs = new List<Vector2>();
 		var barycentricUVs = new List<Vector3>();
 		var miscUVs = new List<Vector4>();
-		
+
 		var hasNaked = conway.HasNaked();
 		hasNaked = false;  // TODO
-		
+
 		// Strip down to Face-Vertex structure
 		var points = conway.ListVerticesByPoints();
 		var faceIndices = conway.ListFacesByVertexIndices();
 
 		// Add faces
 		int index = 0;
-		
+
 		for (var i = 0; i < faceIndices.Length; i++)
 		{
 
@@ -1770,7 +1702,7 @@ public class PolyHydra : MonoBehaviour
 			// Axes for UV mapping
 			var xAxis = face.Halfedge.Vector;
 			var yAxis = Vector3.Cross(xAxis, faceNormal);
-			
+
 			Color32 color;
 			switch (ColorMethod)
 			{
@@ -1808,7 +1740,7 @@ public class PolyHydra : MonoBehaviour
 			{
 				for (var edgeIndex = 0; edgeIndex < faceIndex.Count; edgeIndex++)
 				{
-					
+
 					meshVertices.Add(faceCentroid);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
@@ -1818,13 +1750,13 @@ public class PolyHydra : MonoBehaviour
 					meshVertices.Add(points[faceIndex[edgeIndex]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
-					edgeUVs.Add(new Vector2(1, 1));					
+					edgeUVs.Add(new Vector2(1, 1));
 					barycentricUVs.Add(new Vector3(0, 1, 0));
 
 					meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
 					meshUVs.Add(calcUV(meshVertices[index]));
 					meshTriangles.Add(index++);
-					edgeUVs.Add(new Vector2(1, 1));					
+					edgeUVs.Add(new Vector2(1, 1));
 					barycentricUVs.Add(new Vector3(1, 0, 0));
 
 					meshNormals.AddRange(Enumerable.Repeat(faceNormal, 3));
@@ -1834,7 +1766,7 @@ public class PolyHydra : MonoBehaviour
 			}
 			else
 			{
-				
+
 				meshVertices.Add(points[faceIndex[0]]);
 				meshUVs.Add(calcUV(meshVertices[index]));
 				meshTriangles.Add(index++);
@@ -1856,7 +1788,7 @@ public class PolyHydra : MonoBehaviour
 				miscUVs.AddRange(Enumerable.Repeat(miscUV, 3));
 			}
 		}
-		
+
 		target.vertices = meshVertices.Select(x => Jitter(x)).ToArray();
 		target.normals = meshNormals.ToArray();
 		target.triangles = meshTriangles.ToArray();
@@ -1865,7 +1797,7 @@ public class PolyHydra : MonoBehaviour
 		target.SetUVs(1, edgeUVs);
 		target.SetUVs(2, barycentricUVs);
 		target.SetUVs(3, miscUVs);
-		
+
 		target.RecalculateTangents();
 		return target;
 	}
@@ -1896,7 +1828,7 @@ public class PolyHydra : MonoBehaviour
 			Debug.LogWarning($"opType: {opType} opconfigs count: {opconfigs.Count}");
 			throw;
 		}
-        
+
 		ConwayPoly.FaceSelections faceSelection = ConwayPoly.FaceSelections.None;
 		var maxFaceSel = Enum.GetValues(typeof(ConwayPoly.FaceSelections)).Length - 1; // Exclude "None"
 
@@ -1913,7 +1845,7 @@ public class PolyHydra : MonoBehaviour
 			Debug.LogWarning("Failed to pick a random FaceSel as the Wythoff to Conway conversion failed");
 			faceSelection = ConwayPoly.FaceSelections.All;
 		}
-		
+
 		// TODO pick another facesel if all faces are chosen
 		var newOp = new ConwayOperator
 		{
@@ -1927,15 +1859,15 @@ public class PolyHydra : MonoBehaviour
 		return newOp;
 	}
 
-	
+
 #if UNITY_EDITOR
 	void OnDrawGizmos () {
-		
+
 		float GizmoRadius = .03f;
-		
+
 		// I had to make too many fields on Kaleido public to do this
 		// Need some sensible public methods to give me sensible access
-		
+
 		var transform = this.transform;
 
 		if (WythoffPoly != null)
@@ -2033,9 +1965,9 @@ public class PolyHydra : MonoBehaviour
 			else
 			{
 				ConwayFaceGizmos();
-			}			
+			}
 		}
-		
+
 		if (dualGizmo)
 		{
 			for (int i = 0; i < WythoffPoly.EdgeCount; i++)
@@ -2107,12 +2039,12 @@ public class PolyHydra : MonoBehaviour
 			}
 		}
 	}
-	
+
 	private void NonConwayFaceGizmos()
 	{
 		int gizmoColor = 0;
 		var faces = WythoffPoly.faces;
-		var verts = WythoffPoly.Vertices;				
+		var verts = WythoffPoly.Vertices;
 		for (int f = 0; f < faces.Count; f++)
 		{
 			if (faceGizmosList.Contains(f) || faceGizmosList.Length==0)
