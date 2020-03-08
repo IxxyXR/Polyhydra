@@ -26,4 +26,23 @@ public class InitVR : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Calibrate();
+        }
+    }
+    
+    public void Calibrate()
+    {
+        var VRCamera = Camera.main.transform;
+        var playerStart = VRPlayerMarker.position;
+        var position = gameObject.transform.position;
+        position.x += playerStart.x - VRCamera.position.x;
+        position.y += playerStart.y - VRCamera.position.y;
+        position.z += playerStart.z - VRCamera.position.z;
+        gameObject.transform.position = position;
+    }
+    
 }

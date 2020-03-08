@@ -25,6 +25,14 @@ public class PolyhydraSceneSetup : MonoBehaviour
     public GameObject MainCamera;
     public GameObject MidiController;
 
+    public enum VrSdks
+    {
+        Oculus,
+        OpenVR,
+    }
+
+    public VrSdks VrSdk = VrSdks.Oculus;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,24 +41,12 @@ public class PolyhydraSceneSetup : MonoBehaviour
 
     private void OnValidate()
     {
-        Configure();
+        //Configure();
     }
 
     void Configure()
     {
         MidiController.gameObject.SetActive(MidiEnabled);
-        VRPlayer.SetActive(VrEnabled);
-        MainCamera.SetActive(!VrEnabled);
-
-        if (VrEnabled)
-        {
-            UnityEngine.XR.XRSettings.LoadDeviceByName("Oculus");
-        }
-        else
-        {
-            UnityEngine.XR.XRSettings.LoadDeviceByName("MockHMD");
-        }
-        
         if (RenderingPipeline==RenderingPipelines.URP)
         {
             Resources.FindObjectsOfTypeAll<HDAdditionalCameraData>().Select(x => x.enabled = true);
@@ -64,6 +60,37 @@ public class PolyhydraSceneSetup : MonoBehaviour
             Resources.FindObjectsOfTypeAll<HDAdditionalLightData>().Select(x => x.enabled = false);
             Resources.FindObjectsOfTypeAll<UniversalAdditionalCameraData>().Select(x => x.enabled = true);
             Resources.FindObjectsOfTypeAll<UniversalAdditionalLightData>().Select(x => x.enabled = true);
+        }
+        if (VrEnabled)
+        {
+            MainCamera.SetActive(false);
+            VRPlayer.SetActive(true);
+            if (VrSdk == VrSdks.Oculus)
+            {
+                StartCoroutine(LoadDevice("Oculus"));
+            }
+            else
+            {
+                StartCoroutine(LoadDevice("OpenVR"));
+            }
+        }
+        else
+        {
+            VRPlayer.SetActive(false);
+            MainCamera.SetActive(true);
+            StartCoroutine(LoadDevice("MockHMD"));
+        }
+
+
+    }
+    
+    IEnumerator LoadDevice(string newDevice)
+    {
+        if (String.Compare(UnityEngine.XR.XRSettings.loadedDeviceName, newDevice, true) != 0)
+        {
+            UnityEngine.XR.XRSettings.LoadDeviceByName(newDevice);
+            yield return null;
+            UnityEngine.XR.XRSettings.enabled = true;
         }
     }
 }
