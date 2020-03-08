@@ -219,17 +219,21 @@ public class PolyUI : MonoBehaviour {
         {
             case PolyHydra.ShapeTypes.Grid:
                 GridTypeDropdown.value = SaneMod(GridTypeDropdown.value + direction, GridTypeDropdown.options.Count);
+                GridTypeDropdown.RefreshShownValue();
                 break;
             case PolyHydra.ShapeTypes.Johnson:
                 JohnsonTypeDropdown.value = SaneMod(JohnsonTypeDropdown.value + direction, JohnsonTypeDropdown.options.Count);
+                JohnsonTypeDropdown.RefreshShownValue();
                 break;
             case PolyHydra.ShapeTypes.Other:
                 OtherTypeDropdown.value = SaneMod(OtherTypeDropdown.value + direction, OtherTypeDropdown.options.Count);
+                OtherTypeDropdown.RefreshShownValue();
                 break;
             case PolyHydra.ShapeTypes.Uniform:
                 int polyIndex = SaneMod(BasePolyDropdown.value + direction, BasePolyDropdown.options.Count);
                 //polyIndex = polyIndex == 0 ? 1 : polyIndex;
                 BasePolyDropdown.value = polyIndex;
+                BasePolyDropdown.RefreshShownValue();
                 break;
         }
     }
@@ -289,8 +293,9 @@ public class PolyUI : MonoBehaviour {
         _shouldReBuild = false;
         SafeLimitsToggle.isOn = poly.SafeLimits;
         ShapeTypesDropdown.value = (int) poly.ShapeType;
+        ShapeTypesDropdown.RefreshShownValue();
         BasePolyCategoryDropdown.value = (int) poly.UniformPolyTypeCategory;
-//        BasePolyCategoryDropdown.value = 1;
+        BasePolyCategoryDropdown.RefreshShownValue();
         int i = 0;
         foreach (var item in BasePolyDropdown.options)
         {
@@ -298,10 +303,15 @@ public class PolyUI : MonoBehaviour {
             i++;
         }
         BasePolyDropdown.value = i;
+        BasePolyDropdown.RefreshShownValue();
         JohnsonTypeDropdown.value = (int) poly.JohnsonPolyType;
+        JohnsonTypeDropdown.RefreshShownValue();
         OtherTypeDropdown.value = (int) poly.OtherPolyType;
+        OtherTypeDropdown.RefreshShownValue();
         GridTypeDropdown.value = (int) poly.GridType;
+        GridTypeDropdown.RefreshShownValue();
         GridShapeDropdown.value = (int) poly.GridShape;
+        GridShapeDropdown.RefreshShownValue();
         PrismPInput.text = poly.PrismP.ToString();
         PrismQInput.text = poly.PrismQ.ToString();
         InitShapeTypesUI((int) poly.ShapeType);
@@ -691,6 +701,7 @@ public class PolyUI : MonoBehaviour {
         }
 
         BasePolyDropdown.value = 0;
+        BasePolyDropdown.RefreshShownValue();
     }
 
     private static string ToTitleCase(string str)
