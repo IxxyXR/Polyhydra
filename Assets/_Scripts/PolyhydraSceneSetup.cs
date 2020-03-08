@@ -47,7 +47,7 @@ public class PolyhydraSceneSetup : MonoBehaviour
     void Configure()
     {
         MidiController.gameObject.SetActive(MidiEnabled);
-        if (RenderingPipeline==RenderingPipelines.URP)
+        if (RenderingPipeline==RenderingPipelines.HDRP)
         {
             Resources.FindObjectsOfTypeAll<HDAdditionalCameraData>().Select(x => x.enabled = true);
             Resources.FindObjectsOfTypeAll<HDAdditionalLightData>().Select(x => x.enabled = true);
@@ -90,7 +90,7 @@ public class PolyhydraSceneSetup : MonoBehaviour
         {
             UnityEngine.XR.XRSettings.LoadDeviceByName(newDevice);
             yield return null;
-            UnityEngine.XR.XRSettings.enabled = true;
+            if (VrEnabled) UnityEngine.XR.XRSettings.enabled = true;
         }
     }
 }
