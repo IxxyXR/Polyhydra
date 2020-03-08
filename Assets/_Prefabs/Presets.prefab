@@ -462,7 +462,7 @@ MonoBehaviour:
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     SkyBoxURP: {fileID: 2100000, guid: bc4e2c2c6f5934598a196d7494726d23, type: 2}
   - Name: Volumetric
-    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 33312f87b96d9994a8ff504d24ab19f2,
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: 033cb349002b93a45bfc5418fd86dbd6,
       type: 2}
     PolyhedronMaterialURP: {fileID: 2100000, guid: 6266e77c2c812274d83769a4c38bf7a3,
       type: 2}
