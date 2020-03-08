@@ -658,10 +658,10 @@ namespace Conway
 
 		public ConwayPoly Bevel(float amount, bool randomize=false)
 		{
-			return Bevel(amount, amount * 0.5f, randomize);
+			return Bevel(amount, amount * 0.5f, 0, randomize);
 		}
 		
-		public ConwayPoly Bevel(float amountP, float amountQ, bool randomize=false)
+		public ConwayPoly Bevel(float amountP, float amountQ, float offset=0, bool randomize=false)
 		{
 
 			var faceRoles = new List<Roles>();
@@ -685,12 +685,14 @@ namespace Conway
 
 					var edgePointL = edge.PointAlongEdge(amountP);
 					var innerPointL = Vector3.LerpUnclamped(edgePointL, centroid, amountQ);
+					innerPointL += face.Normal * offset;
 					newVertexPoints.Add(innerPointL);
 					vertexRoles.Add(Roles.New);
 					newInnerVertsL.Add(edge.Name, newVertexPoints.Count - 1);
 					
 					var edgePointR = edge.PointAlongEdge(1 - amountP);
 					var innerPointR = Vector3.LerpUnclamped(edgePointR, centroid, amountQ);
+					innerPointR += face.Normal * offset;
 					newVertexPoints.Add(innerPointR);
 					vertexRoles.Add(Roles.New);
 					newInnerVertsR.Add(edge.Name, newVertexPoints.Count - 1);

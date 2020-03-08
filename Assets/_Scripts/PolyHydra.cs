@@ -2115,7 +2115,7 @@ public class PolyHydra : MonoBehaviour
 						transform.TransformPoint(edgeEnd.Position)
 					);
 				}
-				Handles.Label(Vector3.Scale(face.Centroid, transform.lossyScale) + new Vector3(0, .15f, 0), f.ToString());
+				Handles.Label(Vector3.Scale(face.Centroid, transform.lossyScale) + new Vector3(0, .03f, 0), f.ToString());
 			}
 		}
 	}

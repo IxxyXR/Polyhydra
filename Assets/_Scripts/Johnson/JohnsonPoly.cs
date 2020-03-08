@@ -69,7 +69,7 @@ namespace Conway
                 };
                 poly.Faces.Add(side1);
                 poly.FaceRoles.Add(ConwayPoly.Roles.New);
-                
+
                 var side2 = new List<Vertex>
                 {
                     edge1.Vertex,
@@ -355,26 +355,21 @@ namespace Conway
         {
 	        float height = CalcPyramidHeight(sides) / 2f;
 	        ConwayPoly poly = MakeCupola(sides, height);
+	        poly = poly.Loft(0f, height, ConwayPoly.FaceSelections.OnlyFirst);
 	        poly.Recenter();
-	        var included = poly.FaceRemove(ConwayPoly.FaceSelections.FacingDown, false);
-	        included = included.FaceScale(0f, ConwayPoly.FaceSelections.All, false);
-	        var excluded = poly.FaceRemove(ConwayPoly.FaceSelections.FacingDown, false);
-	        poly = included.Extrude((CalcPyramidHeight(sides)/2f), false, false);
-	        poly.Append(excluded);
-	        return included;
+	        return poly;
         }
 
 		public static ConwayPoly MakeElongatedBicupola(int sides)
 		{
 			ConwayPoly poly = MakeElongatedCupola(sides);
-			Face bottom = poly.Faces[1];
-			ConwayPoly top2 = MakePolygon(sides, false, 0.25f, -2*(CalcPyramidHeight(sides) /2f), 0.5f);
-			poly.Append(top2);
-
+			Face bottom = poly.Faces[sides * 2];
 			int i = 0;
 			var middleVerts = bottom.GetVertices();
 			poly.Faces.Remove(bottom);
-			poly.FaceRoles.RemoveAt(0);
+			poly.FaceRoles.RemoveAt(poly.FaceRoles.Count - 1);
+			ConwayPoly top2 = MakePolygon(sides, false, 0.25f, -2*(CalcPyramidHeight(sides) /2f), 0.5f);
+			poly.Append(top2);
 			var edge2 = poly.Faces.Last().Halfedge.Prev;
 
 			while (true)
@@ -412,7 +407,7 @@ namespace Conway
 	    {
 			ConwayPoly poly = MakeAntiprism(sides*2);
 			Face topFace = poly.Faces[1];
-			ConwayPoly top1 = MakePolygon(sides, true, 0f, (SideLength(sides*2) * Mathf.Sqrt(0.75f))+(CalcPyramidHeight(sides)/2f), 0.5f);
+			ConwayPoly top1 = MakePolygon(sides, true, 0f, (SideLength(sides*2) * Mathf.Sqrt(0.75f))+(CalcPyramidHeight(sides)/4f), 0.5f);
 			poly.Append(top1);
 
 			int i = 0;
@@ -423,6 +418,48 @@ namespace Conway
 			var edge2 = poly.Faces.Last().Halfedge.Prev;
 			while (true)
 			{
+				var side1 = new List<Vertex>
+				{
+					middleVerts[PolyUtils.ActualMod(i * 2 - 1, sides * 2)],
+					middleVerts[PolyUtils.ActualMod(i * 2, sides * 2)],
+					edge2.Vertex
+				};
+				poly.Faces.Add(side1);
+				poly.FaceRoles.Add(ConwayPoly.Roles.New);
+
+				var side2 = new List<Vertex>
+				{
+					middleVerts[PolyUtils.ActualMod(i * 2, sides * 2)],
+					middleVerts[PolyUtils.ActualMod(i * 2 + 1, sides * 2)],
+					edge2.Next.Vertex,
+					edge2.Vertex,
+				};
+				poly.Faces.Add(side2);
+				poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
+
+				i++;
+				edge2 = edge2.Next;
+				if (i == sides) break;
+			}
+
+			poly.Halfedges.MatchPairs();
+			return poly;
+		}
+
+      public static ConwayPoly MakeGyroelongatedBicupola(int sides)
+      {
+				ConwayPoly poly = MakeGyroelongatedCupola(sides);
+				Face bottomFace = poly.Faces[0];
+				ConwayPoly bottom1 = MakePolygon(sides, false, 0.75f, -(CalcPyramidHeight(sides)), 0.5f);
+				poly.Append(bottom1);
+				
+				int i = 0;
+				var middleVerts = bottomFace.GetVertices();
+				poly.Faces.Remove(bottomFace);
+				poly.FaceRoles.RemoveAt(0);
+				var edge2 = poly.Faces.Last().Halfedge.Prev;
+				while (true)
+				{
 					var side1 = new List<Vertex>
 					{
 							middleVerts[PolyUtils.ActualMod(i * 2 - 1, sides * 2)],
@@ -444,50 +481,8 @@ namespace Conway
 
 					i++;
 					edge2 = edge2.Next;
+
 					if (i == sides) break;
-			}
-
-			poly.Halfedges.MatchPairs();
-			return poly;
-		}
-
-      public static ConwayPoly MakeGyroelongatedBicupola(int sides)
-      {
-				ConwayPoly poly = MakeGyroelongatedCupola(sides);
-				Face bottomFace = poly.Faces[0];
-				ConwayPoly bottom1 = MakePolygon(sides, false, 0.75f, -(CalcPyramidHeight(sides)/2f), 0.5f);
-				poly.Append(bottom1);
-				
-				int i = 0;
-				var middleVerts = bottomFace.GetVertices();
-				poly.Faces.Remove(bottomFace);
-				poly.FaceRoles.RemoveAt(0);
-				var edge2 = poly.Faces.Last().Halfedge.Prev;
-				while (true)
-				{
-						var side1 = new List<Vertex>
-						{
-								middleVerts[PolyUtils.ActualMod(i * 2 - 1, sides * 2)],
-								middleVerts[PolyUtils.ActualMod(i * 2, sides * 2)],
-								edge2.Vertex
-						};
-						poly.Faces.Add(side1);
-						poly.FaceRoles.Add(ConwayPoly.Roles.New);
-						
-						var side2 = new List<Vertex>
-						{
-								middleVerts[PolyUtils.ActualMod(i * 2, sides * 2)],
-								middleVerts[PolyUtils.ActualMod(i * 2 + 1, sides * 2)],
-								edge2.Next.Vertex,
-								edge2.Vertex,
-						};
-						poly.Faces.Add(side2);
-						poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
-						
-						i++;
-						edge2 = edge2.Next;
-						
-						if (i == sides) break;
 				}
 				
 				poly.Halfedges.MatchPairs();
