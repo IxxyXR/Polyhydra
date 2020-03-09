@@ -1939,6 +1939,14 @@ public class PolyHydra : MonoBehaviour
 		return newOp;
 	}
 
+	public void Unfold() {
+		ConwayPoly toBeUnfolded = GetConwayPoly();
+		MeshFaceList unfoldFaces = toBeUnfolded.Faces;
+		MeshHalfedgeList unfoldHalfedges = toBeUnfolded.Halfedges;
+		Debug.Log(unfoldFaces.Count);
+		Debug.Log(unfoldHalfedges.Count);
+	}
+
 	
 #if UNITY_EDITOR
 	void OnDrawGizmos () {

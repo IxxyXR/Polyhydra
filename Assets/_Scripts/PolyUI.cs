@@ -57,6 +57,7 @@ public class PolyUI : MonoBehaviour {
     public Button PrevAPresetButton;
     public Button NextAPresetButton;
     public Button ObjExportButton;
+    public Button UnfoldButton;
     public GameObject[] Tabs; 
     public GameObject[] TabButtons;
 
@@ -145,6 +146,7 @@ public class PolyUI : MonoBehaviour {
         ZRotateSlider.onValueChanged.AddListener(delegate{ZSliderChanged();});
 
         ObjExportButton.onClick.AddListener(ObjExportButtonClicked);
+        UnfoldButton.onClick.AddListener(UnfoldButtonClicked);
         
         Presets.LoadAllPresets();
         
@@ -181,6 +183,12 @@ public class PolyUI : MonoBehaviour {
     private void ObjExportButtonClicked()
     {
         ObjExport.ExportMesh(poly.gameObject, Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Foo");
+    }
+
+    private void UnfoldButtonClicked()
+    {
+        Debug.Log("event started");
+        poly.Unfold();
     }
 
     private void PrismPInputChanged()
