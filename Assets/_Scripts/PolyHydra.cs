@@ -947,6 +947,7 @@ public class PolyHydra : MonoBehaviour
 		InitCacheIfNeeded();
 		meshFilter = gameObject.GetComponent<MeshFilter>();
 		MakePolyhedron();
+		Unfold();
 	}
 
 	void InitCacheIfNeeded()
@@ -1943,6 +1944,7 @@ public class PolyHydra : MonoBehaviour
 		ConwayPoly toBeUnfolded = GetConwayPoly();
 		MeshFaceList unfoldFaces = toBeUnfolded.Faces;
 		MeshHalfedgeList unfoldHalfedges = toBeUnfolded.Halfedges;
+		List<PolyEdge> PolyEdges = new List<PolyEdge>();
 		Debug.Log(unfoldFaces.Count);
 		Debug.Log(unfoldHalfedges.Count);
 	}
