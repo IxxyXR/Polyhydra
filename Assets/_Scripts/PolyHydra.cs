@@ -1945,8 +1945,21 @@ public class PolyHydra : MonoBehaviour
 		MeshFaceList unfoldFaces = toBeUnfolded.Faces;
 		MeshHalfedgeList unfoldHalfedges = toBeUnfolded.Halfedges;
 		List<PolyEdge> PolyEdges = new List<PolyEdge>();
+		List<Halfedge> CheckedHalfEdges = new List<Halfedge>();
+		foreach (Halfedge h in unfoldHalfedges)
+		{
+			if (CheckedHalfEdges.Contains(h)){
+				continue;
+			} else 
+			{
+				CheckedHalfEdges.Add(h);
+				CheckedHalfEdges.Add(h.Pair);
+				PolyEdges.Add(new PolyEdge(h.Face, h.Pair.Face, h, h.Pair));
+			}
+		}
 		Debug.Log(unfoldFaces.Count);
-		Debug.Log(unfoldHalfedges.Count);
+		Debug.Log(PolyEdges.Count);
+		Node root = new Node(unfoldFaces[0], null);
 	}
 
 	
