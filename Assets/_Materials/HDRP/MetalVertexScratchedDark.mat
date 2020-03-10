@@ -129,14 +129,14 @@ Material:
     - Boolean_77E75FAA: 0
     - Boolean_F2394607: 0
     - Vector1_11BAFE8B: 0.5
-    - Vector1_17F26AF6: 10.18
-    - Vector1_1A806F24: 1
+    - Vector1_17F26AF6: 0
+    - Vector1_1A806F24: 0.294
     - Vector1_20B60D22: 0.1
     - Vector1_2E810D38: 0.799
     - Vector1_7EB7D62C: 0.407
-    - Vector1_AB0A83E9: 100
+    - Vector1_AB0A83E9: 50.6
     - Vector1_AC0CBD99: 0
-    - Vector1_B599B961: 1.5
+    - Vector1_B599B961: 0.35
     - Vector1_BB4DD4C5: 0.043
     - Vector1_BD53BAF8: 1
     - Vector1_BDDC6585: 1

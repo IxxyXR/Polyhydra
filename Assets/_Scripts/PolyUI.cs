@@ -677,6 +677,7 @@ public class PolyUI : MonoBehaviour {
                 break;
             case (int)PolyHydra.ShapeTypes.Other:
                 PrismPInput.gameObject.SetActive(true);
+                PrismQInput.gameObject.SetActive(true);
                 OtherTypeDropdown.gameObject.SetActive(true);
                 break;
         }

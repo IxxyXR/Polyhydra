@@ -325,8 +325,7 @@ MonoBehaviour:
     PolyhedronMaterialURP: {fileID: 2100000, guid: 52278f9199086dd468a003bd09b38248,
       type: 2}
     PolyhedronColorMethod: 1
-    ActiveProps:
-    - {fileID: 0}
+    ActiveProps: []
     LightingPrefabHDRP: {fileID: 585132436217273184, guid: ab5275cf612cc4046b57aacf620eaf46,
       type: 3}
     LightingPrefabURP: {fileID: 3802874855569752408, guid: a59669744e0f2ff46bf9ea830d762d7d,
@@ -337,6 +336,23 @@ MonoBehaviour:
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     SkyBoxURP: {fileID: 2100000, guid: 7402c40b9d67da6408c278f37f3f51bf, type: 2}
+  - Name: Warm Metal
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: f446fe272d555444f9e3d8d9a6de3e14,
+      type: 2}
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 52278f9199086dd468a003bd09b38248,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps: []
+    LightingPrefabHDRP: {fileID: 585132436217273184, guid: ab5275cf612cc4046b57aacf620eaf46,
+      type: 3}
+    LightingPrefabURP: {fileID: 3802874855569752408, guid: a59669744e0f2ff46bf9ea830d762d7d,
+      type: 3}
+    ActiveVolumeProfileHDRP: {fileID: 11400000, guid: ab31740888bf2f74ca589b2864cf3895,
+      type: 2}
+    ActiveVolumeProfileURP: {fileID: 0}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 2100000, guid: bc4e2c2c6f5934598a196d7494726d23, type: 2}
   - Name: Tinted Glass
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 7d966c49445a5cb469bd0d46d8d6c8dd,
       type: 2}

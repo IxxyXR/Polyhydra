@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -48,11 +49,11 @@ namespace Conway
         public static ConwayPoly MakeCupola(int sides, float height, bool bi=false)
         {
 
-            if (sides < 3) sides = 3;
+	        sides = Mathf.Clamp(sides, 3, 64);
 
             ConwayPoly poly = MakePolygon(sides * 2);
             Face bottom = poly.Faces[0];
-            ConwayPoly top1 = MakePolygon(sides, true, 0.25f, height,0.5f);
+            ConwayPoly top1 = MakePolygon(sides, true, 0.25f, height, 0.5f);
             poly.Append(top1);
 
             int i = 0;
@@ -134,7 +135,7 @@ namespace Conway
         public static ConwayPoly MakeRotunda(int sides, float height, bool bi=false)
         {
 
-            if (sides < 3) sides = 3;
+	        sides = Mathf.Clamp(sides, 3, 64);
 
             ConwayPoly poly = MakePolygon(sides);
             Face bottom = poly.Faces[0];
@@ -165,26 +166,6 @@ namespace Conway
                 poly.Faces.Add(pentFace);
                 poly.FaceRoles.Add(ConwayPoly.Roles.New);
 
-//                var upperTriFace = new List<Vertex>
-//                {
-//                    edge1.Vertex,
-//                    edge1.Prev.Vertex,
-//                    newV
-//                };
-//                poly.Faces.Add(upperTriFace);
-//                //upperTriFaces.Add(poly.Faces.Last());
-//                poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
-//
-//                var lowerTriFace = new List<Vertex>
-//                {
-//                    newV,
-//                    edge2.Vertex,
-//                    edge2.Prev.Vertex
-//                };
-//                poly.Faces.Add(lowerTriFace);
-//                //lowerTriFaces.Add(poly.Faces.Last());
-//                poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
-
                 i++;
                 edge1 = edge1.Next.Next;
                 edge2 = edge2.Prev;
@@ -195,6 +176,15 @@ namespace Conway
             return poly;
         }
 
+        public static ConwayPoly MakeElongatedRotunda()
+        {
+	        int sides = 10;
+	        float bodyHeight = SideLength(sides);
+	        ConwayPoly poly = MakeRotunda();
+	        poly = poly.Loft(0f, bodyHeight, ConwayPoly.FaceSelections.FacingDown);
+	        poly.Recenter();
+	        return poly;
+        }
 
         public static ConwayPoly MakePrism(int sides)
         {
@@ -269,18 +259,15 @@ namespace Conway
 
         public static float CalcPyramidHeight(float sides)
         {
-            float sideLength = SideLength(sides);
             float height;
 
             // Try and make equilateral sides if we can
-            if (sides >= 3 && sides <= 5)
-            {
-                height = Mathf.Sqrt(Mathf.Pow(sideLength, 2) - 1f);
-            }
-            else
-            {
-                height = 1f;
-            }
+            // Otherwise just use the nearest valid side count
+            sides = Mathf.Clamp(sides, 3, 5);
+
+            float sideLength = SideLength(sides);
+            height = Mathf.Sqrt(Mathf.Pow(sideLength, 2) - 1f);
+
 
             return height;
         }
@@ -353,9 +340,10 @@ namespace Conway
 
         public static ConwayPoly MakeElongatedCupola(int sides)
         {
-	        float height = CalcPyramidHeight(sides) / 2f;
-	        ConwayPoly poly = MakeCupola(sides, height);
-	        poly = poly.Loft(0f, height, ConwayPoly.FaceSelections.OnlyFirst);
+	        float capHeight = CalcPyramidHeight(sides) / 2f;
+	        float bodyHeight = SideLength(sides * 2);
+	        ConwayPoly poly = MakeCupola(sides, capHeight);
+	        poly = poly.Loft(0f, bodyHeight, ConwayPoly.FaceSelections.OnlyFirst);
 	        poly.Recenter();
 	        return poly;
         }
@@ -516,7 +504,8 @@ namespace Conway
 
         public static ConwayPoly MakeBicupola(int sides)
         {
-            float height = CalcPyramidHeight(sides);
+	        // TODO get this right
+	        float height = Mathf.Sqrt(Mathf.Pow(SideLength(sides * 2f) / 2f, 2));
             return MakeBicupola(sides, height);
         }
 
@@ -524,7 +513,7 @@ namespace Conway
         {
             if (sides < 6) sides = 6;
             ConwayPoly poly = MakePolygon(sides);
-            poly = MakeCupola(sides, height/2, true);
+            poly = MakeCupola(sides, height, true);
             return poly;
         }
 
@@ -607,6 +596,59 @@ namespace Conway
 				var vertexRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, 16);
 
 				return new ConwayPoly(verts, faces, faceRoles, vertexRoles);
+			}
+
+			public static ConwayPoly MakeUvSphere(int verticalLines = 24, int horizontalLines = 24, float hemi = 1)
+			{
+
+				var faceRoles = new List<ConwayPoly.Roles>();
+
+				horizontalLines = Mathf.Clamp(horizontalLines, 3, 24);
+				verticalLines = Mathf.Clamp(verticalLines, 3, 24);
+
+				var verts = new List<Vector3>();
+				for (float v = 0; v <= horizontalLines; v++)
+				{
+					for (float u = 0; u < verticalLines; u++)
+					{
+						var vv = v / horizontalLines;
+						var uu = u / verticalLines;
+						// Avoid coincident vertices at the tip
+						// as this caused weird glitches on Lace
+						if (vv == 0) vv = 0.0001f;
+
+						float x = Mathf.Sin(Mathf.PI * vv) * Mathf.Cos(2f * Mathf.PI * uu);
+						float y = Mathf.Sin(Mathf.PI * vv) * Mathf.Sin(2f * Mathf.PI * uu);
+						float z = Mathf.Cos(Mathf.PI * vv);
+						verts.Add(new Vector3(x, z, y));
+					}
+				}
+
+				var faces = new List<List<int>>();
+				for (int v = 0; v < horizontalLines * hemi; v += 1)
+				{
+					for (int u = 0; u < verticalLines; u += 1)
+					{
+						faces.Add(new List<int> {
+							(v * verticalLines) + u,
+							(v * verticalLines) + ((u + 1) % verticalLines),
+							((v + 1) * verticalLines) + ((u + 1) % verticalLines),
+							((v + 1) * verticalLines) + u
+						});
+						faceRoles.Add((u + v) % 2 == 0 ? ConwayPoly.Roles.New : ConwayPoly.Roles.NewAlt);
+					}
+				}
+
+				var vertexRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, verts.Count);
+				var poly = new ConwayPoly(verts, faces, faceRoles, vertexRoles);
+				return poly;
+			}
+
+			public static ConwayPoly MakeUvHemisphere(int verticalLines = 24, int horizontalLines = 24)
+			{
+				var poly = MakeUvSphere(verticalLines, horizontalLines, 0.5f);
+				poly.FillHoles();
+				return poly;
 			}
     }
 }

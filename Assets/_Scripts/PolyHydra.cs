@@ -143,10 +143,14 @@ public class PolyHydra : MonoBehaviour
 		//GyroelongatedRotunda,
 
 
+		ElongatedRotunda
 	}
 
 	public enum OtherPolyTypes
 	{
+		UvSphere,
+		UvHemisphere,
+
 		L1,
 		L2
 	}
@@ -372,23 +376,9 @@ public class PolyHydra : MonoBehaviour
 		Color.magenta
 	};
 	
-	private Color32[] faceColors = 
-	{
-		new Color(1.0f, 0.5f, 0.5f),
-		new Color(0.8f, 0.8f, 0.8f),
-		new Color(0.5f, 0.6f, 0.6f),
-		new Color(1.0f, 0.94f, 0.9f),
-		new Color(0.66f, 0.2f, 0.2f),
-		new Color(0.6f, 0.0f, 0.0f), 
-		new Color(1.0f, 1.0f, 1.0f),
-		new Color(0.6f, 0.6f, 0.6f),
-		new Color(0.5f, 1.0f, 0.5f),
-		new Color(0.5f, 0.5f, 1.0f),
-		new Color(0.5f, 1.0f, 1.0f),
-		new Color(1.0f, 0.5f, 1.0f),
-	};
+	private Color[] faceColors;
 
-	void Awake()
+	void InitConfigs()
 	{
 
 		// TODO this has become unweidly now we have so many params
@@ -756,8 +746,8 @@ public class PolyHydra : MonoBehaviour
 				new OpConfig
 				{
 					usesFaces = true,
-					amountDefault = 0.1f,
-					amountMin = -180, amountMax = 180, amountSafeMin = -45, amountSafeMax = 45,
+					amountDefault = 0.5f,
+					amountMin = -4, amountMax = 4, amountSafeMin = -1, amountSafeMax = 1,
 					usesRandomize = true
 				}
 			},
@@ -929,7 +919,11 @@ public class PolyHydra : MonoBehaviour
 				}
 			},
 			{Ops.Recenter, new OpConfig {usesAmount = false}},
-			{Ops.SitLevel, new OpConfig {usesAmount = false}},
+			{Ops.SitLevel, new OpConfig
+			{
+				amountDefault = 0,
+				amountMin = 0f, amountMax = 1f, amountSafeMin = 0f, amountSafeMax = 1f,
+			}},
 			{
 				Ops.Weld,
 				new OpConfig
@@ -941,12 +935,40 @@ public class PolyHydra : MonoBehaviour
 		};
 	}
 
-	void Start()
+	void Init()
 	{
+		InitConfigs();
+
+		faceColors = new[] {
+			new Color(1.0f, 0.75f, 0.75f),
+			new Color(1.0f, 0.5f, 0.5f),
+			new Color(0.8f, 0.4f, 0.4f),
+			new Color(0.8f, 0.8f, 0.8f),
+			new Color(0.5f, 0.6f, 0.6f),
+			new Color(0.6f, 0.0f, 0.0f),
+			new Color(1.0f, 1.0f, 1.0f),
+			new Color(0.6f, 0.6f, 0.6f),
+			new Color(0.5f, 1.0f, 0.5f),
+			new Color(0.5f, 0.5f, 1.0f),
+			new Color(0.5f, 1.0f, 1.0f),
+			new Color(1.0f, 0.5f, 1.0f),
+		};
+
 		Debug.unityLogger.logEnabled = EnableLogging;
 		InitCacheIfNeeded();
 		meshFilter = gameObject.GetComponent<MeshFilter>();
 		MakePolyhedron();
+
+	}
+
+	void Start()
+	{
+		Init();
+	}
+
+	void OnEnable()
+	{
+		Init();
 	}
 
 	void InitCacheIfNeeded()
@@ -1074,10 +1096,9 @@ public class PolyHydra : MonoBehaviour
 			case JohnsonPolyTypes.GyroelongatedBicupola:
 				return JohnsonPoly.MakeGyroelongatedBicupola(PrismP<3?3:PrismP);
 			case JohnsonPolyTypes.Rotunda:
-				// A fudge for the pentagonal rotunda (which is the only actual Johnson solid Rotunda)
 				return JohnsonPoly.MakeRotunda();
-				// WIP
-				//return JohnsonPoly.MakeRotunda(PrismP, 1, false);
+			case JohnsonPolyTypes.ElongatedRotunda:
+				return JohnsonPoly.MakeElongatedRotunda();
 			default:
 				Debug.LogError("Unknown Johnson Poly Type");
 				return null;
@@ -1088,6 +1109,10 @@ public class PolyHydra : MonoBehaviour
 	{
 		switch (otherPolyType)
 		{
+			case OtherPolyTypes.UvSphere:
+				return JohnsonPoly.MakeUvSphere(PrismP, PrismQ);
+			case OtherPolyTypes.UvHemisphere:
+				return JohnsonPoly.MakeUvHemisphere();
 			case OtherPolyTypes.L1:
 				return JohnsonPoly.MakeL1();
 			case OtherPolyTypes.L2:
@@ -1127,6 +1152,12 @@ public class PolyHydra : MonoBehaviour
 		{
 			_conwayPoly = MakeOtherPoly(OtherPolyType);
 		}
+
+		_conwayPoly.basePolyhedraInfo = new ConwayPoly.BasePolyhedraInfo
+		{
+			P = PrismP,
+			Q = PrismQ
+		};
 
 		if (!enableThreading || disableThreading)  // TODO fix confusing flags
 		{
@@ -1580,7 +1611,7 @@ public class PolyHydra : MonoBehaviour
 				conway.Recenter();
 				break;
 			case Ops.SitLevel:
-				conway = conway.SitLevel();
+				conway = conway.SitLevel(amount);
 				break;
 			case Ops.Stretch:
 				conway = conway.Stretch(amount);
@@ -1627,6 +1658,13 @@ public class PolyHydra : MonoBehaviour
 			{
 				_conwayPoly = ApplyOp(_conwayPoly, ref stashed, op);
 			}
+
+			_conwayPoly.basePolyhedraInfo = new ConwayPoly.BasePolyhedraInfo
+			{
+				P = PrismP,
+				Q = PrismQ
+			};
+
 		}
 	}
 	
@@ -2115,7 +2153,7 @@ public class PolyHydra : MonoBehaviour
 						transform.TransformPoint(edgeEnd.Position)
 					);
 				}
-				Handles.Label(Vector3.Scale(face.Centroid, transform.lossyScale) + new Vector3(0, .03f, 0), f.ToString());
+				Handles.Label(Vector3.Scale(face.Centroid, transform.lossyScale) + new Vector3(0, .03f, 0), _conwayPoly.FaceRoles[f].ToString());
 			}
 		}
 	}
