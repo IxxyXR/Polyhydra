@@ -16,14 +16,14 @@ using Face = Conway.Face;
 using Halfedge = Conway.Halfedge;
 using Random = UnityEngine.Random;
 
-public class Node {
+public class PolyNode {
 
     Face ID;
-    Node Parent;
-    List<Node> Children;
+    PolyNode Parent;
+    List<PolyNode> Children;
     bool Root;
 
-    public Node(Face ID, Node p)
+    public PolyNode(Face ID, PolyNode p)
     {
         if (p == null)
         {
@@ -35,27 +35,27 @@ public class Node {
             this.Root = false;
         }
         this.ID = ID;
-        this.Children = new List<Node>();
+        this.Children = new List<PolyNode>();
     }
 
-    public Node GetParent()
+    public PolyNode GetParent()
     {
         return this.Parent;
     }
 
-    public void SetParent(Node p)
+    public void SetParent(PolyNode p)
     {
         this.Parent = p;
     }
 
-    public List<Node> GetChildren()
+    public List<PolyNode> GetChildren()
     {
         return this.Children;
     }
 
-    public List<Node> AddChild(Face c)
+    public List<PolyNode> AddChild(Face c)
     {
-        this.Children.Add(new Node(c, this));
+        this.Children.Add(new PolyNode(c, this));
         return this.Children;
     }
 

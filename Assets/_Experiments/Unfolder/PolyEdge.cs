@@ -87,7 +87,7 @@ public class PolyEdge
         this.EdgeChecked = check;
     }
 
-    public bool isTabbed()
+    public bool IsTabbed()
     {
         return this.Tabbed;
     }
@@ -105,5 +105,11 @@ public class PolyEdge
     public void SetBranched(bool branch)
     {
         this.Branched = branch;
+    }
+
+    override
+    public String ToString()
+    {
+        return Halfedge1.Name + " x " + Halfedge2.Name;
     }
 }

@@ -1946,6 +1946,7 @@ public class PolyHydra : MonoBehaviour
 		MeshHalfedgeList unfoldHalfedges = toBeUnfolded.Halfedges;
 		List<PolyEdge> PolyEdges = new List<PolyEdge>();
 		List<Halfedge> CheckedHalfEdges = new List<Halfedge>();
+		List<Face> ConnectedFaces = new List<Face>();
 		foreach (Halfedge h in unfoldHalfedges)
 		{
 			if (CheckedHalfEdges.Contains(h)){
@@ -1959,7 +1960,105 @@ public class PolyHydra : MonoBehaviour
 		}
 		Debug.Log(unfoldFaces.Count);
 		Debug.Log(PolyEdges.Count);
-		Node root = new Node(unfoldFaces[0], null);
+		PolyNode root = new PolyNode(unfoldFaces[0], null);
+		List<PolyNode> children = AddChildren(root, PolyEdges);
+		List<PolyNode> queue = new List<PolyNode>();
+		List<PolyNode> branched = new List<PolyNode>();
+		foreach (PolyNode c in children)
+		{
+			queue.Add(c);
+			branched.Add(c);
+		}
+		while (queue.Count != 0)
+		{
+			children = AddChildren(queue[0], PolyEdges);
+			foreach (PolyNode c in children)
+			{
+				if (!queue.Contains(c))
+				{
+					if (!branched.Contains(c))
+					{
+						branched.Add(c);
+					}
+					queue.Add(c);
+				}
+			}
+			queue.RemoveAt(0);
+		}
+		int tabs = 0;
+		foreach (PolyEdge e in PolyEdges)
+		{
+			if (e.IsBranched())
+			{
+				Debug.Log(e.ToString());
+			}
+			if (e.IsTabbed())
+			{
+				tabs++;
+			}
+		}
+		Debug.Log(tabs.ToString());
+	}
+
+	private List<PolyNode> AddChildren(PolyNode c, List<PolyEdge> edges)
+	{
+		List<Face> sharedFaces = new List<Face>();
+		foreach (Face sf in sharedFaces)
+		{
+			c.AddChild(sf);
+			foreach (PolyEdge e in edges)
+			{
+				if ((e.GetFace1() == c.GetID() && e.GetFace2() == sf) || (e.GetFace2() == c.GetID() && e.GetFace1() == sf))
+				{
+					e.SetBranched(true);
+				}
+			}
+		}
+		return c.GetChildren();
+	}
+
+	private List<Face> GetSharedFaces(Face f, List<PolyEdge> edges, List<Face> connected)
+	{
+		List<Face> sharedFaces = new List<Face>();
+		foreach(PolyEdge e in edges)
+		{
+			if (e.GetFace1() == f)
+			{
+				if (connected.Contains(e.GetFace2()))
+				{
+					if (e.IsBranched())
+					{
+						continue;
+					} else {
+						e.SetTabbed(true);
+					}
+				} else {
+					sharedFaces.Add(e.GetFace2());
+					connected.Add(e.GetFace1());
+					connected.Add(e.GetFace2());
+					e.SetEdgeChecked(true);
+				}
+			}
+			else if (e.GetFace2() == f)
+			{
+				if (connected.Contains(e.GetFace1()))
+				{
+					if (e.IsBranched())
+					{
+						continue;
+					} else {
+						e.SetTabbed(true);
+					}
+				} else 
+				{
+					sharedFaces.Add(e.GetFace1());
+					connected.Add(e.GetFace1());
+					connected.Add(e.GetFace2());
+					e.SetEdgeChecked(true);
+				}
+			}
+		}
+		return sharedFaces;
 	}
 
 	
