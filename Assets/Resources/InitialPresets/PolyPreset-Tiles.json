@@ -11,7 +11,7 @@
   "SafeLimits": false,
   "PrismP": 4,
   "PrismQ": 0,
-  "AppearancePresetName": "Black Mirror",
+  "AppearancePresetName": "Subtle",
   "Ops": [
     {
       "OpType": "Stake",
@@ -46,7 +46,7 @@
     {
       "OpType": "FaceRotate",
       "FaceSelections": "All",
-      "Amount": 19.0,
+      "Amount": 0.1,
       "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
