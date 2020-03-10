@@ -56,6 +56,10 @@ public class PolyHydra : MonoBehaviour
 
 	private ConwayPoly stashed;
 
+	// Fields For Unfolding
+	private List<PolyEdge> PolyEdges;
+	private List<Face> ConnectedFaces;
+
 	public enum PolyTypeCategories
 	{
 		All,
@@ -1944,9 +1948,9 @@ public class PolyHydra : MonoBehaviour
 		ConwayPoly toBeUnfolded = GetConwayPoly();
 		MeshFaceList unfoldFaces = toBeUnfolded.Faces;
 		MeshHalfedgeList unfoldHalfedges = toBeUnfolded.Halfedges;
-		List<PolyEdge> PolyEdges = new List<PolyEdge>();
+		PolyEdges = new List<PolyEdge>();
 		List<Halfedge> CheckedHalfEdges = new List<Halfedge>();
-		List<Face> ConnectedFaces = new List<Face>();
+		ConnectedFaces = new List<Face>();
 		foreach (Halfedge h in unfoldHalfedges)
 		{
 			if (CheckedHalfEdges.Contains(h)){
@@ -1961,7 +1965,7 @@ public class PolyHydra : MonoBehaviour
 		Debug.Log(unfoldFaces.Count);
 		Debug.Log(PolyEdges.Count);
 		PolyNode root = new PolyNode(unfoldFaces[0], null);
-		List<PolyNode> children = AddChildren(root, PolyEdges);
+		List<PolyNode> children = AddChildren(root);
 		List<PolyNode> queue = new List<PolyNode>();
 		List<PolyNode> branched = new List<PolyNode>();
 		foreach (PolyNode c in children)
@@ -1971,7 +1975,7 @@ public class PolyHydra : MonoBehaviour
 		}
 		while (queue.Count != 0)
 		{
-			children = AddChildren(queue[0], PolyEdges);
+			children = AddChildren(queue[0]);
 			foreach (PolyNode c in children)
 			{
 				if (!queue.Contains(c))
@@ -2000,13 +2004,13 @@ public class PolyHydra : MonoBehaviour
 		Debug.Log(tabs.ToString());
 	}
 
-	private List<PolyNode> AddChildren(PolyNode c, List<PolyEdge> edges)
+	private List<PolyNode> AddChildren(PolyNode c)
 	{
-		List<Face> sharedFaces = new List<Face>();
+		List<Face> sharedFaces = GetSharedFaces(c.GetID());
 		foreach (Face sf in sharedFaces)
 		{
 			c.AddChild(sf);
-			foreach (PolyEdge e in edges)
+			foreach (PolyEdge e in PolyEdges)
 			{
 				if ((e.GetFace1() == c.GetID() && e.GetFace2() == sf) || (e.GetFace2() == c.GetID() && e.GetFace1() == sf))
 				{
@@ -2017,14 +2021,14 @@ public class PolyHydra : MonoBehaviour
 		return c.GetChildren();
 	}
 
-	private List<Face> GetSharedFaces(Face f, List<PolyEdge> edges, List<Face> connected)
+	private List<Face> GetSharedFaces(Face f)
 	{
 		List<Face> sharedFaces = new List<Face>();
-		foreach(PolyEdge e in edges)
+		foreach(PolyEdge e in PolyEdges)
 		{
 			if (e.GetFace1() == f)
 			{
-				if (connected.Contains(e.GetFace2()))
+				if (ConnectedFaces.Contains(e.GetFace2()))
 				{
 					if (e.IsBranched())
 					{
@@ -2034,14 +2038,14 @@ public class PolyHydra : MonoBehaviour
 					}
 				} else {
 					sharedFaces.Add(e.GetFace2());
-					connected.Add(e.GetFace1());
-					connected.Add(e.GetFace2());
+					ConnectedFaces.Add(e.GetFace1());
+					ConnectedFaces.Add(e.GetFace2());
 					e.SetEdgeChecked(true);
 				}
 			}
 			else if (e.GetFace2() == f)
 			{
-				if (connected.Contains(e.GetFace1()))
+				if (ConnectedFaces.Contains(e.GetFace1()))
 				{
 					if (e.IsBranched())
 					{
@@ -2052,8 +2056,8 @@ public class PolyHydra : MonoBehaviour
 				} else 
 				{
 					sharedFaces.Add(e.GetFace1());
-					connected.Add(e.GetFace1());
-					connected.Add(e.GetFace2());
+					ConnectedFaces.Add(e.GetFace1());
+					ConnectedFaces.Add(e.GetFace2());
 					e.SetEdgeChecked(true);
 				}
 			}

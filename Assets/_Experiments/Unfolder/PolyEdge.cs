@@ -110,6 +110,6 @@ public class PolyEdge
     override
     public String ToString()
     {
-        return Halfedge1.Name + " x " + Halfedge2.Name;
+        return Face1.Name + " x " + Face2.Name;
     }
 }
