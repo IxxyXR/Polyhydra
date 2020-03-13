@@ -88,7 +88,6 @@ public class PolyHydra : MonoBehaviour
 		Torus,
 		Cylinder,
 		Cone,
-		Cube,
 //		Conic_Frustum,
 //		Mobius,
 //		Torus_Trefoil,
@@ -150,6 +149,7 @@ public class PolyHydra : MonoBehaviour
 	{
 		UvSphere,
 		UvHemisphere,
+		GriddedCube,
 
 		L1,
 		L2
@@ -220,11 +220,16 @@ public class PolyHydra : MonoBehaviour
 		FaceMerge,
 		Hinge,
 		AddDual,
+		AddCopyX,
+		AddCopyY,
+		AddCopyZ,
 		AddMirrorX,
 		AddMirrorY,
 		AddMirrorZ,
 		Stash,
 		Unstash,
+		UnstashToVerts,
+		UnstashToFaces,
 		Stack,
 		Layer,
 		Canonicalize,
@@ -235,8 +240,6 @@ public class PolyHydra : MonoBehaviour
 		Stretch,
 		Slice,
 		Weld,
-		UnstashToVerts,
-		UnstashToFaces
 	}
 
 	public readonly int[] NonOrientablePolyTypes = {
@@ -419,13 +422,12 @@ public class PolyHydra : MonoBehaviour
 				Ops.Bevel,
 				new OpConfig
 				{
-					usesFaces = true,
 					amountDefault = 0.25f,
 					amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.4999f,
 					usesAmount2 = true,
 					amount2Default = 0.25f,
 					amount2Min = -6, amount2Max = 6, amount2SafeMin = 0.001f, amount2SafeMax = 0.4999f,
-					usesRandomize = false
+					usesRandomize = true
 				}
 			},
 			{
@@ -818,9 +820,37 @@ public class PolyHydra : MonoBehaviour
 				}
 			},
 			{
+				Ops.AddCopyX,
+				new OpConfig
+				{
+					usesFaces = true,
+					amountDefault = 0,
+					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2
+				}
+			},
+			{
+				Ops.AddCopyY,
+				new OpConfig
+				{
+					usesFaces = true,
+					amountDefault = 0,
+					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2
+				}
+			},
+			{
+				Ops.AddCopyZ,
+				new OpConfig
+				{
+					usesFaces = true,
+					amountDefault = 0,
+					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2
+				}
+			},
+			{
 				Ops.AddMirrorX,
 				new OpConfig
 				{
+					usesFaces = true,
 					amountDefault = 0,
 					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2
 				}
@@ -829,6 +859,7 @@ public class PolyHydra : MonoBehaviour
 				Ops.AddMirrorY,
 				new OpConfig
 				{
+					usesFaces = true,
 					amountDefault = 0,
 					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2
 				}
@@ -837,17 +868,26 @@ public class PolyHydra : MonoBehaviour
 				Ops.AddMirrorZ,
 				new OpConfig
 				{
+					usesFaces = true,
 					amountDefault = 0,
 					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2
 				}
 			},
-			{Ops.Stash, new OpConfig {usesAmount = false}},
+			{Ops.Stash, new OpConfig
+				{
+					usesFaces = true,
+					usesAmount = false
+				}
+			},
 			{
 				Ops.Unstash,
 				new OpConfig
 				{
+					usesFaces = true,
 					amountDefault = 0,
-					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2
+					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2,
+					usesAmount2 = true,
+					amount2Min = -6, amount2Max = 6, amount2SafeMin = -2, amount2SafeMax = 2
 				}
 			},
 			{
@@ -876,10 +916,12 @@ public class PolyHydra : MonoBehaviour
 				Ops.Stack,
 				new OpConfig
 				{
+					usesFaces = true,
 					amountDefault = 0.5f,
 					amountMin = -2f, amountMax = 2f, amountSafeMin = -2f, amountSafeMax = 2f,
 					usesAmount2 = true,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -1, amount2SafeMax = 1
+					amount2Default =  0.8f,
+					amount2Min = 0.1f, amount2Max = .9f, amount2SafeMin = .01f, amount2SafeMax = .99f
 				}
 			},
 			{
@@ -984,16 +1026,6 @@ public class PolyHydra : MonoBehaviour
 	{
 		ConwayPoly conway = null;
 
-		bool isCube = false;
-
-		if (gridShape == GridShapes.Cube)
-		{
-			gridShape = GridShapes.Plane;
-			gridType = GridTypes.Square;
-			PrismQ = PrismP;
-			isCube = true;
-		}
-
 		switch (gridType)
 		{
 //			case GridTypes.Square:
@@ -1045,17 +1077,6 @@ public class PolyHydra : MonoBehaviour
 				conway = ConwayPoly.MakePolarGrid(PrismP, PrismQ);
 				break;
 		}
-
-		if (isCube)
-		{
-			conway = conway.AddMirrored(Vector3.up, 0.5f * PrismP);
-			ConwayPoly xPair = conway.Rotate(Vector3.forward, 90);
-			ConwayPoly zPair = conway.Rotate(Vector3.left, 90);
-			conway.Append(xPair);
-			conway.Append(zPair);
-			conway = conway.Weld(0.0001f);
-		}
-
 		// Welding only seems to work reliably on simpler shapres
 		if (gridShape != GridShapes.Plane) conway = conway.Weld(0.0001f);
 
@@ -1117,6 +1138,14 @@ public class PolyHydra : MonoBehaviour
 				return JohnsonPoly.MakeL1();
 			case OtherPolyTypes.L2:
 				return JohnsonPoly.MakeL2();
+			case OtherPolyTypes.GriddedCube:
+				var conway = ConwayPoly.MakeUnitileGrid(1, 0, PrismP, PrismP);
+				conway = conway.AddMirrored(Vector3.up, 0.5f * PrismP);
+				ConwayPoly xPair = conway.Rotate(Vector3.forward, 90);
+				ConwayPoly zPair = conway.Rotate(Vector3.left, 90);
+				conway.Append(xPair);
+				conway.Append(zPair);
+				return conway.Weld(0.0001f);
 			default:
 				Debug.LogError("Unknown Other Poly Type");
 				return null;
@@ -1499,21 +1528,23 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Extrude(amount, false, op.randomize);
 				break;
 			case Ops.Extrude:
+				conway = conway.Loft(0, amount, op.faceSelections);
+
 				//conway = conway.Extrude(amount, op.faceSelections, op.randomize);
-				if (op.faceSelections == ConwayPoly.FaceSelections.All)
-				{
-					conway = conway.FaceScale(0f, ConwayPoly.FaceSelections.All, false);
-					conway = conway.Extrude(amount, false, op.randomize);
-				}
-				else
-				{
-					// TODO do this properly with shared edges/vertices
-					var included = conway.FaceRemove(op.faceSelections, true);
-					included = included.FaceScale(0, ConwayPoly.FaceSelections.All, false);
-					var excluded = conway.FaceRemove(op.faceSelections, false);
-					conway = included.Extrude(amount, false, op.randomize);
-					conway.Append(excluded);
-				}
+				// if (op.faceSelections == ConwayPoly.FaceSelections.All)
+				// {
+				// 	conway = conway.FaceScale(0f, ConwayPoly.FaceSelections.All, false);
+				// 	conway = conway.Extrude(amount, false, op.randomize);
+				// }
+				// else
+				// {
+				// 	// TODO do this properly with shared edges/vertices
+				// 	var included = conway.FaceRemove(op.faceSelections, true);
+				// 	included = included.FaceScale(0, ConwayPoly.FaceSelections.All, false);
+				// 	var excluded = conway.FaceRemove(op.faceSelections, false);
+				// 	conway = included.Extrude(amount, false, op.randomize);
+				// 	conway.Append(excluded);
+				// }
 				break;
 			case Ops.VertexScale:
 				conway = conway.VertexScale(amount, op.faceSelections, op.randomize);
@@ -1574,21 +1605,34 @@ public class PolyHydra : MonoBehaviour
 			case Ops.AddDual:
 				conway = conway.AddDual(amount);
 				break;
+			case Ops.AddCopyX:
+				conway = conway.AddCopy(Vector3.right, amount, op.faceSelections);
+				break;
+			case Ops.AddCopyY:
+				conway = conway.AddCopy(Vector3.up, amount, op.faceSelections);
+				break;
+			case Ops.AddCopyZ:
+				conway = conway.AddCopy(Vector3.forward, amount, op.faceSelections);
+				break;
 			case Ops.AddMirrorX:
-				conway = conway.AddMirrored(Vector3.right, amount);
+				conway = conway.AddMirrored(Vector3.right, amount, op.faceSelections);
 				break;
 			case Ops.AddMirrorY:
-				conway = conway.AddMirrored(Vector3.up, amount);
+				conway = conway.AddMirrored(Vector3.up, amount, op.faceSelections);
 				break;
 			case Ops.AddMirrorZ:
-				conway = conway.AddMirrored(Vector3.forward, amount);
+				conway = conway.AddMirrored(Vector3.forward, amount, op.faceSelections);
 				break;
 			case Ops.Stash:
 				stash = conway.Duplicate();
+				stash = stash.FaceRemove(op.faceSelections, true);
 				break;
 			case Ops.Unstash:
 				if (stash == null) return conway;
-				conway.Append(stash, Vector3.zero, Quaternion.identity, amount);
+				var dup = conway.Duplicate();
+				var offset = Vector3.up * op.amount2;
+				dup.Append(stash.FaceRemove(op.faceSelections, true), offset, Quaternion.identity, amount);
+				conway = dup;
 				break;
 			case Ops.UnstashToFaces:
 				if (stash == null) return conway;
@@ -1599,7 +1643,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.AppendMany(stash, op.faceSelections, amount, 0, op.amount2, false);
 				break;
 			case Ops.Layer:
-				conway = conway.Layer(4, 1f - amount, amount / 10f, ConwayPoly.FaceSelections.All);
+				conway = conway.Layer(4, 1f - amount, amount / 10f, op.faceSelections);
 				break;
 			case Ops.Canonicalize:
 				conway = conway = conway.Canonicalize(amount, amount);
@@ -1620,7 +1664,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Slice(amount, op.amount2);
 				break;
 			case Ops.Stack:
-				conway = conway.Stack(Vector3.up, 5, amount, op.amount2);
+				conway = conway.Stack(Vector3.up, amount, op.amount2, 0.1f, op.faceSelections);
 				conway.Recenter();
 				break;
 			case Ops.Weld:

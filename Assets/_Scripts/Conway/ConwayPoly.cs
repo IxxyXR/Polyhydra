@@ -2797,10 +2797,11 @@ namespace Conway
 
 		#region geometry methods
 
-		public ConwayPoly AddMirrored(Vector3 axis, float amount)
+		public ConwayPoly AddMirrored(Vector3 axis, float amount, FaceSelections facesel = FaceSelections.All)
 		{
 			var original = Duplicate();
 			var mirror = Duplicate();
+			mirror = mirror.FaceRemove(facesel, true);
 			Vector3 offset = amount * axis;
 			foreach (var v in original.Vertices)
 			{
@@ -2815,14 +2816,32 @@ namespace Conway
 			return original;
 		}
 
-		public ConwayPoly Stack(Vector3 axis, int copies, float offset, float scale)
+		public ConwayPoly AddCopy(Vector3 axis, float amount, FaceSelections facesel = FaceSelections.All)
 		{
-			var original = Duplicate();
-			Vector3 offsetVector = offset * axis;
-			for (int i = 0; i < copies; i++)
-			{
-				original.Append(original.Duplicate(offsetVector, Quaternion.identity, scale));
+			amount /= 2.0f;
+			var original = Duplicate(axis * -amount, Quaternion.identity, 1.0f);
+			var copy = Duplicate(axis * amount, Quaternion.identity, 1.0f);
+			copy = copy.FaceRemove(facesel, true);
+			original.Append(copy);
+			return original;
+		}
 
+		public ConwayPoly Stack(Vector3 axis, float offset, float scale, float limit=0.1f, FaceSelections facesel = FaceSelections.All)
+		{
+			scale = Mathf.Abs(scale);
+			scale = Mathf.Clamp(scale, 0.0001f, 0.99f);
+			var original = Duplicate();
+			Vector3 offsetVector = axis * offset;
+			var copy = Duplicate();
+			copy = copy.FaceRemove(facesel, true);
+			int copies = 0;
+			while (scale > limit && copies < 64)  // TODO make copies configurable
+			{
+				original.Append(copy.Duplicate(offsetVector, Quaternion.identity, scale));
+				scale *= scale;
+				offsetVector += axis * offset;
+				offset *= Mathf.Sqrt(scale);  // Not sure why but sqrt *looks* right.
+				copies++;
 			}
 			return original;
 		}

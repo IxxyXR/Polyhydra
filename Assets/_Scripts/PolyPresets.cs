@@ -107,6 +107,10 @@ public class PolyPresets : MonoBehaviour {
 			.Replace(
 				"PolyType\": \"Penta",
 				"PolyType\": \"Poly"
+			)
+			.Replace(
+				"GridShape\": \"Cube",
+				"GridShape\": \"Plane"
 			);
 			var preset = new PolyPreset();
 			preset = JsonConvert.DeserializeObject<PolyPreset>(rawJson);

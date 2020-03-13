@@ -6,7 +6,7 @@
   "JohnsonPolyType": "Antiprism",
   "OtherPolyType": "L1",
   "GridType": "Square",
-  "GridShape": "Cube",
+  "GridShape": "Plane",
   "BypassOps": false,
   "SafeLimits": false,
   "PrismP": 8,
