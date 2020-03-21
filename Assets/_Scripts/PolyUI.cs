@@ -291,7 +291,6 @@ public class PolyUI : MonoBehaviour {
     void UpdatePolyUI()
     {
         _shouldReBuild = false;
-        SafeLimitsToggle.isOn = poly.SafeLimits;
         ShapeTypesDropdown.value = (int) poly.ShapeType;
         ShapeTypesDropdown.RefreshShownValue();
         BasePolyCategoryDropdown.value = (int) poly.UniformPolyTypeCategory;
@@ -315,6 +314,8 @@ public class PolyUI : MonoBehaviour {
         PrismPInput.text = poly.PrismP.ToString();
         PrismQInput.text = poly.PrismQ.ToString();
         InitShapeTypesUI((int) poly.ShapeType);
+        SafeLimitsToggle.isOn = poly.SafeLimits; // Must go last
+
         _shouldReBuild = true;
     }
 
@@ -810,24 +811,26 @@ public class PolyUI : MonoBehaviour {
     void SafeLimitsToggleChanged()
     {
         poly.SafeLimits = SafeLimitsToggle.isOn;
-        var opSliders = OpContainer.GetComponentsInChildren<Slider>();
-        for (var i = 0; i < opSliders.Length; i+=2)
+        var opUIs = OpContainer.GetComponentsInChildren<OpPrefabManager>();
+        if (opUIs.Length != poly.ConwayOperators.Count) return;
+        for (var i = 0; i < poly.ConwayOperators.Count; i++)
         {
-            var op = poly.ConwayOperators[i/2];
+            var opSliders = opUIs[i].GetComponentsInChildren<Slider>();
+            var op = poly.ConwayOperators[i];
             var opConfig = poly.opconfigs[op.opType];
             if (poly.SafeLimits)
             {
-                opSliders[i].minValue = opConfig.amountSafeMin;
-                opSliders[i].maxValue = opConfig.amountSafeMax;
-                opSliders[i+1].minValue = opConfig.amount2SafeMin;
-                opSliders[i+1].maxValue = opConfig.amount2SafeMax;
+                opSliders[0].minValue = opConfig.amountSafeMin;
+                opSliders[0].maxValue = opConfig.amountSafeMax;
+                opSliders[1].minValue = opConfig.amount2SafeMin;
+                opSliders[1].maxValue = opConfig.amount2SafeMax;
             }
             else
             {
-                opSliders[i].minValue = opConfig.amountMin;
-                opSliders[i].maxValue = opConfig.amountMax;
-                opSliders[i+1].minValue = opConfig.amount2Min;
-                opSliders[i+1].maxValue = opConfig.amount2Max;
+                opSliders[0].minValue = opConfig.amountMin;
+                opSliders[0].maxValue = opConfig.amountMax;
+                opSliders[1].minValue = opConfig.amount2Min;
+                opSliders[1].maxValue = opConfig.amount2Max;
             }
         }
 

@@ -3,7 +3,7 @@
   "ShapeType": "Uniform",
   "PolyTypeCategory": "All",
   "PolyType": "Icosidodecahedron",
-  "JohnsonPolyType": "ElongatedBicupola",
+  "JohnsonPolyType": "Prism",
   "OtherPolyType": "L1",
   "GridType": "Square",
   "GridShape": "Plane",

@@ -11,7 +11,7 @@
   "SafeLimits": false,
   "PrismP": 4,
   "PrismQ": 4,
-  "AppearancePresetName": "Gem",
+  "AppearancePresetName": "Volumetric",
   "Ops": [
     {
       "OpType": "Subdivide",

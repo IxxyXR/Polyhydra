@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -111,9 +112,26 @@ public class PolyPresets : MonoBehaviour {
 			.Replace(
 				"GridShape\": \"Cube",
 				"GridShape\": \"Plane"
+			)
+			.Replace(
+				"JohnsonPolyType\": \"ElongatedBicupola",
+				"JohnsonPolyType\": \"ElongatedGyroBicupola"
+			)
+			.Replace(
+				"JohnsonPolyType\": \"Bicupola",
+				"JohnsonPolyType\": \"GyroBicupola"
 			);
-			var preset = new PolyPreset();
-			preset = JsonConvert.DeserializeObject<PolyPreset>(rawJson);
+			PolyPreset preset = null;
+			try
+			{
+				preset = JsonConvert.DeserializeObject<PolyPreset>(rawJson);
+			}
+			catch (Exception e)
+			{
+				Debug.LogError($"Failed to load preset {file.FullName}");
+			}
+
+			if (preset == null) continue;
 			if (string.IsNullOrEmpty(preset.Name))
 			{
 				preset.Name = file.Name.Replace(PolyPreset.PresetFileNamePrefix, "").Replace(".json", "");

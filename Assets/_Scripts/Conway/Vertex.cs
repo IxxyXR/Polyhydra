@@ -52,10 +52,10 @@ namespace Conway {
         /// </summary>
         public List<Halfedge> Halfedges {
             get {
-                List<Halfedge> edges = new List<Halfedge>();
+                var edges = new List<Halfedge>();
                 if (Halfedge == null) return edges;
                 bool boundary = false;
-                Halfedge edge = Halfedge;
+                var edge = Halfedge;
                 do {
                     edges.Add(edge);
                     if (edge.Pair == null) {
@@ -67,16 +67,22 @@ namespace Conway {
                 } while (edge != Halfedge);
 
                 if (boundary) {
-                    List<Halfedge> redges = new List<Halfedge>();
+                    var redges = new List<Halfedge>();
                     edge = Halfedge;
                     while (edge.Next.Pair != null) {
                         edge = edge.Next.Pair;
                         redges.Add(edge);
                     }
 
+                    // if (edge.Next.Pair == null)
+                    // {
+                    //     redges.Add(edge.Next);
+                    // }
+
                     if (redges.Count > 1) {
                         redges.Reverse();
                     }
+
 
                     redges.AddRange(edges);
                     return redges;

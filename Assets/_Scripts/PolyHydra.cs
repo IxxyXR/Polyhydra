@@ -133,16 +133,16 @@ public class PolyHydra : MonoBehaviour
 		ElongatedCupola,
 		GyroelongatedCupola,
 
-		Bicupola,
-		ElongatedBicupola,
+		OrthoBicupola,
+		GyroBicupola,
+		ElongatedOrthoBicupola,
+		ElongatedGyroBicupola,
 		GyroelongatedBicupola,
 
 		Rotunda,
-		//ElongatedRotunda,
-		//GyroelongatedRotunda,
-
-
-		ElongatedRotunda
+		ElongatedRotunda,
+		GyroelongatedRotunda,
+		GyroelongatedBirotunda,
 	}
 
 	public enum OtherPolyTypes
@@ -404,9 +404,8 @@ public class PolyHydra : MonoBehaviour
 				Ops.Zip,
 				new OpConfig
 				{
-					usesFaces = true,
 					amountDefault = 0.5f,
-					amountMin = -2f, amountMax = 2f, amountSafeMin = 0.0001f, amountSafeMax = .99999f,
+					amountMin = -2f, amountMax = 2f, amountSafeMin = 0.0001f, amountSafeMax = .999f,
 					usesRandomize = true
 				}
 			},
@@ -451,7 +450,6 @@ public class PolyHydra : MonoBehaviour
 				Ops.Ortho,
 				new OpConfig
 				{
-					usesFaces = true,
 					amountDefault = 0.1f,
 					amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 0.999f,
 					usesRandomize = true
@@ -1085,45 +1083,84 @@ public class PolyHydra : MonoBehaviour
 
 	public ConwayPoly MakeJohnsonPoly(JohnsonPolyTypes johnsonPolyType)
 	{
+		ConwayPoly poly;
 
 		switch (johnsonPolyType)
 		{
 			case JohnsonPolyTypes.Prism:
-				return JohnsonPoly.MakePrism(PrismP<3?3:PrismP);
+				poly = JohnsonPoly.Prism(PrismP<3?3:PrismP);
+				break;
 			case JohnsonPolyTypes.Antiprism:
-				return JohnsonPoly.MakeAntiprism(PrismP<3?3:PrismP);
+				poly = JohnsonPoly.Antiprism(PrismP<3?3:PrismP);
+				break;
 			case JohnsonPolyTypes.Pyramid:
-				return JohnsonPoly.MakePyramid(PrismP<3?3:PrismP);
+				poly = JohnsonPoly.Pyramid(PrismP<3?3:PrismP);
+				break;
 			case JohnsonPolyTypes.ElongatedPyramid:
-				return JohnsonPoly.MakeElongatedPyramid(PrismP<3?3:PrismP);
+				poly = JohnsonPoly.ElongatedPyramid(PrismP<3?3:PrismP);
+				break;
 			case JohnsonPolyTypes.GyroelongatedPyramid:
-				return JohnsonPoly.MakeGyroelongatedPyramid(PrismP<3?3:PrismP);
+				poly = JohnsonPoly.GyroelongatedPyramid(PrismP<3?3:PrismP);
+				break;
 			case JohnsonPolyTypes.Dipyramid:
-				return JohnsonPoly.MakeDipyramid(PrismP<3?3:PrismP);
+				poly = JohnsonPoly.Dipyramid(PrismP<3?3:PrismP);
+				break;
 			case JohnsonPolyTypes.ElongatedDipyramid:
-				return JohnsonPoly.MakeElongatedBipyramid(PrismP<3?3:PrismP);
+				poly = JohnsonPoly.ElongatedBipyramid(PrismP<3?3:PrismP);
+				break;
 			case JohnsonPolyTypes.GyroelongatedDipyramid:
-				return JohnsonPoly.MakeGyroelongatedBipyramid(PrismP<3?3:PrismP);
+				poly = JohnsonPoly.GyroelongatedBipyramid(PrismP<3?3:PrismP);
+				break;
 			case JohnsonPolyTypes.Cupola:
-				return JohnsonPoly.MakeCupola(PrismP<3?3:PrismP);
+				poly = JohnsonPoly.Cupola(PrismP<3?3:PrismP);
+				break;
 			case JohnsonPolyTypes.ElongatedCupola:
-				return JohnsonPoly.MakeElongatedCupola(PrismP<3?3:PrismP);
+				poly = JohnsonPoly.ElongatedCupola(PrismP<3?3:PrismP);
+				break;
 			case JohnsonPolyTypes.GyroelongatedCupola:
-				return JohnsonPoly.MakeGyroelongatedCupola(PrismP<3?3:PrismP);
-			case JohnsonPolyTypes.Bicupola:
-				return JohnsonPoly.MakeBicupola(PrismP<3?3:PrismP);
-			case JohnsonPolyTypes.ElongatedBicupola:
-				return JohnsonPoly.MakeElongatedBicupola(PrismP<3?3:PrismP);
+				poly = JohnsonPoly.GyroelongatedCupola(PrismP<3?3:PrismP);
+				break;
+			case JohnsonPolyTypes.OrthoBicupola:
+				poly = JohnsonPoly.OrthoBicupola(PrismP<3?3:PrismP);
+				break;
+			case JohnsonPolyTypes.GyroBicupola:
+				poly = JohnsonPoly.GyroBicupola(PrismP<3?3:PrismP);
+				break;
+			case JohnsonPolyTypes.ElongatedOrthoBicupola:
+				poly = JohnsonPoly.ElongatedBicupola(PrismP<3?3:PrismP, false);
+				break;
+			case JohnsonPolyTypes.ElongatedGyroBicupola:
+				poly = JohnsonPoly.ElongatedBicupola(PrismP<3?3:PrismP, true);
+				break;
 			case JohnsonPolyTypes.GyroelongatedBicupola:
-				return JohnsonPoly.MakeGyroelongatedBicupola(PrismP<3?3:PrismP);
+				poly = JohnsonPoly.GyroelongatedBicupola(PrismP<3?3:PrismP, false);
+				break;
+			// The distinction between these two is simply one of chirality
+			// case JohnsonPolyTypes.GyroelongatedOrthoBicupola:
+			// 	poly = JohnsonPoly.GyroElongatedBicupola(PrismP<3?3:PrismP, false);
+			// 	break;
+			// case JohnsonPolyTypes.GyroelongatedGyroBicupola:
+			// 	poly = JohnsonPoly.GyroElongatedBicupola(PrismP<3?3:PrismP, true);
+			// 	break;
 			case JohnsonPolyTypes.Rotunda:
-				return JohnsonPoly.MakeRotunda();
+				poly = JohnsonPoly.Rotunda();
+				break;
 			case JohnsonPolyTypes.ElongatedRotunda:
-				return JohnsonPoly.MakeElongatedRotunda();
+				poly = JohnsonPoly.ElongatedRotunda();
+				break;
+			case JohnsonPolyTypes.GyroelongatedRotunda:
+				poly = JohnsonPoly.GyroelongatedRotunda();
+				break;
+			case JohnsonPolyTypes.GyroelongatedBirotunda:
+				poly = JohnsonPoly.GyroelongatedBirotunda();
+				break;
 			default:
 				Debug.LogError("Unknown Johnson Poly Type");
 				return null;
 		}
+
+		poly.Recenter();
+		return poly;
 	}
 
 	public ConwayPoly MakeOtherPoly(OtherPolyTypes otherPolyType)
@@ -1131,21 +1168,23 @@ public class PolyHydra : MonoBehaviour
 		switch (otherPolyType)
 		{
 			case OtherPolyTypes.UvSphere:
-				return JohnsonPoly.MakeUvSphere(PrismP, PrismQ);
+				return JohnsonPoly.UvSphere(PrismP, PrismQ);
 			case OtherPolyTypes.UvHemisphere:
-				return JohnsonPoly.MakeUvHemisphere();
+				return JohnsonPoly.UvHemisphere();
 			case OtherPolyTypes.L1:
-				return JohnsonPoly.MakeL1();
+				return JohnsonPoly.L1();
 			case OtherPolyTypes.L2:
-				return JohnsonPoly.MakeL2();
+				return JohnsonPoly.L2();
 			case OtherPolyTypes.GriddedCube:
 				var conway = ConwayPoly.MakeUnitileGrid(1, 0, PrismP, PrismP);
-				conway = conway.AddMirrored(Vector3.up, 0.5f * PrismP);
+				conway = conway.AddMirrored(Vector3.up, PrismP);
+				conway.Recenter();
 				ConwayPoly xPair = conway.Rotate(Vector3.forward, 90);
 				ConwayPoly zPair = conway.Rotate(Vector3.left, 90);
 				conway.Append(xPair);
 				conway.Append(zPair);
 				return conway.Weld(0.0001f);
+				return conway;
 			default:
 				Debug.LogError("Unknown Other Poly Type");
 				return null;
@@ -1518,8 +1557,8 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Extrude(amount, false, op.randomize);
 				break;
 			case Ops.Skeleton:
-				conway = conway.FaceRemove(op.faceSelections, false);
-				if ((op.faceSelections==ConwayPoly.FaceSelections.New || op.faceSelections==ConwayPoly.FaceSelections.NewAlt) && op.opType == PolyHydra.Ops.Skeleton)
+				conway = conway.FaceRemove(op.faceSelections);
+				if ((op.faceSelections==ConwayPoly.FaceSelections.New || op.faceSelections==ConwayPoly.FaceSelections.NewAlt) && op.opType == Ops.Skeleton)
 				{
 					// Nasty hack until I fix extrude
 					// Produces better results specific for PolyMidi
@@ -1528,7 +1567,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Extrude(amount, false, op.randomize);
 				break;
 			case Ops.Extrude:
-				conway = conway.Loft(0, amount, op.faceSelections);
+				conway = conway.Loft(0, amount, op.faceSelections, op.randomize);
 
 				//conway = conway.Extrude(amount, op.faceSelections, op.randomize);
 				// if (op.faceSelections == ConwayPoly.FaceSelections.All)
@@ -1585,10 +1624,10 @@ public class PolyHydra : MonoBehaviour
 //						conway = conway.FaceRotate(amount, op.faceSelections, 2);
 //						break;
 			case Ops.FaceRemove:
-				conway = conway.FaceRemove(op.faceSelections, false);
+				conway = conway.FaceRemove(op.faceSelections);
 				break;
 			case Ops.FaceKeep:
-				conway = conway.FaceRemove(op.faceSelections, true);
+				conway = conway.FaceKeep(op.faceSelections);
 				break;
 			case Ops.VertexRemove:
 				conway = conway.VertexRemove(op.faceSelections, false);
@@ -1625,13 +1664,13 @@ public class PolyHydra : MonoBehaviour
 				break;
 			case Ops.Stash:
 				stash = conway.Duplicate();
-				stash = stash.FaceRemove(op.faceSelections, true);
+				stash = stash.FaceKeep(op.faceSelections);
 				break;
 			case Ops.Unstash:
 				if (stash == null) return conway;
 				var dup = conway.Duplicate();
 				var offset = Vector3.up * op.amount2;
-				dup.Append(stash.FaceRemove(op.faceSelections, true), offset, Quaternion.identity, amount);
+				dup.Append(stash.FaceKeep(op.faceSelections), offset, Quaternion.identity, amount);
 				conway = dup;
 				break;
 			case Ops.UnstashToFaces:
@@ -1646,7 +1685,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Layer(4, 1f - amount, amount / 10f, op.faceSelections);
 				break;
 			case Ops.Canonicalize:
-				conway = conway = conway.Canonicalize(amount, amount);
+				conway = conway.Canonicalize(amount, amount);
 				break;
 			case Ops.Spherize:
 				conway = conway.Spherize(op.faceSelections, amount);
@@ -1782,7 +1821,7 @@ public class PolyHydra : MonoBehaviour
 		var vertexPoints = Enumerable.Concat(_conwayPoly.Vertices.Select(v => v.Position), newVerts);
 		vertexRoles.Concat(Enumerable.Repeat(ConwayPoly.Roles.Existing, vertexPoints.Count()));
 		var originalFaceSides = new List<int>();
-            
+
 		// vertex lookup
 		var vlookup = new Dictionary<string, int>();
 		int n = _conwayPoly.Vertices.Count;
@@ -2061,7 +2100,7 @@ public class PolyHydra : MonoBehaviour
 					Vector3 pos = transform.TransformPoint(vert);
 					Gizmos.DrawWireSphere(pos, GizmoRadius);
 //					Handles.Label(pos + new Vector3(0, .15f, 0), _conwayPoly.VertexRoles[i].ToString());
-					Handles.Label(pos + new Vector3(0, .15f, 0), i.ToString());
+					Handles.Label(pos + new Vector3(0, .15f, 0), _conwayPoly.Vertices[i].Halfedges.Count.ToString());
 				}
 			}
 		}
@@ -2071,7 +2110,7 @@ public class PolyHydra : MonoBehaviour
 			if (_conwayPoly == null)
 			{
 				Gizmos.color = Color.blue;
-				if (WythoffPoly.FaceCenters != null)
+				if (WythoffPoly!=null && WythoffPoly.FaceCenters != null)
 				{
 					foreach (var f in WythoffPoly.FaceCenters)
 					{
@@ -2085,6 +2124,7 @@ public class PolyHydra : MonoBehaviour
 				foreach (var f in _conwayPoly.Faces)
 				{
 					Gizmos.DrawWireSphere(transform.TransformPoint(f.Centroid), GizmoRadius);
+					Gizmos.DrawRay(transform.TransformPoint(f.Centroid), f.Normal);
 				}
 			}
 
@@ -2197,7 +2237,7 @@ public class PolyHydra : MonoBehaviour
 						transform.TransformPoint(edgeEnd.Position)
 					);
 				}
-				Handles.Label(Vector3.Scale(face.Centroid, transform.lossyScale) + new Vector3(0, .03f, 0), _conwayPoly.FaceRoles[f].ToString());
+				Handles.Label(Vector3.Scale(face.Centroid, transform.lossyScale) + new Vector3(0, .03f, 0), face.Sides.ToString());
 			}
 		}
 	}

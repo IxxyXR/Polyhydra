@@ -3,7 +3,7 @@
   "ShapeType": "Grid",
   "PolyTypeCategory": "Convex",
   "PolyType": "Polygonal_Prism",
-  "JohnsonPolyType": "Bicupola",
+  "JohnsonPolyType": "GyroBicupola",
   "OtherPolyType": "L1",
   "GridType": "Square",
   "GridShape": "Plane",

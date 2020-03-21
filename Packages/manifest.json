@@ -46,8 +46,6 @@
     "com.unity.vectorgraphics": "2.0.0-preview.12",
     "com.unity.visualeffectgraph": "7.2.1",
     "com.unity.xr.oculus.android": "2.38.6",
-    "com.unity.xr.oculus.standalone": "2.38.4",
-    "com.unity.xr.openvr.standalone": "2.0.5",
     "jp.keijiro.klak.motion": "1.0.1",
     "jp.keijiro.lasp": "https://github.com/keijiro/Lasp.git#upm",
     "jp.keijiro.rtmidi": "1.0.3",

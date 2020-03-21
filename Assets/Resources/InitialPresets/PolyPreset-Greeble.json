@@ -3,7 +3,7 @@
   "ShapeType": "Other",
   "PolyTypeCategory": "All",
   "PolyType": "Octahedron",
-  "JohnsonPolyType": "Bicupola",
+  "JohnsonPolyType": "GyroBicupola",
   "OtherPolyType": "L2",
   "GridType": "Square",
   "GridShape": "Plane",

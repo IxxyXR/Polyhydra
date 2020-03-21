@@ -118,8 +118,10 @@ public class PolyMidi : MonoBehaviour
 //      (7, PolyHydra.JohnsonPolyTypes.GyroelongatedCupola),
 //      (8, PolyHydra.JohnsonPolyTypes.GyroelongatedCupola),
 
-      (3, PolyHydra.JohnsonPolyTypes.Bicupola),
-      (4, PolyHydra.JohnsonPolyTypes.Bicupola),
+      (3, PolyHydra.JohnsonPolyTypes.OrthoBicupola),
+      (4, PolyHydra.JohnsonPolyTypes.OrthoBicupola),
+      (3, PolyHydra.JohnsonPolyTypes.GyroBicupola),
+      (4, PolyHydra.JohnsonPolyTypes.GyroBicupola),
 //      (5, PolyHydra.JohnsonPolyTypes.Bicupola),
 //      (6, PolyHydra.JohnsonPolyTypes.Bicupola),
 //      (7, PolyHydra.JohnsonPolyTypes.Bicupola),

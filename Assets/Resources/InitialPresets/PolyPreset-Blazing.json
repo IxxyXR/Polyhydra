@@ -3,7 +3,7 @@
   "ShapeType": "Johnson",
   "PolyTypeCategory": "All",
   "PolyType": "Great_Dodecahedron",
-  "JohnsonPolyType": "Bicupola",
+  "JohnsonPolyType": "GyroBicupola",
   "OtherPolyType": "L1",
   "GridType": "Isometric",
   "GridShape": "Cylinder",

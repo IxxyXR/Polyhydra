@@ -31,7 +31,7 @@
     {
       "OpType": "Truncate",
       "FaceSelections": "All",
-      "Amount": 0.35,
+      "Amount": 0.37,
       "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
@@ -47,7 +47,7 @@
       "OpType": "Unstash",
       "FaceSelections": "All",
       "Amount": -0.97,
-      "Amount2": 0.5,
+      "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,
