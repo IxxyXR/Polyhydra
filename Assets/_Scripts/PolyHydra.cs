@@ -1905,17 +1905,28 @@ public class PolyHydra : MonoBehaviour
 			var yAxis = Vector3.Cross(xAxis, faceNormal);
 			
 			Color32 color;
-			switch (ColorMethod)
+			
+			// TODO why do we need to do this check?
+			if (conway.FaceRoles != null && faceColors != null)
 			{
-				case ColorMethods.ByRole:
-					color = faceColors[(int) conway.FaceRoles[i]];
-					break;
-				case ColorMethods.BySides:
-					color = faceColors[face.Sides % faceColors.Length];
-					break;
-				default:
-					color = Color.red;
-					break;
+				// Debug.Log($"{conway.FaceRoles}");
+				// Debug.Log($"{faceColors}");
+				switch (ColorMethod)
+				{
+					case ColorMethods.ByRole:
+						color = faceColors[(int) conway.FaceRoles[i]];
+						break;
+					case ColorMethods.BySides:
+						color = faceColors[face.Sides % faceColors.Length];
+						break;
+					default:
+						color = Color.red;
+						break;
+				}
+			}
+			else
+			{
+				color = Color.white;
 			}
 
 			Vector2 calcUV(Vector3 point)
