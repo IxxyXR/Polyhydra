@@ -1,5 +1,10 @@
 {
   "scopedRegistries": [
+  {
+      "name": "Packages from jillejr",
+      "url": "https://npm.cloudsmith.io/jillejr/newtonsoft-json-for-unity/",
+      "scopes": ["jillejr"]
+    },
     {
       "name": "Keijiro",
       "url": "https://registry.npmjs.com",
@@ -9,6 +14,7 @@
     }
   ],
   "dependencies": {
+    "jillejr.newtonsoft.json-for-unity": "12.0.201",
     "com.beans.deform": "https://github.com/keenanwoodall/Deform.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",

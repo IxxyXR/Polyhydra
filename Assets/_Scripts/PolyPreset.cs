@@ -14,13 +14,13 @@ public class PolyPreset {
 
 	public string Name;
 
-	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.ShapeTypes ShapeType;
-	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.PolyTypeCategories PolyTypeCategory;
-	[JsonConverter(typeof(StringEnumConverter))] public PolyTypes PolyType;
-	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.JohnsonPolyTypes JohnsonPolyType;
-	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.OtherPolyTypes OtherPolyType;
-	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.GridTypes GridType;
-	[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.GridShapes GridShape;
+	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydra.ShapeTypes ShapeType;
+	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydra.PolyTypeCategories PolyTypeCategory;
+	[JsonConverter(typeof(MyStringEnumConverter))] public PolyTypes PolyType;
+	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydra.JohnsonPolyTypes JohnsonPolyType;
+	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydra.OtherPolyTypes OtherPolyType;
+	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydra.GridTypes GridType;
+	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydra.GridShapes GridShape;
 	public bool BypassOps;
 	public bool SafeLimits;
 	public int PrismP;

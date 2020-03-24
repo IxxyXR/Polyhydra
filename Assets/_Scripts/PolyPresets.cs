@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Utilities;
 using UnityEngine;
 
 
@@ -12,6 +13,12 @@ public class PolyPresets : MonoBehaviour {
 	public AppearancePresets APresets;
 	public List<PolyPreset> Items;
 
+
+	void Awake()
+	{
+		AotHelper.EnsureList<PolyPreset.Op>();
+	}
+	
 	public PolyPreset ApplyPresetToPoly(int presetIndex, bool loadMatchingAppearance)
 	{
 		var preset = Items[presetIndex];

@@ -172,7 +172,10 @@ public class PolyUI : MonoBehaviour {
                 
                 Texture2D tex2d = Resources.Load<Texture2D>($"InitialPresets/preset_{preset.Name}");
                 byte[] bytes = tex2d.EncodeToPNG();
-                File.WriteAllBytes(filePath, bytes);
+                if (bytes != null)
+                {
+                    File.WriteAllBytes(filePath, bytes);
+                }
             }
         }
     }
