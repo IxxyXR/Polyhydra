@@ -1,9 +1,11 @@
 {
   "scopedRegistries": [
-  {
+    {
       "name": "Packages from jillejr",
       "url": "https://npm.cloudsmith.io/jillejr/newtonsoft-json-for-unity/",
-      "scopes": ["jillejr"]
+      "scopes": [
+        "jillejr"
+      ]
     },
     {
       "name": "Keijiro",
@@ -14,7 +16,6 @@
     }
   ],
   "dependencies": {
-    "jillejr.newtonsoft.json-for-unity": "12.0.201",
     "com.beans.deform": "https://github.com/keenanwoodall/Deform.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
@@ -33,14 +34,14 @@
     "com.unity.ide.vscode": "1.1.4",
     "com.unity.probuilder": "4.2.3",
     "com.unity.recorder": "2.1.0-preview.1",
-    "com.unity.render-pipelines.high-definition": "7.2.1",
-    "com.unity.render-pipelines.high-definition-config": "7.2.1",
-    "com.unity.render-pipelines.universal": "7.2.1",
+    "com.unity.render-pipelines.high-definition": "7.3.1",
+    "com.unity.render-pipelines.high-definition-config": "7.3.1",
+    "com.unity.render-pipelines.universal": "7.3.1",
     "com.unity.settings-manager": "1.0.2",
-    "com.unity.shadergraph": "7.2.1",
-    "com.unity.test-framework": "1.1.11",
+    "com.unity.shadergraph": "7.3.1",
+    "com.unity.test-framework": "1.1.13",
     "com.unity.textmeshpro": "2.0.1",
-    "com.unity.timeline": "1.3.0",
+    "com.unity.timeline": "1.3.1",
     "com.unity.ugui": "1.0.0",
     "com.unity.urp-measured-materials-car-paint": "https://github.com/Unity-Repackages/urp-measured-materials-car-paint.git#bare",
     "com.unity.urp-measured-materials-common": "https://github.com/Unity-Repackages/urp-measured-materials-common.git#bare",
@@ -50,8 +51,9 @@
     "com.unity.urp-measured-materials-plastic": "https://github.com/Unity-Repackages/urp-measured-materials-plastic.git#bare",
     "com.unity.urp-measured-materials-rubber": "https://github.com/Unity-Repackages/urp-measured-materials-rubber.git#bare",
     "com.unity.vectorgraphics": "2.0.0-preview.12",
-    "com.unity.visualeffectgraph": "7.2.1",
+    "com.unity.visualeffectgraph": "7.3.1",
     "com.unity.xr.oculus.android": "2.38.6",
+    "jillejr.newtonsoft.json-for-unity": "12.0.301",
     "jp.keijiro.klak.motion": "1.0.1",
     "jp.keijiro.lasp": "https://github.com/keijiro/Lasp.git#upm",
     "jp.keijiro.rtmidi": "1.0.3",

@@ -286,7 +286,7 @@ MonoBehaviour:
   - Name: Black Mirror
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: b7854df036cf90f4ab5d51aa48a94b76,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: c455a48766edf7c45bec7bc70d2e1af5,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 9d224c98bf33cee4fb06dcbac96f9f69,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
@@ -493,7 +493,7 @@ MonoBehaviour:
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     SkyBoxURP: {fileID: 0}
-  editorPresetIndex: 21
+  editorPresetIndex: 0
 --- !u!1 &2770511816918282493
 GameObject:
   m_ObjectHideFlags: 0
