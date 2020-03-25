@@ -979,20 +979,36 @@ public class PolyHydra : MonoBehaviour
 	{
 		InitConfigs();
 
-		faceColors = new[] {
-			new Color(1.0f, 0.75f, 0.75f),
-			new Color(1.0f, 0.5f, 0.5f),
-			new Color(0.8f, 0.4f, 0.4f),
-			new Color(0.8f, 0.8f, 0.8f),
-			new Color(0.5f, 0.6f, 0.6f),
-			new Color(0.6f, 0.0f, 0.0f),
-			new Color(1.0f, 1.0f, 1.0f),
-			new Color(0.6f, 0.6f, 0.6f),
-			new Color(0.5f, 1.0f, 0.5f),
-			new Color(0.5f, 0.5f, 1.0f),
-			new Color(0.5f, 1.0f, 1.0f),
-			new Color(1.0f, 0.5f, 1.0f),
-		};
+	faceColors = new[]
+	{
+		new Color(1.0f, 0.5f, 0.5f),
+		new Color(0.8f, 0.8f, 0.8f),
+		new Color(0.5f, 0.6f, 0.6f),
+		new Color(1.0f, 0.94f, 0.9f),
+		new Color(0.66f, 0.2f, 0.2f),
+		new Color(0.6f, 0.0f, 0.0f),
+		new Color(1.0f, 1.0f, 1.0f),
+		new Color(0.6f, 0.6f, 0.6f),
+		new Color(0.5f, 1.0f, 0.5f),
+		new Color(0.5f, 0.5f, 1.0f),
+		new Color(0.5f, 1.0f, 1.0f),
+		new Color(1.0f, 0.5f, 1.0f),
+	};
+
+		// faceColors = new[] {
+		// 	new Color(1.0f, 0.75f, 0.75f),
+		// 	new Color(1.0f, 0.5f, 0.5f),
+		// 	new Color(0.8f, 0.4f, 0.4f),
+		// 	new Color(0.8f, 0.8f, 0.8f),
+		// 	new Color(0.5f, 0.6f, 0.6f),
+		// 	new Color(0.6f, 0.0f, 0.0f),
+		// 	new Color(1.0f, 1.0f, 1.0f),
+		// 	new Color(0.6f, 0.6f, 0.6f),
+		// 	new Color(0.5f, 1.0f, 0.5f),
+		// 	new Color(0.5f, 0.5f, 1.0f),
+		// 	new Color(0.5f, 1.0f, 1.0f),
+		// 	new Color(1.0f, 0.5f, 1.0f),
+		// };
 
 		Debug.unityLogger.logEnabled = EnableLogging;
 		InitCacheIfNeeded();
@@ -1909,8 +1925,6 @@ public class PolyHydra : MonoBehaviour
 			// TODO why do we need to do this check?
 			if (conway.FaceRoles != null && faceColors != null)
 			{
-				// Debug.Log($"{conway.FaceRoles}");
-				// Debug.Log($"{faceColors}");
 				switch (ColorMethod)
 				{
 					case ColorMethods.ByRole:

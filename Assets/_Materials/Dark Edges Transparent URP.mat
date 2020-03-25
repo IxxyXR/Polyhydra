@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MirrorDirtEdged URP
-  m_Shader: {fileID: -6465566751694194690, guid: d4a1a1e907da3da43865072630d8a611,
+  m_Name: Dark Edges Transparent URP
+  m_Shader: {fileID: -6465566751694194690, guid: 9e39e23371649014ebf4c6629adda70c,
     type: 3}
-  m_ShaderKeywords: _DOUBLESIDED_ON
+  m_ShaderKeywords: _BLENDMODE_ALPHA _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
@@ -23,14 +23,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_1E4703A:
-        m_Texture: {fileID: 2800000, guid: cc46fce2fc3d7f14b86aeec09dece6a8, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Texture2D_85DF2D7C:
-        m_Texture: {fileID: 2800000, guid: cf25100d0b86c9d4d88ec55c046ef2c1, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -116,43 +108,24 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Boolean_77E75FAA: 0
-    - Boolean_B1A84824: 0
-    - Boolean_B62E92F7: 0
-    - Boolean_F2394607: 0
-    - Vector1_12FB2629: 0.01
-    - Vector1_13A8B512: 0.849
-    - Vector1_20B60D22: 0.1
-    - Vector1_2E810D38: 0.995
-    - Vector1_395CC577: 0.05
-    - Vector1_39957ABB: 0.2
-    - Vector1_5F01DFDD: 0.584
-    - Vector1_6B205A18: 0.02
-    - Vector1_74C4623E: 0.01
-    - Vector1_7EB7D62C: 1
-    - Vector1_96F85197: 1
-    - Vector1_9F7A6A69: 1
-    - Vector1_A0747EDC: 0.1
-    - Vector1_A782A636: -0.45
-    - Vector1_B42449D2: 1
-    - Vector1_BB4DD4C5: 0.042
-    - Vector1_BD53BAF8: 1
-    - Vector1_BDDC6585: 1
-    - Vector1_BFEF30C9: 1
-    - Vector1_D1F39333: 0
-    - Vector1_E8712278: 0
-    - Vector1_ECDFB20A: 1
-    - Vector1_F8CF7D66: 0.06
+    - Vector1_27D59479: 0.5
+    - Vector1_32044E8D: 0.01
+    - Vector1_4C439CFB: 0.11
+    - Vector1_4CF8D1A8: 0.5
+    - Vector1_5D09E41D: 0.01
+    - Vector1_D7974897: 0.04
+    - Vector1_FF5E61DC: 0.1
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ATDistance: 1
+    - _AddVelocityChange: 0
     - _AlbedoAffectEmissive: 0
     - _AlphaCutoff: 0.5
     - _AlphaCutoffEnable: 0
     - _AlphaCutoffPostpass: 0.5
     - _AlphaCutoffPrepass: 0.5
     - _AlphaCutoffShadow: 0.5
-    - _AlphaDstBlend: 0
+    - _AlphaDstBlend: 10
     - _AlphaSrcBlend: 1
     - _Anisotropy: 0
     - _BlendMode: 0
@@ -184,8 +157,8 @@ Material:
     - _DistortionVectorBias: -1
     - _DistortionVectorScale: 2
     - _DoubleSidedEnable: 1
-    - _DoubleSidedNormalMode: 1
-    - _DstBlend: 0
+    - _DoubleSidedNormalMode: 2
+    - _DstBlend: 10
     - _EmissiveColorMode: 1
     - _EmissiveExposureWeight: 1
     - _EmissiveIntensity: 1
@@ -221,7 +194,7 @@ Material:
     - _PPDPrimitiveWidth: 1
     - _ReceivesSSR: 1
     - _RefractionModel: 0
-    - _RenderQueueType: 1
+    - _RenderQueueType: 5
     - _RequireSplitLighting: 0
     - _SSRefractionProjectionModel: 0
     - _Smoothness: 0.5
@@ -242,7 +215,7 @@ Material:
     - _StencilWriteMaskMV: 40
     - _SubsurfaceMask: 1
     - _SupportDecals: 1
-    - _SurfaceType: 0
+    - _SurfaceType: 1
     - _TexWorldScale: 1
     - _TexWorldScaleEmissive: 1
     - _Thickness: 1
@@ -260,24 +233,17 @@ Material:
     - _UVEmissive: 0
     - _UseEmissiveIntensity: 0
     - _UseShadowThreshold: 0
-    - _ZTestDepthEqualForOpaque: 3
+    - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestModeDistortion: 8
     - _ZTestTransparent: 4
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
-    - Color_84E5CB89: {r: 1, g: 1, b: 1, a: 0}
-    - Color_AD8F67CE: {r: 1, g: 1, b: 1, a: 0}
-    - Color_C8ED1306: {r: 1, g: 1, b: 1, a: 0}
-    - Vector2_3344450D: {r: 2, g: 2, b: 0, a: 0}
-    - Vector2_397B3A0C: {r: 0, g: 0, b: 0, a: 0}
-    - Vector2_7CFC7CEF: {r: 0, g: 0, b: 0, a: 0}
-    - Vector2_FAF7B7C2: {r: 1, g: 1, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
-    - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
+    - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
@@ -289,7 +255,7 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
---- !u!114 &3421910000284956569
+--- !u!114 &5811472531352202217
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

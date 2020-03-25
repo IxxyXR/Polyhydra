@@ -244,9 +244,9 @@ namespace Conway
 		{
 			Ignored,
 			Existing,
-			ExistingAlt,
 			New,
-			NewAlt
+			NewAlt,
+			ExistingAlt,
 		}
 
 		public enum FaceSelections

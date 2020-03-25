@@ -825,15 +825,22 @@ public class PolyUI : MonoBehaviour {
             {
                 opSliders[0].minValue = opConfig.amountSafeMin;
                 opSliders[0].maxValue = opConfig.amountSafeMax;
-                opSliders[1].minValue = opConfig.amount2SafeMin;
-                opSliders[1].maxValue = opConfig.amount2SafeMax;
+                if (opSliders.Count() > 1)
+                {
+                    opSliders[1].minValue = opConfig.amount2SafeMin;
+                    opSliders[1].maxValue = opConfig.amount2SafeMax;
+
+                }
             }
             else
             {
                 opSliders[0].minValue = opConfig.amountMin;
                 opSliders[0].maxValue = opConfig.amountMax;
-                opSliders[1].minValue = opConfig.amount2Min;
-                opSliders[1].maxValue = opConfig.amount2Max;
+                if (opSliders.Count() > 1)
+                {
+                    opSliders[1].minValue = opConfig.amount2Min;
+                    opSliders[1].maxValue = opConfig.amount2Max;
+                }
             }
         }
 

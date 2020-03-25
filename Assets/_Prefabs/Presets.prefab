@@ -410,7 +410,7 @@ MonoBehaviour:
   - Name: Edged Tiles
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 80e51355e1e8c5d4eb4e7b7e7ab5baac,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 52d4021ac390055429c0aad6107773bd,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
@@ -446,7 +446,8 @@ MonoBehaviour:
   - Name: Thick Edges
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: ae788e1cd3cf54f4f9d5bccdb4d49dc9,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 0}
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 3646d070015f5b14dbbe06a5fcd67c8a,
+      type: 2}
     PolyhedronColorMethod: 0
     ActiveProps: []
     LightingPrefabHDRP: {fileID: 585132436217273184, guid: ab5275cf612cc4046b57aacf620eaf46,
@@ -462,7 +463,7 @@ MonoBehaviour:
   - Name: Golden
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: b7854df036cf90f4ab5d51aa48a94b76,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: c455a48766edf7c45bec7bc70d2e1af5,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 9d224c98bf33cee4fb06dcbac96f9f69,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
@@ -493,7 +494,7 @@ MonoBehaviour:
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     SkyBoxURP: {fileID: 0}
-  editorPresetIndex: 0
+  editorPresetIndex: 22
 --- !u!1 &2770511816918282493
 GameObject:
   m_ObjectHideFlags: 0
