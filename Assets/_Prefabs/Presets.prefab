@@ -156,7 +156,7 @@ MonoBehaviour:
   - Name: Hologram
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: a9d8565cd2f99b04c94288f457b17456,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: a9d8565cd2f99b04c94288f457b17456,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps: []
@@ -186,7 +186,7 @@ MonoBehaviour:
   - Name: Grooves
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: ff47891f2ea45fc459041f7ff80c576e,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 3c4158dc82881c44b86fd69622e6600d,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps: []
@@ -237,7 +237,7 @@ MonoBehaviour:
   - Name: Graph Paper
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 040eaef198cabe643b89fb9a2b5f3341,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 929922bd49e9d5a4ca0d2534ce8eea95,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps: []
