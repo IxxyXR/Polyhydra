@@ -356,7 +356,7 @@ MonoBehaviour:
   - Name: Tinted Glass
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 7d966c49445a5cb469bd0d46d8d6c8dd,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 8b3facf4df92bb84d861fceb382ab0bd,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
@@ -374,7 +374,7 @@ MonoBehaviour:
   - Name: Showroom
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 4e47b9e41487ec54b8403c767d058840,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: c96596ebb33f357489dcc097033ee375,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
@@ -392,7 +392,7 @@ MonoBehaviour:
   - Name: Edged Glass
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: dd9ebca479b7b6444af9b560484c5958,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 6b5a78fc500ae6c498258f326366bf37,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
@@ -494,7 +494,7 @@ MonoBehaviour:
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     SkyBoxURP: {fileID: 0}
-  editorPresetIndex: 22
+  editorPresetIndex: 3
 --- !u!1 &2770511816918282493
 GameObject:
   m_ObjectHideFlags: 0

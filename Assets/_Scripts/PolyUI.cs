@@ -885,9 +885,11 @@ public class PolyUI : MonoBehaviour {
     void SavePresetButtonClicked()
     {
         var cap = FindObjectOfType<ScreenCaptureTool>();
-        cap.TakePresetScreenshotNow(PresetNameInput.text);
+        if (cap != null)
+        {
+            cap.TakePresetScreenshotNow(PresetNameInput.text);
+        }
         poly.PresetName = PresetNameInput.text;
-
         // TODO Handle saving over an existing preset
         int countBefore = Presets.Items.Count;
         var preset = Presets.AddOrUpdateFromPoly(PresetNameInput.text);

@@ -982,7 +982,7 @@ public class PolyHydra : MonoBehaviour
 	faceColors = new[]
 	{
 		new Color(1.0f, 0.5f, 0.5f),
-		new Color(0.8f, 0.8f, 0.8f),
+		new Color(0.8f, 0.85f, 0.9f),
 		new Color(0.5f, 0.6f, 0.6f),
 		new Color(1.0f, 0.94f, 0.9f),
 		new Color(0.66f, 0.2f, 0.2f),

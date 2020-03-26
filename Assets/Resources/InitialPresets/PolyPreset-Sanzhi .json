@@ -77,7 +77,7 @@
       "OpType": "Bevel",
       "FaceSelections": "All",
       "Amount": 0.38,
-      "Amount2": 0.0,
+      "Amount2": 0.38,
       "AnimatedAmount": 0.0,
       "Randomize": false,
       "Disabled": false,

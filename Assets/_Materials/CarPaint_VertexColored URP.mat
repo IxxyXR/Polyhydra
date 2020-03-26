@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CarPaint_Amber
-  m_Shader: {fileID: 4800000, guid: d5caa14cb273a4b4a8770067fb6fcbeb, type: 3}
+  m_Name: CarPaint_VertexColored URP
+  m_Shader: {fileID: 4800000, guid: 1dfb49e8d0ab3cd4a88d6b65f72b9ef9, type: 3}
   m_ShaderKeywords: _CLEARCOAT _NORMALMAP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -91,7 +91,7 @@ Material:
     - _ClearCoat: 0.98
     - _ClearCoatGlossiness: 0.944
     - _ClearCoatGlossinessScale: 1
-    - _Cull: 2
+    - _Cull: 0
     - _Cutoff: 0.5
     - _DstBlend: 0
     - _EnableClearCoat: 1
@@ -99,7 +99,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Metallic: 0.777
+    - _Metallic: 0.845
     - _OcclusionStrength: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
