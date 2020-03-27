@@ -392,7 +392,7 @@ MonoBehaviour:
   - Name: Edged Glass
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: dd9ebca479b7b6444af9b560484c5958,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 6b5a78fc500ae6c498258f326366bf37,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 4603a6aa724ab9042822c50ea3a715bb,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
@@ -481,7 +481,7 @@ MonoBehaviour:
   - Name: Volumetric
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 033cb349002b93a45bfc5418fd86dbd6,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 6266e77c2c812274d83769a4c38bf7a3,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: f4698d8b38de0a24197e26fd25592315,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps: []
@@ -494,7 +494,7 @@ MonoBehaviour:
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     SkyBoxURP: {fileID: 0}
-  editorPresetIndex: 3
+  editorPresetIndex: 8
 --- !u!1 &2770511816918282493
 GameObject:
   m_ObjectHideFlags: 0

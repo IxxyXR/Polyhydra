@@ -31,7 +31,7 @@
     {
       "OpType": "Gyro",
       "FaceSelections": "All",
-      "Amount": 0.5,
+      "Amount": 0.499,
       "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
