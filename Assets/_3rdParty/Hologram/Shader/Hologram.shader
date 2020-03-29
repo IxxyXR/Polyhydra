@@ -30,7 +30,7 @@
 	}
 	SubShader
 	{
-		Tags { "Queue"="Transparent" "RenderType"="Transparent" "RenderPipeline"="HDPipeline"}
+		Tags { "Queue"="Transparent" "RenderType"="Transparent" "RenderPipeline"="HDPipeline" "RenderPipeline"="UniversalPipeline"}
 		Blend SrcAlpha OneMinusSrcAlpha
 		LOD 100
 		ColorMask RGB

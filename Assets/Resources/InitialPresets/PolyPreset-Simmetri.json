@@ -1,0 +1,62 @@
+{
+  "Name": "Simmetri",
+  "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
+  "PolyType": "Octahedron",
+  "JohnsonPolyType": "Dipyramid",
+  "OtherPolyType": "UvSphere",
+  "GridType": "U_3_6_3_6",
+  "GridShape": "Plane",
+  "BypassOps": true,
+  "SafeLimits": false,
+  "PrismP": 5,
+  "PrismQ": 2,
+  "AppearancePresetName": "Tinted Glass",
+  "Ops": [
+    {
+      "OpType": "Bevel",
+      "FaceSelections": "FourSided",
+      "Amount": 0.5,
+      "Amount2": 0.05,
+      "AnimatedAmount": 0.22,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": true,
+      "AnimationRate": 0.5,
+      "AnimationAmount": 0.45,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
+    },
+    {
+      "OpType": "Stash",
+      "FaceSelections": "FourSided",
+      "Amount": 0.66,
+      "Amount2": 0.9,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
+    },
+    {
+      "OpType": "UnstashToFaces",
+      "FaceSelections": "All",
+      "Amount": 15.0,
+      "Amount2": -0.15,
+      "AnimatedAmount": 5.26,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": true,
+      "AnimationRate": 0.5,
+      "AnimationAmount": 15.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
+    }
+  ]
+}

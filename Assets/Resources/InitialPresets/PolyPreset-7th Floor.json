@@ -2,7 +2,7 @@
   "Name": "7th Floor",
   "ShapeType": "Uniform",
   "PolyTypeCategory": "All",
-  "PolyType": "Rhombicuboctahedron",
+  "PolyType": "Cube",
   "JohnsonPolyType": "ElongatedPyramid",
   "OtherPolyType": "L1",
   "GridType": "Square",

@@ -31,7 +31,7 @@
     {
       "OpType": "VertexRotate",
       "FaceSelections": "Existing",
-      "Amount": 50.0,
+      "Amount": 0.33,
       "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,

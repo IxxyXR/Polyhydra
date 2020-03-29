@@ -172,7 +172,10 @@ public class PolyUI : MonoBehaviour {
                 
                 Texture2D tex2d = Resources.Load<Texture2D>($"InitialPresets/preset_{preset.Name}");
                 byte[] bytes = tex2d.EncodeToPNG();
-                File.WriteAllBytes(filePath, bytes);
+                if (bytes != null)
+                {
+                    File.WriteAllBytes(filePath, bytes);
+                }
             }
         }
     }
@@ -291,7 +294,6 @@ public class PolyUI : MonoBehaviour {
     void UpdatePolyUI()
     {
         _shouldReBuild = false;
-        SafeLimitsToggle.isOn = poly.SafeLimits;
         ShapeTypesDropdown.value = (int) poly.ShapeType;
         ShapeTypesDropdown.RefreshShownValue();
         BasePolyCategoryDropdown.value = (int) poly.UniformPolyTypeCategory;
@@ -315,6 +317,8 @@ public class PolyUI : MonoBehaviour {
         PrismPInput.text = poly.PrismP.ToString();
         PrismQInput.text = poly.PrismQ.ToString();
         InitShapeTypesUI((int) poly.ShapeType);
+        SafeLimitsToggle.isOn = poly.SafeLimits; // Must go last
+
         _shouldReBuild = true;
     }
 
@@ -677,6 +681,7 @@ public class PolyUI : MonoBehaviour {
                 break;
             case (int)PolyHydra.ShapeTypes.Other:
                 PrismPInput.gameObject.SetActive(true);
+                PrismQInput.gameObject.SetActive(true);
                 OtherTypeDropdown.gameObject.SetActive(true);
                 break;
         }
@@ -809,24 +814,33 @@ public class PolyUI : MonoBehaviour {
     void SafeLimitsToggleChanged()
     {
         poly.SafeLimits = SafeLimitsToggle.isOn;
-        var opSliders = OpContainer.GetComponentsInChildren<Slider>();
-        for (var i = 0; i < opSliders.Length; i+=2)
+        var opUIs = OpContainer.GetComponentsInChildren<OpPrefabManager>();
+        if (opUIs.Length != poly.ConwayOperators.Count) return;
+        for (var i = 0; i < poly.ConwayOperators.Count; i++)
         {
-            var op = poly.ConwayOperators[i/2];
+            var opSliders = opUIs[i].GetComponentsInChildren<Slider>();
+            var op = poly.ConwayOperators[i];
             var opConfig = poly.opconfigs[op.opType];
             if (poly.SafeLimits)
             {
-                opSliders[i].minValue = opConfig.amountSafeMin;
-                opSliders[i].maxValue = opConfig.amountSafeMax;
-                opSliders[i+1].minValue = opConfig.amount2SafeMin;
-                opSliders[i+1].maxValue = opConfig.amount2SafeMax;
+                opSliders[0].minValue = opConfig.amountSafeMin;
+                opSliders[0].maxValue = opConfig.amountSafeMax;
+                if (opSliders.Count() > 1)
+                {
+                    opSliders[1].minValue = opConfig.amount2SafeMin;
+                    opSliders[1].maxValue = opConfig.amount2SafeMax;
+
+                }
             }
             else
             {
-                opSliders[i].minValue = opConfig.amountMin;
-                opSliders[i].maxValue = opConfig.amountMax;
-                opSliders[i+1].minValue = opConfig.amount2Min;
-                opSliders[i+1].maxValue = opConfig.amount2Max;
+                opSliders[0].minValue = opConfig.amountMin;
+                opSliders[0].maxValue = opConfig.amountMax;
+                if (opSliders.Count() > 1)
+                {
+                    opSliders[1].minValue = opConfig.amount2Min;
+                    opSliders[1].maxValue = opConfig.amount2Max;
+                }
             }
         }
 
@@ -871,9 +885,11 @@ public class PolyUI : MonoBehaviour {
     void SavePresetButtonClicked()
     {
         var cap = FindObjectOfType<ScreenCaptureTool>();
-        cap.TakePresetScreenshotNow(PresetNameInput.text);
+        if (cap != null)
+        {
+            cap.TakePresetScreenshotNow(PresetNameInput.text);
+        }
         poly.PresetName = PresetNameInput.text;
-
         // TODO Handle saving over an existing preset
         int countBefore = Presets.Items.Count;
         var preset = Presets.AddOrUpdateFromPoly(PresetNameInput.text);

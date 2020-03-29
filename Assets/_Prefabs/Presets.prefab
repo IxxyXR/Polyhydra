@@ -156,7 +156,7 @@ MonoBehaviour:
   - Name: Hologram
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: a9d8565cd2f99b04c94288f457b17456,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: a9d8565cd2f99b04c94288f457b17456,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps: []
@@ -186,7 +186,7 @@ MonoBehaviour:
   - Name: Grooves
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: ff47891f2ea45fc459041f7ff80c576e,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 3c4158dc82881c44b86fd69622e6600d,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps: []
@@ -237,7 +237,7 @@ MonoBehaviour:
   - Name: Graph Paper
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 040eaef198cabe643b89fb9a2b5f3341,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 929922bd49e9d5a4ca0d2534ce8eea95,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps: []
@@ -286,7 +286,7 @@ MonoBehaviour:
   - Name: Black Mirror
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: b7854df036cf90f4ab5d51aa48a94b76,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: c455a48766edf7c45bec7bc70d2e1af5,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 9d224c98bf33cee4fb06dcbac96f9f69,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
@@ -325,8 +325,7 @@ MonoBehaviour:
     PolyhedronMaterialURP: {fileID: 2100000, guid: 52278f9199086dd468a003bd09b38248,
       type: 2}
     PolyhedronColorMethod: 1
-    ActiveProps:
-    - {fileID: 0}
+    ActiveProps: []
     LightingPrefabHDRP: {fileID: 585132436217273184, guid: ab5275cf612cc4046b57aacf620eaf46,
       type: 3}
     LightingPrefabURP: {fileID: 3802874855569752408, guid: a59669744e0f2ff46bf9ea830d762d7d,
@@ -337,10 +336,27 @@ MonoBehaviour:
     CameraClearColorMode: 0
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     SkyBoxURP: {fileID: 2100000, guid: 7402c40b9d67da6408c278f37f3f51bf, type: 2}
+  - Name: Warm Metal
+    PolyhedronMaterialHDRP: {fileID: 2100000, guid: f446fe272d555444f9e3d8d9a6de3e14,
+      type: 2}
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 52278f9199086dd468a003bd09b38248,
+      type: 2}
+    PolyhedronColorMethod: 1
+    ActiveProps: []
+    LightingPrefabHDRP: {fileID: 585132436217273184, guid: ab5275cf612cc4046b57aacf620eaf46,
+      type: 3}
+    LightingPrefabURP: {fileID: 3802874855569752408, guid: a59669744e0f2ff46bf9ea830d762d7d,
+      type: 3}
+    ActiveVolumeProfileHDRP: {fileID: 11400000, guid: ab31740888bf2f74ca589b2864cf3895,
+      type: 2}
+    ActiveVolumeProfileURP: {fileID: 0}
+    CameraClearColorMode: 0
+    CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
+    SkyBoxURP: {fileID: 2100000, guid: bc4e2c2c6f5934598a196d7494726d23, type: 2}
   - Name: Tinted Glass
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 7d966c49445a5cb469bd0d46d8d6c8dd,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 8b3facf4df92bb84d861fceb382ab0bd,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
@@ -358,7 +374,7 @@ MonoBehaviour:
   - Name: Showroom
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 4e47b9e41487ec54b8403c767d058840,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: c96596ebb33f357489dcc097033ee375,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
@@ -376,7 +392,7 @@ MonoBehaviour:
   - Name: Edged Glass
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: dd9ebca479b7b6444af9b560484c5958,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 4603a6aa724ab9042822c50ea3a715bb,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
@@ -394,7 +410,7 @@ MonoBehaviour:
   - Name: Edged Tiles
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 80e51355e1e8c5d4eb4e7b7e7ab5baac,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 085af86ec9b97cd4e9c4f61f1454615a,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 52d4021ac390055429c0aad6107773bd,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
@@ -430,7 +446,8 @@ MonoBehaviour:
   - Name: Thick Edges
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: ae788e1cd3cf54f4f9d5bccdb4d49dc9,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 0}
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 3646d070015f5b14dbbe06a5fcd67c8a,
+      type: 2}
     PolyhedronColorMethod: 0
     ActiveProps: []
     LightingPrefabHDRP: {fileID: 585132436217273184, guid: ab5275cf612cc4046b57aacf620eaf46,
@@ -446,7 +463,7 @@ MonoBehaviour:
   - Name: Golden
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: b7854df036cf90f4ab5d51aa48a94b76,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: c455a48766edf7c45bec7bc70d2e1af5,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: 9d224c98bf33cee4fb06dcbac96f9f69,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps:
@@ -464,7 +481,7 @@ MonoBehaviour:
   - Name: Volumetric
     PolyhedronMaterialHDRP: {fileID: 2100000, guid: 033cb349002b93a45bfc5418fd86dbd6,
       type: 2}
-    PolyhedronMaterialURP: {fileID: 2100000, guid: 6266e77c2c812274d83769a4c38bf7a3,
+    PolyhedronMaterialURP: {fileID: 2100000, guid: f4698d8b38de0a24197e26fd25592315,
       type: 2}
     PolyhedronColorMethod: 1
     ActiveProps: []
@@ -477,7 +494,7 @@ MonoBehaviour:
     CameraClearColorMode: 1
     CameraBackgroundColor: {r: 0, g: 0, b: 0, a: 0}
     SkyBoxURP: {fileID: 0}
-  editorPresetIndex: 21
+  editorPresetIndex: 8
 --- !u!1 &2770511816918282493
 GameObject:
   m_ObjectHideFlags: 0

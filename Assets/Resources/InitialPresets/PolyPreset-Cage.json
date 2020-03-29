@@ -1,0 +1,62 @@
+{
+  "Name": "Cage",
+  "ShapeType": "Uniform",
+  "PolyTypeCategory": "All",
+  "PolyType": "Truncated_Icosahedron",
+  "JohnsonPolyType": "Prism",
+  "OtherPolyType": "UvSphere",
+  "GridType": "U_3_6_3_6",
+  "GridShape": "Plane",
+  "BypassOps": true,
+  "SafeLimits": true,
+  "PrismP": 5,
+  "PrismQ": 2,
+  "AppearancePresetName": "Vectrex",
+  "Ops": [
+    {
+      "OpType": "Bevel",
+      "FaceSelections": "FourSided",
+      "Amount": 0.001,
+      "Amount2": 0.05,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
+    },
+    {
+      "OpType": "Stash",
+      "FaceSelections": "FourSided",
+      "Amount": 0.66,
+      "Amount2": 0.9,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
+    },
+    {
+      "OpType": "Unstash",
+      "FaceSelections": "FourSided",
+      "Amount": 1.5,
+      "Amount2": 0.0,
+      "AnimatedAmount": 0.0,
+      "Randomize": false,
+      "Disabled": false,
+      "Animate": false,
+      "AnimationRate": 0.0,
+      "AnimationAmount": 0.0,
+      "AudioLowAmount": 0.0,
+      "AudioMidAmount": 0.0,
+      "AudioHighAmount": 0.0
+    }
+  ]
+}

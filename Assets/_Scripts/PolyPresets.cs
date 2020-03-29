@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Utilities;
 using UnityEngine;
 
 
@@ -11,6 +13,12 @@ public class PolyPresets : MonoBehaviour {
 	public AppearancePresets APresets;
 	public List<PolyPreset> Items;
 
+
+	void Awake()
+	{
+		AotHelper.EnsureList<PolyPreset.Op>();
+	}
+	
 	public PolyPreset ApplyPresetToPoly(int presetIndex, bool loadMatchingAppearance)
 	{
 		var preset = Items[presetIndex];
@@ -107,9 +115,30 @@ public class PolyPresets : MonoBehaviour {
 			.Replace(
 				"PolyType\": \"Penta",
 				"PolyType\": \"Poly"
+			)
+			.Replace(
+				"GridShape\": \"Cube",
+				"GridShape\": \"Plane"
+			)
+			.Replace(
+				"JohnsonPolyType\": \"ElongatedBicupola",
+				"JohnsonPolyType\": \"ElongatedGyroBicupola"
+			)
+			.Replace(
+				"JohnsonPolyType\": \"Bicupola",
+				"JohnsonPolyType\": \"GyroBicupola"
 			);
-			var preset = new PolyPreset();
-			preset = JsonConvert.DeserializeObject<PolyPreset>(rawJson);
+			PolyPreset preset = null;
+			try
+			{
+				preset = JsonConvert.DeserializeObject<PolyPreset>(rawJson);
+			}
+			catch (Exception e)
+			{
+				Debug.LogError($"Failed to load preset {file.FullName}");
+			}
+
+			if (preset == null) continue;
 			if (string.IsNullOrEmpty(preset.Name))
 			{
 				preset.Name = file.Name.Replace(PolyPreset.PresetFileNamePrefix, "").Replace(".json", "");
