@@ -1018,7 +1018,6 @@ public class PolyHydra : MonoBehaviour
 		InitCacheIfNeeded();
 		meshFilter = gameObject.GetComponent<MeshFilter>();
 		MakePolyhedron();
-
 	}
 
 	void Start()
@@ -1029,6 +1028,14 @@ public class PolyHydra : MonoBehaviour
 	void OnEnable()
 	{
 		Init();
+	}
+
+	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			Unfold();
+		}
 	}
 
 	void InitCacheIfNeeded()
@@ -2107,8 +2114,8 @@ public class PolyHydra : MonoBehaviour
 				PolyEdges.Add(new PolyEdge(h.Face, h.Pair.Face, h, h.Pair));
 			}
 		}
-		Debug.Log(unfoldFaces.Count);
-		Debug.Log(PolyEdges.Count);
+		Debug.Log("Amount Of Faces: " + unfoldFaces.Count);
+		Debug.Log("Amount Of Edges: " + PolyEdges.Count);
 		PolyNode root = new PolyNode(unfoldFaces[0], null);
 		List<PolyNode> children = AddChildren(root);
 		List<PolyNode> queue = new List<PolyNode>();
@@ -2146,7 +2153,7 @@ public class PolyHydra : MonoBehaviour
 				tabs++;
 			}
 		}
-		Debug.Log(tabs.ToString());
+		Debug.Log("Required Tabs: " + tabs.ToString());
 	}
 
 	private List<PolyNode> AddChildren(PolyNode c)
