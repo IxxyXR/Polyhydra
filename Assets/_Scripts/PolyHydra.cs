@@ -1276,7 +1276,7 @@ public class PolyHydra : MonoBehaviour
 		#if UNITY_EDITOR
 			// To prevent values getting out of sync
 			// ignore the inspector UI if we're showing the runtime UI
-			if (polyUI == null || (polyUI != null && EditorApplication.isPlayingOrWillChangePlaymode)) return;
+			if (polyUI != null && EditorApplication.isPlayingOrWillChangePlaymode) return;
 		#endif
 
 		InitCacheIfNeeded();
