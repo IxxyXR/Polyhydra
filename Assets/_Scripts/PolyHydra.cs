@@ -2097,13 +2097,13 @@ public class PolyHydra : MonoBehaviour
 	}
 
 	public void Unfold() {
-		ConwayPoly toBeUnfolded = GetConwayPoly();
-		MeshFaceList unfoldFaces = toBeUnfolded.Faces;
-		MeshHalfedgeList unfoldHalfedges = toBeUnfolded.Halfedges;
+
 		PolyEdges = new List<PolyEdge>();
-		List<Halfedge> CheckedHalfEdges = new List<Halfedge>();
+		var CheckedHalfEdges = new List<Halfedge>();
 		ConnectedFaces = new List<Face>();
-		foreach (Halfedge h in unfoldHalfedges)
+		var BranchedEdges = new List<PolyEdge>();
+
+		foreach (Halfedge h in _conwayPoly.Halfedges)
 		{
 			if (CheckedHalfEdges.Contains(h)){
 				continue;
@@ -2114,15 +2114,15 @@ public class PolyHydra : MonoBehaviour
 				PolyEdges.Add(new PolyEdge(h.Face, h.Pair.Face, h, h.Pair));
 			}
 		}
-		Debug.Log("Amount Of Faces: " + unfoldFaces.Count);
+		Debug.Log("Amount Of Faces: " + _conwayPoly.Faces.Count);
 		Debug.Log("Amount Of Edges: " + PolyEdges.Count);
-		PolyNode root = new PolyNode(unfoldFaces[0], null);
+		PolyNode root = new PolyNode(_conwayPoly.Faces[0], null);
 		List<PolyNode> children = AddChildren(root);
 		List<PolyNode> queue = new List<PolyNode>();
 		List<PolyNode> branched = new List<PolyNode>();
 		foreach (PolyNode c in children)
 		{
-			queue.Add(c);
+			queue.Add(c);  
 			branched.Add(c);
 		}
 		while (queue.Count != 0)
@@ -2147,6 +2147,7 @@ public class PolyHydra : MonoBehaviour
 			if (e.IsBranched())
 			{
 				Debug.Log(e.ToString());
+				BranchedEdges.Add(e);
 			}
 			if (e.IsTabbed())
 			{
@@ -2158,7 +2159,7 @@ public class PolyHydra : MonoBehaviour
 
 	private List<PolyNode> AddChildren(PolyNode c)
 	{
-		List<Face> sharedFaces = GetSharedFaces(c.GetID());
+		List<Face> sharedFaces = SharedFaces(c.GetID());
 		foreach (Face sf in sharedFaces)
 		{
 			c.AddChild(sf);
@@ -2173,7 +2174,7 @@ public class PolyHydra : MonoBehaviour
 		return c.GetChildren();
 	}
 
-	private List<Face> GetSharedFaces(Face f)
+	private List<Face> SharedFaces(Face f)
 	{
 		List<Face> sharedFaces = new List<Face>();
 		foreach(PolyEdge e in PolyEdges)
