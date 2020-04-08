@@ -2102,6 +2102,7 @@ public class PolyHydra : MonoBehaviour
 		var CheckedHalfEdges = new List<Halfedge>();
 		ConnectedFaces = new List<Face>();
 		var BranchedEdges = new List<PolyEdge>();
+		var TabbedEdges = new List<PolyEdge>();
 
 		foreach (Halfedge h in _conwayPoly.Halfedges)
 		{
@@ -2152,9 +2153,31 @@ public class PolyHydra : MonoBehaviour
 			if (e.IsTabbed())
 			{
 				tabs++;
+				TabbedEdges.Add(e);
 			}
 		}
 		Debug.Log("Required Tabs: " + tabs.ToString());
+
+		var unfoldedPoly = new ConwayPoly();
+		var ConstructedFaces = new List<Face>();
+		foreach (PolyEdge e in BranchedEdges)
+		{
+			if (!ConstructedFaces.Contains(e.GetFace1()))
+			{
+				var face = new List<Vertex>();
+				
+				unfoldedPoly.Faces.Add(face);
+				unfoldedPoly.FaceRoles.Add(ConwayPoly.Roles.New);
+				ConstructedFaces.Add(e.GetFace1());
+			}
+			if (!ConstructedFaces.Contains(e.GetFace2()))
+			{
+				unfoldedPoly.Faces.Add(e.GetFace2());
+				unfoldedPoly.FaceRoles.Add(ConwayPoly.Roles.New);
+				ConstructedFaces.Add(e.GetFace2());
+			}
+		}
+		_conwayPoly = unfoldedPoly;
 	}
 
 	private List<PolyNode> AddChildren(PolyNode c)
