@@ -2145,36 +2145,69 @@ public class PolyHydra : MonoBehaviour
 		int tabs = 0;
 		foreach (PolyEdge e in PolyEdges)
 		{
-			if (e.IsBranched())
+			if (e.Branched)
 			{
 				Debug.Log(e.ToString());
 				BranchedEdges.Add(e);
 			}
-			if (e.IsTabbed())
+			if (e.Tabbed)
 			{
 				tabs++;
 				TabbedEdges.Add(e);
 			}
 		}
+		Debug.Log("Branched Edge Amount: " + BranchedEdges.Count);
 		Debug.Log("Required Tabs: " + tabs.ToString());
 
 		var unfoldedPoly = new ConwayPoly();
 		var ConstructedFaces = new List<Face>();
 		foreach (PolyEdge e in BranchedEdges)
 		{
-			if (!ConstructedFaces.Contains(e.GetFace1()))
+			if (!ConstructedFaces.Contains(e.Face1))
 			{
-				var face = new List<Vertex>();
-				
-				unfoldedPoly.Faces.Add(face);
+				Face face = e.Face1;
+				Vector3 normal = face.Normal;
+				var upwards = new Vector3(0.0f, 1.0f, 0.0f).normalized;
+				float angle = Vector3.Angle(normal, upwards);
+				Debug.Log("Angle = " + angle.ToString());
+				Vector3 axis = e.Halfedge1.Vector;
+				Quaternion rotation = Quaternion.AngleAxis(180-angle, axis);
+
+				foreach (Vertex v in face.GetVertices())
+					{
+						v.Position -= e.Halfedge1.Vertex.Position;
+						v.Position = rotation * v.Position;
+						v.Position += e.Halfedge1.Vertex.Position;
+					}
+
+				unfoldedPoly.Faces.Add(face.GetVertices());
 				unfoldedPoly.FaceRoles.Add(ConwayPoly.Roles.New);
-				ConstructedFaces.Add(e.GetFace1());
+				ConstructedFaces.Add(e.Face1);
 			}
-			if (!ConstructedFaces.Contains(e.GetFace2()))
+			if (!ConstructedFaces.Contains(e.Face2))
 			{
-				unfoldedPoly.Faces.Add(e.GetFace2());
+				Face face = e.Face2;
+				Vector3 normalFace1 = e.Face1.Normal;
+				Vector3 normalFace2 = face.Normal;
+				float angle = Vector3.Angle(normalFace1, normalFace2);
+				Debug.Log("Angle = " + angle.ToString());
+				Vector3 axis = e.Halfedge2.Vector;
+				Quaternion rotation = Quaternion.AngleAxis(180-angle, axis);
+
+				foreach (Vertex v in face.GetVertices())
+					{
+						// Only rotate vertices that aren't part of the hinge
+						if (v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex)
+						{
+							v.Position -= e.Halfedge2.Vertex.Position;
+							v.Position = rotation * v.Position;
+							v.Position += e.Halfedge2.Vertex.Position;
+						}
+					}
+
+				unfoldedPoly.Faces.Add(face.GetVertices());
 				unfoldedPoly.FaceRoles.Add(ConwayPoly.Roles.New);
-				ConstructedFaces.Add(e.GetFace2());
+				ConstructedFaces.Add(e.Face2);
 			}
 		}
 		_conwayPoly = unfoldedPoly;
@@ -2188,9 +2221,9 @@ public class PolyHydra : MonoBehaviour
 			c.AddChild(sf);
 			foreach (PolyEdge e in PolyEdges)
 			{
-				if ((e.GetFace1() == c.GetID() && e.GetFace2() == sf) || (e.GetFace2() == c.GetID() && e.GetFace1() == sf))
+				if ((e.Face1 == c.GetID() && e.Face1 == sf) || (e.Face2 == c.GetID() && e.Face1 == sf))
 				{
-					e.SetBranched(true);
+					e.Branched = true;
 				}
 			}
 		}
@@ -2202,39 +2235,39 @@ public class PolyHydra : MonoBehaviour
 		List<Face> sharedFaces = new List<Face>();
 		foreach(PolyEdge e in PolyEdges)
 		{
-			if (e.GetFace1() == f)
+			if (e.Face1 == f)
 			{
-				if (ConnectedFaces.Contains(e.GetFace2()))
+				if (ConnectedFaces.Contains(e.Face2))
 				{
-					if (e.IsBranched())
+					if (e.Branched)
 					{
 						continue;
 					} else {
-						e.SetTabbed(true);
+						e.Tabbed = true;
 					}
 				} else {
-					sharedFaces.Add(e.GetFace2());
-					ConnectedFaces.Add(e.GetFace1());
-					ConnectedFaces.Add(e.GetFace2());
-					e.SetEdgeChecked(true);
+					sharedFaces.Add(e.Face2);
+					ConnectedFaces.Add(e.Face1);
+					ConnectedFaces.Add(e.Face2);
+					e.EdgeChecked = true;
 				}
 			}
-			else if (e.GetFace2() == f)
+			else if (e.Face2 == f)
 			{
-				if (ConnectedFaces.Contains(e.GetFace1()))
+				if (ConnectedFaces.Contains(e.Face1))
 				{
-					if (e.IsBranched())
+					if (e.Branched)
 					{
 						continue;
 					} else {
-						e.SetTabbed(true);
+						e.Tabbed = true;
 					}
 				} else
 				{
-					sharedFaces.Add(e.GetFace1());
-					ConnectedFaces.Add(e.GetFace1());
-					ConnectedFaces.Add(e.GetFace2());
-					e.SetEdgeChecked(true);
+					sharedFaces.Add(e.Face1);
+					ConnectedFaces.Add(e.Face1);
+					ConnectedFaces.Add(e.Face2);
+					e.EdgeChecked = true;
 				}
 			}
 		}
