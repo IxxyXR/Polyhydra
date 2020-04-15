@@ -2162,6 +2162,7 @@ public class PolyHydra : MonoBehaviour
 
 		var unfoldedPoly = new ConwayPoly();
 		var ConstructedFaces = new List<Face>();
+		var AddedVertices = new List<Vertex>();
 		foreach (PolyEdge e in BranchedEdges)
 		{
 			if (!ConstructedFaces.Contains(e.Face1))
@@ -2172,7 +2173,7 @@ public class PolyHydra : MonoBehaviour
 				float angle = Vector3.Angle(normal, upwards);
 				Debug.Log("Angle = " + angle.ToString());
 				Vector3 axis = e.Halfedge1.Vector;
-				Quaternion rotation = Quaternion.AngleAxis(180-angle, axis);
+				Quaternion rotation = Quaternion.AngleAxis(angle-180, axis);
 
 				foreach (Vertex v in face.GetVertices())
 					{
@@ -2183,6 +2184,14 @@ public class PolyHydra : MonoBehaviour
 
 				unfoldedPoly.Faces.Add(face.GetVertices());
 				unfoldedPoly.FaceRoles.Add(ConwayPoly.Roles.New);
+				foreach(Vertex v in face.GetVertices())
+				{
+					if (!AddedVertices.Contains(v))
+					{
+						unfoldedPoly.Vertices.Add(v);
+						AddedVertices.Add(v);
+					}
+				}
 				ConstructedFaces.Add(e.Face1);
 			}
 			if (!ConstructedFaces.Contains(e.Face2))
@@ -2193,7 +2202,7 @@ public class PolyHydra : MonoBehaviour
 				float angle = Vector3.Angle(normalFace1, normalFace2);
 				Debug.Log("Angle = " + angle.ToString());
 				Vector3 axis = e.Halfedge2.Vector;
-				Quaternion rotation = Quaternion.AngleAxis(180-angle, axis);
+				Quaternion rotation = Quaternion.AngleAxis(angle-180, axis);
 
 				foreach (Vertex v in face.GetVertices())
 					{
@@ -2208,10 +2217,21 @@ public class PolyHydra : MonoBehaviour
 
 				unfoldedPoly.Faces.Add(face.GetVertices());
 				unfoldedPoly.FaceRoles.Add(ConwayPoly.Roles.New);
+				foreach(Vertex v in face.GetVertices())
+				{
+					if (!AddedVertices.Contains(v))
+					{
+						unfoldedPoly.Vertices.Add(v);
+						AddedVertices.Add(v);
+					}
+				}
 				ConstructedFaces.Add(e.Face2);
 			}
 		}
+		unfoldedPoly.VertexRoles = Enumerable.Repeat(ConwayPoly.Roles.New, unfoldedPoly.Vertices.Count).ToList();
 		_conwayPoly = unfoldedPoly;
+		Debug.Log(_conwayPoly.Faces.Count.ToString());
+		Debug.Log(_conwayPoly.Vertices.Count.ToString());
 		var mesh = new Mesh();
 		mesh = BuildMeshFromConwayPoly();
 		AssignFinishedMesh(mesh);
