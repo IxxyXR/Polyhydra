@@ -21,13 +21,13 @@ public class PolyEdge
 
     public PolyEdge (Face f1, Face f2, Halfedge he1, Halfedge he2)
     {
-        this.Face1 = f1;
-        this.Face2 = f2;
-        this.Halfedge1 = he1;
-        this.Halfedge2 = he2;
-        this.EdgeChecked = false;
-        this.Tabbed = false;
-        this.Branched = false;
+        Face1 = f1;
+        Face2 = f2;
+        Halfedge1 = he1;
+        Halfedge2 = he2;
+        EdgeChecked = false;
+        Tabbed = false;
+        Branched = false;
     }
 
     public Face Face1 { get; set; }

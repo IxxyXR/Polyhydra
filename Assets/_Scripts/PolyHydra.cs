@@ -2143,11 +2143,13 @@ public class PolyHydra : MonoBehaviour
 			queue.RemoveAt(0);
 		}
 		int tabs = 0;
+		int branches = 0;
 		foreach (PolyEdge e in PolyEdges)
 		{
 			if (e.Branched)
 			{
-				Debug.Log(e.ToString());
+				branches++;
+				Debug.Log("Branched Edge "+ branches + ": " + e.ToString());
 				BranchedEdges.Add(e);
 			}
 			if (e.Tabbed)
@@ -2156,7 +2158,6 @@ public class PolyHydra : MonoBehaviour
 				TabbedEdges.Add(e);
 			}
 		}
-		Debug.Log("Branched Edge Amount: " + BranchedEdges.Count);
 		Debug.Log("Required Tabs: " + tabs.ToString());
 
 		var unfoldedPoly = new ConwayPoly();
@@ -2211,6 +2212,9 @@ public class PolyHydra : MonoBehaviour
 			}
 		}
 		_conwayPoly = unfoldedPoly;
+		var mesh = new Mesh();
+		mesh = BuildMeshFromConwayPoly();
+		AssignFinishedMesh(mesh);
 	}
 
 	private List<PolyNode> AddChildren(PolyNode c)
@@ -2221,7 +2225,7 @@ public class PolyHydra : MonoBehaviour
 			c.AddChild(sf);
 			foreach (PolyEdge e in PolyEdges)
 			{
-				if ((e.Face1 == c.GetID() && e.Face1 == sf) || (e.Face2 == c.GetID() && e.Face1 == sf))
+				if ((e.Face1 == c.GetID() && e.Face2 == sf) || (e.Face2 == c.GetID() && e.Face1 == sf))
 				{
 					e.Branched = true;
 				}
