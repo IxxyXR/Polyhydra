@@ -157,7 +157,9 @@ public class PolyHydra : MonoBehaviour
 
 		L1,
 		L2,
-		TestShape
+		Test2Triangle,
+		Test3Triangle,
+		Test2Square
 	}
 
 	public enum Ops {
@@ -1203,8 +1205,12 @@ public class PolyHydra : MonoBehaviour
 				return JohnsonPoly.L1();
 			case OtherPolyTypes.L2:
 				return JohnsonPoly.L2();
-			case OtherPolyTypes.TestShape:
-				return JohnsonPoly.TestShape();
+			case OtherPolyTypes.Test2Triangle:
+				return JohnsonPoly.Test2Triangle();
+			case OtherPolyTypes.Test3Triangle:
+				return JohnsonPoly.Test3Triangle();
+			case OtherPolyTypes.Test2Square:
+				return JohnsonPoly.Test2Square();
 			case OtherPolyTypes.GriddedCube:
 				var conway = ConwayPoly.MakeUnitileGrid(1, 0, PrismP, PrismP);
 				conway = conway.AddMirrored(Vector3.up, PrismP);
@@ -2106,7 +2112,6 @@ public class PolyHydra : MonoBehaviour
 		ConnectedFaces = new List<Face>();
 		var BranchedEdges = new List<PolyEdge>();
 		var TabbedEdges = new List<PolyEdge>();
-
 		foreach (Halfedge h in _conwayPoly.Halfedges)
 		{
 			if (CheckedHalfEdges.Contains(h)){
@@ -2114,8 +2119,12 @@ public class PolyHydra : MonoBehaviour
 			} else
 			{
 				CheckedHalfEdges.Add(h);
-				CheckedHalfEdges.Add(h.Pair);
-				PolyEdges.Add(new PolyEdge(h.Face, h.Pair.Face, h, h.Pair));
+				if (h.Pair == null) {
+					continue;
+				} else {
+					CheckedHalfEdges.Add(h.Pair);
+					PolyEdges.Add(new PolyEdge(h.Face, h.Pair.Face, h, h.Pair));
+				}
 			}
 		}
 		Debug.Log("Amount Of Faces: " + _conwayPoly.Faces.Count);
@@ -2203,7 +2212,7 @@ public class PolyHydra : MonoBehaviour
                 float angle = Vector3.Angle(e.Face1.Normal, e.Face2.Normal);
 				Debug.Log("Angle = " + angle.ToString());
 				Vector3 axis = e.Halfedge2.Vector;
-				Quaternion rotation = Quaternion.AngleAxis(angle-180, axis);
+				Quaternion rotation = Quaternion.AngleAxis(180+angle, axis);
 
 				foreach (Vertex v in e.Face2.GetVertices())
 					{
