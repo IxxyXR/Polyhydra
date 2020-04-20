@@ -156,7 +156,8 @@ public class PolyHydra : MonoBehaviour
 		GriddedCube,
 
 		L1,
-		L2
+		L2,
+		TestShape
 	}
 
 	public enum Ops {
@@ -1202,6 +1203,8 @@ public class PolyHydra : MonoBehaviour
 				return JohnsonPoly.L1();
 			case OtherPolyTypes.L2:
 				return JohnsonPoly.L2();
+			case OtherPolyTypes.TestShape:
+				return JohnsonPoly.TestShape();
 			case OtherPolyTypes.GriddedCube:
 				var conway = ConwayPoly.MakeUnitileGrid(1, 0, PrismP, PrismP);
 				conway = conway.AddMirrored(Vector3.up, PrismP);

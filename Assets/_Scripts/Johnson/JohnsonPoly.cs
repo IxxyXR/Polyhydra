@@ -676,6 +676,25 @@ namespace Conway
 			return new ConwayPoly(verts, faces, faceRoles, vertexRoles);
 		}
 
+		public static ConwayPoly TestShape()
+		{
+			var verts = new List<Vector3>();
+			verts.Add(new Vector3(0.5f, 0, 0));
+			verts.Add(new Vector3(-0.5f, 0, 0));
+			verts.Add(new Vector3(0, 0, -0.5f));
+			verts.Add(new Vector3(0, 1, -0.5f));
+
+			var faces = new List<List<int>>
+			{
+				new List<int>{0,1,2},
+				new List<int>{0,1,3}
+			};
+
+			var faceRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, 2);
+			var vertexRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, 4);
+			return new ConwayPoly(verts, faces, faceRoles, vertexRoles);
+		}
+
 		public static ConwayPoly UvSphere(int verticalLines = 24, int horizontalLines = 24, float hemi = 1)
 		{
 
