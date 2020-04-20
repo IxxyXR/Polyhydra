@@ -2168,8 +2168,9 @@ public class PolyHydra : MonoBehaviour
 			if (!ConstructedFaces.Contains(e.Face1))
 			{
 				Face face = e.Face1;
+				/*
 				Vector3 normal = face.Normal;
-				var upwards = new Vector3(0.0f, 1.0f, 0.0f).normalized;
+				var upwards = Vector3.up.normalized;
 				float angle = Vector3.Angle(normal, upwards);
 				Debug.Log("Angle = " + angle.ToString());
 				Vector3 axis = e.Halfedge1.Vector;
@@ -2181,7 +2182,7 @@ public class PolyHydra : MonoBehaviour
 						v.Position = rotation * v.Position;
 						v.Position += e.Halfedge1.Vertex.Position;
 					}
-
+				*/
 				unfoldedPoly.Faces.Add(face.GetVertices());
 				unfoldedPoly.FaceRoles.Add(ConwayPoly.Roles.New);
 				foreach(Vertex v in face.GetVertices())
@@ -2196,15 +2197,12 @@ public class PolyHydra : MonoBehaviour
 			}
 			if (!ConstructedFaces.Contains(e.Face2))
 			{
-				Face face = e.Face2;
-				Vector3 normalFace1 = e.Face1.Normal;
-				Vector3 normalFace2 = face.Normal;
-				float angle = Vector3.Angle(normalFace1, normalFace2);
+                float angle = Vector3.Angle(e.Face1.Normal, e.Face2.Normal);
 				Debug.Log("Angle = " + angle.ToString());
 				Vector3 axis = e.Halfedge2.Vector;
 				Quaternion rotation = Quaternion.AngleAxis(angle-180, axis);
 
-				foreach (Vertex v in face.GetVertices())
+				foreach (Vertex v in e.Face2.GetVertices())
 					{
 						// Only rotate vertices that aren't part of the hinge
 						if (v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex)
@@ -2215,9 +2213,9 @@ public class PolyHydra : MonoBehaviour
 						}
 					}
 
-				unfoldedPoly.Faces.Add(face.GetVertices());
+				unfoldedPoly.Faces.Add(e.Face2.GetVertices());
 				unfoldedPoly.FaceRoles.Add(ConwayPoly.Roles.New);
-				foreach(Vertex v in face.GetVertices())
+				foreach(Vertex v in e.Face2.GetVertices())
 				{
 					if (!AddedVertices.Contains(v))
 					{
@@ -2229,6 +2227,7 @@ public class PolyHydra : MonoBehaviour
 			}
 		}
 		unfoldedPoly.VertexRoles = Enumerable.Repeat(ConwayPoly.Roles.New, unfoldedPoly.Vertices.Count).ToList();
+		unfoldedPoly.Halfedges.MatchPairs();
 		_conwayPoly = unfoldedPoly;
 		Debug.Log(_conwayPoly.Faces.Count.ToString());
 		Debug.Log(_conwayPoly.Vertices.Count.ToString());
