@@ -10,24 +10,35 @@ using Debug = UnityEngine.Debug;
 using Face = Conway.Face;
 using Random = UnityEngine.Random;
 
-// Fields For Unfolding
-private List<PolyEdge> PolyEdges;
-private List<Face> ConnectedFaces;
-private PolyHydra poly;
-
-void Start()
+public class Unfolder : MonoBehaviour
 {
-    poly = GetComponent<PolyHydra>();
-}
+	// Fields For Unfolding
+	private List<PolyEdge> PolyEdges;
+	private List<Face> ConnectedFaces;
+	private PolyHydra poly;
 
-public void Unfold() {
+	void Start()
+	{
+		poly = GetComponent<PolyHydra>();
+		
+	}
+
+	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			Unfold();
+		}
+	}
+	
+	public void Unfold() {
 
 		PolyEdges = new List<PolyEdge>();
 		var CheckedHalfEdges = new List<Halfedge>();
 		ConnectedFaces = new List<Face>();
 		var BranchedEdges = new List<PolyEdge>();
 		var TabbedEdges = new List<PolyEdge>();
-		foreach (Halfedge h in _conwayPoly.Halfedges)
+		foreach (Halfedge h in	poly._conwayPoly.Halfedges)
 		{
 			if (CheckedHalfEdges.Contains(h)){
 				continue;
@@ -42,9 +53,9 @@ public void Unfold() {
 				}
 			}
 		}
-		Debug.Log("Amount Of Faces: " + _conwayPoly.Faces.Count);
+		Debug.Log("Amount Of Faces: " + poly._conwayPoly.Faces.Count);
 		Debug.Log("Amount Of Edges: " + PolyEdges.Count);
-		PolyNode root = new PolyNode(_conwayPoly.Faces[0], null);
+		PolyNode root = new PolyNode(poly._conwayPoly.Faces[0], null);
 		List<PolyNode> children = AddChildren(root);
 		List<PolyNode> queue = new List<PolyNode>();
 		List<PolyNode> branched = new List<PolyNode>();
@@ -169,9 +180,9 @@ public void Unfold() {
 		}
 		unfoldedPoly.VertexRoles = Enumerable.Repeat(ConwayPoly.Roles.New, unfoldedPoly.Vertices.Count).ToList();
 		unfoldedPoly.Halfedges.MatchPairs();
-		_conwayPoly = unfoldedPoly;
-		Debug.Log(_conwayPoly.Faces.Count.ToString());
-		Debug.Log(_conwayPoly.Vertices.Count.ToString());
+		poly._conwayPoly = unfoldedPoly;
+		Debug.Log(poly._conwayPoly.Faces.Count.ToString());
+		Debug.Log(poly._conwayPoly.Vertices.Count.ToString());
 		var mesh = new Mesh();
 		mesh = poly.BuildMeshFromConwayPoly();
 		poly.AssignFinishedMesh(mesh);
@@ -237,3 +248,4 @@ public void Unfold() {
 		}
 		return sharedFaces;
 	}
+}

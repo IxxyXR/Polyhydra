@@ -1029,14 +1029,6 @@ public class PolyHydra : MonoBehaviour
 		Init();
 	}
 
-	void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			Unfold();
-		}
-	}
-
 	void InitCacheIfNeeded()
 	{
 		if (polyCache==null) polyCache = FindObjectOfType<PolyCache>();
