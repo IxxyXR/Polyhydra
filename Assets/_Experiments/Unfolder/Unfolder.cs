@@ -140,30 +140,29 @@ public class Unfolder : MonoBehaviour
 				Vector3 axis = e.Halfedge2.Vector;
 				Quaternion rotation1 = Quaternion.AngleAxis(angle, axis);
 				Quaternion rotation2 = Quaternion.AngleAxis(-angle, axis);
-				var originalFace = e.Face2;
 				foreach (Vertex v in e.Face2.GetVertices())
+				{
+					// Only rotate vertices that aren't part of the hinge
+					if (v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex)
+					{
+						v.Position -= e.Halfedge2.Vertex.Position;
+						v.Position = rotation1 * v.Position;
+						v.Position += e.Halfedge2.Vertex.Position;
+					}
+				}
+				if (Vector3.Dot(e.Face1.Normal, e.Face2.Normal) != 1 && Vector3.Dot(e.Face1.Normal, e.Face2.Normal) != -1) {
+					Debug.Log("Negative Angle Required");
+					foreach (Vertex v in e.Face2.GetVertices())
 					{
 						// Only rotate vertices that aren't part of the hinge
 						if (v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex)
 						{
 							v.Position -= e.Halfedge2.Vertex.Position;
-							v.Position = rotation1 * v.Position;
+							v.Position = rotation2 * v.Position;
+							v.Position = rotation2 * v.Position;
 							v.Position += e.Halfedge2.Vertex.Position;
 						}
 					}
-				if (Vector3.Dot(e.Face1.Normal, e.Face2.Normal) != 1 && Vector3.Dot(e.Face1.Normal, e.Face2.Normal) != -1) {
-					e.Face2 = originalFace;
-					Debug.Log("Negative Angle Required");
-					foreach (Vertex v in e.Face2.GetVertices())
-						{
-							// Only rotate vertices that aren't part of the hinge
-							if (v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex)
-							{
-								v.Position -= e.Halfedge2.Vertex.Position;
-								v.Position = rotation2 * v.Position;
-								v.Position += e.Halfedge2.Vertex.Position;
-							}
-						}
 				}
 				unfoldedPoly.Faces.Add(e.Face2.GetVertices());
 				unfoldedPoly.FaceRoles.Add(ConwayPoly.Roles.New);
