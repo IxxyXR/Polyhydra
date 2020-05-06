@@ -98,6 +98,25 @@ public class Unfolder : MonoBehaviour
 		}
 		Debug.Log("Required Tabs: " + tabs.ToString());
 
+		var verticesInBranches = new Dictionary<Vertex, List<Face>>();
+		foreach (PolyEdge e in BranchedEdges)
+		{
+			if (verticesInBranches.ContainsKey(e.Halfedge1.Vertex))
+			{
+				verticesInBranches[e.Halfedge1.Vertex].Add(e.Face1);
+				verticesInBranches[e.Halfedge1.Vertex].Add(e.Face2);
+			} else {
+				verticesInBranches.Add(e.Halfedge1.Vertex, new List<Face>(){e.Face1, e.Face2});
+			}
+			if (verticesInBranches.ContainsKey(e.Halfedge2.Vertex))
+			{
+				verticesInBranches[e.Halfedge2.Vertex].Add(e.Face1);
+				verticesInBranches[e.Halfedge2.Vertex].Add(e.Face2);
+			} else {
+				verticesInBranches.Add(e.Halfedge2.Vertex, new List<Face>(){e.Face1, e.Face2});
+			}
+		}
+
 		var unfoldedPoly = new ConwayPoly();
 		var ConstructedFaces = new List<Face>();
 		var AddedVertices = new List<Vertex>();
@@ -105,25 +124,9 @@ public class Unfolder : MonoBehaviour
 		{
 			if (!ConstructedFaces.Contains(e.Face1))
 			{
-				Face face = e.Face1;
-				/*
-				Vector3 normal = face.Normal;
-				var upwards = Vector3.up.normalized;
-				float angle = Vector3.Angle(normal, upwards);
-				Debug.Log("Angle = " + angle.ToString());
-				Vector3 axis = e.Halfedge1.Vector;
-				Quaternion rotation = Quaternion.AngleAxis(angle-180, axis);
-
-				foreach (Vertex v in face.GetVertices())
-					{
-						v.Position -= e.Halfedge1.Vertex.Position;
-						v.Position = rotation * v.Position;
-						v.Position += e.Halfedge1.Vertex.Position;
-					}
-				*/
-				unfoldedPoly.Faces.Add(face.GetVertices());
+                unfoldedPoly.Faces.Add(e.Face1.GetVertices());
 				unfoldedPoly.FaceRoles.Add(ConwayPoly.Roles.New);
-				foreach(Vertex v in face.GetVertices())
+				foreach(Vertex v in e.Face1.GetVertices())
 				{
 					if (!AddedVertices.Contains(v))
 					{
@@ -140,6 +143,44 @@ public class Unfolder : MonoBehaviour
 				Vector3 axis = e.Halfedge2.Vector;
 				Quaternion rotation1 = Quaternion.AngleAxis(angle, axis);
 				Quaternion rotation2 = Quaternion.AngleAxis(-angle, axis);
+				foreach(Vertex v in e.Face2.GetVertices())
+				{
+					if (!verticesInBranches.ContainsKey(v) && v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex)
+					{
+						Halfedge edge = e.Face2.Halfedge;
+						do 
+						{
+							if (edge.Vertex == v)
+							{
+								edge.Vertex = new Vertex(v.Position);
+								break;
+							}
+							edge = edge.Next;
+						} while (edge != e.Face2.Halfedge);
+					}
+				}
+				List<Face> descendants = GetDescendants(GetNodeById(e.Face2, branched));
+				foreach (Face f in descendants) 
+				{
+					foreach (Vertex v in f.GetVertices())
+					{
+						if (!verticesInBranches.ContainsKey(v))
+						{
+							Halfedge edge = e.Face2.Halfedge;
+							do 
+							{
+								if (edge.Vertex == v)
+								{
+									edge.Vertex = new Vertex(v.Position);
+									break;
+								}
+								edge = edge.Next;
+							} while (edge != e.Face2.Halfedge);
+						}
+					}
+				}
+				bool negative = false;
+				List<Vertex> rotatedVertices = new List<Vertex>();
 				foreach (Vertex v in e.Face2.GetVertices())
 				{
 					// Only rotate vertices that aren't part of the hinge
@@ -148,11 +189,14 @@ public class Unfolder : MonoBehaviour
 						v.Position -= e.Halfedge2.Vertex.Position;
 						v.Position = rotation1 * v.Position;
 						v.Position += e.Halfedge2.Vertex.Position;
+						rotatedVertices.Add(v);
 					}
 				}
 				if (Vector3.Dot(e.Face1.Normal, e.Face2.Normal) != 1 && Vector3.Dot(e.Face1.Normal, e.Face2.Normal) != -1) {
 					Debug.Log("Negative Angle Required");
-					foreach (Vertex v in e.Face2.GetVertices())
+					negative = true;
+					var FaceVertices = e.Face2.GetVertices();
+					foreach (Vertex v in FaceVertices)
 					{
 						// Only rotate vertices that aren't part of the hinge
 						if (v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex)
@@ -161,6 +205,29 @@ public class Unfolder : MonoBehaviour
 							v.Position = rotation2 * v.Position;
 							v.Position = rotation2 * v.Position;
 							v.Position += e.Halfedge2.Vertex.Position;
+						}
+					}
+				}
+				if (negative) {
+					foreach (Face f in descendants) {
+						foreach (Vertex v in f.GetVertices()) {
+							if (!rotatedVertices.Contains(v)) {
+								v.Position -= e.Halfedge2.Vertex.Position;
+								v.Position = rotation2 * v.Position;
+								v.Position += e.Halfedge2.Vertex.Position;
+								rotatedVertices.Add(v);
+							}
+						}
+					}
+				} else {
+					foreach (Face f in descendants) {
+						foreach (Vertex v in f.GetVertices()) {
+							if (!rotatedVertices.Contains(v)) {
+								v.Position -= e.Halfedge2.Vertex.Position;
+								v.Position = rotation1 * v.Position;
+								v.Position += e.Halfedge2.Vertex.Position;
+								rotatedVertices.Add(v);
+							}
 						}
 					}
 				}
@@ -246,5 +313,41 @@ public class Unfolder : MonoBehaviour
 			}
 		}
 		return sharedFaces;
+	}
+
+	private PolyNode GetNodeById(Face f, List<PolyNode> p) {
+		foreach (PolyNode n in p) {
+			if (n.GetID() == f) {
+				return n;
+			}
+		}
+		return null;
+	}
+
+	private Halfedge GetHalfEdgeByVertex(Vertex v, List<Halfedge> edges) {
+		foreach (Halfedge h in edges) {
+			if (h.Vertex == v) {
+				return h;
+			}
+		}
+		return null;
+	}
+
+	private List<Face> GetDescendants(PolyNode n) {
+		List<Face> descendants = new List<Face>();
+		List<PolyNode> queue = new List<PolyNode>();
+		if (n != null) {
+			foreach (PolyNode p in n.GetChildren()) {
+				queue.Add(p);
+			}
+			while (queue.Count != 0) {
+				descendants.Add(queue[0].GetID());
+				foreach (PolyNode p in queue[0].GetChildren()) {
+					queue.Add(p);
+				}
+				queue.RemoveAt(0);
+			}
+		}
+		return descendants;
 	}
 }

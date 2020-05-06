@@ -45,4 +45,14 @@ public class PolyEdge
     {
         return Face1.Name + " x " + Face2.Name;
     }
+
+    public int ContainsFace(Face f) {
+        if (f == Face1) {
+            return 1;
+        } else if (f == Face2) {
+            return 2;
+        } else {
+            return 0;
+        }
+    }
 }
