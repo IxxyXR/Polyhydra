@@ -16,10 +16,10 @@ using Face = Conway.Face;
 using Halfedge = Conway.Halfedge;
 using Random = UnityEngine.Random;
 
-public class PolyEdge
+public class UfEdge
 {
 
-    public PolyEdge (Face f1, Face f2, Halfedge he1, Halfedge he2)
+    public UfEdge (Face f1, Face f2, Halfedge he1, Halfedge he2)
     {
         Face1 = f1;
         Face2 = f2;

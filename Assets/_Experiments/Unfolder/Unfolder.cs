@@ -1,21 +1,27 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Conway;
-using Wythoff;
-using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 using Face = Conway.Face;
-using Random = UnityEngine.Random;
 
+
+[ExecuteInEditMode]
 public class Unfolder : MonoBehaviour
 {
 	// Fields For Unfolding
-	private List<PolyEdge> PolyEdges;
+	private List<UfEdge> PolyEdges;
 	private List<Face> ConnectedFaces;
 	private PolyHydra poly;
+	
+	
+	[Range(0,1)]
+	public float completion;
+	[Range(0,1)]
+	public float completionAngle = 1;
+
+	public bool activate = true;
+
 
 	void Start()
 	{
@@ -23,6 +29,7 @@ public class Unfolder : MonoBehaviour
 		
 	}
 
+	
 	void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Space))
@@ -30,36 +37,45 @@ public class Unfolder : MonoBehaviour
 			Unfold();
 		}
 	}
-	
+
+
+	private void OnValidate() {
+		Unfold();
+	}
+
+
 	public void Unfold() {
 
-		PolyEdges = new List<PolyEdge>();
+		PolyEdges = new List<UfEdge>();
 		var CheckedHalfEdges = new List<Halfedge>();
 		ConnectedFaces = new List<Face>();
-		var BranchedEdges = new List<PolyEdge>();
-		var TabbedEdges = new List<PolyEdge>();
+		var BranchedEdges = new List<UfEdge>();
+		var TabbedEdges = new List<UfEdge>();
 		foreach (Halfedge h in	poly._conwayPoly.Halfedges)
 		{
 			if (CheckedHalfEdges.Contains(h)){
 				continue;
-			} else
+			}
+			else
 			{
 				CheckedHalfEdges.Add(h);
 				if (h.Pair == null) {
 					continue;
 				} else {
 					CheckedHalfEdges.Add(h.Pair);
-					PolyEdges.Add(new PolyEdge(h.Face, h.Pair.Face, h, h.Pair));
+					PolyEdges.Add(new UfEdge(h.Face, h.Pair.Face, h, h.Pair));
 				}
 			}
 		}
+		
 		Debug.Log("Amount Of Faces: " + poly._conwayPoly.Faces.Count);
 		Debug.Log("Amount Of Edges: " + PolyEdges.Count);
-		PolyNode root = new PolyNode(poly._conwayPoly.Faces[0], null);
-		List<PolyNode> children = AddChildren(root);
-		List<PolyNode> queue = new List<PolyNode>();
-		List<PolyNode> branched = new List<PolyNode>();
-		foreach (PolyNode c in children)
+		
+		UfFace rootFace = new UfFace(poly._conwayPoly.Faces[0], null);
+		List<UfFace> children = AddChildren(rootFace);
+		List<UfFace> queue = new List<UfFace>();
+		List<UfFace> branched = new List<UfFace>();
+		foreach (UfFace c in children)
 		{
 			queue.Add(c);  
 			branched.Add(c);
@@ -67,7 +83,7 @@ public class Unfolder : MonoBehaviour
 		while (queue.Count != 0)
 		{
 			children = AddChildren(queue[0]);
-			foreach (PolyNode c in children)
+			foreach (UfFace c in children)
 			{
 				if (!queue.Contains(c))
 				{
@@ -82,7 +98,7 @@ public class Unfolder : MonoBehaviour
 		}
 		int tabs = 0;
 		int branches = 0;
-		foreach (PolyEdge e in PolyEdges)
+		foreach (UfEdge e in PolyEdges)
 		{
 			if (e.Branched)
 			{
@@ -99,7 +115,7 @@ public class Unfolder : MonoBehaviour
 		Debug.Log("Required Tabs: " + tabs.ToString());
 
 		var verticesInBranches = new Dictionary<Vertex, List<Face>>();
-		foreach (PolyEdge e in BranchedEdges)
+		foreach (UfEdge e in BranchedEdges)
 		{
 			if (verticesInBranches.ContainsKey(e.Halfedge1.Vertex))
 			{
@@ -117,90 +133,103 @@ public class Unfolder : MonoBehaviour
 			}
 		}
 
+		
+		
+		
+		
+		
 		var unfoldedPoly = new ConwayPoly();
 		var ConstructedFaces = new List<Face>();
 		var AddedVertices = new List<Vertex>();
-		foreach (PolyEdge e in BranchedEdges)
-		{
-			if (!ConstructedFaces.Contains(e.Face1))
-			{
-                unfoldedPoly.Faces.Add(e.Face1.GetVertices());
+		
+		Debug.Log($"BranchedEdges.Count: {BranchedEdges.Count}");
+
+		for (var i = 0; (i < BranchedEdges.Count) || (i < (BranchedEdges.Count * completion)); i++) {
+		//for (var i = 0; i < (float)BranchedEdges.Count * completion; i++) {
+			
+			UfEdge e = BranchedEdges[i];
+			
+			// Add the current face to the unfolded poly
+			if (!ConstructedFaces.Contains(e.Face1)) {
+				unfoldedPoly.Faces.Add(e.Face1.GetVertices());
 				unfoldedPoly.FaceRoles.Add(ConwayPoly.Roles.New);
-				foreach(Vertex v in e.Face1.GetVertices())
-				{
-					if (!AddedVertices.Contains(v))
-					{
+				foreach (Vertex v in e.Face1.GetVertices()) {
+					if (!AddedVertices.Contains(v)) {
 						unfoldedPoly.Vertices.Add(v);
 						AddedVertices.Add(v);
 					}
 				}
+
 				ConstructedFaces.Add(e.Face1);
 			}
+			else
+			{
+				Debug.LogWarning($"Face {i} ConstructedFaces.Contains(e.Face1)");
+			}
+
+			
 			if (!ConstructedFaces.Contains(e.Face2))
 			{
-                float angle = Vector3.Angle(e.Face1.Normal, e.Face2.Normal);
-				Debug.Log("Angle = " + angle.ToString());
+				
+				float angle = Vector3.Angle(e.Face1.Normal, e.Face2.Normal) * completionAngle;
+				Debug.Log($"Face {i} angle to unfold: {angle}");
 				Vector3 axis = e.Halfedge2.Vector;
 				Quaternion rotation1 = Quaternion.AngleAxis(angle, axis);
 				Quaternion rotation2 = Quaternion.AngleAxis(-angle, axis);
-				foreach(Vertex v in e.Face2.GetVertices())
-				{
-					if (!verticesInBranches.ContainsKey(v) && v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex)
-					{
+				
+				// I think this is splitting vertices?
+				foreach (Vertex v in e.Face2.GetVertices()) {
+					if (!verticesInBranches.ContainsKey(v) && v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex) {
 						Halfedge edge = e.Face2.Halfedge;
-						do 
-						{
-							if (edge.Vertex == v)
-							{
+						do {
+							if (edge.Vertex == v) {
 								edge.Vertex = new Vertex(v.Position);
 								break;
 							}
+
 							edge = edge.Next;
 						} while (edge != e.Face2.Halfedge);
 					}
 				}
 				List<Face> descendants = GetDescendants(GetNodeById(e.Face2, branched));
-				foreach (Face f in descendants) 
-				{
-					foreach (Vertex v in f.GetVertices())
-					{
-						if (!verticesInBranches.ContainsKey(v))
-						{
+				foreach (Face f in descendants) {
+					foreach (Vertex v in f.GetVertices()) {
+						if (!verticesInBranches.ContainsKey(v)) {
 							Halfedge edge = e.Face2.Halfedge;
-							do 
-							{
-								if (edge.Vertex == v)
-								{
+							do {
+								if (edge.Vertex == v) {
 									edge.Vertex = new Vertex(v.Position);
 									break;
 								}
+
 								edge = edge.Next;
 							} while (edge != e.Face2.Halfedge);
 						}
 					}
 				}
+
+				// The actual rotation
 				bool negative = false;
-				List<Vertex> rotatedVertices = new List<Vertex>();
-				foreach (Vertex v in e.Face2.GetVertices())
-				{
+				var rotatedVertices = new List<Vertex>();
+				foreach (Vertex v in e.Face2.GetVertices()) {
 					// Only rotate vertices that aren't part of the hinge
-					if (v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex)
-					{
+					if (v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex) {
 						v.Position -= e.Halfedge2.Vertex.Position;
 						v.Position = rotation1 * v.Position;
 						v.Position += e.Halfedge2.Vertex.Position;
 						rotatedVertices.Add(v);
 					}
 				}
-				if (Vector3.Dot(e.Face1.Normal, e.Face2.Normal) != 1 && Vector3.Dot(e.Face1.Normal, e.Face2.Normal) != -1) {
+
+
+				if (Vector3.Dot(e.Face1.Normal, e.Face2.Normal) != 1 &&
+				    Vector3.Dot(e.Face1.Normal, e.Face2.Normal) != -1) {
 					Debug.Log("Negative Angle Required");
 					negative = true;
 					var FaceVertices = e.Face2.GetVertices();
-					foreach (Vertex v in FaceVertices)
-					{
+					foreach (Vertex v in FaceVertices) {
 						// Only rotate vertices that aren't part of the hinge
-						if (v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex)
-						{
+						if (v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex) {
 							v.Position -= e.Halfedge2.Vertex.Position;
 							v.Position = rotation2 * v.Position;
 							v.Position = rotation2 * v.Position;
@@ -208,6 +237,7 @@ public class Unfolder : MonoBehaviour
 						}
 					}
 				}
+
 				if (negative) {
 					foreach (Face f in descendants) {
 						foreach (Vertex v in f.GetVertices()) {
@@ -219,7 +249,8 @@ public class Unfolder : MonoBehaviour
 							}
 						}
 					}
-				} else {
+				}
+				else {
 					foreach (Face f in descendants) {
 						foreach (Vertex v in f.GetVertices()) {
 							if (!rotatedVertices.Contains(v)) {
@@ -231,50 +262,60 @@ public class Unfolder : MonoBehaviour
 						}
 					}
 				}
+
 				unfoldedPoly.Faces.Add(e.Face2.GetVertices());
 				unfoldedPoly.FaceRoles.Add(ConwayPoly.Roles.New);
-				foreach(Vertex v in e.Face2.GetVertices())
-				{
-					if (!AddedVertices.Contains(v))
-					{
+				foreach (Vertex v in e.Face2.GetVertices()) {
+					if (!AddedVertices.Contains(v)) {
 						unfoldedPoly.Vertices.Add(v);
 						AddedVertices.Add(v);
 					}
 				}
+
 				ConstructedFaces.Add(e.Face2);
 			}
+			else
+			{
+				Debug.LogWarning($"Face {i} ConstructedFaces.Contains(e.Face2)");
+			}
+
 		}
+
+
 		unfoldedPoly.VertexRoles = Enumerable.Repeat(ConwayPoly.Roles.New, unfoldedPoly.Vertices.Count).ToList();
 		unfoldedPoly.Halfedges.MatchPairs();
-		poly._conwayPoly = unfoldedPoly;
-		Debug.Log(poly._conwayPoly.Faces.Count.ToString());
-		Debug.Log(poly._conwayPoly.Vertices.Count.ToString());
-		var mesh = new Mesh();
-		mesh = poly.BuildMeshFromConwayPoly();
-		poly.AssignFinishedMesh(mesh);
+		if (activate) {
+			var mesh = poly.BuildMeshFromConwayPoly(unfoldedPoly);
+			poly.AssignFinishedMesh(mesh);
+		}
+		else {
+			poly.Rebuild();
+		}
 	}
 
-	private List<PolyNode> AddChildren(PolyNode c)
+	
+	private List<UfFace> AddChildren(UfFace root)
 	{
-		List<Face> sharedFaces = SharedFaces(c.GetID());
-		foreach (Face sf in sharedFaces)
+		List<Face> sharedFaces = SharedFaces(root.GetID());
+		foreach (Face sharedFace in sharedFaces)
 		{
-			c.AddChild(sf);
-			foreach (PolyEdge e in PolyEdges)
+			root.AddChild(sharedFace);
+			foreach (UfEdge edge in PolyEdges)
 			{
-				if ((e.Face1 == c.GetID() && e.Face2 == sf) || (e.Face2 == c.GetID() && e.Face1 == sf))
+				if ((edge.Face1 == root.GetID() && edge.Face2 == sharedFace) || (edge.Face2 == root.GetID() && edge.Face1 == sharedFace))
 				{
-					e.Branched = true;
+					edge.Branched = true;
 				}
 			}
 		}
-		return c.GetChildren();
+		return root.GetChildren();
 	}
 
+	
 	private List<Face> SharedFaces(Face f)
 	{
 		List<Face> sharedFaces = new List<Face>();
-		foreach(PolyEdge e in PolyEdges)
+		foreach(UfEdge e in PolyEdges)
 		{
 			if (e.Face1 == f)
 			{
@@ -315,8 +356,9 @@ public class Unfolder : MonoBehaviour
 		return sharedFaces;
 	}
 
-	private PolyNode GetNodeById(Face f, List<PolyNode> p) {
-		foreach (PolyNode n in p) {
+	
+	private UfFace GetNodeById(Face f, List<UfFace> p) {
+		foreach (UfFace n in p) {
 			if (n.GetID() == f) {
 				return n;
 			}
@@ -324,25 +366,17 @@ public class Unfolder : MonoBehaviour
 		return null;
 	}
 
-	private Halfedge GetHalfEdgeByVertex(Vertex v, List<Halfedge> edges) {
-		foreach (Halfedge h in edges) {
-			if (h.Vertex == v) {
-				return h;
-			}
-		}
-		return null;
-	}
-
-	private List<Face> GetDescendants(PolyNode n) {
+	
+	private List<Face> GetDescendants(UfFace n) {
 		List<Face> descendants = new List<Face>();
-		List<PolyNode> queue = new List<PolyNode>();
+		List<UfFace> queue = new List<UfFace>();
 		if (n != null) {
-			foreach (PolyNode p in n.GetChildren()) {
+			foreach (UfFace p in n.GetChildren()) {
 				queue.Add(p);
 			}
 			while (queue.Count != 0) {
 				descendants.Add(queue[0].GetID());
-				foreach (PolyNode p in queue[0].GetChildren()) {
+				foreach (UfFace p in queue[0].GetChildren()) {
 					queue.Add(p);
 				}
 				queue.RemoveAt(0);
@@ -350,4 +384,6 @@ public class Unfolder : MonoBehaviour
 		}
 		return descendants;
 	}
+	
+	
 }
