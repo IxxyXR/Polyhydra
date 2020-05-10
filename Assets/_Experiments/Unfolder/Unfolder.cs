@@ -12,20 +12,20 @@ public class Unfolder : MonoBehaviour
 	// Fields For Unfolding
 	private List<UfEdge> UfEdges;
 	private List<Face> ConnectedFaces;
-	private PolyHydra poly;
+	private PolyHydra originalPoly;
 	
 	
 	[Range(0,1)]
 	public float completion;
-	[Range(0,1)]
+	[Range(0,360)]
 	public float completionAngle = 1;
 
 	public bool activate = true;
-
+	public bool dummy;
 
 	void Start()
 	{
-		poly = GetComponent<PolyHydra>();
+		originalPoly = GetComponent<PolyHydra>();
 		
 	}
 
@@ -45,13 +45,16 @@ public class Unfolder : MonoBehaviour
 
 
 	public void Unfold() {
+		
+		Debug.Log("Unfolding");
+	
 		UfEdges = new List<UfEdge>(); // creates an empty list to store the edges of the polyhedron
 		var CheckedHalfEdges = new List<Halfedge>(); // makes sure Halfedges aren't stored twice
 		ConnectedFaces = new List<Face>(); // creates an empty list to store the faces that are connected in the tree
 		var BranchedEdges = new List<UfEdge>(); // stores the edges that make up the edges of the tree
 		var TabbedEdges = new List<UfEdge>(); // stores the edges that would have a tab on them for craft {optional}
 		// this loop goes through all the halfedges in the polyhedron and creates UfEdges to represent them
-		foreach (Halfedge h in	poly._conwayPoly.Halfedges)
+		foreach (Halfedge h in	originalPoly._conwayPoly.Halfedges)
 		{
 			if (CheckedHalfEdges.Contains(h)){
 				continue; // if the halfedge is part of a UfEdge already, we skip it
@@ -68,10 +71,10 @@ public class Unfolder : MonoBehaviour
 			}
 		}
 		
-		Debug.Log("Amount Of Faces: " + poly._conwayPoly.Faces.Count); // logs the amount of faces in the polyhedron
+		Debug.Log("Amount Of Faces: " + originalPoly._conwayPoly.Faces.Count); // logs the amount of faces in the polyhedron
 		Debug.Log("Amount Of Edges: " + UfEdges.Count); // logs the amount of edges in the polyhedron
 		
-		UfFace rootFace = new UfFace(poly._conwayPoly.Faces[0], null); // stores the first face of the polyhedron as the root of the tree
+		UfFace rootFace = new UfFace(originalPoly._conwayPoly.Faces[0], null); // stores the first face of the polyhedron as the root of the tree
 		List<UfFace> children = AddChildren(rootFace); // finds the children of the root face and stores them
 		List<UfFace> queue = new List<UfFace>(); // creates a queue of faces to be stored and processed
 		List<UfFace> branched = new List<UfFace>(); // creates a list of faces to represent the faces in the tree
@@ -145,9 +148,9 @@ public class Unfolder : MonoBehaviour
 		Debug.Log($"BranchedEdges.Count: {BranchedEdges.Count}"); // logs the amount of branched edges
 
 		// loops through all of the branched edges to unfold the polyhedron
-		for (var i = 0; (i < BranchedEdges.Count) || (i < (BranchedEdges.Count * completion)); i++) {
-		//for (var i = 0; i < (float)BranchedEdges.Count * completion; i++) {
-			
+		//for (var i = 0; i < (float)BranchedEdges.Count * completion; i++)
+		for (var i = 0; (i < (BranchedEdges.Count * completion)); i++)
+		{
 			UfEdge e = BranchedEdges[i]; //stores the current branch in a local variable
 			
 			// Add the current face to the unfolded poly
@@ -172,9 +175,10 @@ public class Unfolder : MonoBehaviour
 			if (!ConstructedFaces.Contains(e.Face2))
 			{
 				// finds the angle between the normals of both face
-				float angle = Vector3.Angle(e.Face1.Normal, e.Face2.Normal) * completionAngle;
+				float angle = Vector3.Angle(e.Face1.Normal, e.Face2.Normal);
+				angle = completionAngle;
 				Debug.Log($"Face {i} angle to unfold: {angle}");
-				// sets the axis of the rotation as the vertex position of the halfedge
+				// sets the axis of the rotation as the vector of the halfedge
 				Vector3 axis = e.Halfedge2.Vector;
 				// two rotations are available to compensate for different directions of vectors
 				Quaternion rotation1 = Quaternion.AngleAxis(angle, axis);
@@ -213,7 +217,9 @@ public class Unfolder : MonoBehaviour
 				}
 
 				// The actual rotation
+				
 				bool negative = false; // if true, then we know which direction to rotate the children
+				
 				var rotatedVertices = new List<Vertex>(); // makes sure vertices aren't overrotated
 				foreach (Vertex v in e.Face2.GetVertices()) {
 					// Only rotate vertices that aren't part of the hinge
@@ -234,11 +240,11 @@ public class Unfolder : MonoBehaviour
 					foreach (Vertex v in FaceVertices) {
 						// Only rotate vertices that aren't part of the hinge
 						if (v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex) {
-							v.Position -= e.Halfedge2.Vertex.Position;
+							//v.Position -= e.Halfedge2.Vertex.Position;
 							// rotates the vertices twice in the opposite direction to negate the effects of the first rotation
-							v.Position = rotation2 * v.Position;
-							v.Position = rotation2 * v.Position;
-							v.Position += e.Halfedge2.Vertex.Position;
+							//v.Position = rotation2 * v.Position;
+							//v.Position = rotation2 * v.Position;
+							//v.Position += e.Halfedge2.Vertex.Position;
 						}
 					}
 				}
@@ -283,11 +289,11 @@ public class Unfolder : MonoBehaviour
 		unfoldedPoly.Halfedges.MatchPairs();
 		// on activate, it assigns the unfolded poly mesh
 		if (activate) {
-			var mesh = poly.BuildMeshFromConwayPoly(unfoldedPoly);
-			poly.AssignFinishedMesh(mesh);
+			var mesh = originalPoly.BuildMeshFromConwayPoly(unfoldedPoly);
+			originalPoly.AssignFinishedMesh(mesh);
 		}
 		else {
-			poly.Rebuild();
+			originalPoly.Rebuild();
 		}
 	}
 
