@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,6 +18,8 @@ public class CloneAndVary : MonoBehaviour
     public float yMagnitude = 0.1f;
     public Material material;
     public Transform[,] clones;
+    public List<PolyHydra.Ops> ops;
+    public int currentOp = 0;
 
     public PolyHydra poly;
 
@@ -72,34 +75,37 @@ public class CloneAndVary : MonoBehaviour
             clones = new Transform[rows, columns];
         }
 
+        int count = 0;
         for (int y = 0; y < columns; y++)
         {
             for (int x = 0; x < rows; x++)
             {
                 var clone = clones[x, y];
+                
                 if (clone == null)
                 {
                     clone = InitClone(x, y);
                 }
+                
+                if (localPosition)
+                {
+                    clone.localPosition = GetClonePosition(x, y);
+                }
                 else
                 {
-                    if (localPosition)
-                    {
-                        clone.localPosition = GetClonePosition(x, y);
-                    }
-                    else
-                    {
-                        clone.position = GetClonePosition(x, y);
-                    }
-
-                    clone.localScale = Vector3.one * scale;
+                    clone.position = GetClonePosition(x, y);
                 }
+
+                clone.localScale = Vector3.one * scale;
                 var p = clone.GetComponent<PolyHydra>();
                 var op = p.ConwayOperators[0];
+                //op.opType = ops[Mathf.FloorToInt((count * a + Time.time * b) * c) % ops.Count]; try 0.1 8 0.1
+                op.opType = ops[currentOp];
                 op.amount = xOffset + x * xMagnitude;
                 op.amount2 = yOffset + y * yMagnitude;
                 p.ConwayOperators[0] = op;
                 p.Rebuild();
+                count++;
             }
         }
     }
