@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class CloneAndVary : MonoBehaviour
 {
     public int rows = 10;
     public int columns = 10;
     public float spacing = 3f;
+    public float scale = 1f;
     public float xOffset = 0f;
     public float yOffset = 0f;
     public float xMagnitude = 0.1f;
@@ -18,11 +20,11 @@ public class CloneAndVary : MonoBehaviour
 
     public PolyHydra poly;
 
-    public bool dummy;
+    public bool localPosition;
 
     void Start()
     {
-        Reset();
+        poly.gameObject.SetActive(false);
     }
 
     [ContextMenu("Reset")]
@@ -37,20 +39,17 @@ public class CloneAndVary : MonoBehaviour
         Generate();
     }
     
-    private void OnValidate()
-    {
-        Generate();
-    }
+    // private void OnValidate()
+    // {
+    //     Generate();
+    // }
 
     private Transform InitClone(int x, int y)
     {
-        var go = Instantiate(
-            poly,
-            GetClonePosition(x, y),
-            Quaternion.identity,
-            transform);
-        clones[x, y] = go.transform;
-        return go.transform;
+        var clone= Instantiate(poly, transform);
+        clone.gameObject.SetActive(true);
+        clones[x, y] = clone.transform;
+        return clone.transform;
 
     }
 
@@ -60,14 +59,15 @@ public class CloneAndVary : MonoBehaviour
         {
             foreach (Transform child in transform)
             {
-                if (Application.isPlaying)
-                {
-                    Destroy(child.gameObject);
-                }
-                else
-                {
-                    StartCoroutine(Destroy(child.gameObject));
-                }
+                Destroy(child.gameObject);
+                // if (Application.isPlaying)
+                // {
+                //     Destroy(child.gameObject);
+                // }
+                // else
+                // {
+                //     StartCoroutine(Destroy(child.gameObject));
+                // }
             }
             clones = new Transform[rows, columns];
         }
@@ -83,7 +83,16 @@ public class CloneAndVary : MonoBehaviour
                 }
                 else
                 {
-                    clone.position = GetClonePosition(x, y);
+                    if (localPosition)
+                    {
+                        clone.localPosition = GetClonePosition(x, y);
+                    }
+                    else
+                    {
+                        clone.position = GetClonePosition(x, y);
+                    }
+
+                    clone.localScale = Vector3.one * scale;
                 }
                 var p = clone.GetComponent<PolyHydra>();
                 var op = p.ConwayOperators[0];
@@ -100,9 +109,9 @@ public class CloneAndVary : MonoBehaviour
         return new Vector3(x * spacing, 1, y * spacing);
     }
     
-    IEnumerator Destroy(GameObject go)
-    {
-        yield return new WaitForEndOfFrame();
-        DestroyImmediate(go);
-    }
+    // IEnumerator Destroy(GameObject go)
+    // {
+    //     yield return new WaitForEndOfFrame();
+    //     DestroyImmediate(go);
+    // }
 }
