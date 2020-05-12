@@ -16,10 +16,13 @@ public class CloneAndVary : MonoBehaviour
     public float yOffset = 0f;
     public float xMagnitude = 0.1f;
     public float yMagnitude = 0.1f;
-    public Material material;
+    public float height = 1f;
+    public float maxHeight = 15f;
+    public float timeHeight = 0.0005f;
     public Transform[,] clones;
     public List<PolyHydra.Ops> ops;
     public int currentOp = 0;
+    public AnimationCurve fadeCurve;
 
     public PolyHydra poly;
 
@@ -97,6 +100,9 @@ public class CloneAndVary : MonoBehaviour
                 }
 
                 clone.localScale = Vector3.one * scale;
+                var color = clone.GetComponent<MeshRenderer>().material.GetColor("_BaseColor");
+                color.a = fadeCurve.Evaluate(clone.position.y / (float)maxHeight);
+                clone.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", color);
                 var p = clone.GetComponent<PolyHydra>();
                 var op = p.ConwayOperators[0];
                 //op.opType = ops[Mathf.FloorToInt((count * a + Time.time * b) * c) % ops.Count]; try 0.1 8 0.1
@@ -112,7 +118,7 @@ public class CloneAndVary : MonoBehaviour
 
     private Vector3 GetClonePosition(int x, int y)
     {
-        return new Vector3(x * spacing, 1, y * spacing);
+        return new Vector3(x * spacing, ((y * rows + x) * height * (Time.frameCount * timeHeight)) % maxHeight , y * spacing);
     }
     
     // IEnumerator Destroy(GameObject go)
