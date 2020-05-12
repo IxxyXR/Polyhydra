@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Conway;
 using UnityEngine;
+using zCode.zMesh;
 using Debug = UnityEngine.Debug;
 using Face = Conway.Face;
 
@@ -56,6 +57,7 @@ public class Unfolder : MonoBehaviour
 		var BranchedEdges = new List<UfEdge>(); // stores the edges that make up the edges of the tree
 		var TabbedEdges = new List<UfEdge>(); // stores the edges that would have a tab on them for craft {optional}
 		// this loop goes through all the halfedges in the polyhedron and creates UfEdges to represent them
+		
 		foreach (Halfedge h in	originalPoly._conwayPoly.Halfedges)
 		{
 			if (CheckedHalfEdges.Contains(h)){
@@ -72,7 +74,6 @@ public class Unfolder : MonoBehaviour
 				}
 			}
 		}
-		
 		Debug.Log("Amount Of Faces: " + originalPoly._conwayPoly.Faces.Count); // logs the amount of faces in the polyhedron
 		Debug.Log("Amount Of Edges: " + UfEdges.Count); // logs the amount of edges in the polyhedron
 		
@@ -144,9 +145,11 @@ public class Unfolder : MonoBehaviour
 		}
 
 		var ConstructedFaces = new List<string>(); // a list of faces to check which have been constructed already
+		var alreadyRotated = new Dictionary<string, int>();
 		
 		Debug.Log($"BranchedEdges.Count: {BranchedEdges.Count}"); // logs the amount of branched edges
 
+		
 		// loops through all of the branched edges to unfold the polyhedron
 		//for (var i = 0; i < (float)BranchedEdges.Count * completion; i++)
 		for (var i = 0; (i < (BranchedEdges.Count * completion)); i++)
@@ -219,21 +222,51 @@ public class Unfolder : MonoBehaviour
 				bool negative = false; // if true, then we know which direction to rotate the children
 				
 				var rotatedVertices = new HashSet<Vector3>(); // makes sure vertices aren't overrotated
-				var newFace1 = new List<int>();
-				foreach (Vertex originalVertex in ufEdge.Halfedge2.Face.GetVertices())
+
+
+				if (alreadyRotated.ContainsKey(ufEdge.Halfedge2.Face.Name))
 				{
-					Vector3 newVertex = originalVertex.Position;
-					// Only rotate vertices that aren't part of the hinge
-					if (newVertex != ufEdge.Halfedge2.Vertex.Position && newVertex != ufEdge.Halfedge1.Vertex.Position) {
-						newVertex -= ufEdge.Halfedge2.Vertex.Position;
-						newVertex = rotation1 * newVertex;
-						newVertex += ufEdge.Halfedge2.Vertex.Position;
-						rotatedVertices.Add(newVertex); // adds the vertex to a list to not be rotated again in this cycle
+					foreach (int vertIndex in newFaceIndices[alreadyRotated[ufEdge.Halfedge2.Face.Name]])
+					{
+						newVertices[vertIndex] -= ufEdge.Halfedge2.Vertex.Position;
+
+						if (negative)
+						{
+							newVertices[vertIndex] = rotation2 * newVertices[vertIndex];
+						}
+						else
+						{
+							newVertices[vertIndex] = rotation1 * newVertices[vertIndex];
+						}
+						newVertices[vertIndex] += ufEdge.Halfedge2.Vertex.Position;
 					}
-					newVertices.Add(newVertex);
-					newFace1.Add(newVertices.Count - 1);
+
 				}
-				newFaceIndices.Add(newFace1);
+				else
+				{
+					var newFace1 = new List<int>();
+					foreach (Vertex originalVertex in ufEdge.Halfedge2.Face.GetVertices())
+					{
+						Vector3 newVertex = originalVertex.Position;
+						// Only rotate vertices that aren't part of the hinge
+						if (newVertex != ufEdge.Halfedge2.Vertex.Position &&
+						    newVertex != ufEdge.Halfedge1.Vertex.Position)
+						{
+							newVertex -= ufEdge.Halfedge2.Vertex.Position;
+							newVertex = rotation1 * newVertex;
+							newVertex += ufEdge.Halfedge2.Vertex.Position;
+							rotatedVertices
+								.Add(newVertex); // adds the vertex to a list to not be rotated again in this cycle
+						}
+
+						newVertices.Add(newVertex);
+						newFace1.Add(newVertices.Count - 1);
+					}
+
+					newFaceIndices.Add(newFace1);
+					
+				}
+
 
 				// checks if the dot product between the two faces are 1 or -1, AKA if they're on the same plane
 				// if (Vector3.Dot(ufEdge.Halfedge1.Face.Normal, ufEdge.Halfedge2.Face.Normal) != 1 &&
@@ -260,26 +293,48 @@ public class Unfolder : MonoBehaviour
 				// rotates the children of the current face by the rotation of the current face
 				foreach (Face f in descendants)
 				{
-					var newChildFace = new List<int>();
-					foreach (Vertex originalVertex in f.GetVertices())
+					if (alreadyRotated.ContainsKey(f.Name))
 					{
-						Vector3 newVertex = originalVertex.Position;
-						
-						newVertex -= ufEdge.Halfedge2.Vertex.Position;
-						
-						if (negative) {
-							newVertex = rotation2 * newVertex;
-						} else {
-							newVertex = rotation1 * newVertex;
+						foreach (int vertIndex in newFaceIndices[alreadyRotated[f.Name]])
+						{
+							newVertices[vertIndex] -= ufEdge.Halfedge2.Vertex.Position;
+
+							if (negative)
+							{
+								newVertices[vertIndex] = rotation2 * newVertices[vertIndex];
+							}
+							else
+							{
+								newVertices[vertIndex] = rotation1 * newVertices[vertIndex];
+							}
+							newVertices[vertIndex] += ufEdge.Halfedge2.Vertex.Position;
 						}
-						
-						newVertex += ufEdge.Halfedge2.Vertex.Position;
-						
-						newVertices.Add(newVertex);
-						newChildFace.Add(newVertices.Count - 1);
-						
 					}
-					newFaceIndices.Add(newChildFace);
+					else
+					{
+						var newChildFace = new List<int>();
+						foreach (Vertex originalVertex in f.GetVertices())
+						{
+							Vector3 newVertex = originalVertex.Position;
+						
+							newVertex -= ufEdge.Halfedge2.Vertex.Position;
+						
+							if (negative) {
+								newVertex = rotation2 * newVertex;
+							} else {
+								newVertex = rotation1 * newVertex;
+							}
+						
+							newVertex += ufEdge.Halfedge2.Vertex.Position;
+						
+							newVertices.Add(newVertex);
+							newChildFace.Add(newVertices.Count - 1);
+						
+						}
+						newFaceIndices.Add(newChildFace);
+						alreadyRotated[f.Name] = newFaceIndices.Count - 1;
+					}
+
 				}
 
 				ConstructedFaces.Add(ufEdge.Halfedge2.Face.Name); // adds the current face to the list of constructed faces
