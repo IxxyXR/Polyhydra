@@ -146,6 +146,7 @@ public class Unfolder : MonoBehaviour
 
 		var ConstructedFaces = new List<string>(); // a list of faces to check which have been constructed already
 		var alreadyRotated = new Dictionary<string, int>();
+		var alteredEdges = new Dictionary<string, Vector3>();
 		
 		Debug.Log($"BranchedEdges.Count: {BranchedEdges.Count}"); // logs the amount of branched edges
 
@@ -180,7 +181,13 @@ public class Unfolder : MonoBehaviour
 				float angle = Vector3.Angle(ufEdge.Halfedge1.Face.Normal, ufEdge.Halfedge2.Face.Normal);
 				angle = completionAngle;
 				// sets the axis of the rotation as the vector of the halfedge
-				Vector3 axis = ufEdge.Halfedge2.Vector;
+				Vector3 axis;
+				if (!alteredEdges.ContainsKey(ufEdge.Halfedge2.Name))
+				{
+					axis = ufEdge.Halfedge2.Vector;
+				} else {
+					axis = alteredEdges[ufEdge.Halfedge2.Name];
+				}
 				// two rotations are available to compensate for different directions of vectors
 				Quaternion rotation1 = Quaternion.AngleAxis(angle, axis);
 				Quaternion rotation2 = Quaternion.AngleAxis(-angle, axis);
@@ -255,8 +262,7 @@ public class Unfolder : MonoBehaviour
 							newVertex -= ufEdge.Halfedge2.Vertex.Position;
 							newVertex = rotation1 * newVertex;
 							newVertex += ufEdge.Halfedge2.Vertex.Position;
-							rotatedVertices
-								.Add(newVertex); // adds the vertex to a list to not be rotated again in this cycle
+							rotatedVertices.Add(newVertex); // adds the vertex to a list to not be rotated again in this cycle
 						}
 
 						newVertices.Add(newVertex);
@@ -329,6 +335,26 @@ public class Unfolder : MonoBehaviour
 						
 							newVertices.Add(newVertex);
 							newChildFace.Add(newVertices.Count - 1);
+
+							// checks for branched edges involving 
+							foreach(UfEdge e in BranchedEdges)
+							{
+								if (e.Halfedge2.Vertex.Name == originalVertex.Name)
+								{
+									Vector3 newPrevVertex = e.Halfedge2.Prev.Vertex.Position;
+									newPrevVertex -= e.Halfedge2.Vertex.Position;
+
+									if (negative) {
+										newPrevVertex = rotation2 * newPrevVertex;
+									} else {
+										newPrevVertex = rotation1 * newPrevVertex;
+									}
+						
+									newPrevVertex += e.Halfedge2.Vertex.Position;
+
+									alteredEdges[e.Halfedge2.Name] = (newVertex - newPrevVertex);
+								}
+							}
 						
 						}
 						newFaceIndices.Add(newChildFace);
@@ -363,7 +389,7 @@ public class Unfolder : MonoBehaviour
 	private List<UfFace> AddChildren(UfFace root)
 	{
 		// gets the children of the current face
-		List<Face> sharedFaces = SharedFaces(root.GetID());
+		List<Face> sharedFaces = SharedFaces(root.ID);
 		// loops through each child
 		foreach (Face sharedFace in sharedFaces)
 		{
@@ -372,14 +398,14 @@ public class Unfolder : MonoBehaviour
 			// loops through each edge to check which edges need to be marked as a branched edge
 			foreach (UfEdge edge in UfEdges)
 			{
-				if ((edge.Halfedge1.Face == root.GetID() && edge.Halfedge2.Face == sharedFace) || (edge.Halfedge2.Face == root.GetID() && edge.Halfedge1.Face == sharedFace))
+				if ((edge.Halfedge1.Face == root.ID && edge.Halfedge2.Face == sharedFace) || (edge.Halfedge2.Face == root.ID && edge.Halfedge1.Face == sharedFace))
 				{
 					edge.Branched = true;
 				}
 			}
 		}
 		// returns the list of children of the current face
-		return root.GetChildren();
+		return root.Children;
 	}
 
 	
@@ -477,7 +503,7 @@ public class Unfolder : MonoBehaviour
 		// loops through each UfFace in the given list
 		foreach (UfFace n in p) {
 			// if the UfFace is the same as the given face, then we return the UfFace
-			if (n.GetID() == f) {
+			if (n.ID == f) {
 				return n;
 			}
 		}
@@ -510,15 +536,15 @@ public class Unfolder : MonoBehaviour
 		// makes sure that the UfFace isn't null
 		if (n != null) {
 			// loops through each child to add to the queue
-			foreach (UfFace p in n.GetChildren()) {
+			foreach (UfFace p in n.Children) {
 				queue.Add(p);
 			}
 			// loops through the queue (which can change size)
 			while (queue.Count != 0) {
 				// adds the queue item to the descendants list
-				descendants.Add(queue[0].GetID());
+				descendants.Add(queue[0].ID);
 				// loops through the children of the descendant and adds it to the queue
-				foreach (UfFace p in queue[0].GetChildren()) {
+				foreach (UfFace p in queue[0].Children) {
 					queue.Add(p);
 				}
 				// once the item in the queue is processed, we remove it from the queue
