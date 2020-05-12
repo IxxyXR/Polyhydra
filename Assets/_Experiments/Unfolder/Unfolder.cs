@@ -46,8 +46,10 @@ public class Unfolder : MonoBehaviour
 
 	public void Unfold() {
 		
-		Debug.Log("Unfolding");
-	
+		var newVertices = new List<Vector3>();
+		var newFaceIndices = new List<IEnumerable<int>>();
+
+
 		UfEdges = new List<UfEdge>(); // creates an empty list to store the edges of the polyhedron
 		var CheckedHalfEdges = new List<Halfedge>(); // makes sure Halfedges aren't stored twice
 		ConnectedFaces = new List<Face>(); // creates an empty list to store the faces that are connected in the tree
@@ -123,27 +125,25 @@ public class Unfolder : MonoBehaviour
 
 		var verticesInBranches = new Dictionary<Vertex, List<Face>>(); // new dictionary that holds all the vertices that are in branched edges
 		// any vertex stored in this list won't be split later for unfolding
-		foreach (UfEdge e in BranchedEdges)
+		foreach (UfEdge ufEdge in BranchedEdges)
 		{
-			if (verticesInBranches.ContainsKey(e.Halfedge1.Vertex))
+			if (verticesInBranches.ContainsKey(ufEdge.Halfedge1.Vertex))
 			{
-				verticesInBranches[e.Halfedge1.Vertex].Add(e.Face1);
-				verticesInBranches[e.Halfedge1.Vertex].Add(e.Face2);
+				verticesInBranches[ufEdge.Halfedge1.Vertex].Add(ufEdge.Halfedge1.Face);
+				verticesInBranches[ufEdge.Halfedge1.Vertex].Add(ufEdge.Halfedge2.Face);
 			} else {
-				verticesInBranches.Add(e.Halfedge1.Vertex, new List<Face>(){e.Face1, e.Face2});
+				verticesInBranches.Add(ufEdge.Halfedge1.Vertex, new List<Face>(){ufEdge.Halfedge1.Face, ufEdge.Halfedge2.Face});
 			}
-			if (verticesInBranches.ContainsKey(e.Halfedge2.Vertex))
+			if (verticesInBranches.ContainsKey(ufEdge.Halfedge2.Vertex))
 			{
-				verticesInBranches[e.Halfedge2.Vertex].Add(e.Face1);
-				verticesInBranches[e.Halfedge2.Vertex].Add(e.Face2);
+				verticesInBranches[ufEdge.Halfedge2.Vertex].Add(ufEdge.Halfedge1.Face);
+				verticesInBranches[ufEdge.Halfedge2.Vertex].Add(ufEdge.Halfedge2.Face);
 			} else {
-				verticesInBranches.Add(e.Halfedge2.Vertex, new List<Face>(){e.Face1, e.Face2});
+				verticesInBranches.Add(ufEdge.Halfedge2.Vertex, new List<Face>(){ufEdge.Halfedge1.Face, ufEdge.Halfedge2.Face});
 			}
 		}
 
-		var unfoldedPoly = new ConwayPoly(); // the polyhedra to create
-		var ConstructedFaces = new List<Face>(); // a list of faces to check which have been constructed already
-		var AddedVertices = new List<Vertex>(); // a list of vertices to make sure vertices aren't being added multiple times
+		var ConstructedFaces = new List<string>(); // a list of faces to check which have been constructed already
 		
 		Debug.Log($"BranchedEdges.Count: {BranchedEdges.Count}"); // logs the amount of branched edges
 
@@ -151,43 +151,41 @@ public class Unfolder : MonoBehaviour
 		//for (var i = 0; i < (float)BranchedEdges.Count * completion; i++)
 		for (var i = 0; (i < (BranchedEdges.Count * completion)); i++)
 		{
-			UfEdge e = BranchedEdges[i]; //stores the current branch in a local variable
+			UfEdge ufEdge = BranchedEdges[i]; //stores the current branch in a local variable
 			
 			// Add the current face to the unfolded poly
-			if (!ConstructedFaces.Contains(e.Face1)) {
-				unfoldedPoly.Faces.Add(e.Face1.GetVertices());
-				unfoldedPoly.FaceRoles.Add(ConwayPoly.Roles.New);
-				foreach (Vertex v in e.Face1.GetVertices()) {
-					if (!AddedVertices.Contains(v)) {
-						unfoldedPoly.Vertices.Add(v);
-						AddedVertices.Add(v);
-					}
+			if (!ConstructedFaces.Contains(ufEdge.Halfedge1.Face.Name))
+			{
+				var newFace = new List<int>();
+				foreach (var v in ufEdge.Halfedge1.Face.GetVertices())
+				{
+					newVertices.Add(v.Position);
+					newFace.Add(newVertices.Count - 1);
 				}
-
-				ConstructedFaces.Add(e.Face1); // adds the current face to the constructed faces list
+				newFaceIndices.Add(newFace);
+				ConstructedFaces.Add(ufEdge.Halfedge1.Face.Name); // adds the current face to the constructed faces list
 			}
 			else
 			{
-				Debug.LogWarning($"Face {i} ConstructedFaces.Contains(e.Face1)");
+				Debug.LogWarning($"Face {i} ConstructedFaces.Contains(e.Halfedge1.Face)");
 			}
 
 			
-			if (!ConstructedFaces.Contains(e.Face2))
+			if (!ConstructedFaces.Contains(ufEdge.Halfedge2.Face.Name))
 			{
 				// finds the angle between the normals of both face
-				float angle = Vector3.Angle(e.Face1.Normal, e.Face2.Normal);
+				float angle = Vector3.Angle(ufEdge.Halfedge1.Face.Normal, ufEdge.Halfedge2.Face.Normal);
 				angle = completionAngle;
-				Debug.Log($"Face {i} angle to unfold: {angle}");
 				// sets the axis of the rotation as the vector of the halfedge
-				Vector3 axis = e.Halfedge2.Vector;
+				Vector3 axis = ufEdge.Halfedge2.Vector;
 				// two rotations are available to compensate for different directions of vectors
 				Quaternion rotation1 = Quaternion.AngleAxis(angle, axis);
 				Quaternion rotation2 = Quaternion.AngleAxis(-angle, axis);
 				
 				// splits the vertices that aren't in branched edges or in the current halfedge
-				foreach (Vertex v in e.Face2.GetVertices()) {
-					if (!verticesInBranches.ContainsKey(v) && v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex) {
-						Halfedge edge = e.Face2.Halfedge;
+				foreach (Vertex v in ufEdge.Halfedge2.Face.GetVertices()) {
+					if (!verticesInBranches.ContainsKey(v) && v != ufEdge.Halfedge2.Vertex && v != ufEdge.Halfedge1.Vertex) {
+						Halfedge edge = ufEdge.Halfedge2.Face.Halfedge;
 						do {
 							if (edge.Vertex == v) {
 								edge.Vertex = new Vertex(v.Position);
@@ -195,15 +193,15 @@ public class Unfolder : MonoBehaviour
 							}
 
 							edge = edge.Next;
-						} while (edge != e.Face2.Halfedge);
+						} while (edge != ufEdge.Halfedge2.Face.Halfedge);
 					}
 				}
 				// splits the vertices of children and further of the face
-				List<Face> descendants = GetDescendants(GetNodeById(e.Face2, branched));
+				List<Face> descendants = GetDescendants(GetNodeById(ufEdge.Halfedge2.Face, branched));
 				foreach (Face f in descendants) {
 					foreach (Vertex v in f.GetVertices()) {
 						if (!verticesInBranches.ContainsKey(v)) {
-							Halfedge edge = e.Face2.Halfedge;
+							Halfedge edge = ufEdge.Halfedge2.Face.Halfedge;
 							do {
 								if (edge.Vertex == v) {
 									edge.Vertex = new Vertex(v.Position);
@@ -211,84 +209,93 @@ public class Unfolder : MonoBehaviour
 								}
 
 								edge = edge.Next;
-							} while (edge != e.Face2.Halfedge);
+							} while (edge != ufEdge.Halfedge2.Face.Halfedge);
 						}
 					}
 				}
-
+				
 				// The actual rotation
 				
 				bool negative = false; // if true, then we know which direction to rotate the children
 				
-				var rotatedVertices = new List<Vertex>(); // makes sure vertices aren't overrotated
-				foreach (Vertex v in e.Face2.GetVertices()) {
+				var rotatedVertices = new HashSet<Vector3>(); // makes sure vertices aren't overrotated
+				var newFace1 = new List<int>();
+				foreach (Vertex originalVertex in ufEdge.Halfedge2.Face.GetVertices())
+				{
+					Vector3 newVertex = originalVertex.Position;
 					// Only rotate vertices that aren't part of the hinge
-					if (v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex) {
-						v.Position -= e.Halfedge2.Vertex.Position;
-						v.Position = rotation1 * v.Position;
-						v.Position += e.Halfedge2.Vertex.Position;
-						rotatedVertices.Add(v); // adds the vertex to a list to not be rotated again in this cycle
+					if (newVertex != ufEdge.Halfedge2.Vertex.Position && newVertex != ufEdge.Halfedge1.Vertex.Position) {
+						newVertex -= ufEdge.Halfedge2.Vertex.Position;
+						newVertex = rotation1 * newVertex;
+						newVertex += ufEdge.Halfedge2.Vertex.Position;
+						rotatedVertices.Add(newVertex); // adds the vertex to a list to not be rotated again in this cycle
 					}
+					newVertices.Add(newVertex);
+					newFace1.Add(newVertices.Count - 1);
 				}
+				newFaceIndices.Add(newFace1);
 
 				// checks if the dot product between the two faces are 1 or -1, AKA if they're on the same plane
-				if (Vector3.Dot(e.Face1.Normal, e.Face2.Normal) != 1 &&
-				    Vector3.Dot(e.Face1.Normal, e.Face2.Normal) != -1) {
-					Debug.Log("Negative Angle Required");
-					negative = true; // notes which direction the children have to rotate towards
-					var FaceVertices = e.Face2.GetVertices();
-					foreach (Vertex v in FaceVertices) {
-						// Only rotate vertices that aren't part of the hinge
-						if (v != e.Halfedge2.Vertex && v != e.Halfedge1.Vertex) {
-							//v.Position -= e.Halfedge2.Vertex.Position;
-							// rotates the vertices twice in the opposite direction to negate the effects of the first rotation
-							//v.Position = rotation2 * v.Position;
-							//v.Position = rotation2 * v.Position;
-							//v.Position += e.Halfedge2.Vertex.Position;
-						}
-					}
-				}
-
+				// if (Vector3.Dot(ufEdge.Halfedge1.Face.Normal, ufEdge.Halfedge2.Face.Normal) != 1 &&
+				//     Vector3.Dot(ufEdge.Halfedge1.Face.Normal, ufEdge.Halfedge2.Face.Normal) != -1) {
+				// 	Debug.Log("Negative Angle Required");
+				// 	negative = true; // notes which direction the children have to rotate towards
+				// 	var newFace2 = new List<int>();
+				// 	foreach (Vertex originalVertex in ufEdge.Halfedge2.Face.GetVertices()) {
+				// 		Vector3 newVertex = originalVertex.Position;
+				// 		// Only rotate vertices that aren't part of the hinge
+				// 		if (newVertex != ufEdge.Halfedge2.Vertex.Position && newVertex != ufEdge.Halfedge1.Vertex.Position) {
+				// 			newVertex -= ufEdge.Halfedge2.Vertex.Position;
+				// 			// rotates the vertices twice in the opposite direction to negate the effects of the first rotation
+				// 			newVertex = rotation2 * newVertex;
+				// 			newVertex = rotation2 * newVertex;
+				// 			newVertex += ufEdge.Halfedge2.Vertex.Position;
+				// 		}
+				// 		newVertices.Add(newVertex);
+				// 		newFace2.Add(newVertices.Count - 1);
+				// 	}
+				// 	newFaceIndices.Add(newFace2);
+				// }
+				
 				// rotates the children of the current face by the rotation of the current face
-				foreach (Face f in descendants) {
-					foreach (Vertex v in f.GetVertices()) {
-						if (!rotatedVertices.Contains(v)) {
-							v.Position -= e.Halfedge2.Vertex.Position;
-							if (negative) {
-								v.Position = rotation2 * v.Position;
-							} else {
-								v.Position = rotation1 * v.Position;
-							}
-							v.Position += e.Halfedge2.Vertex.Position;
-							rotatedVertices.Add(v);
+				foreach (Face f in descendants)
+				{
+					var newChildFace = new List<int>();
+					foreach (Vertex originalVertex in f.GetVertices())
+					{
+						Vector3 newVertex = originalVertex.Position;
+						
+						newVertex -= ufEdge.Halfedge2.Vertex.Position;
+						
+						if (negative) {
+							newVertex = rotation2 * newVertex;
+						} else {
+							newVertex = rotation1 * newVertex;
 						}
+						
+						newVertex += ufEdge.Halfedge2.Vertex.Position;
+						
+						newVertices.Add(newVertex);
+						newChildFace.Add(newVertices.Count - 1);
+						
 					}
+					newFaceIndices.Add(newChildFace);
 				}
 
-				// adds the current face to the unfolded poly
-				unfoldedPoly.Faces.Add(e.Face2.GetVertices());
-				unfoldedPoly.FaceRoles.Add(ConwayPoly.Roles.New);
-				foreach (Vertex v in e.Face2.GetVertices()) {
-					if (!AddedVertices.Contains(v)) {
-						unfoldedPoly.Vertices.Add(v);
-						AddedVertices.Add(v);
-					}
-				}
-
-				ConstructedFaces.Add(e.Face2); // adds the current face to the list of constructed faces
+				ConstructedFaces.Add(ufEdge.Halfedge2.Face.Name); // adds the current face to the list of constructed faces
 			}
 			else
 			{
-				Debug.LogWarning($"Face {i} ConstructedFaces.Contains(e.Face2)");
+				Debug.LogWarning($"Face {i} ConstructedFaces.Contains(e.Halfedge2.Face)");
 			}
 
 		}
 
-		// sets the vertex roles of the unfolded poly
-		unfoldedPoly.VertexRoles = Enumerable.Repeat(ConwayPoly.Roles.New, unfoldedPoly.Vertices.Count).ToList();
-		unfoldedPoly.Halfedges.MatchPairs();
 		// on activate, it assigns the unfolded poly mesh
 		if (activate) {
+			var faceRoles = Enumerable.Repeat(ConwayPoly.Roles.New, newFaceIndices.Count);
+			var vertexRoles = Enumerable.Repeat(ConwayPoly.Roles.New, newVertices.Count);
+			var unfoldedPoly = new ConwayPoly(newVertices, newFaceIndices, faceRoles, vertexRoles);
 			var mesh = originalPoly.BuildMeshFromConwayPoly(unfoldedPoly);
 			originalPoly.AssignFinishedMesh(mesh);
 		}
@@ -310,7 +317,7 @@ public class Unfolder : MonoBehaviour
 			// loops through each edge to check which edges need to be marked as a branched edge
 			foreach (UfEdge edge in UfEdges)
 			{
-				if ((edge.Face1 == root.GetID() && edge.Face2 == sharedFace) || (edge.Face2 == root.GetID() && edge.Face1 == sharedFace))
+				if ((edge.Halfedge1.Face == root.GetID() && edge.Halfedge2.Face == sharedFace) || (edge.Halfedge2.Face == root.GetID() && edge.Halfedge1.Face == sharedFace))
 				{
 					edge.Branched = true;
 				}
@@ -321,6 +328,20 @@ public class Unfolder : MonoBehaviour
 	}
 
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private List<Face> SharedFaces(Face f)
 	{
 		// creates a new list of faces to be returned at the end of the method
@@ -328,10 +349,10 @@ public class Unfolder : MonoBehaviour
 		// loops through all UfEdges to check for UfEdges including the given face
 		foreach(UfEdge e in UfEdges)
 		{
-			if (e.Face1 == f)
+			if (e.Halfedge1.Face == f)
 			{
 				// if the face is already connected, then it isn't a child of the face
-				if (ConnectedFaces.Contains(e.Face2))
+				if (ConnectedFaces.Contains(e.Halfedge2.Face))
 				{
 					// if the edge isn't branched, but the face occurs again, then it's a tab edge
 					if (e.Branched)
@@ -342,18 +363,17 @@ public class Unfolder : MonoBehaviour
 					}
 				} else {
 					//adds the face to the returned list
-					sharedFaces.Add(e.Face2);
+					sharedFaces.Add(e.Halfedge2.Face);
 					// adds the face and it's pair to ConnectedFaces
-					ConnectedFaces.Add(e.Face1);
-					ConnectedFaces.Add(e.Face2);
-					// lets the system know that the edge has been checked and doesn't need to be checked again
-					e.EdgeChecked = true;
+					ConnectedFaces.Add(e.Halfedge1.Face);
+					ConnectedFaces.Add(e.Halfedge2.Face);
+
 				}
 			}
-			else if (e.Face2 == f)
+			else if (e.Halfedge2.Face == f)
 			{
 				// if the face is already connected, then it isn't a child of the face
-				if (ConnectedFaces.Contains(e.Face1))
+				if (ConnectedFaces.Contains(e.Halfedge1.Face))
 				{
 					// if the edge isn't branched, but the face occurs again, then it's a tab edge
 					if (e.Branched)
@@ -365,12 +385,10 @@ public class Unfolder : MonoBehaviour
 				} else
 				{
 					//adds the face to the returned list
-					sharedFaces.Add(e.Face1);
+					sharedFaces.Add(e.Halfedge1.Face);
 					// adds the face and it's pair to ConnectedFaces
-					ConnectedFaces.Add(e.Face1);
-					ConnectedFaces.Add(e.Face2);
-					// lets the system know that the edge has been checked and doesn't need to be checked again
-					e.EdgeChecked = true;
+					ConnectedFaces.Add(e.Halfedge1.Face);
+					ConnectedFaces.Add(e.Halfedge2.Face);
 				}
 			}
 		}
@@ -378,6 +396,27 @@ public class Unfolder : MonoBehaviour
 		return sharedFaces;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	private UfFace GetNodeById(Face f, List<UfFace> p) {
 		// loops through each UfFace in the given list
@@ -391,6 +430,24 @@ public class Unfolder : MonoBehaviour
 		return null;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	private List<Face> GetDescendants(UfFace n) {
 		List<Face> descendants = new List<Face>(); // creates a new list to store the descendants (children of children of etc.) of the current UfFace

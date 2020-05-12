@@ -41,43 +41,43 @@ public class UfFace {
 
     public UfFace GetParent()
     {
-        return this.Parent;
+        return Parent;
     }
 
     public void SetParent(UfFace p)
     {
-        this.Parent = p;
+        Parent = p;
     }
 
     public List<UfFace> GetChildren()
     {
-        return this.Children;
+        return Children;
     }
 
     public List<UfFace> AddChild(Face c)
     {
-        this.Children.Add(new UfFace(c, this));
-        return this.Children;
+        Children.Add(new UfFace(c, this));
+        return Children;
     }
 
     public bool IsRoot()
     {
-        return this.Root;
+        return Root;
     }
 
     public void SetRoot(bool b)
     {
-        this.Root = b;
+        Root = b;
     }
 
     public Face GetID()
     {
-        return this.ID;
+        return ID;
     }
 
     public void SetID(Face ID)
     {
-        this.ID = ID;
+        ID = ID;
     }
 
 }
