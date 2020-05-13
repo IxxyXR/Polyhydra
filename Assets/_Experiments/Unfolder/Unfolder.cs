@@ -12,6 +12,9 @@ public class Unfolder : MonoBehaviour
 	private List<UfEdge> UfEdges;
 	private List<Face> ConnectedFaces;
 	private PolyHydra originalPoly;
+	private List<Vector3> newVertices;
+	private List<List<int>> newFaceIndices;
+
 
 	[Range(0,360)]
 	public float completionAngle = 1;
@@ -30,6 +33,9 @@ public class Unfolder : MonoBehaviour
 
 	public void Unfold()
 	{
+		
+		newVertices = new List<Vector3>();
+		newFaceIndices = new List<List<int>>();
 
 		UfEdges = new List<UfEdge>(); // Creates an empty list to store the edges of the polyhedron
 		ConnectedFaces = new List<Face>(); // Creates an empty list to store the faces that are connected in the tree
@@ -123,6 +129,9 @@ public class Unfolder : MonoBehaviour
 			RotateChildren(branchedEdges, verticesInBranches, branched);
 
 		}
+		
+		ConstructMesh(newVertices, newFaceIndices);
+		
 	}
 
 
@@ -147,16 +156,13 @@ public class Unfolder : MonoBehaviour
 			Dictionary<Vertex, List<Face>> verticesInBranches,
 			List<UfFace> branched)
 		{
-		
-			var newVertices = new List<Vector3>();
-			var newFaceIndices = new List<List<int>>();
-
+			
 			var constructedFaces = new List<string>(); // Faces which have been constructed already
 			var alreadyRotated = new Dictionary<string, int>();
 			var alteredEdges = new Dictionary<string, Vector3>();
 		
 			// Loops through all of the branched edges to unfold the polyhedron
-			for (var i = 0; (i < (branchedEdges.Count)); i++)
+			for (var i = 0; (i < branchedEdges.Count); i++)
 			{
 				
 				UfEdge ufEdge = branchedEdges[i];
@@ -183,7 +189,7 @@ public class Unfolder : MonoBehaviour
 					
 					// Sets the axis of the rotation as the vector of the halfedge
 					string edgeName = ufEdge.Halfedge2.Name;
-					Vector3 axis = alteredEdges.ContainsKey(edgeName) ? alteredEdges[edgeName]: ufEdge.Halfedge2.Vector;
+					Vector3 axis = alteredEdges.ContainsKey(edgeName) ? alteredEdges[edgeName] : ufEdge.Halfedge2.Vector;
 					// Two rotations are available to compensate for different directions of vectors
 					Quaternion rotation1 = Quaternion.AngleAxis(angle, axis);
 					Quaternion rotation2 = Quaternion.AngleAxis(-angle, axis);
@@ -342,8 +348,6 @@ public class Unfolder : MonoBehaviour
 
 
 			}
-
-			ConstructMesh(newVertices, newFaceIndices);
 
 		}
 
