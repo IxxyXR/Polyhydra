@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Conway;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using Face = Conway.Face;
 
 
@@ -60,12 +61,13 @@ public class Unfolder : MonoBehaviour
 					}
 				}
 			}
+		}
 
 
 
 			var rootFace = new UfFace(originalPoly._conwayPoly.Faces[0], null);
 			var queue = new List<UfFace>(); // Faces to be stored and processed
-			var branched = new List<UfFace>(); // Not sure
+			var branched = new List<UfFace>();
 			
 			List<UfFace> children = AddChildren(rootFace);
 			
@@ -126,12 +128,8 @@ public class Unfolder : MonoBehaviour
 				}
 			}
 
-			RotateChildren(branchedEdges, verticesInBranches, branched);
-
-		}
-		
+		RotateChildren(branchedEdges, verticesInBranches, branched);
 		ConstructMesh(newVertices, newFaceIndices);
-		
 	}
 
 
@@ -181,7 +179,7 @@ public class Unfolder : MonoBehaviour
 				}
 
 
-				if (constructedFaces.Contains(ufEdge.Halfedge2.Face.Name)) continue;
+				if (!constructedFaces.Contains(ufEdge.Halfedge2.Face.Name))
 				{
 					// Finds the angle between the normals of both face
 					float angle = completionAngle;
@@ -268,8 +266,6 @@ public class Unfolder : MonoBehaviour
 					
 						// The one that does get rotated
 						newFaceIndices.Add(newRotatedFace);
-						constructedFaces.Add(ufEdge.Halfedge2.Face.Name); // adds the current face to the list of constructed faces
-
 					}
 
 
@@ -339,16 +335,14 @@ public class Unfolder : MonoBehaviour
 							
 							// The one that doesn't get rotated
 							newFaceIndices.Add(newChildFace);
-							constructedFaces.Add(ufEdge.Halfedge2.Face.Name); // Adds the current face to the list of constructed faces
 							alreadyRotated[descendentFace.Name] = newFaceIndices.Count - 1;
 						}
 
 					}
+
+					constructedFaces.Add(ufEdge.Halfedge2.Face.Name); // adds the current face to the list of constructed faces
 				}
-
-
 			}
-
 		}
 
 	
@@ -405,8 +399,8 @@ public class Unfolder : MonoBehaviour
 				// loops through each edge to check which edges need to be marked as a branched edge
 				var edges = UfEdges.Where(edge =>
 					edge.Halfedge1.Face == root.ID && edge.Halfedge2.Face == sharedFace ||
-					edge.Halfedge2.Face == root.ID && edge.Halfedge1.Face == sharedFace
-				);
+					edge.Halfedge2.Face == root.ID && edge.Halfedge1.Face == sharedFace);
+
 				foreach (var edge in edges)
 				{
 					edge.Branched = true;
