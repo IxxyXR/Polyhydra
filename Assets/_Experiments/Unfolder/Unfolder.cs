@@ -157,7 +157,7 @@ public class Unfolder : MonoBehaviour
 			
 			var constructedFaces = new List<string>(); // Faces which have been constructed already
 			var alreadyRotated = new Dictionary<string, int>();
-			var alteredEdges = new Dictionary<string, OVPair<Vertex, Vector3>>();
+			var alteredEdges = new Dictionary<string, List<Vector3>>();
 		
 			// Loops through all of the branched edges to unfold the polyhedron
 			for (var i = 0; (i < branchedEdges.Count); i++)
@@ -187,7 +187,7 @@ public class Unfolder : MonoBehaviour
 					
 					// Sets the axis of the rotation as the vector of the halfedge
 					string edgeName = ufEdge.Halfedge2.Name;
-					Vector3 axis = alteredEdges.ContainsKey(edgeName) ? alteredEdges[edgeName].Item2 : ufEdge.Halfedge2.Vector;
+					Vector3 axis = alteredEdges.ContainsKey(edgeName) ? alteredEdges[edgeName][1] : ufEdge.Halfedge2.Vector;
 					// Two rotations are available to compensate for different directions of vectors
 					Quaternion rotationq1 = Quaternion.AngleAxis(angle, axis);
 					Quaternion rotationq2 = Quaternion.AngleAxis(-angle, axis);
@@ -238,7 +238,7 @@ public class Unfolder : MonoBehaviour
 						// Rotate an existing new face
 						foreach (int vertIndex in newFaceIndices[alreadyRotated[ufEdge.Halfedge2.Face.Name]])
 						{
-							newVertices[vertIndex] = RotatePoint(newVertices[vertIndex], (negative ? rotationq2 : rotationq1), alteredEdges[ufEdge.Halfedge2.Name].Item1.Position);
+							newVertices[vertIndex] = RotatePoint(newVertices[vertIndex], (negative ? rotationq2 : rotationq1), alteredEdges[ufEdge.Halfedge2.Name][0]);
 						}
 					}
 					else
@@ -296,7 +296,7 @@ public class Unfolder : MonoBehaviour
 							// Use the existing face but rotate it to follow the rotation of the current descendent
 							foreach (int vertIndex in newFaceIndices[alreadyRotated[descendentFace.Name]])
 							{
-								newVertices[vertIndex] = RotatePoint(newVertices[vertIndex], (negative ? rotationq2 : rotationq1), alteredEdges[ufEdge.Halfedge2.Name].Item1.Position);
+								newVertices[vertIndex] = RotatePoint(newVertices[vertIndex], (negative ? rotationq2 : rotationq1), alteredEdges[ufEdge.Halfedge2.Name][0]);
 							}
 						}
 						else
@@ -318,7 +318,7 @@ public class Unfolder : MonoBehaviour
 									if (branchedEdge.Halfedge2.Vertex.Name != originalVertex.Name) continue;
 									Vector3 newPrevVertex = branchedEdge.Halfedge2.Prev.Vertex.Position;
 									newPrevVertex = RotatePoint(newPrevVertex, (negative ? rotationq2 : rotationq1), branchedEdge.Halfedge2.Vertex.Position);
-									alteredEdges[branchedEdge.Halfedge2.Name] = new OVPair<Vertex, Vector3>(new Vertex(newVertex), newVertex - newPrevVertex);
+									alteredEdges[branchedEdge.Halfedge2.Name] = new List<Vector3>(){newVertex, newVertex - newPrevVertex};
 								}
 						
 							}
