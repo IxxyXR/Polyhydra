@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Conway;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 using Face = Conway.Face;
 
 
@@ -23,6 +22,14 @@ public class Unfolder : MonoBehaviour
 	public bool activate = true;
 	public bool dummy;
 
+	public bool constructRootFace;
+	public bool constructRotatedFace;
+	public bool constructDescendentFace;
+	public bool rotationStage1;
+	public bool rotationStage2;
+	public bool rotationStage3;
+	public bool rotationStage4;
+	public bool rotationStage5;
 	
 	void Start() { originalPoly = GetComponent<PolyHydra>(); }
 	private void OnValidate() { Unfold(); }
@@ -174,7 +181,7 @@ public class Unfolder : MonoBehaviour
 						newVertices.Add(v.Position);
 						newRootFace.Add(newVertices.Count - 1);
 					}
-					newFaceIndices.Add(newRootFace);
+					if (constructRootFace) newFaceIndices.Add(newRootFace);
 					constructedFaces.Add(ufEdge.Halfedge1.Face.Name); // adds the current face to the constructed faces list
 				}
 
@@ -238,7 +245,7 @@ public class Unfolder : MonoBehaviour
 						// Rotate an existing new face
 						foreach (int vertIndex in newFaceIndices[alreadyRotated[ufEdge.Halfedge2.Face.Name]])
 						{
-							newVertices[vertIndex] = RotatePoint(newVertices[vertIndex], (negative ? rotationq2 : rotationq1), alteredEdges[ufEdge.Halfedge2.Name][0]);
+							if (rotationStage1) newVertices[vertIndex] = RotatePoint(newVertices[vertIndex], (negative ? rotationq2 : rotationq1), alteredEdges[ufEdge.Halfedge2.Name][0]);
 						}
 					}
 					else
@@ -252,7 +259,7 @@ public class Unfolder : MonoBehaviour
 							if (newVertex != ufEdge.Halfedge2.Vertex.Position &&
 							    newVertex != ufEdge.Halfedge1.Vertex.Position)
 							{
-								newVertex = RotatePoint(newVertex, (negative ? rotationq2 : rotationq1), ufEdge.Halfedge2.Vertex.Position);
+								if (rotationStage2) newVertex = RotatePoint(newVertex, (negative ? rotationq2 : rotationq1), ufEdge.Halfedge2.Vertex.Position);
 								rotatedVertices.Add(newVertex); // adds the vertex to a list to not be rotated again in this cycle
 							}
 
@@ -261,7 +268,7 @@ public class Unfolder : MonoBehaviour
 						}
 					
 						// The one that does get rotated
-						newFaceIndices.Add(newRotatedFace);
+						if (constructRotatedFace) newFaceIndices.Add(newRotatedFace);
 					}
 
 
@@ -296,7 +303,7 @@ public class Unfolder : MonoBehaviour
 							// Use the existing face but rotate it to follow the rotation of the current descendent
 							foreach (int vertIndex in newFaceIndices[alreadyRotated[descendentFace.Name]])
 							{
-								newVertices[vertIndex] = RotatePoint(newVertices[vertIndex], (negative ? rotationq2 : rotationq1), alteredEdges[ufEdge.Halfedge2.Name][0]);
+								if (rotationStage3) newVertices[vertIndex] = RotatePoint(newVertices[vertIndex], (negative ? rotationq2 : rotationq1), alteredEdges[ufEdge.Halfedge2.Name][0]);
 							}
 						}
 						else
@@ -307,7 +314,7 @@ public class Unfolder : MonoBehaviour
 							{
 								Vector3 newVertex = originalVertex.Position;
 						
-								newVertex = RotatePoint(newVertex, (negative ? rotationq2 : rotationq1), ufEdge.Halfedge2.Vertex.Position);
+								if (rotationStage4) newVertex = RotatePoint(newVertex, (negative ? rotationq2 : rotationq1), ufEdge.Halfedge2.Vertex.Position);
 						
 								newVertices.Add(newVertex);
 								newChildFace.Add(newVertices.Count - 1);
@@ -317,17 +324,21 @@ public class Unfolder : MonoBehaviour
 								{
 									if (branchedEdge.Halfedge2.Vertex.Name != originalVertex.Name) continue;
 									Vector3 newPrevVertex = branchedEdge.Halfedge2.Prev.Vertex.Position;
-									newPrevVertex = RotatePoint(newPrevVertex, (negative ? rotationq2 : rotationq1), branchedEdge.Halfedge2.Vertex.Position);
+									if (rotationStage5) newPrevVertex = RotatePoint(newPrevVertex, (negative ? rotationq2 : rotationq1), branchedEdge.Halfedge2.Vertex.Position);
 									alteredEdges[branchedEdge.Halfedge2.Name] = new List<Vector3>(){newVertex, newVertex - newPrevVertex};
 								}
 						
 							}
 							
 							// The one that doesn't get rotated
-							newFaceIndices.Add(newChildFace);
-							alreadyRotated[descendentFace.Name] = newFaceIndices.Count - 1;
+							if (constructDescendentFace)
+							{
+								newFaceIndices.Add(newChildFace);
+								alreadyRotated[descendentFace.Name] = newFaceIndices.Count - 1;
+							}
 						}
-
+						constructedFaces.Add(descendants.Last().Halfedge.Face.Name);
+						
 					}
 
 					constructedFaces.Add(ufEdge.Halfedge2.Face.Name); // adds the current face to the list of constructed faces
