@@ -16,8 +16,8 @@ public class UfEdge
         Branched = false;
     }
 
-    public Halfedge Halfedge1;
-    public Halfedge Halfedge2;
+    public Halfedge Halfedge1 {get; set;}
+    public Halfedge Halfedge2 {get; set;}
     
     public bool Tabbed;
     public bool Branched;

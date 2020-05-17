@@ -165,12 +165,20 @@ public class Unfolder : MonoBehaviour
 			var constructedFaces = new List<string>(); // Faces which have been constructed already
 			var alreadyRotated = new Dictionary<string, int>();
 			var alteredEdges = new Dictionary<string, List<Vector3>>();
+			string alteredEdgeName = "";
 		
 			// Loops through all of the branched edges to unfold the polyhedron
 			for (var i = 0; (i < branchedEdges.Count); i++)
 			{
 				
 				UfEdge ufEdge = branchedEdges[i];
+
+				if (!constructedFaces.Contains(ufEdge.Halfedge1.Face.Name) && constructedFaces.Contains(ufEdge.Halfedge2.Face.Name))
+				{
+					var switchTemp = ufEdge.Halfedge1;
+					ufEdge.Halfedge1 = ufEdge.Halfedge2;
+					ufEdge.Halfedge2 = switchTemp;
+				}
 			
 				// Add the current face to the unfolded poly
 				if (!constructedFaces.Contains(ufEdge.Halfedge1.Face.Name))
@@ -243,9 +251,14 @@ public class Unfolder : MonoBehaviour
 					if (alreadyRotated.ContainsKey(ufEdge.Halfedge2.Face.Name))
 					{
 						// Rotate an existing new face
+						alteredEdgeName = ufEdge.Halfedge2.Name;
+						if (!alteredEdges.ContainsKey(alteredEdgeName))
+						{
+							alteredEdgeName = ufEdge.Halfedge1.Name;
+						}
 						foreach (int vertIndex in newFaceIndices[alreadyRotated[ufEdge.Halfedge2.Face.Name]])
 						{
-							if (rotationStage1) newVertices[vertIndex] = RotatePoint(newVertices[vertIndex], (negative ? rotationq2 : rotationq1), alteredEdges[ufEdge.Halfedge2.Name][0]);
+							if (rotationStage1) newVertices[vertIndex] = RotatePoint(newVertices[vertIndex], (negative ? rotationq2 : rotationq1), alteredEdges[alteredEdgeName][0]);
 						}
 					}
 					else
@@ -301,9 +314,14 @@ public class Unfolder : MonoBehaviour
 						if (alreadyRotated.ContainsKey(descendentFace.Name))
 						{
 							// Use the existing face but rotate it to follow the rotation of the current descendent
+							alteredEdgeName = ufEdge.Halfedge2.Name;
+							if (!alteredEdges.ContainsKey(alteredEdgeName))
+							{
+								alteredEdgeName = ufEdge.Halfedge1.Name;
+							}
 							foreach (int vertIndex in newFaceIndices[alreadyRotated[descendentFace.Name]])
 							{
-								if (rotationStage3) newVertices[vertIndex] = RotatePoint(newVertices[vertIndex], (negative ? rotationq2 : rotationq1), alteredEdges[ufEdge.Halfedge2.Name][0]);
+								if (rotationStage3) newVertices[vertIndex] = RotatePoint(newVertices[vertIndex], (negative ? rotationq2 : rotationq1), alteredEdges[alteredEdgeName][0]);
 							}
 						}
 						else
