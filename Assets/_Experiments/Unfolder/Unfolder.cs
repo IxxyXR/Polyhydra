@@ -208,37 +208,12 @@ public class Unfolder : MonoBehaviour
 					Quaternion rotationq2 = Quaternion.AngleAxis(-angle, axis);
 				
 					// Splits the vertices that aren't in branched edges or in the current halfedge
-					foreach (Vertex v in ufEdge.Halfedge2.Face.GetVertices())
-					{
-						if (verticesInBranches.ContainsKey(v) || v == ufEdge.Halfedge2.Vertex || v == ufEdge.Halfedge1.Vertex) continue;
-						Halfedge edge = ufEdge.Halfedge2.Face.Halfedge;
-							
-						do {
-							if (edge.Vertex == v) {
-								edge.Vertex = new Vertex(v.Position);
-								break;
-							}
-							edge = edge.Next;
-						} while (edge != ufEdge.Halfedge2.Face.Halfedge);
-					}
+					SplitVertices(ufEdge.Halfedge2.Face, ufEdge.Halfedge2);
 					
 					// Split the vertices of the face and it's descendents
 					List<Face> descendants = GetDescendants(GetNodeById(ufEdge.Halfedge2.Face, branched));
-					foreach (Face f in descendants) {
-						foreach (Vertex v in f.GetVertices())
-						{
-							if (verticesInBranches.ContainsKey(v)) continue;
-							
-							Halfedge edge = ufEdge.Halfedge2.Face.Halfedge;
-								
-							do {
-								if (edge.Vertex == v) {
-									edge.Vertex = new Vertex(v.Position);
-									break;
-								}
-								edge = edge.Next;
-							} while (edge != ufEdge.Halfedge2.Face.Halfedge);
-						}
+					foreach (Face face in descendants) {
+						SplitVertices(face, ufEdge.Halfedge2);
 					}
 				
 					/////////////////////////
@@ -504,7 +479,28 @@ public class Unfolder : MonoBehaviour
 	
 	
 	
+
 	
+
+
+
+		private void SplitVertices(Face faceToSplit, Halfedge edgeToSplitFrom) 
+		{
+			foreach (Vertex v in faceToSplit.GetVertices())
+			{
+				// if (verticesInBranches.ContainsKey(v) || v == ufEdge.Halfedge2.Vertex || v == ufEdge.Halfedge1.Vertex) continue;
+				if (verticesInBranches.ContainsKey(v)) continue;
+				Halfedge edge = edgeToSplitFrom.Face.Halfedge;
+					
+				do {
+					if (edge.Vertex == v) {
+						edge.Vertex = new Vertex(v.Position);
+						break;
+					}
+					edge = edge.Next;
+				} while (edge != edgeToSplitFrom.Face.Halfedge);
+			}
+		}
 	
 	
 	
