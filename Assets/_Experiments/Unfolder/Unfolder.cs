@@ -297,7 +297,19 @@ public class Unfolder : MonoBehaviour
 							}
 							foreach (int vertIndex in newFaceIndices[alreadyRotated[descendentFace.Name]])
 							{
+								Vector3 originalPosition = newVertices[vertIndex];
+
 								if (rotationStage3) newVertices[vertIndex] = RotatePoint(newVertices[vertIndex], (negative ? rotationq2 : rotationq1), alteredEdges[alteredEdgeName][0]);
+
+								// checks for altered edges to set the origin and axis
+								foreach (KeyValuePair<string, List<Vector3>> kvp in alteredEdges)
+								{
+									if (kvp.Value[0] != originalPosition) continue;
+									Vector3 prevVertexPosition = kvp.Value[0] - kvp.Value[1];
+									if (rotationStage5) prevVertexPosition = RotatePoint(prevVertexPosition, (negative ? rotationq2 : rotationq1), alteredEdges[alteredEdgeName][0]);
+									alteredEdges[kvp.Key] = new List<Vector3>(){newVertices[vertIndex], newVertices[vertIndex] - prevVertexPosition};
+									break;
+								}
 							}
 						}
 						else
