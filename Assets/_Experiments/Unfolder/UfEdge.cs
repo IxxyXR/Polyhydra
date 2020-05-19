@@ -8,7 +8,7 @@ using Face = Conway.Face;
 
 public class UfEdge
 {
-    public UfEdge (Face f1, Face f2, Halfedge he1, Halfedge he2)
+    public UfEdge (Halfedge he1, Halfedge he2)
     {
         Halfedge1 = he1;
         Halfedge2 = he2;

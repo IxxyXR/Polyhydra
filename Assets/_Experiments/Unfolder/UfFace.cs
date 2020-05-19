@@ -11,7 +11,7 @@ public class UfFace {
     public Face ID;
     public List<UfFace> Children;
 
-    public UfFace(Face ID, UfFace p)
+    public UfFace(Face ID)
     {
         this.ID = ID;
         this.Children = new List<UfFace>();
@@ -19,7 +19,7 @@ public class UfFace {
 
     public List<UfFace> AddChild(Face c)
     {
-        Children.Add(new UfFace(c, this));
+        Children.Add(new UfFace(c));
         return Children;
     }
 }

@@ -64,7 +64,7 @@ public class Unfolder : MonoBehaviour
 					{
 						// if the halfedge doesn't have a pair, then it doesn't need to be stored in a UfEdge
 						checkedHalfEdges.Add(h.Pair);
-						UfEdges.Add(new UfEdge(h.Face, h.Pair.Face, h, h.Pair)); // Adds the Halfedge, Face and their pairs to a UfEdge instance
+						UfEdges.Add(new UfEdge(h, h.Pair)); // Adds the Halfedge, Face and their pairs to a UfEdge instance
 					}
 				}
 			}
@@ -72,7 +72,7 @@ public class Unfolder : MonoBehaviour
 
 
 
-			var rootFace = new UfFace(originalPoly._conwayPoly.Faces[0], null);
+			var rootFace = new UfFace(originalPoly._conwayPoly.Faces[0]);
 			var queue = new List<UfFace>(); // Faces to be stored and processed
 			var branched = new List<UfFace>();
 			
@@ -103,7 +103,8 @@ public class Unfolder : MonoBehaviour
 			branchedEdges.AddRange(UfEdges.Where(e => e.Branched));
 
 			// Vertices that are in branched edges
-			var verticesInBranches = new Dictionary<Vertex, List<Face>>();
+			
+			Dictionary<Vertex, List<Face>> verticesInBranches = new Dictionary<Vertex, List<Face>>();
 
 			// Any vertex stored in this list won't be split later for unfolding
 			foreach (UfEdge ufEdge in branchedEdges)
@@ -208,12 +209,12 @@ public class Unfolder : MonoBehaviour
 					Quaternion rotationq2 = Quaternion.AngleAxis(-angle, axis);
 				
 					// Splits the vertices that aren't in branched edges or in the current halfedge
-					SplitVertices(ufEdge.Halfedge2.Face, ufEdge.Halfedge2);
+					SplitVertices(verticesInBranches, ufEdge.Halfedge2.Face, ufEdge.Halfedge2);
 					
 					// Split the vertices of the face and it's descendents
 					List<Face> descendants = GetDescendants(GetNodeById(ufEdge.Halfedge2.Face, branched));
 					foreach (Face face in descendants) {
-						SplitVertices(face, ufEdge.Halfedge2);
+						SplitVertices(verticesInBranches, face, ufEdge.Halfedge2);
 					}
 				
 					/////////////////////////
@@ -484,7 +485,7 @@ public class Unfolder : MonoBehaviour
 
 
 
-		private void SplitVertices(Face faceToSplit, Halfedge edgeToSplitFrom) 
+		private void SplitVertices(Dictionary<Vertex, List<Face>> verticesInBranches, Face faceToSplit, Halfedge edgeToSplitFrom) 
 		{
 			foreach (Vertex v in faceToSplit.GetVertices())
 			{
