@@ -16,10 +16,12 @@ public class Unfolder : MonoBehaviour
 	private List<List<int>> newFaceIndices;
 
 
+	// fields for the debugging tool
 	[Range(0,360)]
 	public float completionAngle = 1;
 
 	public bool activate = true;
+	public bool calculateAngle = true;
 	public bool dummy;
 
 	public bool constructRootFace;
@@ -31,7 +33,9 @@ public class Unfolder : MonoBehaviour
 	public bool rotationStage4;
 	public bool rotationStage5;
 	
+	// gets the Polyhydra component from the Unity scene to work with
 	void Start() { originalPoly = GetComponent<PolyHydra>(); }
+	// when this script has a value changed, the unfolder gets activated
 	private void OnValidate() { Unfold(); }
 
 
@@ -41,9 +45,9 @@ public class Unfolder : MonoBehaviour
 
 	public void Unfold()
 	{
-		
-		newVertices = new List<Vector3>();
-		newFaceIndices = new List<List<int>>();
+		// polyhedra are made of vertices and faces
+		newVertices = new List<Vector3>(); // records the positions of all the vertices
+		newFaceIndices = new List<List<int>>(); // records the faces and the position of the vertices in the faces
 
 		UfEdges = new List<UfEdge>(); // Creates an empty list to store the edges of the polyhedron
 		ConnectedFaces = new List<Face>(); // Creates an empty list to store the faces that are connected in the tree
@@ -64,7 +68,7 @@ public class Unfolder : MonoBehaviour
 					{
 						// if the halfedge doesn't have a pair, then it doesn't need to be stored in a UfEdge
 						checkedHalfEdges.Add(h.Pair);
-						UfEdges.Add(new UfEdge(h, h.Pair)); // Adds the Halfedge, Face and their pairs to a UfEdge instance
+						UfEdges.Add(new UfEdge(h, h.Pair)); // Adds the Halfedge and its pair to a UfEdge instance
 					}
 				}
 			}
@@ -72,16 +76,16 @@ public class Unfolder : MonoBehaviour
 
 
 
-			var rootFace = new UfFace(originalPoly._conwayPoly.Faces[0]);
+			var rootFace = new UfFace(originalPoly._conwayPoly.Faces[0]); // selects the first face of the polyhedron to work from
 			var queue = new List<UfFace>(); // Faces to be stored and processed
-			var branched = new List<UfFace>();
+			var branched = new List<UfFace>(); // Faces that have been added to the tree
 			
-			List<UfFace> children = AddChildren(rootFace);
+			List<UfFace> children = AddChildren(rootFace); // finds the children of the root face
 			
 			foreach (UfFace c in children)
 			{
-				queue.Add(c);
-				branched.Add(c);
+				queue.Add(c); // added to the queue to find their children
+				branched.Add(c); // added to branched so it doesn't get added again
 			}
 
 			// Find the children of each item and add them to the queue and the branched list
@@ -89,6 +93,7 @@ public class Unfolder : MonoBehaviour
 			{
 				children = AddChildren(queue[0]);
 				
+				// if the queue contains a child, it's ignored
 				foreach (var c in children.Where(c => !queue.Contains(c)))
 				{
 					if (!branched.Contains(c)) {branched.Add(c);}
@@ -103,10 +108,9 @@ public class Unfolder : MonoBehaviour
 			branchedEdges.AddRange(UfEdges.Where(e => e.Branched));
 
 			// Vertices that are in branched edges
-			
 			Dictionary<Vertex, List<Face>> verticesInBranches = new Dictionary<Vertex, List<Face>>();
 
-			// Any vertex stored in this list won't be split later for unfolding
+			// Any vertex stored in this dictionary won't be split later for unfolding
 			foreach (UfEdge ufEdge in branchedEdges)
 			{
 				if (verticesInBranches.ContainsKey(ufEdge.Halfedge1.Vertex))
@@ -136,8 +140,8 @@ public class Unfolder : MonoBehaviour
 				}
 			}
 
-		RotateChildren(branchedEdges, verticesInBranches, branched);
-		ConstructMesh(newVertices, newFaceIndices);
+		RotateChildren(branchedEdges, verticesInBranches, branched); // rotates the faces of the polyhedron
+		ConstructMesh(newVertices, newFaceIndices); // constructs the mesh of the new face in the display
 	}
 
 
@@ -164,16 +168,17 @@ public class Unfolder : MonoBehaviour
 		{
 			
 			var constructedFaces = new List<string>(); // Faces which have been constructed already
-			var alreadyRotated = new Dictionary<string, int>();
-			var alteredEdges = new Dictionary<string, List<Vector3>>();
+			var alreadyRotated = new Dictionary<string, int>(); // Faces which have been rotated already
+			var alteredEdges = new Dictionary<string, List<Vector3>>(); // Edges that have been moved due to rotations
 			string alteredEdgeName = "";
 		
 			// Loops through all of the branched edges to unfold the polyhedron
 			for (var i = 0; (i < branchedEdges.Count); i++)
 			{
 				
-				UfEdge ufEdge = branchedEdges[i];
+				UfEdge ufEdge = branchedEdges[i]; 
 
+				// if the first face in the halfedge isn't constructed but the second is, then the halfedges are swapped
 				if (!constructedFaces.Contains(ufEdge.Halfedge1.Face.Name) && constructedFaces.Contains(ufEdge.Halfedge2.Face.Name))
 				{
 					var switchTemp = ufEdge.Halfedge1;
@@ -197,9 +202,14 @@ public class Unfolder : MonoBehaviour
 
 				if (!constructedFaces.Contains(ufEdge.Halfedge2.Face.Name))
 				{
-					// Finds the angle between the normals of both face
-					float angle = completionAngle;
-					//float angle = Vector3.Angle(ufEdge.Halfedge1.Face.Normal, ufEdge.Halfedge2.Face.Normal);
+					float angle = 0;
+					if (calculateAngle) {
+						// finds the angle between the normal of two faces
+						angle = Vector3.Angle(ufEdge.Halfedge1.Face.Normal, ufEdge.Halfedge2.Face.Normal);
+					} else {
+						// sets the angle to the value in the debug slider
+						angle = completionAngle;
+					}
 					
 					// Sets the axis of the rotation as the vector of the halfedge
 					string edgeName = ufEdge.Halfedge2.Name;
@@ -223,7 +233,7 @@ public class Unfolder : MonoBehaviour
 					
 					bool negative = false; // Which direction to rotate the children
 					var rotatedVertices = new HashSet<Vector3>(); // Make sure vertices aren't over-rotated
-
+			
 					if (alreadyRotated.ContainsKey(ufEdge.Halfedge2.Face.Name))
 					{
 						// Rotate an existing new face
@@ -256,33 +266,35 @@ public class Unfolder : MonoBehaviour
 							newVertices.Add(newVertex);
 							newRotatedFace.Add(newVertices.Count - 1);
 						}
-					
-						// The one that does get rotated
 						if (constructRotatedFace) newFaceIndices.Add(newRotatedFace);
 					}
 
+					// the code below was for when it rotated the wrong way, however on another look, it could have been an error with the test case
 
-					// checks if the dot product between the two faces are 1 or -1, AKA if they're on the same plane
-					// if (Vector3.Dot(ufEdge.Halfedge1.Face.Normal, ufEdge.Halfedge2.Face.Normal) != 1 &&
-					//     Vector3.Dot(ufEdge.Halfedge1.Face.Normal, ufEdge.Halfedge2.Face.Normal) != -1) {
+					//checks if the dot product between the two faces are 1 or -1, AKA if they're on the same plane
+					// if (Vector3.Dot(ufEdge.Halfedge1.Face.Normal, ufEdge.Halfedge2.Face.Normal) == 1) {
 					// 	Debug.Log("Negative Angle Required");
 					// 	negative = true; // notes which direction the children have to rotate towards
+					// 	newVertices.RemoveRange(newVertices.Count - newRotatedFace.Count, newRotatedFace.Count);
 					// 	var newFace2 = new List<int>();
 					// 	foreach (Vertex originalVertex in ufEdge.Halfedge2.Face.GetVertices()) {
 					// 		Vector3 newVertex = originalVertex.Position;
 					// 		// Only rotate vertices that aren't part of the hinge
-					// 		if (newVertex != ufEdge.Halfedge2.Vertex.Position && newVertex != ufEdge.Halfedge1.Vertex.Position) {
-					// 			newVertex -= ufEdge.Halfedge2.Vertex.Position;
-					// 			// rotates the vertices twice in the opposite direction to negate the effects of the first rotation
-					// 			newVertex = rotation2 * newVertex;
-					// 			newVertex = rotation2 * newVertex;
-					// 			newVertex += ufEdge.Halfedge2.Vertex.Position;
+					// 		if (newVertex != ufEdge.Halfedge2.Vertex.Position &&
+					// 		 	newVertex != ufEdge.Halfedge1.Vertex.Position)
+					// 		{
+					// 			if (rotationStage2) newVertex = RotatePoint(newVertex, (negative ? rotationq2 : rotationq1),
+					// 						(alreadyRotated.ContainsKey(ufEdge.Halfedge2.Face.Name) ? alteredEdges[alteredEdgeName][0] : ufEdge.Halfedge2.Vertex.Position));
 					// 		}
 					// 		newVertices.Add(newVertex);
 					// 		newFace2.Add(newVertices.Count - 1);
 					// 	}
-					// 	newFaceIndices.Add(newFace2);
+					// 	if (constructRotatedFace) newFaceIndices.Add(newFace2);
+					// } else {
+					// 	if (constructRotatedFace) newFaceIndices.Add(newRotatedFace);
 					// }
+
+
 				
 					
 					// Rotates face's descendents as well
@@ -429,7 +441,6 @@ public class Unfolder : MonoBehaviour
 			return root.Children;
 		}
 
-	
 	
 	
 	
