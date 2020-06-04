@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Wythoff;
 using UnityEngine;
-using UnityEngine.Experimental.XR;
+using Wythoff;
 using Debug = UnityEngine.Debug;
 using Random = System.Random;
 

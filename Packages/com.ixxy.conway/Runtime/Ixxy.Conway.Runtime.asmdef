@@ -1,8 +1,8 @@
 {
-    "name": "Conway",
+    "name": "Ixxy.Conway.Runtime",
     "references": [
-        "GUID:2966947d9da5e4bd9bf8866de2387b85",
-        "GUID:19a1e529cd747d049bb311988deeb64e"
+        "GUID:19a1e529cd747d049bb311988deeb64e",
+        "GUID:d60e483dbdfd1ef4e91c34837bd71a7e"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
