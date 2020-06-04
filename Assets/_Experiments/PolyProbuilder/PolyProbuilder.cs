@@ -11,8 +11,9 @@ public class PolyProbuilder : MonoBehaviour
     [ContextMenu("Probuilder Object")]
     public void Foo()
     {
-        var mesh = gameObject.GetComponent<MeshFilter>().sharedMesh;
-//        var pmesh = new ProBuilderMesh();
+        var poly = gameObject.GetComponent<PolyHydra>();
+        var pmesh = new ProBuilderMesh();
+
     }
 
 }
