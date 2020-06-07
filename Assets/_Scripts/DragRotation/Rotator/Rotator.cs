@@ -72,6 +72,7 @@ namespace DragRotation
 		/// <param name="state">The state of our drag</param>
 		public void OnDrag ( bool state )
 		{
+			if (EventSystem.current == null) return;
 			if (EventSystem.current.IsPointerOverGameObject()) return;
 			if( state == true )
 			{

@@ -345,6 +345,33 @@ public class PolyHydra : MonoBehaviour
 		public float audioLowAmount;
 		public float audioMidAmount;
 		public float audioHighAmount;
+
+		public ConwayOperator ChangeAmount(float val)
+		{
+			amount += val;
+			return this;
+		}
+		public ConwayOperator ChangeAmount2(float val)
+		{
+			amount2 += val;
+			return this;
+		}
+		public ConwayOperator ChangeOpType(int val)
+		{
+			opType += val;
+			opType = (Ops) Mathf.Clamp(
+				(int) opType, 0, Enum.GetNames(typeof(Ops)).Length - 1
+			);
+			return this;
+		}
+		public ConwayOperator ChangeFaceSelection(int val)
+		{
+			faceSelections += val;
+			faceSelections = (ConwayPoly.FaceSelections) Mathf.Clamp(
+				(int) faceSelections, 0, Enum.GetNames(typeof(ConwayPoly.FaceSelections)).Length - 1
+			);
+			return this;
+		}
 	}
 	public List<ConwayOperator> ConwayOperators;
 
@@ -1270,14 +1297,19 @@ public class PolyHydra : MonoBehaviour
 
 	private void OnValidate()
 	{
-		#if UNITY_EDITOR
-			// To prevent values getting out of sync
-			// ignore the inspector UI if we're showing the runtime UI
-			if (polyUI != null && EditorApplication.isPlayingOrWillChangePlaymode) return;
-		#endif
-
 		InitCacheIfNeeded();
+		#if UNITY_EDITOR
+				// To prevent values getting out of sync
+				// ignore the inspector UI if we're showing the runtime UI
+				if (polyUI != null && EditorApplication.isPlayingOrWillChangePlaymode) return;
+		#endif
+		Validate();
+		if (!gameObject.activeInHierarchy) return;
+		Rebuild();
+	}
 
+	public void Validate()
+	{
 		if (ShapeType == ShapeTypes.Uniform)
 		{
 			if (PrismP < 3) {PrismP = 3;}
@@ -1314,10 +1346,10 @@ public class PolyHydra : MonoBehaviour
 			{
 				op.amount = 0;
 			}
+
+			ConwayOperators[i] = op;
 		}
 
-		if (!gameObject.activeInHierarchy) return;
-		Rebuild();
 
 	}
 
