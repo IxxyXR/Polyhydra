@@ -207,6 +207,7 @@ public class PolyHydra : MonoBehaviour
 		Skeleton,
 		VertexScale,
 		VertexRotate,
+		FaceSlide,
 		VertexFlex,
 		FaceOffset,
 		FaceScale,
@@ -320,7 +321,7 @@ public class PolyHydra : MonoBehaviour
 		public float amount2SafeMax = 0.999f;
 		public bool usesFaces = false;
 		public bool usesRandomize = false;
-		public ConwayPoly.FaceSelections faceSelection = ConwayPoly.FaceSelections.All;
+		public FaceSelections faceSelection = FaceSelections.All;
 	}
 
 	public ConwayPoly GetConwayPoly()
@@ -333,7 +334,7 @@ public class PolyHydra : MonoBehaviour
 	[Serializable]
 	public struct ConwayOperator {
 		public Ops opType;
-		public ConwayPoly.FaceSelections faceSelections;
+		public FaceSelections faceSelections;
 		public bool randomize;
 		public float amount;
 		public float amount2;
@@ -367,8 +368,8 @@ public class PolyHydra : MonoBehaviour
 		public ConwayOperator ChangeFaceSelection(int val)
 		{
 			faceSelections += val;
-			faceSelections = (ConwayPoly.FaceSelections) Mathf.Clamp(
-				(int) faceSelections, 0, Enum.GetNames(typeof(ConwayPoly.FaceSelections)).Length - 1
+			faceSelections = (FaceSelections) Mathf.Clamp(
+				(int) faceSelections, 0, Enum.GetNames(typeof(FaceSelections)).Length - 1
 			);
 			return this;
 		}
@@ -409,9 +410,36 @@ public class PolyHydra : MonoBehaviour
 		Color.magenta
 	};
 
-	private Color[] faceColors;
+	private static Color[] DefaultFaceColors =
+		{
+			new Color(1.0f, 0.5f, 0.5f),
+			new Color(0.8f, 0.85f, 0.9f),
+			new Color(0.5f, 0.6f, 0.6f),
+			new Color(1.0f, 0.94f, 0.9f),
+			new Color(0.66f, 0.2f, 0.2f),
+			new Color(0.6f, 0.0f, 0.0f),
+			new Color(1.0f, 1.0f, 1.0f),
+			new Color(0.6f, 0.6f, 0.6f),
+			new Color(0.5f, 1.0f, 0.5f),
+			new Color(0.5f, 0.5f, 1.0f),
+			new Color(0.5f, 1.0f, 1.0f),
+			new Color(1.0f, 0.5f, 1.0f),
+		};
 
-	void InitConfigs()
+		// 	new Color(1.0f, 0.75f, 0.75f),
+		// 	new Color(1.0f, 0.5f, 0.5f),
+		// 	new Color(0.8f, 0.4f, 0.4f),
+		// 	new Color(0.8f, 0.8f, 0.8f),
+		// 	new Color(0.5f, 0.6f, 0.6f),
+		// 	new Color(0.6f, 0.0f, 0.0f),
+		// 	new Color(1.0f, 1.0f, 1.0f),
+		// 	new Color(0.6f, 0.6f, 0.6f),
+		// 	new Color(0.5f, 1.0f, 0.5f),
+		// 	new Color(0.5f, 0.5f, 1.0f),
+		// 	new Color(0.5f, 1.0f, 1.0f),
+		// 	new Color(1.0f, 0.5f, 1.0f),
+
+		void InitConfigs()
 	{
 
 		// TODO this has become unweidly now we have so many params
@@ -782,6 +810,18 @@ public class PolyHydra : MonoBehaviour
 				}
 			},
 			{
+				Ops.FaceSlide,
+				new OpConfig
+				{
+					usesFaces = true,
+					amountDefault = 0.5f,
+					amountMin = -4, amountMax = 4, amountSafeMin = -1, amountSafeMax = 1,
+					usesAmount2 = true,
+					amount2Min = -3f, amount2Max = 3f, amount2SafeMin = -1f, amount2SafeMax = 1f,
+					usesRandomize = true
+				}
+			},
+			{
 				Ops.VertexFlex,
 				new OpConfig
 				{
@@ -1009,36 +1049,6 @@ public class PolyHydra : MonoBehaviour
 	{
 		InitConfigs();
 
-	faceColors = new[]
-	{
-		new Color(1.0f, 0.5f, 0.5f),
-		new Color(0.8f, 0.85f, 0.9f),
-		new Color(0.5f, 0.6f, 0.6f),
-		new Color(1.0f, 0.94f, 0.9f),
-		new Color(0.66f, 0.2f, 0.2f),
-		new Color(0.6f, 0.0f, 0.0f),
-		new Color(1.0f, 1.0f, 1.0f),
-		new Color(0.6f, 0.6f, 0.6f),
-		new Color(0.5f, 1.0f, 0.5f),
-		new Color(0.5f, 0.5f, 1.0f),
-		new Color(0.5f, 1.0f, 1.0f),
-		new Color(1.0f, 0.5f, 1.0f),
-	};
-
-		// faceColors = new[] {
-		// 	new Color(1.0f, 0.75f, 0.75f),
-		// 	new Color(1.0f, 0.5f, 0.5f),
-		// 	new Color(0.8f, 0.4f, 0.4f),
-		// 	new Color(0.8f, 0.8f, 0.8f),
-		// 	new Color(0.5f, 0.6f, 0.6f),
-		// 	new Color(0.6f, 0.0f, 0.0f),
-		// 	new Color(1.0f, 1.0f, 1.0f),
-		// 	new Color(0.6f, 0.6f, 0.6f),
-		// 	new Color(0.5f, 1.0f, 0.5f),
-		// 	new Color(0.5f, 0.5f, 1.0f),
-		// 	new Color(0.5f, 1.0f, 1.0f),
-		// 	new Color(1.0f, 0.5f, 1.0f),
-		// };
 
 		Debug.unityLogger.logEnabled = EnableLogging;
 		InitCacheIfNeeded();
@@ -1614,11 +1624,11 @@ public class PolyHydra : MonoBehaviour
 				break;
 			case Ops.Skeleton:
 				conway = conway.FaceRemove(op.faceSelections);
-				if ((op.faceSelections==ConwayPoly.FaceSelections.New || op.faceSelections==ConwayPoly.FaceSelections.NewAlt) && op.opType == Ops.Skeleton)
+				if ((op.faceSelections==FaceSelections.New || op.faceSelections==FaceSelections.NewAlt) && op.opType == Ops.Skeleton)
 				{
 					// Nasty hack until I fix extrude
 					// Produces better results specific for PolyMidi
-					conway = conway.FaceScale(0f, ConwayPoly.FaceSelections.All, false);
+					conway = conway.FaceScale(0f, FaceSelections.All, false);
 				}
 				conway = conway.Extrude(amount, false, op.randomize);
 				break;
@@ -1644,6 +1654,9 @@ public class PolyHydra : MonoBehaviour
 			case Ops.VertexScale:
 				conway = conway.VertexScale(amount, op.faceSelections, op.randomize);
 				break;
+			case Ops.FaceSlide:
+				conway = conway.FaceSlide(amount, op.amount2, op.faceSelections, op.randomize);
+				break;
 			case Ops.FaceMerge:
 				conway = conway.FaceMerge(op.faceSelections);
 				break;
@@ -1657,7 +1670,7 @@ public class PolyHydra : MonoBehaviour
 				// TODO Faceroles ignored. Vertex Roles
 				// Split faces
 				var origRoles = conway.FaceRoles;
-				conway = conway.FaceScale(0, ConwayPoly.FaceSelections.All, false);
+				conway = conway.FaceScale(0, FaceSelections.All, false);
 				conway.FaceRoles = origRoles;
 				conway = conway.Offset(amount, op.faceSelections, op.randomize);
 				break;
@@ -1807,9 +1820,9 @@ public class PolyHydra : MonoBehaviour
 		}
 	}
 
-	public Mesh BuildMeshFromWythoffPoly(WythoffPoly source)
+	public Mesh BuildMeshFromWythoffPoly(WythoffPoly source, Color[] colors)
 	{
-
+		if (colors == null) colors = DefaultFaceColors;
 		var meshVertices = new List<Vector3>();
 		var meshTriangles = new List<int>();
 		var MeshVertexToVertex = new List<int>(); // Mapping of mesh vertices to poly vertices (one to many as we duplicate verts)
@@ -1835,7 +1848,7 @@ public class PolyHydra : MonoBehaviour
 					var yAxis = c - v0;
 					var xAxis = Vector3.Cross(yAxis, normal);
 
-					var faceColor = faceColors[(int) ((face.configuration + 2) % faceColors.Length)];
+					var faceColor = colors[(int) ((face.configuration + 2) % colors.Length)];
 					// Vertices
 					for (int i = 0; i < face.triangles.Length; i++) {
 						Vector3 vcoords = source.Vertices[face.triangles[i]].getVector3();
@@ -1912,7 +1925,7 @@ public class PolyHydra : MonoBehaviour
 		return originalFaceSides;
 	}
 
-	Vector3 Jitter(Vector3 val)
+	private static Vector3 Jitter(Vector3 val)
 	{
 		// Used to reduce Z fighting for coincident faces
 		float jitter = 0.0002f;
@@ -1921,13 +1934,12 @@ public class PolyHydra : MonoBehaviour
 
 	public Mesh BuildMeshFromConwayPoly()
 	{
-		return BuildMeshFromConwayPoly(this._conwayPoly);
+		return BuildMeshFromConwayPoly(_conwayPoly);
 	}
 
-
-	public Mesh BuildMeshFromConwayPoly(ConwayPoly conway)
+	public static Mesh BuildMeshFromConwayPoly(ConwayPoly conway, Color[] colors = null, ColorMethods colorMethod = ColorMethods.ByRole)
 	{
-
+		if (colors == null) colors = DefaultFaceColors;
 		var target = new Mesh();
 		var meshTriangles = new List<int>();
 		var meshVertices = new List<Vector3>();
@@ -1963,15 +1975,15 @@ public class PolyHydra : MonoBehaviour
 			Color32 color;
 
 			// TODO why do we need to do this check?
-			if (conway.FaceRoles != null && faceColors != null)
+			if (conway.FaceRoles != null && colors != null)
 			{
-				switch (ColorMethod)
+				switch (colorMethod)
 				{
 					case ColorMethods.ByRole:
-						color = faceColors[(int) conway.FaceRoles[i]];
+						color = colors[(int) conway.FaceRoles[i]];
 						break;
 					case ColorMethods.BySides:
-						color = faceColors[face.Sides % faceColors.Length];
+						color = colors[face.Sides % colors.Length];
 						break;
 					default:
 						color = Color.red;
@@ -2069,7 +2081,7 @@ public class PolyHydra : MonoBehaviour
 	}
 
 	// Returns true if at least one face matches the facesel rule but all of them
-	public bool FaceSelectionIsValid(ConwayPoly.FaceSelections facesel)
+	public bool FaceSelectionIsValid(FaceSelections facesel)
 	{
 		if (ConwayOperators.Count == 0) {
 			_conwayPoly = new ConwayPoly(WythoffPoly);  // We need a conway poly
@@ -2095,21 +2107,21 @@ public class PolyHydra : MonoBehaviour
 			throw;
 		}
 
-		ConwayPoly.FaceSelections faceSelection = ConwayPoly.FaceSelections.None;
-		var maxFaceSel = Enum.GetValues(typeof(ConwayPoly.FaceSelections)).Length - 1; // Exclude "None"
+		FaceSelections faceSelection = FaceSelections.None;
+		var maxFaceSel = Enum.GetValues(typeof(FaceSelections)).Length - 1; // Exclude "None"
 
 		try
 		{
 			// Keep picking a random facesel until we get one that will have an effect
 			while (!FaceSelectionIsValid(faceSelection))
 			{
-				faceSelection = (ConwayPoly.FaceSelections) Random.Range(1, maxFaceSel);
+				faceSelection = (FaceSelections) Random.Range(1, maxFaceSel);
 			}
 		}
 		catch (InvalidOperationException r)
 		{
 			Debug.LogWarning("Failed to pick a random FaceSel as the Wythoff to Conway conversion failed");
-			faceSelection = ConwayPoly.FaceSelections.All;
+			faceSelection = FaceSelections.All;
 		}
 
 		// TODO pick another facesel if all faces are chosen

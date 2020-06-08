@@ -247,48 +247,6 @@ namespace Conway
 			ExistingAlt,
 		}
 
-		public enum FaceSelections
-		{
-			All,
-			ThreeSided,
-			FourSided,
-			FiveSided,
-			SixSided,
-			SevenSided,
-			EightSided,
-			NineSided,
-			TenSided,
-			ElevenSided,
-			TwelveSided,
-			PSided,
-			QSided,
-			EvenSided,
-			OddSided,
-			FacingUp,
-			FacingStraightUp,
-			FacingDown,
-			FacingStraightDown,
-			FacingLevel,
-			FacingCenter,
-			FacingIn,
-			FacingOut,
-			Ignored,
-			Existing,
-			New,
-			NewAlt,
-			AllNew,
-			Alternate,
-			OnlyFirst,
-			ExceptFirst,
-			None,
-			Inner,
-			Outer,
-			Random,
-			TopHalf,
-			Smaller,
-			Larger,
-		}
-
 		public bool IsValid
 		{
 			get
@@ -611,7 +569,7 @@ namespace Conway
 			return (x % m + m) % m;
 		}
 
-		public ConwayPoly Truncate(float amount, FaceSelections vertexsel, bool randomize)
+		public ConwayPoly Truncate(float amount, FaceSelections vertexsel, bool randomize = false)
 		{
 
 			int GetVertID(Vertex v)
@@ -1227,7 +1185,7 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 		}
 
-		public ConwayPoly Kis(float offset, FaceSelections facesel, bool randomize, List<int> selectedFaces=null, bool scalebyArea=false)
+		public ConwayPoly Kis(float offset, FaceSelections facesel, bool randomize=false, List<int> selectedFaces=null, bool scalebyArea=false)
 		{
 			// vertices and faces to vertices
 			var vertexRoles = Enumerable.Repeat(Roles.Existing, Vertices.Count());
@@ -2988,6 +2946,42 @@ namespace Conway
 			return conway;
 		}
 
+		public ConwayPoly FaceSlide(float amount, float direction, FaceSelections facesel, bool randomize)
+		{
+			var poly = Duplicate();
+			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
+			{
+				var face = poly.Faces[faceIndex];
+				if (!IncludeFace(faceIndex, facesel)) continue;
+				var faceNormal = face.Normal;
+				//var amount = amount * (float) (randomize ? random.NextDouble() : 1);
+				var faceVerts = face.GetVertices();
+				for (var vertexIndex = 0; vertexIndex < faceVerts.Count; vertexIndex++)
+				{
+					var vertexPos = faceVerts[vertexIndex].Position;
+
+					Vector3 tangent, tangentLeft, tangentUp, t1, t2;
+
+					t1 = Vector3.Cross(faceNormal, Vector3.forward);
+					t2 = Vector3.Cross(faceNormal, Vector3.left);
+					if(t1.magnitude > t2.magnitude) {tangentUp = t1;}
+					else {tangentUp = t2;}
+
+					t2 = Vector3.Cross(faceNormal, Vector3.up);
+					if(t1.magnitude > t2.magnitude) {tangentLeft = t1;}
+					else {tangentLeft = t2;}
+
+					tangent = Vector3.SlerpUnclamped(tangentUp, tangentLeft, direction);
+
+					var vector = tangent * amount;
+					var newPos = vertexPos + vector;
+					faceVerts[vertexIndex].Position = newPos;
+				}
+			}
+
+			return poly;
+
+		}
 
 
 		public ConwayPoly VertexScale(float scale, FaceSelections vertexsel, bool randomize)
@@ -4669,6 +4663,10 @@ namespace Conway
 					return Faces[faceIndex].Normal.y > TOLERANCE;
 				case FaceSelections.FacingStraightUp:
 					return Vector3.Angle(Vector3.up, Faces[faceIndex].Normal) < TOLERANCE;
+				case FaceSelections.FacingForward:
+					return Faces[faceIndex].Normal.z > TOLERANCE;
+				case FaceSelections.FacingStraightForward:
+					return Vector3.Angle(Vector3.forward, Faces[faceIndex].Normal) < TOLERANCE;
 				case FaceSelections.FacingLevel:
 					return Math.Abs(Faces[faceIndex].Normal.y) < TOLERANCE;
 				case FaceSelections.FacingDown:

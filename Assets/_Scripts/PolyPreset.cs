@@ -30,7 +30,7 @@ public class PolyPreset {
 	[Serializable]
 	public struct Op {
 		[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.Ops OpType;
-		[JsonConverter(typeof(StringEnumConverter))] public ConwayPoly.FaceSelections FaceSelections;
+		[JsonConverter(typeof(StringEnumConverter))] public FaceSelections FaceSelections;
 		public float Amount;
 		public float Amount2;
 		public float AnimatedAmount; // Not needed for presets but needed for cache key generation

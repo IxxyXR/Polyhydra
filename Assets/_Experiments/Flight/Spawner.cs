@@ -72,7 +72,7 @@ public class Spawner : MonoBehaviour
         preset.Ops[0] = new PolyPreset.Op
         {
             OpType = PolyHydra.Ops.SitLevel,
-            FaceSelections = ConwayPoly.FaceSelections.All,
+            FaceSelections = FaceSelections.All,
             Amount = 0f,
             Randomize = false,
             Disabled = false
@@ -80,7 +80,7 @@ public class Spawner : MonoBehaviour
         preset.Ops[1] = new PolyPreset.Op
         {
             OpType = PolyHydra.Ops.Stretch,
-            FaceSelections = ConwayPoly.FaceSelections.ExceptFirst,
+            FaceSelections = FaceSelections.ExceptFirst,
             Amount = height,
             Randomize = false,
             Disabled = false
@@ -91,7 +91,7 @@ public class Spawner : MonoBehaviour
                 preset.Ops[2] = new PolyPreset.Op
                 {
                     OpType = PolyHydra.Ops.Kis,
-                    FaceSelections = ConwayPoly.FaceSelections.FacingUp,
+                    FaceSelections = FaceSelections.FacingUp,
                     Amount = Random.Range(0f, .5f),
                     Randomize = false,
                     Disabled = false
@@ -101,7 +101,7 @@ public class Spawner : MonoBehaviour
                 preset.Ops[2] = new PolyPreset.Op
                 {
                     OpType = PolyHydra.Ops.Extrude,
-                    FaceSelections = ConwayPoly.FaceSelections.FacingUp,
+                    FaceSelections = FaceSelections.FacingUp,
                     Amount = Random.Range(0f, .5f),
                     Randomize = false,
                     Disabled = false

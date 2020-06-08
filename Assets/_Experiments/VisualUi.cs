@@ -161,7 +161,7 @@ public class VisualUi : MonoBehaviour
             var newOp = new PolyHydra.ConwayOperator
             {
                 opType = opType,
-                faceSelections = ConwayPoly.FaceSelections.All,
+                faceSelections = FaceSelections.All,
                 randomize = false,
                 amount = copyPoly.opconfigs[opType].amountDefault,
                 disabled = false

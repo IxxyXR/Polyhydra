@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
-using Conway;
 using Forces;
 using UnityEngine;
-using Wythoff;
-using Random = UnityEngine.Random;
+
 
 public class PolyFDD : MonoBehaviour
 {
@@ -92,7 +89,7 @@ public class PolyFDD : MonoBehaviour
                     var v = Nodes[i];
                     newPoly.Vertices[i].Position = v.Position;
                 }
-                poly.AssignFinishedMesh(poly.BuildMeshFromConwayPoly(newPoly));
+                poly.AssignFinishedMesh(PolyHydra.BuildMeshFromConwayPoly(newPoly));
                 Built = true;
             }
             return;

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Wythoff;
 
 
 [ExecuteInEditMode]
@@ -26,10 +27,46 @@ public class ScreenCaptureTool : MonoBehaviour
         TakeShotNow();
     }
 
+    [ContextMenu("Take All Poly Screenshots")]
+    public void TakeAllPolyScreenshots()
+    {
+        StartCoroutine(nameof(DoTakeAllPolyScreenshots));
+    }
+
     [ContextMenu("Take All Preset Screenshots")]
     public void TakeAllPresetScreenshots()
     {
         StartCoroutine(nameof(DoTakeAllPresetScreenshots));
+    }
+
+    IEnumerator DoTakeAllPolyScreenshots()
+    {
+        var poly = FindObjectOfType<PolyHydra>();
+        poly.enableThreading = false;
+        poly.ConwayOperators.Clear();
+        foreach(var uniform in Uniform.Uniforms)
+        {
+            string wythoffSymbol;
+            Debug.Log($"{uniform.Index} {uniform.Name} {uniform.Wythoff}");
+            if (uniform.Index == 0 ) {continue;}
+            else if (uniform.Index < 6) {wythoffSymbol = uniform.Wythoff.Replace("p", "5");}
+            else {wythoffSymbol = uniform.Name;}
+            Debug.Log($"Building {wythoffSymbol}");
+            filename = PolyScreenShotName(uniform.Name);
+            Debug.Log(wythoffSymbol);
+            var wythoff = new WythoffPoly(wythoffSymbol);
+            wythoff.BuildFaces();
+            poly.WythoffPoly = wythoff;
+            poly.Rebuild();
+            yield return new WaitForSeconds(0.5f);
+            poly._conwayPoly.Recenter();
+            Vector3 target = poly._conwayPoly.GetCentroid();
+            camera.transform.LookAt(target);
+            yield return new WaitForSeconds(0.5f);
+            takeShot = true;
+            yield return true;
+        }
+        poly.enableThreading = true;
     }
 
     IEnumerator DoTakeAllPresetScreenshots()
@@ -56,6 +93,14 @@ public class ScreenCaptureTool : MonoBehaviour
     public static string PresetScreenShotName(PolyPreset preset)
     {
         return PresetScreenShotName(preset.Name);
+    }
+
+    public static string PolyScreenShotName(string polyName)
+    {
+        return string.Format("{0}/poly_{1}.png",
+            Application.persistentDataPath,
+            polyName
+        );
     }
 
     public static string PresetScreenShotName(string presetName)

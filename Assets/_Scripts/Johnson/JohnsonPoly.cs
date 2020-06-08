@@ -181,7 +181,7 @@ namespace Conway
 	        int sides = 10;
 	        float bodyHeight = _CalcSideLength(sides);
 	        ConwayPoly poly = Rotunda();
-	        poly = poly.Loft(0f, bodyHeight, ConwayPoly.FaceSelections.FacingDown);
+	        poly = poly.Loft(0f, bodyHeight, FaceSelections.FacingDown);
 	        return poly;
         }
 
@@ -190,7 +190,7 @@ namespace Conway
 	        int sides = 10;
 	        float bodyHeight = _CalcAntiprismHeight(sides);
 	        ConwayPoly poly = Rotunda();
-	        poly = poly.Lace(0f, ConwayPoly.FaceSelections.FacingDown, bodyHeight);
+	        poly = poly.Lace(0f, FaceSelections.FacingDown, bodyHeight);
 	        return poly;
         }
 
@@ -337,7 +337,7 @@ namespace Conway
         private static ConwayPoly _MakePyramid(int sides, float height)
         {
             ConwayPoly polygon = _MakePolygon(sides, true);
-            var poly = polygon.Kis(height, ConwayPoly.FaceSelections.All, false);
+            var poly = polygon.Kis(height, FaceSelections.All, false);
             var baseVerts = poly.Vertices.GetRange(0, sides);
             baseVerts.Reverse();
             poly.Faces.Insert(0, baseVerts);
@@ -360,7 +360,7 @@ namespace Conway
 			float height = _CalcSideLength(sides);
 			ConwayPoly poly = _MakePrism(sides, height);
 			height = _CalcPyramidHeight(sides);
-			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingUp, false);
+			poly = poly.Kis(height, FaceSelections.FacingUp, false);
 			return poly;
         }
 
@@ -368,7 +368,7 @@ namespace Conway
         {
 			ConwayPoly poly = ElongatedPyramid(sides);
 			float height = _CalcPyramidHeight(sides);
-			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingDown, false);
+			poly = poly.Kis(height, FaceSelections.FacingDown, false);
 			
 			return poly;
         }
@@ -379,7 +379,7 @@ namespace Conway
 			ConwayPoly poly = Antiprism(sides);
 
 			height = _CalcPyramidHeight(sides);
-			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingStraightUp, false);
+			poly = poly.Kis(height, FaceSelections.FacingStraightUp, false);
 			return poly;
 		}
 
@@ -387,7 +387,7 @@ namespace Conway
 		{
 			ConwayPoly poly = GyroelongatedPyramid(sides);
 			float height = _CalcPyramidHeight(sides);
-			poly = poly.Kis(height, ConwayPoly.FaceSelections.FacingStraightDown, false);
+			poly = poly.Kis(height, FaceSelections.FacingStraightDown, false);
 			return poly;
 		}
 
@@ -395,7 +395,7 @@ namespace Conway
         {
 	        ConwayPoly poly = Cupola(sides);
 	        float bodyHeight = _CalcSideLength(sides * 2);
-	        poly = poly.Loft(0f, bodyHeight, ConwayPoly.FaceSelections.OnlyFirst);
+	        poly = poly.Loft(0f, bodyHeight, FaceSelections.OnlyFirst);
 	        return poly;
         }
 
@@ -545,7 +545,7 @@ namespace Conway
         private static ConwayPoly _MakeDipyramid(int sides, float height)
         {
             ConwayPoly poly = _MakePyramid(sides, height);
-            poly = poly.Kis(height, ConwayPoly.FaceSelections.Existing, false);
+            poly = poly.Kis(height, FaceSelections.Existing, false);
             return poly;
         }
 
@@ -601,7 +601,7 @@ namespace Conway
             wythoffPoly.BuildFaces();
 
             var conwayPoly = new ConwayPoly(wythoffPoly);
-            conwayPoly = conwayPoly.FaceRemove(ConwayPoly.FaceSelections.FacingDown);
+            conwayPoly = conwayPoly.FaceRemove(FaceSelections.FacingDown);
             conwayPoly.FillHoles();
             return conwayPoly;
         }

@@ -349,14 +349,14 @@ public class PolyMidi : MonoBehaviour
                int colorIndex = column % 2 + nextOpBankNumber;
                if (column % 2 == 1)
                {
-                  if ((row % 2 == 0) && (op.faceSelections == ConwayPoly.FaceSelections.Existing || op.faceSelections == ConwayPoly.FaceSelections.New))
+                  if ((row % 2 == 0) && (op.faceSelections == FaceSelections.Existing || op.faceSelections == FaceSelections.New))
                   {
                      AkaiOutPort.SendNoteOn(0, note, MidiColorValues[colorIndex]);
                      akaiPrefab.SetGridButtonLED(column, row, colorIndex);
                      akaiPrefab.SetGridButtonIcon(column, row, op.opType);
 
                   }
-                  else if ((row % 2 == 1) && (op.faceSelections == ConwayPoly.FaceSelections.AllNew || op.faceSelections == ConwayPoly.FaceSelections.NewAlt))
+                  else if ((row % 2 == 1) && (op.faceSelections == FaceSelections.AllNew || op.faceSelections == FaceSelections.NewAlt))
                   {
                      AkaiOutPort.SendNoteOn(0, note, MidiColorValues[colorIndex]);
                      akaiPrefab.SetGridButtonLED(column, row, colorIndex);
@@ -576,21 +576,21 @@ public class PolyMidi : MonoBehaviour
       return nextActiveOp;
    }
 
-   private ConwayPoly.FaceSelections ConfigureFaceSelections(int column, int row)
+   private FaceSelections ConfigureFaceSelections(int column, int row)
    {
-      ConwayPoly.FaceSelections selectionType1;
-      ConwayPoly.FaceSelections selectionType2;
+      FaceSelections selectionType1;
+      FaceSelections selectionType2;
 
       int faceSelectionMode = row % 2;
       if (OpsWithExistingFaceMode.ToList().Contains(GetPreviousActiveOp(column).opType))
       {
-         selectionType1 = ConwayPoly.FaceSelections.Existing;
-         selectionType2 = ConwayPoly.FaceSelections.AllNew;
+         selectionType1 = FaceSelections.Existing;
+         selectionType2 = FaceSelections.AllNew;
       }
       else
       {
-         selectionType1 = ConwayPoly.FaceSelections.New;
-         selectionType2 = ConwayPoly.FaceSelections.NewAlt;
+         selectionType1 = FaceSelections.New;
+         selectionType2 = FaceSelections.NewAlt;
       }
 
       return faceSelectionMode == 0 ? selectionType1 : selectionType2;
