@@ -1,0 +1,7 @@
+{
+  "name": "com.nition.unityoctree",
+  "version": "1.0.0",
+  "displayName": "Unity Octree",
+  "unity": "2019.1",
+  "type": "library"
+}
