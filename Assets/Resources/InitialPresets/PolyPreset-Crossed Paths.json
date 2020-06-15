@@ -4,7 +4,7 @@
   "PolyTypeCategory": "Convex",
   "PolyType": "Polygonal_Prism",
   "JohnsonPolyType": "GyroBicupola",
-  "OtherPolyType": "L1",
+  "OtherPolyType": "L_Shape",
   "GridType": "Square",
   "GridShape": "Plane",
   "BypassOps": false,
@@ -26,7 +26,8 @@
       "AnimationAmount": 0.49,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     }
   ]
 }

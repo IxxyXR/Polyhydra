@@ -4,7 +4,7 @@
   "PolyTypeCategory": "All",
   "PolyType": "Small_Dodecicosidodecahedron",
   "JohnsonPolyType": "Dipyramid",
-  "OtherPolyType": "L1",
+  "OtherPolyType": "L_Shape",
   "GridType": "Square",
   "GridShape": "Plane",
   "BypassOps": false,
@@ -26,7 +26,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     },
     {
       "OpType": "FaceKeep",
@@ -41,7 +42,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     },
     {
       "OpType": "Recenter",
@@ -56,7 +58,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     },
     {
       "OpType": "Shell",
@@ -71,7 +74,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     },
     {
       "OpType": "AddMirrorX",
@@ -86,7 +90,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     }
   ]
 }

@@ -40,7 +40,7 @@ namespace Conway
                 vertexPoints.Add(new Vector3(Mathf.Cos(angle) * radius, heightOffset, Mathf.Sin(angle) * radius));
                 faceIndices[0][i] = i;
             }
-            
+
             return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
         }
 
@@ -68,6 +68,7 @@ namespace Conway
                 };
                 poly.Faces.Add(side1);
                 poly.FaceRoles.Add(ConwayPoly.Roles.New);
+                poly.FaceTags.Add(new HashSet<Tuple<string, ConwayPoly.TagType>>());
 
                 var side2 = new List<Vertex>
                 {
@@ -79,6 +80,7 @@ namespace Conway
                 poly.Faces.Add(side2);
                 squareSideFaces.Add(poly.Faces.Last());
                 poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
+                poly.FaceTags.Add(new HashSet<Tuple<string, ConwayPoly.TagType>>());
 
                 i++;
                 edge1 = edge1.Next.Next;
@@ -94,8 +96,10 @@ namespace Conway
 
                 i = 0;
                 var middleVerts = bottom.GetVertices();
+
                 poly.Faces.Remove(bottom);
                 poly.FaceRoles.RemoveAt(0);
+
                 edge2 = poly.Faces.Last().Halfedge.Prev;
                 int indexOffset = gyro ? 0 : -1;
                 while (true)
@@ -108,6 +112,7 @@ namespace Conway
                     };
                     poly.Faces.Add(side1);
                     poly.FaceRoles.Add(ConwayPoly.Roles.New);
+                    poly.FaceTags.Add(new HashSet<Tuple<string, ConwayPoly.TagType>>());
 
                     var side2 = new List<Vertex>
                     {
@@ -118,6 +123,7 @@ namespace Conway
                     };
                     poly.Faces.Add(side2);
                     poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
+                    poly.FaceTags.Add(new HashSet<Tuple<string, ConwayPoly.TagType>>());
 
                     i++;
                     edge2 = edge2.Next;
@@ -165,6 +171,7 @@ namespace Conway
                 };
                 poly.Faces.Add(pentFace);
                 poly.FaceRoles.Add(ConwayPoly.Roles.New);
+                poly.FaceTags.Add(new HashSet<Tuple<string, ConwayPoly.TagType>>());
 
                 i++;
                 edge1 = edge1.Next.Next;
@@ -190,7 +197,7 @@ namespace Conway
 	        int sides = 10;
 	        float bodyHeight = _CalcAntiprismHeight(sides);
 	        ConwayPoly poly = Rotunda();
-	        poly = poly.Lace(0f, FaceSelections.FacingDown, bodyHeight);
+	        poly = poly.Lace(0f, FaceSelections.FacingDown, "", bodyHeight);
 	        return poly;
         }
 
@@ -266,8 +273,7 @@ namespace Conway
             var edge2 = poly.Halfedges[sides];
             while (true)
             {
-
-                if (anti)
+	            if (anti)
                 {
                     var side1 = new List<Vertex>
                     {
@@ -277,6 +283,8 @@ namespace Conway
                     };
                     poly.Faces.Add(side1);
                     poly.FaceRoles.Add(ConwayPoly.Roles.New);
+                    poly.FaceTags.Add(new HashSet<Tuple<string, ConwayPoly.TagType>>());
+
 
                     var side2 = new List<Vertex>
                     {
@@ -286,6 +294,8 @@ namespace Conway
                     };
                     poly.Faces.Add(side2);
                     poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
+                    poly.FaceTags.Add(new HashSet<Tuple<string, ConwayPoly.TagType>>());
+
                 }
                 else
                 {
@@ -298,6 +308,7 @@ namespace Conway
                     };
                     poly.Faces.Add(side);
                     poly.FaceRoles.Add(ConwayPoly.Roles.New);
+                    poly.FaceTags.Add(new HashSet<Tuple<string, ConwayPoly.TagType>>());
 
                 }
 
@@ -337,11 +348,12 @@ namespace Conway
         private static ConwayPoly _MakePyramid(int sides, float height)
         {
             ConwayPoly polygon = _MakePolygon(sides, true);
-            var poly = polygon.Kis(height, FaceSelections.All, false);
+            var poly = polygon.Kis(height, FaceSelections.All);
             var baseVerts = poly.Vertices.GetRange(0, sides);
             baseVerts.Reverse();
             poly.Faces.Insert(0, baseVerts);
             poly.FaceRoles.Insert(0, ConwayPoly.Roles.Existing);
+            poly.FaceTags.Insert(0, new HashSet<Tuple<string, ConwayPoly.TagType>>());
             poly.Halfedges.MatchPairs();
             return poly;
         }
@@ -360,7 +372,7 @@ namespace Conway
 			float height = _CalcSideLength(sides);
 			ConwayPoly poly = _MakePrism(sides, height);
 			height = _CalcPyramidHeight(sides);
-			poly = poly.Kis(height, FaceSelections.FacingUp, false);
+			poly = poly.Kis(height, FaceSelections.FacingUp);
 			return poly;
         }
 
@@ -368,7 +380,7 @@ namespace Conway
         {
 			ConwayPoly poly = ElongatedPyramid(sides);
 			float height = _CalcPyramidHeight(sides);
-			poly = poly.Kis(height, FaceSelections.FacingDown, false);
+			poly = poly.Kis(height, FaceSelections.FacingDown);
 			
 			return poly;
         }
@@ -379,7 +391,7 @@ namespace Conway
 			ConwayPoly poly = Antiprism(sides);
 
 			height = _CalcPyramidHeight(sides);
-			poly = poly.Kis(height, FaceSelections.FacingStraightUp, false);
+			poly = poly.Kis(height, FaceSelections.FacingStraightUp);
 			return poly;
 		}
 
@@ -387,7 +399,7 @@ namespace Conway
 		{
 			ConwayPoly poly = GyroelongatedPyramid(sides);
 			float height = _CalcPyramidHeight(sides);
-			poly = poly.Kis(height, FaceSelections.FacingStraightDown, false);
+			poly = poly.Kis(height, FaceSelections.FacingStraightDown);
 			return poly;
 		}
 
@@ -405,33 +417,41 @@ namespace Conway
 			Face bottom = poly.Faces[sides * 2];
 			int i = 0;
 			var middleVerts = bottom.GetVertices();
+
 			poly.Faces.Remove(bottom);
 			poly.FaceRoles.RemoveAt(poly.FaceRoles.Count - 1);
+			poly.FaceTags.RemoveAt(poly.FaceRoles.Count - 1);
+
 			float baseOffset = -(_CalcSideLength(sides * 2) + _CalcCupolaHeight(sides));
-			ConwayPoly cap2 = _MakePolygon(sides, false, 0.25f, baseOffset, _CalcCupolaCapRadius(sides));
+			float angleOffset = gyro ? 0.75f : 0.25f;
+			ConwayPoly cap2 = _MakePolygon(sides, false, angleOffset, baseOffset, _CalcCupolaCapRadius(sides));
 			poly.Append(cap2);
 			var edge2 = poly.Faces.Last().Halfedge.Prev;
+
+			int edgeOffset = gyro ? 0 : 1;
 
 			while (true)
 			{
 					var side1 = new List<Vertex>
 					{
-						middleVerts[PolyUtils.ActualMod(i * 2 - 2, sides * 2)],
-						middleVerts[PolyUtils.ActualMod(i * 2 - 1, sides * 2)],
+						middleVerts[PolyUtils.ActualMod(i * 2 - 1 - edgeOffset, sides * 2)],
+						middleVerts[PolyUtils.ActualMod(i * 2 - edgeOffset, sides * 2)],
 						edge2.Vertex
 					};
 					poly.Faces.Add(side1);
 					poly.FaceRoles.Add(ConwayPoly.Roles.New);
+					poly.FaceTags.Add(new HashSet<Tuple<string, ConwayPoly.TagType>>());
 
 				var side2 = new List<Vertex>
 				{
-					middleVerts[PolyUtils.ActualMod(i * 2 - 1, sides * 2)],
-					middleVerts[PolyUtils.ActualMod(i * 2, sides * 2)],
+					middleVerts[PolyUtils.ActualMod(i * 2 - edgeOffset, sides * 2)],
+					middleVerts[PolyUtils.ActualMod(i * 2 + 1 - edgeOffset, sides * 2)],
 					edge2.Next.Vertex,
 					edge2.Vertex,
 				};
 				poly.Faces.Add(side2);
 				poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
+				poly.FaceTags.Add(new HashSet<Tuple<string, ConwayPoly.TagType>>());
 
 				i++;
 				edge2 = edge2.Next;
@@ -453,6 +473,7 @@ namespace Conway
 			var middleVerts = topFace.GetVertices();
 			poly.Faces.Remove(topFace);
 			poly.FaceRoles.RemoveAt(1);
+			poly.FaceTags.RemoveAt(1);
 
 			var edge2 = poly.Faces.Last().Halfedge.Prev;
 			while (true)
@@ -465,6 +486,7 @@ namespace Conway
 				};
 				poly.Faces.Add(side1);
 				poly.FaceRoles.Add(ConwayPoly.Roles.New);
+				poly.FaceTags.Add(new HashSet<Tuple<string, ConwayPoly.TagType>>());
 
 				var side2 = new List<Vertex>
 				{
@@ -475,6 +497,7 @@ namespace Conway
 				};
 				poly.Faces.Add(side2);
 				poly.FaceRoles.Add(ConwayPoly.Roles.NewAlt);
+				poly.FaceTags.Add(new HashSet<Tuple<string, ConwayPoly.TagType>>());
 
 				i++;
 				edge2 = edge2.Next;
@@ -499,6 +522,7 @@ namespace Conway
 			var middleVerts = bottomFace.GetVertices();
 			poly.Faces.Remove(bottomFace);
 			poly.FaceRoles.RemoveAt(0);
+			poly.FaceTags.RemoveAt(0);
 			var edge2 = poly.Faces.Last().Halfedge.Prev;
 			while (true)
 			{
@@ -545,7 +569,7 @@ namespace Conway
         private static ConwayPoly _MakeDipyramid(int sides, float height)
         {
             ConwayPoly poly = _MakePyramid(sides, height);
-            poly = poly.Kis(height, FaceSelections.Existing, false);
+            poly = poly.Kis(height, FaceSelections.Existing);
             return poly;
         }
 
@@ -606,7 +630,7 @@ namespace Conway
             return conwayPoly;
         }
 
-        public static ConwayPoly L1()
+        public static ConwayPoly L_Shape()
 			{
 				var verts = new List<Vector3>();
 				for (var i = -0.25f; i <= 0.25f; i+=0.5f)
@@ -639,7 +663,7 @@ namespace Conway
 				return new ConwayPoly(verts, faces, faceRoles, vertexRoles);
 			}
 
-		public static ConwayPoly L2()
+		public static ConwayPoly L_Alt_Shape()
 		{
 			var verts = new List<Vector3>();
 			for (var i = -0.25f; i <= 0.25f; i+=0.5f)
@@ -676,23 +700,24 @@ namespace Conway
 			return new ConwayPoly(verts, faces, faceRoles, vertexRoles);
 		}
 
-		public static ConwayPoly Test2Triangle()
+		public static ConwayPoly C_Shape()
 		{
-			var verts = new List<Vector3>();
-			verts.Add(new Vector3(0.5f, 0, 0));
-			verts.Add(new Vector3(-0.5f, 0, 0));
-			verts.Add(new Vector3(0, 0, -0.5f));
-			verts.Add(new Vector3(0, 0.5f, -0.5f));
+			var conway = ConwayPoly.MakeUnitileGrid(1, 0, 2, 3);
+			conway = conway._FaceRemove(FaceSelections.All, "", false, f => conway.Faces.IndexOf(f)==4);
+			return conway;
+		}
 
-			var faces = new List<List<int>>
-			{
-				new List<int>{0,1,2},
-				new List<int>{3,1,0}
-			};
+		public static ConwayPoly H_Shape()
+		{
+			var conway = ConwayPoly.MakeUnitileGrid(1, 0, 3, 3);
+			conway = conway._FaceRemove(FaceSelections.All, "", false, f => conway.Faces.IndexOf(f)==3);
+			conway = conway._FaceRemove(FaceSelections.All, "", false, f => conway.Faces.IndexOf(f)==4);
+			return conway;
+		}
 
-			var faceRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, 2);
-			var vertexRoles = Enumerable.Repeat(ConwayPoly.Roles.Existing, 4);
-			return new ConwayPoly(verts, faces, faceRoles, vertexRoles);
+		public static ConwayPoly Polygon(int sides)
+		{
+			return _MakePolygon(sides, true);
 		}
 
 		public static ConwayPoly Test3Triangle()

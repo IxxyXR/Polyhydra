@@ -4,7 +4,7 @@
   "PolyTypeCategory": "All",
   "PolyType": "Great_Dodecadodecahedron",
   "JohnsonPolyType": "Prism",
-  "OtherPolyType": "L1",
+  "OtherPolyType": "L_Shape",
   "GridType": "Square",
   "GridShape": "Plane",
   "BypassOps": false,
@@ -26,7 +26,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     },
     {
       "OpType": "Kis",
@@ -41,7 +42,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     }
   ]
 }

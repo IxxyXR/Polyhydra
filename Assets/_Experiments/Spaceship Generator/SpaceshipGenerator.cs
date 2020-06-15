@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Conway;
+﻿using Conway;
 using UnityEngine;
 using Random = UnityEngine.Random;
+
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
@@ -61,14 +58,14 @@ public class SpaceshipGenerator : MonoBehaviour
                 var wingFaces = spaceship.Duplicate();
                 wingFaces = wingFaces.FaceKeep(FaceSelections.AllNew);
                 wingFaces = wingFaces.FaceKeep(FaceSelections.FacingLevel);
-                wingFaces = wingFaces.FaceScale(Random.Range(0, 0.5f), FaceSelections.All, false);
+                wingFaces = wingFaces.FaceScale(Random.Range(0, 0.5f), FaceSelections.All);
                 wingFaces = wingFaces.Loft(Random.Range(0, 1f), Random.Range(.5f, 2f));
                 for (int i=0; i<Random.Range(0, 3); i++)
                 {
                     wingFaces = wingFaces.Loft(Random.Range(0, 1f), Random.Range(.15f, 1.5f), FaceSelections.Existing);
                     if (Random.value < 0.5f)
                     {
-                        wingFaces = wingFaces.FaceSlide(Random.Range(-.5f, .5f), Random.Range(0, 1), FaceSelections.Existing, false);
+                        wingFaces = wingFaces.FaceSlide(Random.Range(-.5f, .5f), Random.Range(0, 1), FaceSelections.Existing);
 
                     }
                 }
@@ -90,7 +87,7 @@ public class SpaceshipGenerator : MonoBehaviour
                 {
                     if (Random.value < ChanceOfLaceSegment)
                     {
-                        spaceship = spaceship.Lace(Random.Range(loftLow, loftHigh), FaceSelections.FacingStraightForward, Random.Range(.2f, .5f));
+                        spaceship = spaceship.Lace(Random.Range(loftLow, loftHigh), FaceSelections.FacingStraightForward, "", Random.Range(.2f, .5f));
                         MakeWings();
                     }
                     else if (Random.value < ChanceOfTruncateSegment)
@@ -109,7 +106,7 @@ public class SpaceshipGenerator : MonoBehaviour
                     spaceship = spaceship.Loft(Random.Range(.5f, 0), Random.Range(0.05f, .3f), FaceSelections.AllNew);
                 }
 
-                spaceship = spaceship.FaceSlide(Random.Range(-.3f, .3f), 0, FaceSelections.FacingStraightForward, false);
+                spaceship = spaceship.FaceSlide(Random.Range(-.3f, .3f), 0, FaceSelections.FacingStraightForward);
 
             }
             spaceship = spaceship.Rotate(Vector3.up, 180);

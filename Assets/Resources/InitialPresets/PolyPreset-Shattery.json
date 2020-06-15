@@ -4,7 +4,7 @@
   "PolyTypeCategory": "All",
   "PolyType": "Snub_Dodecahedron",
   "JohnsonPolyType": "Prism",
-  "OtherPolyType": "L1",
+  "OtherPolyType": "L_Shape",
   "GridType": "Isometric",
   "GridShape": "Cylinder",
   "BypassOps": false,
@@ -26,7 +26,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     },
     {
       "OpType": "Expand",
@@ -41,7 +42,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     },
     {
       "OpType": "Stake",
@@ -56,7 +58,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     },
     {
       "OpType": "Chamfer",
@@ -71,7 +74,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     },
     {
       "OpType": "OppositeLace",
@@ -86,7 +90,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     },
     {
       "OpType": "OppositeLace",
@@ -101,7 +106,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     },
     {
       "OpType": "Stake",
@@ -116,7 +122,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     },
     {
       "OpType": "Whirl",
@@ -131,7 +138,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     }
   ]
 }

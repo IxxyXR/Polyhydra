@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 public class AppearancePreset
 {
     public string Name;
-    [FormerlySerializedAs("PolyhedronMaterial")] public Material PolyhedronMaterialHDRP;
+    public Material PolyhedronMaterialHDRP;
     public Material PolyhedronMaterialURP;
     public PolyHydra.ColorMethods PolyhedronColorMethod;
     public List<GameObject> ActiveProps;

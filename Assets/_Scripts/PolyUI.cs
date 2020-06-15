@@ -374,6 +374,7 @@ public class PolyUI : MonoBehaviour {
 
         opPrefabManager.AmountSlider.value = opConfig.amountDefault;
         opPrefabManager.Amount2Slider.value = opConfig.amount2Default;
+        opPrefabManager.TagsInput.gameObject.SetActive(opConfig.usesTags);
 
         if (poly.SafeLimits)
         {
@@ -429,6 +430,7 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.AudioLowAmountInput.text = op.audioLowAmount.ToString();
         opPrefabManager.AudioMidAmountInput.text = op.audioMidAmount.ToString();
         opPrefabManager.AudioHighAmountInput.text = op.audioHighAmount.ToString();
+        opPrefabManager.TagsInput.text = op.Tags;
         AnimateToggleChanged(op.animate);
 
         opPrefabManager.OpTypeDropdown.onValueChanged.AddListener(delegate{OpTypeChanged();});
@@ -450,6 +452,7 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.AudioLowAmountInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
         opPrefabManager.AudioMidAmountInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
         opPrefabManager.AudioHighAmountInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
+        opPrefabManager.TagsInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
 
         opPrefabManager.Index = opPrefabs.Count;
         
@@ -546,6 +549,7 @@ public class PolyUI : MonoBehaviour {
             op.amount2 = opPrefabManager.Amount2Slider.value;
             op.randomize = opPrefabManager.RandomizeToggle.isOn;
             op.animate = opPrefabManager.ToggleAnimate.isOn;
+            op.Tags = opPrefabManager.TagsInput.text;
             float tempVal;
             if (float.TryParse(opPrefabManager.AnimRateInput.text, out tempVal)) op.animationRate = tempVal;
             if (float.TryParse(opPrefabManager.AnimAmountInput.text, out tempVal)) op.animationAmount = tempVal;

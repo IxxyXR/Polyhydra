@@ -25,6 +25,7 @@ public class OpPrefabManager : MonoBehaviour
     public InputField AudioLowAmountInput;
     public InputField AudioMidAmountInput;
     public InputField AudioHighAmountInput;
+    public InputField TagsInput;
 
 //    public void DisableAll()
 //    {

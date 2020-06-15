@@ -125,6 +125,18 @@ public class PolyPresets : MonoBehaviour {
 				"JohnsonPolyType\": \"ElongatedGyroBicupola"
 			)
 			.Replace(
+				"OtherPolyType\": \"L1",
+				"OtherPolyType\": \"L_Shape"
+			)
+			.Replace(
+				"OtherPolyType\": \"L2",
+				"OtherPolyType\": \"L_Alt_Shape"
+			)
+			.Replace(
+				"FaceSelections\": \"Alternate",
+				"FaceSelections\": \"Even"
+			)
+			.Replace(
 				"JohnsonPolyType\": \"Bicupola",
 				"JohnsonPolyType\": \"GyroBicupola"
 			);

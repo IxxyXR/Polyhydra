@@ -4,7 +4,9 @@ using System.IO;
 using Conway;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 [Serializable]
@@ -42,6 +44,7 @@ public class PolyPreset {
 		public float AudioLowAmount;
 		public float AudioMidAmount;
 		public float AudioHighAmount;
+		public string Tags;
 	}
 	
 	public Op[] Ops;
@@ -81,6 +84,7 @@ public class PolyPreset {
 				AudioLowAmount = polyOp.audioLowAmount,
 				AudioMidAmount = polyOp.audioMidAmount,
 				AudioHighAmount = polyOp.audioHighAmount,
+				Tags = polyOp.Tags
 			};
 			Ops[index] = op;
 		}
@@ -120,6 +124,7 @@ public class PolyPreset {
 				audioLowAmount = presetOp.AudioLowAmount,
 				audioMidAmount = presetOp.AudioMidAmount,
 				audioHighAmount = presetOp.AudioHighAmount,
+				Tags =  presetOp.Tags,
 			};
 			poly.ConwayOperators.Add(op);
 		}

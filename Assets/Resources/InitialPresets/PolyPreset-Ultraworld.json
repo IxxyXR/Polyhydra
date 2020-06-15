@@ -26,7 +26,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     },
     {
       "OpType": "FaceRemove",
@@ -41,7 +42,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     },
     {
       "OpType": "Identity",
@@ -56,7 +58,8 @@
       "AnimationAmount": 0.0,
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
-      "AudioHighAmount": 0.0
+      "AudioHighAmount": 0.0,
+      "Tags": null
     }
   ]
 }
