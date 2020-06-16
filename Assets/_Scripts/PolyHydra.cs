@@ -372,6 +372,11 @@ public class PolyHydra : MonoBehaviour
 			);
 			return this;
 		}
+
+		public ConwayOperator ChangeTags(int direction)
+		{
+			throw new NotImplementedException();
+		}
 	}
 	public List<ConwayOperator> ConwayOperators;
 
