@@ -1,26 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
+using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 
 
-public class FastUi : MonoBehaviour
+public class FastUiPrev : MonoBehaviour
 {
 
 
-    private int _PanelIndex;
-    private int _PanelItemIndex;
+    private int _RowIndex;
+    private int _ColumnIndex;
     private PolyHydra _Poly;
-    public Transform PanelContainer;
-    public Transform PanelPrefab;
-    public Transform TextButtonPrefab;
-    public Transform ValueButtonPrefab;
-    public Transform ImagePanelPrefab;
+    public Transform RowContainer;
+    public Transform RowPrefab;
+    public Transform ButtonPrefab;
     private List<PolyHydra.ConwayOperator> _Stack;
-    private List<List<Transform>> Widgets;
+    private List<List<Button>> Buttons;
     private enum ButtonType {
         ShapeType, GridType, UniformType, JohnsonType, OtherType,
         PolyTypeCategory, GridShape, PolyP, PolyQ,
@@ -37,45 +34,22 @@ public class FastUi : MonoBehaviour
         UpdateUI();
     }
 
-    private void GetPanelWidgets(int panelIndex, out List<Transform> panelWidgets, out List<ButtonType> panelWidgetTypes)
+    private void GetRowButtons(int rowIndex, out List<Button> rowButtons, out List<ButtonType> rowButtonTypes)
     {
-        panelWidgets = new List<Transform>();
-        panelWidgetTypes = new List<ButtonType>();
+        rowButtons = new List<Button>();
+        rowButtonTypes = new List<ButtonType>();
 
-        int stackIndex = panelIndex - 1;
-
-        var panelContainer = Instantiate(PanelPrefab, PanelContainer);
+        var rowContainer = Instantiate(RowPrefab, RowContainer);
 
         for (int i = 0; i <= 3; i++)
         {
-            Transform nextWidget = null;
-            (string label, ButtonType buttonType) = GetButton(panelIndex, i);
-
-            if (buttonType == ButtonType.OpType)
+            (string, ButtonType) nextButtonProps = GetButton(rowIndex, i);
+            if (nextButtonProps.Item2 != ButtonType.Unknown)
             {
-                nextWidget = Instantiate(TextButtonPrefab, panelContainer);
-                var img = Instantiate(ImagePanelPrefab, panelContainer);
-                img.GetComponentInChildren<SVGImage>().sprite = Resources.Load<Sprite>("Icons/" + _Stack[stackIndex].opType);
-            }
-            else if (buttonType == ButtonType.Amount || buttonType == ButtonType.Amount2)
-            {
-                nextWidget = Instantiate(ValueButtonPrefab, panelContainer);
-                (float amount, float amount2) = GetNormalisedAmountValues(_Stack[stackIndex]);
-                var rt = nextWidget.gameObject.GetComponentsInChildren<Image>().Last().transform as RectTransform;
-                var d = rt.sizeDelta;
-                d.x = buttonType == ButtonType.Amount ? amount : amount2;
-                rt.sizeDelta = d;
-            }
-            else if (buttonType == ButtonType.FaceSelection)
-            {
-                nextWidget = Instantiate(TextButtonPrefab, panelContainer);
-            }
-
-            if (nextWidget != null)
-            {
-                nextWidget.GetComponentInChildren<TextMeshProUGUI>().text = label;
-                panelWidgets.Add(nextWidget);
-                panelWidgetTypes.Add(buttonType);
+                var nextButton = Instantiate(ButtonPrefab, rowContainer).GetComponent<Button>();
+                nextButton.GetComponentInChildren<TextMeshProUGUI>().text = nextButtonProps.Item1;
+                rowButtons.Add(nextButton);
+                rowButtonTypes.Add(nextButtonProps.Item2);
             }
         }
     }
@@ -88,61 +62,61 @@ public class FastUi : MonoBehaviour
     void HandleKeyboardInput()
     {
 
-        int stackIndex = _PanelIndex - 1;
+        int stackIndex = _RowIndex - 1;
 
         bool uiDirty = false;
         bool polyDirty = false;
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            _PanelIndex -= 1;
-            _PanelIndex = Mathf.Clamp(_PanelIndex, 0, _Stack.Count);
-            _PanelItemIndex = Mathf.Clamp(_PanelItemIndex, 0, Widgets[_PanelIndex].Count - 1);
+            _RowIndex -= 1;
+            _RowIndex = Mathf.Clamp(_RowIndex, 0, _Stack.Count);
+            _ColumnIndex = Mathf.Clamp(_ColumnIndex, 0, Buttons[_RowIndex].Count - 1);
             uiDirty = true;
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            _PanelIndex += 1;
-            _PanelIndex = Mathf.Clamp(_PanelIndex, 0, _Stack.Count);
-            _PanelItemIndex = Mathf.Clamp(_PanelItemIndex, 0, Widgets[_PanelIndex].Count - 1);
+            _RowIndex += 1;
+            _RowIndex = Mathf.Clamp(_RowIndex, 0, _Stack.Count);
+            _ColumnIndex = Mathf.Clamp(_ColumnIndex, 0, Buttons[_RowIndex].Count - 1);
             uiDirty = true;
         }
-        else if (Input.GetKeyDown(KeyCode.W))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            _PanelItemIndex -= 1;
-            _PanelItemIndex = Mathf.Clamp(_PanelItemIndex, 0, Widgets[_PanelIndex].Count - 1);
+            _ColumnIndex -= 1;
+            _ColumnIndex = Mathf.Clamp(_ColumnIndex, 0, Buttons[_RowIndex].Count - 1);
             uiDirty = true;
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            _PanelItemIndex += 1;
-            _PanelItemIndex = Mathf.Clamp(_PanelItemIndex, 0, Widgets[_PanelIndex].Count - 1);
+            _ColumnIndex += 1;
+            _ColumnIndex = Mathf.Clamp(_ColumnIndex, 0, Buttons[_RowIndex].Count - 1);
             uiDirty = true;
         }
         else if (Input.GetKeyDown(KeyCode.Backspace))
         {
             if (stackIndex < 0) return;
             _Stack.RemoveAt(stackIndex);
-            _PanelIndex = Mathf.Clamp(_PanelIndex, 0, Widgets.Count - 1);
+            _RowIndex = Mathf.Clamp(_RowIndex, 0, Buttons.Count - 1);
             uiDirty = true;
             polyDirty = true;
         }
         else if (Input.GetKeyDown(KeyCode.Return))
         {
             _Stack.Insert(stackIndex + 1, new PolyHydra.ConwayOperator());
-            _PanelIndex += 1;
-            _PanelItemIndex = 0;
+            _RowIndex += 1;
+            _ColumnIndex = 0;
             uiDirty = true;
             polyDirty = true;
         }
-        else if (Input.GetKey(KeyCode.LeftArrow))
+        else if (Input.GetKey(KeyCode.A))
         {
-            ChangeValue(-1);
+            ChangeRow(-1);
             uiDirty = true;
             polyDirty = true;
         }
-        else if (Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.D))
         {
-            ChangeValue(1);
+            ChangeRow(1);
             uiDirty = true;
             polyDirty = true;
         }
@@ -155,29 +129,29 @@ public class FastUi : MonoBehaviour
         }
     }
 
-    private void ChangeValue(int direction)
+    private void ChangeRow(int direction)
     {
-        if (_PanelIndex == 0)
+        if (_RowIndex == 0)
         {
-            ChangeValueOnPolyPanel(direction);
+            ChangeBaseShapeRow(direction);
         }
         else
         {
-            ChangeValueOnOpPanel(direction);
+            ChangeOpRow(direction);
         }
     }
 
-    private void ChangeValueOnOpPanel(int direction)
+    private void ChangeOpRow(int direction)
     {
 
-        int stackIndex = _PanelIndex - 1;
+        int stackIndex = _RowIndex - 1;
 
-        ButtonType buttonType = ButtonTypeMapping[_PanelIndex][_PanelItemIndex];
+        ButtonType buttonType = ButtonTypeMapping[_RowIndex][_ColumnIndex];
         switch (buttonType)
         {
             case ButtonType.OpType:
                 // GetKey brought us here but we only want GetKeyDown in this case
-                if (!(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))) return;
+                if (!(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))) return;
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeOpType(direction);
                 break;
             case ButtonType.Amount:
@@ -188,23 +162,23 @@ public class FastUi : MonoBehaviour
                 break;
             case ButtonType.FaceSelection:
                 // GetKey brought us here but we only want GetKeyDown in this case
-                if (!(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))) return;
+                if (!(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))) return;
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeFaceSelection(direction);
                 break;
             case ButtonType.Tags:
                 // GetKey brought us here but we only want GetKeyDown in this case
-                if (!(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))) return;
+                if (!(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))) return;
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeTags(direction);
                 break;
         }
     }
 
-    void ChangeValueOnPolyPanel(int direction)
+    void ChangeBaseShapeRow(int direction)
     {
         // GetKey brought us here but we only want GetKeyDown in this case
-        if (!(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))) return;
+        if (!(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))) return;
         int idx;
-        switch (_PanelItemIndex)
+        switch (_ColumnIndex)
         {
             case 0:
                 idx = (int) _Poly.ShapeType;
@@ -259,19 +233,20 @@ public class FastUi : MonoBehaviour
 
     void UpdateUI()
     {
-        foreach (Transform child in PanelContainer)
+        foreach (Transform child in RowContainer)
         {
             Destroy(child.gameObject);
         }
 
-        Widgets = new List<List<Transform>>();
+        Buttons = new List<List<Button>>();
         ButtonTypeMapping = new List<List<ButtonType>>();
 
-        var polyWidgets = new List<Transform>();
-        var polyWidgetTypes = new List<ButtonType>();
-        var polyPanel = Instantiate(PanelPrefab, PanelContainer);
+        var polyRowButtons = new List<Button>();
+        var polyRowButtonTypes = new List<ButtonType>();
+        var polyRowContainer = Instantiate(RowPrefab, RowContainer);
 
-        Transform polyButton;
+        Button polyButton;
+        (string, ButtonType) polyButtonProps;
 
         int polyBtnCount = 2;
 
@@ -294,44 +269,39 @@ public class FastUi : MonoBehaviour
 
         for (int i = 0; i < polyBtnCount; i++)
         {
-            polyButton = Instantiate(TextButtonPrefab, polyPanel);
-            if (i == 2)
-            {
-                //Instantiate(ImagePanelPrefab, polyPanel);
-            }
-
-            (string label, ButtonType buttonType) = GetButton(0, i);
-            polyButton.GetComponentInChildren<TextMeshProUGUI>().text = label;
-            polyWidgets.Add(polyButton);
-            polyWidgetTypes.Add(buttonType);
+            polyButton = Instantiate(ButtonPrefab, polyRowContainer).GetComponent<Button>();
+            polyButtonProps = GetButton(0, i);
+            polyButton.GetComponentInChildren<TextMeshProUGUI>().text = polyButtonProps.Item1;
+            polyRowButtons.Add(polyButton);
+            polyRowButtonTypes.Add(polyButtonProps.Item2);
         }
 
-        Widgets.Add(polyWidgets);
-        ButtonTypeMapping.Add(polyWidgetTypes);
+        Buttons.Add(polyRowButtons);
+        ButtonTypeMapping.Add(polyRowButtonTypes);
 
-        for (var widgetIndex = 1; widgetIndex <= _Stack.Count; widgetIndex++)
+        for (var rowIndex = 1; rowIndex <= _Stack.Count; rowIndex++)
         {
-            var panelButtons = new List<Transform>();
-            var panelWidgetTypes = new List<ButtonType>();
-            GetPanelWidgets(widgetIndex, out panelButtons, out panelWidgetTypes);
-            Widgets.Add(panelButtons);
-            ButtonTypeMapping.Add(panelWidgetTypes);
+            var rowButtons = new List<Button>();
+            var rowButtonTypes = new List<ButtonType>();
+            GetRowButtons(rowIndex, out rowButtons, out rowButtonTypes);
+            Buttons.Add(rowButtons);
+            ButtonTypeMapping.Add(rowButtonTypes);
         }
 
-        for (int panelIndex=0; panelIndex < Widgets.Count; panelIndex++)
+        for (int rowIndex=0; rowIndex < Buttons.Count; rowIndex++)
         {
 
-            Color normalColor = panelIndex == 0 ? new Color(1, .8f, .8f) : Color.white;
+            Color normalColor = rowIndex == 0 ? new Color(1, .8f, .8f) : Color.white;
 
-            for (int widgetIndex = 0; widgetIndex < Widgets[panelIndex].Count; widgetIndex++)
+            for (int colIndex = 0; colIndex < Buttons[rowIndex].Count; colIndex++)
             {
-                var widget = Widgets[panelIndex][widgetIndex];
-                (string label, ButtonType buttonType) = GetButton(panelIndex, widgetIndex);
-                widget.GetComponentInChildren<TextMeshProUGUI>().text = label;
+                var btn = Buttons[rowIndex][colIndex];
+                var buttonProps = GetButton(rowIndex, colIndex);
+                btn.GetComponentInChildren<TextMeshProUGUI>().text = buttonProps.Item1;
 
-                var colors = widget.GetComponent<Button>().colors;
+                var colors = btn.colors;
 
-                if (panelIndex == _PanelIndex && _PanelItemIndex == widgetIndex)
+                if (rowIndex == _RowIndex && _ColumnIndex == colIndex)
                 {
                     colors.normalColor = Color.cyan;
                 }
@@ -340,19 +310,19 @@ public class FastUi : MonoBehaviour
                     colors.normalColor = normalColor;
                 }
 
-                widget.GetComponent<Button>().colors = colors;
+                btn.colors = colors;
             }
         }
     }
 
-    (string, ButtonType) GetButton(int currentPanelIndex, int widgetIndex)
+    (string, ButtonType) GetButton(int currentRowIndex, int col)
     {
         string label = "";
         ButtonType buttonType = ButtonType.Unknown;
 
-        if (currentPanelIndex == 0)
+        if (currentRowIndex == 0)
         {
-            switch (widgetIndex)
+            switch (col)
             {
                 case 0:
                     label = $"{_Poly.ShapeType}"
@@ -389,11 +359,11 @@ public class FastUi : MonoBehaviour
         else
         {
 
-            int stackIndex = currentPanelIndex - 1;
+            int stackIndex = currentRowIndex - 1;
 
             var opConfig = _Poly.opconfigs[_Stack[stackIndex].opType];
 
-            var lookup = (opConfig.usesAmount, opConfig.usesAmount2, opConfig.usesFaces, col: widgetIndex);
+            var lookup = (opConfig.usesAmount, opConfig.usesAmount2, opConfig.usesFaces, col);
 
             // Handle all the permutations of config, column and button type
             var logicTable = new Dictionary<(bool, bool, bool, int), ButtonType>
@@ -430,7 +400,7 @@ public class FastUi : MonoBehaviour
             };
 
 
-            if (widgetIndex == 0)
+            if (col == 0)
             {
                 buttonType = ButtonType.OpType;
             }
@@ -438,7 +408,7 @@ public class FastUi : MonoBehaviour
             {
                 if (_Stack[stackIndex].opType == PolyHydra.Ops.TagFaces)  // Special case
                 {
-                    switch (widgetIndex)
+                    switch (col)
                     {
                         case 1: buttonType = ButtonType.Tags; break;
                         case 2: buttonType = ButtonType.FaceSelection; break;
@@ -452,16 +422,14 @@ public class FastUi : MonoBehaviour
                 }
             }
 
-            (float amount, float amount2) = GetNormalisedAmountValues(_Stack[stackIndex]);
-
             switch (buttonType)
             {
                 case ButtonType.OpType:
                     label =  $"{_Stack[stackIndex].opType}"; break;
                 case ButtonType.Amount:
-                    label = $"{amount}"; break;
+                    label = $"{_Stack[stackIndex].amount}"; break;
                 case ButtonType.Amount2:
-                    label = $"{amount2}"; break;
+                    label = $"{_Stack[stackIndex].amount2}"; break;
                 case ButtonType.FaceSelection:
                     label =  $"{_Stack[stackIndex].faceSelections}"; break;
                 case ButtonType.Tags:
@@ -472,18 +440,4 @@ public class FastUi : MonoBehaviour
         return (label, buttonType);
     }
 
-    private (float, float) GetNormalisedAmountValues(PolyHydra.ConwayOperator conwayOperator)
-    {
-        var config = _Poly.opconfigs[conwayOperator.opType];
-        float rawVal = conwayOperator.amount;
-        float rawVal2 = conwayOperator.amount2;
-        float minVal = config.amountSafeMin;
-        float minVal2 = config.amount2SafeMin;
-        float maxVal = config.amountSafeMax;
-        float maxVal2 = config.amount2SafeMax;
-        return (
-            Mathf.Floor(Mathf.InverseLerp(minVal, maxVal, rawVal) * 100f),
-            Mathf.Floor(Mathf.InverseLerp(minVal2, maxVal2, rawVal2) * 100f)
-        );
-    }
 }

@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/Main.unity
     guid: ae3b8738f409d473c988551aa425c4d4
   - enabled: 0
@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_Scenes/Quest.unity
     guid: 872a85a437bd4904294ec9526c60ba96
+  - enabled: 1
+    path: Assets/_Experiments/FastUI/FastUI.unity
+    guid: a26cba0a4069dae45bbbd66cbf4b9ef0
   m_configObjects: {}
