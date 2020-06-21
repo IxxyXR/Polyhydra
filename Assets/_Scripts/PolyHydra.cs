@@ -346,6 +346,22 @@ public class PolyHydra : MonoBehaviour
 		public float audioHighAmount;
 		public string Tags;
 
+		public ConwayOperator ClampAmount(OpConfig config, bool safe=false)
+		{
+			float min = safe ? config.amountSafeMin : config.amountMax;
+			float max = safe ? config.amountSafeMax : config.amountMax;
+			amount = Mathf.Clamp(amount, min, max);
+			return this;
+		}
+
+		public ConwayOperator ClampAmount2(OpConfig config, bool safe=false)
+		{
+			float min = safe ? config.amount2SafeMin : config.amount2Min;
+			float max = safe ? config.amount2SafeMax : config.amount2Max;
+			amount2 = Mathf.Clamp(amount2, min, max);
+			return this;
+		}
+
 		public ConwayOperator ChangeAmount(float val)
 		{
 			amount += val;
@@ -376,6 +392,13 @@ public class PolyHydra : MonoBehaviour
 		public ConwayOperator ChangeTags(int direction)
 		{
 			throw new NotImplementedException();
+		}
+
+		public ConwayOperator SetDefaultValues(OpConfig config)
+		{
+			amount = config.amountDefault;
+			amount2 = config.amount2Default;
+			return this;
 		}
 	}
 	public List<ConwayOperator> ConwayOperators;

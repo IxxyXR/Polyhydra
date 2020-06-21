@@ -171,6 +171,7 @@ public class FastUi : MonoBehaviour
     {
 
         int stackIndex = _PanelIndex - 1;
+        var opConfig = _Poly.opconfigs[_Stack[stackIndex].opType];
 
         ButtonType buttonType = ButtonTypeMapping[_PanelIndex][_PanelItemIndex];
         switch (buttonType)
@@ -179,12 +180,15 @@ public class FastUi : MonoBehaviour
                 // GetKey brought us here but we only want GetKeyDown in this case
                 if (!(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))) return;
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeOpType(direction);
+                _Stack[stackIndex] = _Stack[stackIndex].SetDefaultValues(opConfig);
                 break;
             case ButtonType.Amount:
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeAmount(direction * 0.025f);
+                _Stack[stackIndex] = _Stack[stackIndex].ClampAmount(opConfig);
                 break;
             case ButtonType.Amount2:
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeAmount2(direction * 0.025f);
+                _Stack[stackIndex] = _Stack[stackIndex].ClampAmount2(opConfig);
                 break;
             case ButtonType.FaceSelection:
                 // GetKey brought us here but we only want GetKeyDown in this case
