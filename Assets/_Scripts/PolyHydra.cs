@@ -348,7 +348,7 @@ public class PolyHydra : MonoBehaviour
 
 		public ConwayOperator ClampAmount(OpConfig config, bool safe=false)
 		{
-			float min = safe ? config.amountSafeMin : config.amountMax;
+			float min = safe ? config.amountSafeMin : config.amountMin;
 			float max = safe ? config.amountSafeMax : config.amountMax;
 			amount = Mathf.Clamp(amount, min, max);
 			return this;

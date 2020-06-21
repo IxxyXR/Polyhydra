@@ -4,7 +4,9 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Wythoff;
 using Button = UnityEngine.UI.Button;
+using Random = UnityEngine.Random;
 
 
 public class FastUi : MonoBehaviour
@@ -92,7 +94,13 @@ public class FastUi : MonoBehaviour
 
         bool uiDirty = false;
         bool polyDirty = false;
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            var rb = _Poly.transform.parent.GetComponent<Rigidbody>();
+            rb.angularVelocity = new Vector3(Random.value, Random.value, Random.value);
+            rb.isKinematic = !rb.isKinematic;
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
         {
             _PanelIndex -= 1;
             _PanelIndex = Mathf.Clamp(_PanelIndex, 0, _Stack.Count);
@@ -360,17 +368,19 @@ public class FastUi : MonoBehaviour
             {
                 case 0:
                     label = $"{_Poly.ShapeType}"
-                        .Replace("Uniform", "Uniform Poly:")
-                        .Replace("Johnson", "Johnson Poly:")
-                        .Replace("Grid", "Grid:")
-                        .Replace("Other", "Other Poly:");
+                        .Replace("Uniform", "Wythoff Poly")
+                        .Replace("Johnson", "Johnson Poly")
+                        .Replace("Grid", "Grid")
+                        .Replace("Other", "Other Poly");
                     break;
                     buttonType = ButtonType.ShapeType;
                 case 1:
                     switch (_Poly.ShapeType)
                     {
                         case PolyHydra.ShapeTypes.Uniform:
-                            label = $"{_Poly.UniformPolyType}".Replace("_", " "); break;
+                            string uniformName = _Poly.UniformPolyType.ToString().Replace("_", " ");
+
+                            label = $"{uniformName}"; break;
                             buttonType = ButtonType.UniformType;
                         case PolyHydra.ShapeTypes.Grid:
                             label = $"{_Poly.GridType}"; break;
@@ -463,9 +473,9 @@ public class FastUi : MonoBehaviour
                 case ButtonType.OpType:
                     label =  $"{_Stack[stackIndex].opType}"; break;
                 case ButtonType.Amount:
-                    label = $"{amount}"; break;
+                    label = $"{amount}%"; break;
                 case ButtonType.Amount2:
-                    label = $"{amount2}"; break;
+                    label = $"{amount2}%"; break;
                 case ButtonType.FaceSelection:
                     label =  $"{_Stack[stackIndex].faceSelections}"; break;
                 case ButtonType.Tags:
