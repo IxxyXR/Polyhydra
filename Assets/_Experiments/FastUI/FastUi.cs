@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Random = UnityEngine.Random;
@@ -22,6 +25,7 @@ public class FastUi : MonoBehaviour
     public Transform ImagePanelPrefab;
     public TextMeshProUGUI DebugText;
 
+    private List<PolyPreset> Presets;
     private List<PolyHydra.ConwayOperator> _Stack;
     private List<List<Transform>> Widgets;
     private enum ButtonType {
@@ -38,6 +42,31 @@ public class FastUi : MonoBehaviour
         _Stack = _Poly.ConwayOperators;
 
         UpdateUI();
+        StartCoroutine(GetPresets("http://polyhydra.org.uk/api/presets/"));
+    }
+
+    IEnumerator GetPresets(string uri)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
+        {
+            // Request and wait for the desired page.
+            yield return webRequest.SendWebRequest();
+
+            string[] pages = uri.Split('/');
+            int page = pages.Length - 1;
+
+            if (webRequest.isNetworkError)
+            {
+                Debug.Log(pages[page] + ": Error: " + webRequest.error);
+                DebugText.text = webRequest.error;
+            }
+            else
+            {
+                var presetsDictionary = JsonConvert.DeserializeObject<Dictionary<string, RemotePreset>>(webRequest.downloadHandler.text);
+                var remotePresets = presetsDictionary.Values.ToList();
+                Presets = remotePresets.Select(item => item.preset).ToList();
+            }
+        }
     }
 
     private void GetPanelWidgets(int panelIndex, out List<Transform> panelWidgets, out List<ButtonType> panelWidgetTypes)
@@ -100,6 +129,14 @@ public class FastUi : MonoBehaviour
             var rb = _Poly.transform.parent.GetComponent<Rigidbody>();
             rb.angularVelocity = new Vector3(Random.value, Random.value, Random.value);
             rb.isKinematic = !rb.isKinematic;
+        }
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            var preset = Presets[Random.Range(0, Presets.Count)];
+            preset.ApplyToPoly(_Poly);
+            _Stack = _Poly.ConwayOperators;
+            uiDirty = true;
+            polyDirty = true;
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
@@ -501,4 +538,10 @@ public class FastUi : MonoBehaviour
             Mathf.Floor(Mathf.InverseLerp(minVal2, maxVal2, rawVal2) * 100f)
         );
     }
+}
+
+public struct RemotePreset
+{
+    public string thumbnail;
+    public PolyPreset preset;
 }
