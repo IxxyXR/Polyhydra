@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using Wythoff;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 

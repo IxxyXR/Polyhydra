@@ -4,7 +4,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Wythoff;
 using Button = UnityEngine.UI.Button;
 using Random = UnityEngine.Random;
 
@@ -21,6 +20,8 @@ public class FastUi : MonoBehaviour
     public Transform TextButtonPrefab;
     public Transform ValueButtonPrefab;
     public Transform ImagePanelPrefab;
+    public TextMeshProUGUI DebugText;
+
     private List<PolyHydra.ConwayOperator> _Stack;
     private List<List<Transform>> Widgets;
     private enum ButtonType {
