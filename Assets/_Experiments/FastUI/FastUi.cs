@@ -18,6 +18,8 @@ public class FastUi : MonoBehaviour
     private int _PanelIndex;
     private int _PanelItemIndex;
     private PolyHydra _Poly;
+
+    public int FrameSkip = 3;
     public Transform PanelContainer;
     public Transform PanelPrefab;
     public Transform TextButtonPrefab;
@@ -75,8 +77,11 @@ public class FastUi : MonoBehaviour
         panelWidgetTypes = new List<ButtonType>();
 
         int stackIndex = panelIndex - 1;
+        bool isDisabled = _Stack[stackIndex].disabled;
 
         var panelContainer = Instantiate(PanelPrefab, PanelContainer);
+        panelContainer.GetComponent<CanvasGroup>().alpha = isDisabled ? 0.5f : 1f;
+
 
         for (int i = 0; i <= 3; i++)
         {
@@ -106,6 +111,7 @@ public class FastUi : MonoBehaviour
             if (nextWidget != null)
             {
                 nextWidget.GetComponentInChildren<TextMeshProUGUI>().text = label;
+                // nextWidget.GetComponent<Button>().interactable = !isDisabled;
                 panelWidgets.Add(nextWidget);
                 panelWidgetTypes.Add(buttonType);
             }
@@ -138,27 +144,52 @@ public class FastUi : MonoBehaviour
             uiDirty = true;
             polyDirty = true;
         }
-        else if (Input.GetKeyDown(KeyCode.A))
+        else if (Input.GetKeyDown(KeyCode.M))
+        {
+            if (stackIndex < 0) return;
+            var op = _Stack[stackIndex];
+            op.disabled = !op.disabled;
+            _Stack[stackIndex] = op;
+            uiDirty = true;
+            polyDirty = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.L))
+        {
+            var rb = _Poly.transform.parent.GetComponent<Rigidbody>();
+            rb.isKinematic = !rb.isKinematic;
+            if (rb.isKinematic)
+            {
+                Transform parent = _Poly.transform.parent;
+                parent.rotation = Quaternion.identity;
+                _Poly.transform.parent = parent;
+            }
+            else
+            {
+                rb.angularVelocity = new Vector3(Random.value, Random.value, Random.value);
+            }
+            uiDirty = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Controller Right Stick X") < -0.1f)
         {
             _PanelIndex -= 1;
             _PanelIndex = Mathf.Clamp(_PanelIndex, 0, _Stack.Count);
             _PanelItemIndex = Mathf.Clamp(_PanelItemIndex, 0, Widgets[_PanelIndex].Count - 1);
             uiDirty = true;
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Controller Right Stick X") > 0.1f)
         {
             _PanelIndex += 1;
             _PanelIndex = Mathf.Clamp(_PanelIndex, 0, _Stack.Count);
             _PanelItemIndex = Mathf.Clamp(_PanelItemIndex, 0, Widgets[_PanelIndex].Count - 1);
             uiDirty = true;
         }
-        else if (Input.GetKeyDown(KeyCode.W))
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Controller Right Stick Y") > 0.1f)
         {
             _PanelItemIndex -= 1;
             _PanelItemIndex = Mathf.Clamp(_PanelItemIndex, 0, Widgets[_PanelIndex].Count - 1);
             uiDirty = true;
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Controller Right Stick Y") < -0.1f)
         {
             _PanelItemIndex += 1;
             _PanelItemIndex = Mathf.Clamp(_PanelItemIndex, 0, Widgets[_PanelIndex].Count - 1);
@@ -168,7 +199,7 @@ public class FastUi : MonoBehaviour
         {
             if (stackIndex < 0) return;
             _Stack.RemoveAt(stackIndex);
-            _PanelIndex = Mathf.Clamp(_PanelIndex, 0, Widgets.Count - 1);
+            _PanelIndex = Mathf.Clamp(_PanelIndex, 0, _Stack.Count);
             uiDirty = true;
             polyDirty = true;
         }
@@ -180,15 +211,27 @@ public class FastUi : MonoBehaviour
             uiDirty = true;
             polyDirty = true;
         }
-        else if (Input.GetKey(KeyCode.LeftArrow))
+        else if (Input.GetKey(KeyCode.A) || Input.GetAxis("Horizontal") < -0.1f)
         {
             ChangeValue(-1);
             uiDirty = true;
             polyDirty = true;
         }
-        else if (Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.D) || Input.GetAxis("Horizontal") > 0.1f)
         {
             ChangeValue(1);
+            uiDirty = true;
+            polyDirty = true;
+        }
+        else if (Input.GetKey(KeyCode.S) || Input.GetAxis("Vertical") < -0.1f)
+        {
+            ChangeValue(-10);
+            uiDirty = true;
+            polyDirty = true;
+        }
+        else if (Input.GetKey(KeyCode.W) || Input.GetAxis("Vertical") > 0.1f)
+        {
+            ChangeValue(10);
             uiDirty = true;
             polyDirty = true;
         }
@@ -213,37 +256,50 @@ public class FastUi : MonoBehaviour
         }
     }
 
+    private bool IsKeyDownValid()
+    {
+        return !(Input.GetKeyDown(KeyCode.A) ||
+                 Input.GetKeyDown(KeyCode.D) ||
+                 Input.GetKeyDown(KeyCode.W) ||
+                 Input.GetKeyDown(KeyCode.S)) &&
+               (Mathf.Abs(Input.GetAxis("Horizontal")) < 0.5f && Mathf.Abs(Input.GetAxis("Vertical")) < 0.5f);
+    }
+
+
     private void ChangeValueOnOpPanel(int direction)
     {
 
         int stackIndex = _PanelIndex - 1;
         var opConfig = _Poly.opconfigs[_Stack[stackIndex].opType];
 
+
         ButtonType buttonType = ButtonTypeMapping[_PanelIndex][_PanelItemIndex];
         switch (buttonType)
         {
             case ButtonType.OpType:
                 // GetKey brought us here but we only want GetKeyDown in this case
-                if (!(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))) return;
-                _Stack[stackIndex] = _Stack[stackIndex].ChangeOpType(direction);
+                if (IsKeyDownValid()) return;
+                _Stack[stackIndex] = _Stack[stackIndex].ChangeOpType(direction);_Stack[stackIndex] = _Stack[stackIndex].ChangeOpType(direction);
                 _Stack[stackIndex] = _Stack[stackIndex].SetDefaultValues(opConfig);
                 break;
             case ButtonType.Amount:
-                _Stack[stackIndex] = _Stack[stackIndex].ChangeAmount(direction * 0.025f);
+                if (Time.frameCount % FrameSkip == 0) return;  // Rate limit
+                _Stack[stackIndex] = _Stack[stackIndex].ChangeAmount(direction * 0.05f);
                 _Stack[stackIndex] = _Stack[stackIndex].ClampAmount(opConfig);
                 break;
             case ButtonType.Amount2:
-                _Stack[stackIndex] = _Stack[stackIndex].ChangeAmount2(direction * 0.025f);
+                if (Time.frameCount % FrameSkip == 0) return;  // Rate limit
+                _Stack[stackIndex] = _Stack[stackIndex].ChangeAmount2(direction * 0.05f);
                 _Stack[stackIndex] = _Stack[stackIndex].ClampAmount2(opConfig);
                 break;
             case ButtonType.FaceSelection:
                 // GetKey brought us here but we only want GetKeyDown in this case
-                if (!(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))) return;
+                if (IsKeyDownValid()) return;
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeFaceSelection(direction);
                 break;
             case ButtonType.Tags:
                 // GetKey brought us here but we only want GetKeyDown in this case
-                if (!(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))) return;
+                if (IsKeyDownValid()) return;
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeTags(direction);
                 break;
         }
@@ -252,7 +308,7 @@ public class FastUi : MonoBehaviour
     void ChangeValueOnPolyPanel(int direction)
     {
         // GetKey brought us here but we only want GetKeyDown in this case
-        if (!(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))) return;
+        if (IsKeyDownValid()) return;
         int idx;
         switch (_PanelItemIndex)
         {
@@ -311,7 +367,10 @@ public class FastUi : MonoBehaviour
     {
         foreach (Transform child in PanelContainer)
         {
-            Destroy(child.gameObject);
+            if (child.gameObject.name != "Main Menu")
+            {
+                Destroy(child.gameObject);
+            }
         }
 
         Widgets = new List<List<Transform>>();

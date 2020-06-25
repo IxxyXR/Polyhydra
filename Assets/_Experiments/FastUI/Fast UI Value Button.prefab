@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 7842874251724988332}
   - component: {fileID: 7842874251724988333}
   - component: {fileID: 7842874251724988338}
+  - component: {fileID: 8270989915821231409}
   m_Layer: 5
   m_Name: Fast UI Value Button
   m_TagString: Untagged
@@ -219,6 +220,18 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!225 &8270989915821231409
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7842874251724988335}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7842874252668514083
 GameObject:
   m_ObjectHideFlags: 0

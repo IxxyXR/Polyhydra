@@ -1,0 +1,627 @@
+{
+  "dependencies": {
+    "com.autodesk.fbx": {
+      "version": "3.0.1-preview.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.beans.deform": {
+      "version": "https://github.com/keenanwoodall/Deform.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.burst": "1.1.2",
+        "com.unity.mathematics": "1.1.0"
+      },
+      "hash": "c8fa347077eaa92234939ebfec0856c87e044423"
+    },
+    "com.ixxy.conway": {
+      "version": "file:com.ixxy.conway",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.ixxy.wythoff": {
+      "version": "file:com.ixxy.wythoff",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.nition.unityoctree": {
+      "version": "file:com.nition.unityoctree",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.unity.2d.sprite": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.2d.tilemap": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.burst": {
+      "version": "1.2.3",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.mathematics": "1.1.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.ext.nunit": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.formats.fbx": {
+      "version": "3.2.0-preview.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.recorder": "2.2.0-preview.4",
+        "com.unity.timeline": "1.0.0",
+        "com.autodesk.fbx": "3.0.1-preview.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.hdrp-measured-materials-car-paint": {
+      "version": "https://github.com/Unity-Repackages/hdrp-measured-materials-car-paint.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f32e14fa8a22a5cc20001b67c7aeb69901365efa"
+    },
+    "com.unity.hdrp-measured-materials-common": {
+      "version": "https://github.com/Unity-Repackages/hdrp-measured-materials-common.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "0d7f10654ba62ec53ed60244d28f8616ace12479"
+    },
+    "com.unity.hdrp-measured-materials-glass": {
+      "version": "https://github.com/Unity-Repackages/hdrp-measured-materials-glass.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "12d73c3e071f26db9b70e932e3cff5573160fbab"
+    },
+    "com.unity.hdrp-measured-materials-metals": {
+      "version": "https://github.com/Unity-Repackages/hdrp-measured-materials-metals.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "a07f05b3b73b297489bdaba5327d36cfcb7ae31d"
+    },
+    "com.unity.hdrp-measured-materials-mirror": {
+      "version": "https://github.com/Unity-Repackages/hdrp-measured-materials-mirror.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "0544efe4892de29647bb8947da42764dca1d6321"
+    },
+    "com.unity.hdrp-measured-materials-others": {
+      "version": "https://github.com/Unity-Repackages/hdrp-measured-materials-others.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "963c345e26c993e2a7b7a7473fc3a775eff1c0ee"
+    },
+    "com.unity.hdrp-measured-materials-plastic": {
+      "version": "https://github.com/Unity-Repackages/hdrp-measured-materials-plastic.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "17847fef8438dc0145f60153d13d9798e8b651a7"
+    },
+    "com.unity.hdrp-measured-materials-rubber": {
+      "version": "https://github.com/Unity-Repackages/hdrp-measured-materials-rubber.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "de3aa19e5ab888636d4c1a2924572c59621df5f1"
+    },
+    "com.unity.ide.rider": {
+      "version": "1.1.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.ide.visualstudio": {
+      "version": "1.0.11",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.ide.vscode": {
+      "version": "1.2.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.mathematics": {
+      "version": "1.1.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.probuilder": {
+      "version": "4.2.3",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.settings-manager": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.recorder": {
+      "version": "2.2.0-preview.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.timeline": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.render-pipelines.core": {
+      "version": "7.3.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.render-pipelines.high-definition": {
+      "version": "7.3.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "7.3.1",
+        "com.unity.shadergraph": "7.3.1",
+        "com.unity.visualeffectgraph": "7.3.1",
+        "com.unity.render-pipelines.high-definition-config": "7.3.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.render-pipelines.high-definition-config": {
+      "version": "7.3.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "7.3.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.render-pipelines.universal": {
+      "version": "7.3.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "7.3.1",
+        "com.unity.shadergraph": "7.3.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.settings-manager": {
+      "version": "1.0.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.shadergraph": {
+      "version": "7.3.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "7.3.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.test-framework": {
+      "version": "1.1.14",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ext.nunit": "1.0.0",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.textmeshpro": {
+      "version": "2.0.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.timeline": {
+      "version": "1.3.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.ugui": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.ui": "1.0.0"
+      }
+    },
+    "com.unity.urp-measured-materials-car-paint": {
+      "version": "https://github.com/Unity-Repackages/urp-measured-materials-car-paint.git#bare",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "6c659b4a4121ec053b0d8aa0a9b237b406449576"
+    },
+    "com.unity.urp-measured-materials-common": {
+      "version": "https://github.com/Unity-Repackages/urp-measured-materials-common.git#bare",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "85adfdb7d1bd28b0246a7a6c2e8e28da9786025e"
+    },
+    "com.unity.urp-measured-materials-glass": {
+      "version": "https://github.com/Unity-Repackages/urp-measured-materials-glass.git#bare",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "126e2a585484dffb566f5fc56441f85ff5ef655f"
+    },
+    "com.unity.urp-measured-materials-metals": {
+      "version": "https://github.com/Unity-Repackages/urp-measured-materials-metals.git#bare",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "83b15819a623113d43a157abd45c2ec17a486522"
+    },
+    "com.unity.urp-measured-materials-others": {
+      "version": "https://github.com/Unity-Repackages/urp-measured-materials-others.git#bare",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "4a88abeb77a92373de48a60650a495e6db88038b"
+    },
+    "com.unity.urp-measured-materials-plastic": {
+      "version": "https://github.com/Unity-Repackages/urp-measured-materials-plastic.git#bare",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "fb1e880e060f55b8d9368794f625b13d941dd926"
+    },
+    "com.unity.urp-measured-materials-rubber": {
+      "version": "https://github.com/Unity-Repackages/urp-measured-materials-rubber.git#bare",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "9122dbbd413c47d4bbed5081556a742ce8fa20cf"
+    },
+    "com.unity.vectorgraphics": {
+      "version": "2.0.0-preview.12",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.2d.sprite": "1.0.0",
+        "com.unity.ugui": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.visualeffectgraph": {
+      "version": "7.3.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.shadergraph": "7.3.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.oculus.android": {
+      "version": "2.38.6",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "jillejr.newtonsoft.json-for-unity": {
+      "version": "12.0.301",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://npm.cloudsmith.io/jillejr/newtonsoft-json-for-unity"
+    },
+    "jillejr.newtonsoft.json-for-unity.converters": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://npm.cloudsmith.io/jillejr/newtonsoft-json-for-unity"
+    },
+    "jp.keijiro.klak.motion": {
+      "version": "1.0.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.mathematics": "1.1.0"
+      },
+      "url": "https://registry.npmjs.com"
+    },
+    "jp.keijiro.lasp": {
+      "version": "https://github.com/keijiro/Lasp.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "a5a36a85884782d60ef0614bef7f23525a17ad54"
+    },
+    "jp.keijiro.rtmidi": {
+      "version": "1.0.3",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://registry.npmjs.com"
+    },
+    "com.unity.modules.ai": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.androidjni": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.animation": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.assetbundle": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.audio": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.cloth": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.physics": "1.0.0"
+      }
+    },
+    "com.unity.modules.director": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.audio": "1.0.0",
+        "com.unity.modules.animation": "1.0.0"
+      }
+    },
+    "com.unity.modules.imageconversion": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.imgui": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.jsonserialize": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.particlesystem": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.physics": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.physics2d": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.screencapture": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.imageconversion": "1.0.0"
+      }
+    },
+    "com.unity.modules.subsystems": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.jsonserialize": "1.0.0"
+      }
+    },
+    "com.unity.modules.terrain": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.terrainphysics": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.physics": "1.0.0",
+        "com.unity.modules.terrain": "1.0.0"
+      }
+    },
+    "com.unity.modules.tilemap": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.physics2d": "1.0.0"
+      }
+    },
+    "com.unity.modules.ui": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.uielements": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      }
+    },
+    "com.unity.modules.umbra": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.unityanalytics": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      }
+    },
+    "com.unity.modules.unitywebrequest": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.unitywebrequestassetbundle": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.assetbundle": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0"
+      }
+    },
+    "com.unity.modules.unitywebrequestaudio": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.audio": "1.0.0"
+      }
+    },
+    "com.unity.modules.unitywebrequesttexture": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.imageconversion": "1.0.0"
+      }
+    },
+    "com.unity.modules.unitywebrequestwww": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.unitywebrequestassetbundle": "1.0.0",
+        "com.unity.modules.unitywebrequestaudio": "1.0.0",
+        "com.unity.modules.audio": "1.0.0",
+        "com.unity.modules.assetbundle": "1.0.0",
+        "com.unity.modules.imageconversion": "1.0.0"
+      }
+    },
+    "com.unity.modules.vehicles": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.physics": "1.0.0"
+      }
+    },
+    "com.unity.modules.video": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.audio": "1.0.0",
+        "com.unity.modules.ui": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0"
+      }
+    },
+    "com.unity.modules.vr": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.modules.physics": "1.0.0",
+        "com.unity.modules.xr": "1.0.0"
+      }
+    },
+    "com.unity.modules.wind": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.xr": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.physics": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.modules.subsystems": "1.0.0"
+      }
+    }
+  }
+}
