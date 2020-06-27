@@ -233,7 +233,6 @@ public class PolyHydra : MonoBehaviour
 		Stack,
 		Layer,
 		Canonicalize,
-//		CanonicalizeI,
 		Spherize,
 		Recenter,
 		SitLevel,
@@ -1027,11 +1026,9 @@ public class PolyHydra : MonoBehaviour
 				Ops.Canonicalize,
 				new OpConfig
 				{
-					amountDefault = 0.1f,
-					amountMin = 0.0001f, amountMax = 1f, amountSafeMin = .1f, amountSafeMax = .2f
+					usesAmount = false,
 				}
 			},
-//			{Ops.CanonicalizeI, new OpConfig{amountDefault=200, amountMin=1, amountMax=400}},
 			{
 				Ops.Spherize,
 				new OpConfig
@@ -1771,7 +1768,7 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Layer(4, 1f - amount, amount / 10f, op.faceSelections, op.Tags);
 				break;
 			case Ops.Canonicalize:
-				conway = conway.Canonicalize(amount, amount);
+				conway = conway.Canonicalize(0.1f, 0.1f);
 				break;
 			case Ops.Spherize:
 				conway = conway.Spherize(amount, op.faceSelections);
