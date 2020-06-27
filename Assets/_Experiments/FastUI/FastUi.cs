@@ -16,11 +16,15 @@ public class FastUi : MonoBehaviour
 
 
     private int _PanelIndex;
-    private int _PanelItemIndex;
+    private int _PanelWidgetIndex;
     private PolyHydra _Poly;
 
     public int FrameSkip = 3;
+    public Color HighlightColor;
+    public Color MainMenuHighlightColor;
+    public Color ShapeButtonColor;
     public Transform PanelContainer;
+    public Transform MainMenuContainer;
     public Transform PanelPrefab;
     public Transform TextButtonPrefab;
     public Transform ValueButtonPrefab;
@@ -37,11 +41,14 @@ public class FastUi : MonoBehaviour
         Unknown
     }
     private List<List<ButtonType>> ButtonTypeMapping;
+    private int _MainMenuCount;
+    private int _CurrentMainMenuIndex = 0;
 
     void Start()
     {
         _Poly = FindObjectOfType<PolyHydra>();
         _Stack = _Poly.ConwayOperators;
+        _MainMenuCount = MainMenuContainer.childCount;
 
         UpdateUI();
         StartCoroutine(GetPresets("http://polyhydra.org.uk/api/presets/"));
@@ -123,6 +130,13 @@ public class FastUi : MonoBehaviour
         HandleKeyboardInput();
     }
 
+    int GetWidgetCount()
+    {
+        // Number of widgets in this column
+        // Special case for index -1 as it's the main menu
+        return _PanelIndex >= 0 ? Widgets[_PanelIndex].Count : _MainMenuCount;
+    }
+
     void HandleKeyboardInput()
     {
 
@@ -172,27 +186,27 @@ public class FastUi : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Controller Right Stick X") < -0.1f)
         {
             _PanelIndex -= 1;
-            _PanelIndex = Mathf.Clamp(_PanelIndex, 0, _Stack.Count);
-            _PanelItemIndex = Mathf.Clamp(_PanelItemIndex, 0, Widgets[_PanelIndex].Count - 1);
+            _PanelIndex = Mathf.Clamp(_PanelIndex, -1, _Stack.Count);
+            _PanelWidgetIndex = Mathf.Clamp(_PanelWidgetIndex, 0, GetWidgetCount() - 1);
             uiDirty = true;
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Controller Right Stick X") > 0.1f)
         {
             _PanelIndex += 1;
-            _PanelIndex = Mathf.Clamp(_PanelIndex, 0, _Stack.Count);
-            _PanelItemIndex = Mathf.Clamp(_PanelItemIndex, 0, Widgets[_PanelIndex].Count - 1);
+            _PanelIndex = Mathf.Clamp(_PanelIndex, -1, _Stack.Count);
+            _PanelWidgetIndex = Mathf.Clamp(_PanelWidgetIndex, 0, GetWidgetCount() - 1);
             uiDirty = true;
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Controller Right Stick Y") > 0.1f)
         {
-            _PanelItemIndex -= 1;
-            _PanelItemIndex = Mathf.Clamp(_PanelItemIndex, 0, Widgets[_PanelIndex].Count - 1);
+            _PanelWidgetIndex -= 1;
+            _PanelWidgetIndex = Mathf.Clamp(_PanelWidgetIndex, 0, GetWidgetCount() - 1);
             uiDirty = true;
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Controller Right Stick Y") < -0.1f)
         {
-            _PanelItemIndex += 1;
-            _PanelItemIndex = Mathf.Clamp(_PanelItemIndex, 0, Widgets[_PanelIndex].Count - 1);
+            _PanelWidgetIndex += 1;
+            _PanelWidgetIndex = Mathf.Clamp(_PanelWidgetIndex, 0, GetWidgetCount() - 1);
             uiDirty = true;
         }
         else if (Input.GetKeyDown(KeyCode.Backspace))
@@ -205,32 +219,43 @@ public class FastUi : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Return))
         {
-            _Stack.Insert(stackIndex + 1, new PolyHydra.ConwayOperator());
-            _PanelIndex += 1;
-            _PanelItemIndex = 0;
+            if (_PanelIndex == -1)
+            {
+                _CurrentMainMenuIndex = _PanelWidgetIndex;
+            }
+            else
+            {
+                _Stack.Insert(stackIndex + 1, new PolyHydra.ConwayOperator());
+                _PanelIndex += 1;
+                _PanelWidgetIndex = 0;
+                polyDirty = true;
+            }
             uiDirty = true;
-            polyDirty = true;
         }
         else if (Input.GetKey(KeyCode.A) || Input.GetAxis("Horizontal") < -0.1f)
         {
+            if (_PanelIndex < 0) return;
             ChangeValue(-1);
             uiDirty = true;
             polyDirty = true;
         }
         else if (Input.GetKey(KeyCode.D) || Input.GetAxis("Horizontal") > 0.1f)
         {
+            if (_PanelIndex < 0) return;
             ChangeValue(1);
             uiDirty = true;
             polyDirty = true;
         }
         else if (Input.GetKey(KeyCode.S) || Input.GetAxis("Vertical") < -0.1f)
         {
+            if (_PanelIndex < 0) return;
             ChangeValue(-10);
             uiDirty = true;
             polyDirty = true;
         }
         else if (Input.GetKey(KeyCode.W) || Input.GetAxis("Vertical") > 0.1f)
         {
+            if (_PanelIndex < 0) return;
             ChangeValue(10);
             uiDirty = true;
             polyDirty = true;
@@ -273,7 +298,7 @@ public class FastUi : MonoBehaviour
         var opConfig = _Poly.opconfigs[_Stack[stackIndex].opType];
 
 
-        ButtonType buttonType = ButtonTypeMapping[_PanelIndex][_PanelItemIndex];
+        ButtonType buttonType = ButtonTypeMapping[_PanelIndex][_PanelWidgetIndex];
         switch (buttonType)
         {
             case ButtonType.OpType:
@@ -310,7 +335,7 @@ public class FastUi : MonoBehaviour
         // GetKey brought us here but we only want GetKeyDown in this case
         if (IsKeyDownValid()) return;
         int idx;
-        switch (_PanelItemIndex)
+        switch (_PanelWidgetIndex)
         {
             case 0:
                 idx = (int) _Poly.ShapeType;
@@ -384,6 +409,23 @@ public class FastUi : MonoBehaviour
 
         int polyBtnCount = 2;
 
+        for (int i=0; i < _MainMenuCount; i++)
+        {
+            var img = MainMenuContainer.GetChild(i).GetComponent<Image>();
+
+            var menuColor = i == _CurrentMainMenuIndex ? MainMenuHighlightColor : Color.white;
+
+            if (_PanelIndex == -1 && _PanelWidgetIndex == i)
+            {
+                img.color = HighlightColor;
+            }
+            else
+            {
+                img.color = menuColor;
+            }
+
+        }
+
         if (
             (_Poly.ShapeType==PolyHydra.ShapeTypes.Uniform && (int)_Poly.UniformPolyType < 5) ||
             (_Poly.ShapeType==PolyHydra.ShapeTypes.Other && (int)_Poly.OtherPolyType == 0) ||
@@ -430,7 +472,7 @@ public class FastUi : MonoBehaviour
         for (int panelIndex=0; panelIndex < Widgets.Count; panelIndex++)
         {
 
-            Color normalColor = panelIndex == 0 ? new Color(1, .8f, .8f) : Color.white;
+            Color normalColor = panelIndex == 0 ? ShapeButtonColor : Color.white;
 
             for (int widgetIndex = 0; widgetIndex < Widgets[panelIndex].Count; widgetIndex++)
             {
@@ -440,9 +482,9 @@ public class FastUi : MonoBehaviour
 
                 var colors = widget.GetComponent<Button>().colors;
 
-                if (panelIndex == _PanelIndex && _PanelItemIndex == widgetIndex)
+                if (panelIndex == _PanelIndex && _PanelWidgetIndex == widgetIndex)
                 {
-                    colors.normalColor = Color.cyan;
+                    colors.normalColor = HighlightColor;
                 }
                 else
                 {
