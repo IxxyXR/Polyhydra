@@ -313,18 +313,18 @@ public class FastUi : MonoBehaviour
             case ButtonType.OpType:
                 // GetKey brought us here but we only want GetKeyDown in this case
                 if (IsKeyDownValid()) return;
-                _Stack[stackIndex] = _Stack[stackIndex].ChangeOpType(direction);_Stack[stackIndex] = _Stack[stackIndex].ChangeOpType(direction);
+                _Stack[stackIndex] = _Stack[stackIndex].ChangeOpType(direction);
                 _Stack[stackIndex] = _Stack[stackIndex].SetDefaultValues(opConfig);
                 break;
             case ButtonType.Amount:
                 if (Time.frameCount % FrameSkip == 0) return;  // Rate limit
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeAmount(direction * 0.05f);
-                _Stack[stackIndex] = _Stack[stackIndex].ClampAmount(opConfig);
+                _Stack[stackIndex] = _Stack[stackIndex].ClampAmount(opConfig, true);
                 break;
             case ButtonType.Amount2:
                 if (Time.frameCount % FrameSkip == 0) return;  // Rate limit
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeAmount2(direction * 0.05f);
-                _Stack[stackIndex] = _Stack[stackIndex].ClampAmount2(opConfig);
+                _Stack[stackIndex] = _Stack[stackIndex].ClampAmount2(opConfig, true);
                 break;
             case ButtonType.FaceSelection:
                 // GetKey brought us here but we only want GetKeyDown in this case
@@ -455,9 +455,28 @@ public class FastUi : MonoBehaviour
         for (int i = 0; i < polyBtnCount; i++)
         {
             polyButton = Instantiate(TextButtonPrefab, polyPanel);
-            if (i == 2)
+            if (i == 1)  // Add image panel after 2nd text button
             {
-                //Instantiate(ImagePanelPrefab, polyPanel);
+                var polyPrefab = Instantiate(ImagePanelPrefab, polyPanel);
+                var polyImg = polyPrefab.GetComponentInChildren<SVGImage>();
+                string shapeName = "";
+                switch (_Poly.ShapeType)
+                {
+                    case PolyHydra.ShapeTypes.Uniform:
+                        shapeName = $"uniform_{_Poly.UniformPolyType}";
+                        break;
+                    case PolyHydra.ShapeTypes.Johnson:
+                        shapeName = $"johnson_{_Poly.JohnsonPolyType}";
+                        break;
+                    case PolyHydra.ShapeTypes.Grid:
+                        shapeName = $"grid_{_Poly.GridType}";
+                        break;
+                    case PolyHydra.ShapeTypes.Other:
+                        shapeName = $"other_{_Poly.OtherPolyType}";
+                        break;
+                }
+                polyImg.sprite = Resources.Load<Sprite>($"BaseShapes/poly_{shapeName}");
+                polyImg.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(110, 110);
             }
 
             (string label, ButtonType buttonType) = GetButton(0, i);
@@ -637,11 +656,13 @@ public class FastUi : MonoBehaviour
     private (float, float) GetNormalisedAmountValues(PolyHydra.ConwayOperator conwayOperator)
     {
         var config = _Poly.opconfigs[conwayOperator.opType];
+
         float rawVal = conwayOperator.amount;
-        float rawVal2 = conwayOperator.amount2;
         float minVal = config.amountSafeMin;
-        float minVal2 = config.amount2SafeMin;
         float maxVal = config.amountSafeMax;
+
+        float rawVal2 = conwayOperator.amount2;
+        float minVal2 = config.amount2SafeMin;
         float maxVal2 = config.amount2SafeMax;
         return (
             Mathf.Floor(Mathf.InverseLerp(minVal, maxVal, rawVal) * 100f),

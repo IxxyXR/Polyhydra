@@ -4327,6 +4327,7 @@ namespace Conway
 
 		public static ConwayPoly MakePolarGrid(int sides = 6, int divisions = 4)
 		{
+
 			var vertexPoints = new List<Vector3>();
 			var faceIndices = new List<List<int>>();
 
@@ -4355,7 +4356,8 @@ namespace Conway
 			for (int i = 0; i < sides; i++)
 			{
 				faceIndices.Add(new List<int>{0, (i + 1) % sides + 1, i + 1});
-				faceRoles.Add(i % 2 == 0 ? Roles.New: Roles.NewAlt);
+				int colorMod = 2 + (sides % 2);
+				faceRoles.Add((Roles)((i % colorMod) + 2));
 			}
 
 			for (int d = 0; d < divisions - 1; d++)
@@ -4371,7 +4373,8 @@ namespace Conway
 						nextRowStart + (i + 1) % sides,
 						nextRowStart + i
 					});
-					faceRoles.Add((i + d % 2) % 2 == 0 ? Roles.New: Roles.NewAlt);
+					int colorMod = d % 2 == 1 ? 2 : 2 + (sides % 2);
+					faceRoles.Add((Roles)(((i + ((d + 1) % 2)) % colorMod) + 2));
 				}
 			}
 

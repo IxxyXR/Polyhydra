@@ -1043,7 +1043,7 @@ public class PolyHydra : MonoBehaviour
 				new OpConfig
 					{
 						amountDefault = 1.0f,
-						amountMin = -3f, amountMax = 3f, amountSafeMin = -1.5f, amountSafeMax = 1.5f
+						amountMin = -6f, amountMax = 6f, amountSafeMin = -3f, amountSafeMax = 3f
 					}
 			},
 			{
@@ -1253,7 +1253,7 @@ public class PolyHydra : MonoBehaviour
 			case OtherPolyTypes.UvSphere:
 				return JohnsonPoly.UvSphere(PrismP, PrismQ);
 			case OtherPolyTypes.UvHemisphere:
-				return JohnsonPoly.UvHemisphere();
+				return JohnsonPoly.UvHemisphere(PrismP, PrismQ);
 			case OtherPolyTypes.L_Shape:
 				return JohnsonPoly.L_Shape();
 			case OtherPolyTypes.L_Alt_Shape:
@@ -1272,7 +1272,8 @@ public class PolyHydra : MonoBehaviour
 				ConwayPoly zPair = conway.Rotate(Vector3.left, 90);
 				conway.Append(xPair);
 				conway.Append(zPair);
-				return conway.Weld(0.0001f);
+				conway = conway.Weld(0.0001f);
+				return conway;
 			default:
 				Debug.LogError("Unknown Other Poly Type");
 				return null;

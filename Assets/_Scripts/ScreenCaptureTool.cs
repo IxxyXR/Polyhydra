@@ -52,6 +52,57 @@ public class ScreenCaptureTool : MonoBehaviour
         StartCoroutine(nameof(DoTakeAllPresetScreenshots));
     }
 
+    [ContextMenu("Take All Other Poly Screenshots")]
+    public void TakeAllOtherScreenshots()
+    {
+        StartCoroutine(nameof(DoTakeAllOtherScreenshots));
+    }
+
+    IEnumerator DoTakeAllOtherScreenshots()
+    {
+        Camera.main.clearFlags = CameraClearFlags.Nothing;
+        Camera.main.backgroundColor = Color.white;
+        var otherNames = Enum.GetNames(typeof(PolyHydra.OtherPolyTypes));
+        var poly = FindObjectOfType<PolyHydra>();
+        poly.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
+        poly.transform.parent.rotation = Quaternion.identity;
+        poly.enableThreading = false;
+        poly.ConwayOperators.Clear();
+        poly.ShapeType = PolyHydra.ShapeTypes.Other;
+        for (var index = 0; index < otherNames.Length; index++)
+        {
+            filename = PolyScreenShotName($"other_{otherNames[index]}");
+            poly.OtherPolyType = (PolyHydra.OtherPolyTypes)index;
+            switch (poly.OtherPolyType)
+            {
+                case PolyHydra.OtherPolyTypes.Polygon:
+                    poly.PrismP = 5;
+                    break;
+                case PolyHydra.OtherPolyTypes.GriddedCube:
+                    poly.PrismP = 4;
+                    poly.PrismQ = 4;
+                    break;
+                case PolyHydra.OtherPolyTypes.UvHemisphere:
+                    poly.PrismP = 12;
+                    poly.PrismQ = 12;
+                    break;
+                case PolyHydra.OtherPolyTypes.UvSphere:
+                    poly.PrismP = 12;
+                    poly.PrismQ = 12;
+                    break;
+            }
+            poly.Rebuild();
+            yield return new WaitForSeconds(0.5f);
+            poly._conwayPoly.Recenter();
+            Vector3 target = poly._conwayPoly.GetCentroid();
+            camera.transform.LookAt(target);
+            yield return new WaitForSeconds(0.5f);
+            takeShot = true;
+            yield return true;
+        }
+        poly.enableThreading = true;
+    }
+
     IEnumerator DoTakeAllGridScreenshots()
     {
         Camera.main.clearFlags = CameraClearFlags.Nothing;
