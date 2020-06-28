@@ -2,11 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using Wythoff;
 using Button = UnityEngine.UI.Button;
 using Random = UnityEngine.Random;
 
@@ -16,6 +19,8 @@ public class FastUi : MonoBehaviour
 
 
     private int _PanelIndex;
+    private int _ShapeCategoryIndex;
+    private int _ShapeIndex;
     private int _PanelWidgetIndex;
     private PolyHydra _Poly;
 
@@ -39,8 +44,21 @@ public class FastUi : MonoBehaviour
     private int _MainMenuCount;
     private int _CurrentMainMenuIndex;
 
+    public enum ShapeCategories
+    {
+        Platonic,
+        Prisms,
+        Archimedean,
+        KeplerPoinsot,
+        UniformConvex,
+        UniformStar,
+        Johnson,
+        Grids,
+        Other
+    }
+
     private enum ButtonType {
-        ShapeType, GridType, UniformType, JohnsonType, OtherType,
+        ShapeCategory, GridType, UniformType, JohnsonType, OtherType,
         PolyTypeCategory, GridShape, PolyP, PolyQ,
         OpType, Amount, Amount2, FaceSelection, Tags,
         Unknown
@@ -163,6 +181,53 @@ public class FastUi : MonoBehaviour
             var preset = Presets[Random.Range(0, Presets.Count)];
             preset.Ops = preset.Ops.Where(i => !i.Disabled && i.OpType!=PolyHydra.Ops.Identity).ToArray();
             preset.ApplyToPoly(_Poly);
+            if (_Poly.ShapeType == PolyHydra.ShapeTypes.Uniform)
+            {
+
+                // Find the first matching category
+
+                int matchIndex = -1;
+                int catIndex = -1;
+
+                var lists = new List<Uniform[]>
+                {
+                    Uniform.Platonic,
+                    Uniform.Prismatic,
+                    Uniform.Archimedean,
+                    Uniform.Convex,
+                    Uniform.KeplerPoinsot,
+                    Uniform.Star,
+                };
+                for (var i = 0; i < lists.Count; i++)
+                {
+                    var list = lists[i];
+                    var match = list.FirstOrDefault(x => x.Index == (int) _Poly.UniformPolyType);
+                    if (match != null)
+                    {
+                        matchIndex = match.Index;
+                        catIndex = i;
+                        break;
+                    }
+                }
+                _ShapeCategoryIndex = catIndex;
+                _ShapeIndex = matchIndex;
+            }
+            else if (_Poly.ShapeType == PolyHydra.ShapeTypes.Johnson)
+            {
+                _ShapeCategoryIndex = 6;
+                _ShapeIndex = (int) _Poly.JohnsonPolyType;
+            }
+            else if (_Poly.ShapeType == PolyHydra.ShapeTypes.Grid)
+            {
+                _ShapeCategoryIndex = 7;
+                _ShapeIndex = (int) _Poly.GridType;
+            }
+            else if (_Poly.ShapeType == PolyHydra.ShapeTypes.Other)
+            {
+                _ShapeCategoryIndex = 8;
+                _ShapeIndex = (int) _Poly.OtherPolyType;
+            }
+
             _Stack = _Poly.ConwayOperators;
             uiDirty = true;
             polyDirty = true;
@@ -347,37 +412,92 @@ public class FastUi : MonoBehaviour
         switch (_PanelWidgetIndex)
         {
             case 0:
-                idx = (int) _Poly.ShapeType;
-                idx += direction;
-                idx = Mathf.Clamp(idx, 0, Enum.GetNames(typeof(PolyHydra.ShapeTypes)).Length - 1);
-                _Poly.ShapeType = (PolyHydra.ShapeTypes)idx;
+                _ShapeCategoryIndex += direction;
+                switch ((ShapeCategories)_ShapeCategoryIndex)
+                {
+                    case ShapeCategories.Platonic:
+                        _Poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+                        _Poly.UniformPolyType = (PolyTypes)Uniform.Platonic[0].Index - 1;
+                        break;
+                    case ShapeCategories.Prisms:
+                        _Poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+                        _Poly.UniformPolyType = (PolyTypes)Uniform.Prismatic[0].Index - 1;
+                        break;
+                    case ShapeCategories.Archimedean:
+                        _Poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+                        _Poly.UniformPolyType = (PolyTypes)Uniform.Archimedean[0].Index - 1;
+                        break;
+                    case ShapeCategories.UniformConvex:
+                        _Poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+                        _Poly.UniformPolyType = (PolyTypes)Uniform.Convex[0].Index - 1;
+                        break;
+                    case ShapeCategories.KeplerPoinsot:
+                        _Poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+                        _Poly.UniformPolyType = (PolyTypes)Uniform.KeplerPoinsot[0].Index - 1;
+                        break;
+                    case ShapeCategories.UniformStar:
+                        _Poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+                        _Poly.UniformPolyType = (PolyTypes)Uniform.Star[0].Index - 1;
+                        break;
+                    case ShapeCategories.Johnson:
+                        _Poly.ShapeType = PolyHydra.ShapeTypes.Johnson;
+                        break;
+                    case ShapeCategories.Grids:
+                        _Poly.ShapeType = PolyHydra.ShapeTypes.Grid;
+                        break;
+                    case ShapeCategories.Other:
+                        _Poly.ShapeType = PolyHydra.ShapeTypes.Other;
+                        break;
+                }
+                _ShapeIndex = 0;
                 break;
             case 1:
-                switch (_Poly.ShapeType)
+                switch ((ShapeCategories)_ShapeCategoryIndex)
                 {
-                    case PolyHydra.ShapeTypes.Uniform:
-                        idx = (int) _Poly.UniformPolyType;
-                        idx += direction;
-                        idx = Mathf.Clamp(idx, 0, Enum.GetNames(typeof(PolyTypes)).Length - 1);
-                        _Poly.UniformPolyType = (PolyTypes)idx;
+                    case ShapeCategories.Platonic:
+                        _ShapeIndex += direction;
+                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Uniform.Platonic.Length - 1);
+                        _Poly.UniformPolyType = (PolyTypes)Uniform.Platonic[_ShapeIndex].Index - 1;
                         break;
-                    case PolyHydra.ShapeTypes.Johnson:
-                        idx = (int) _Poly.JohnsonPolyType;
-                        idx += direction;
-                        idx = Mathf.Clamp(idx, 0, Enum.GetNames(typeof(PolyHydra.JohnsonPolyTypes)).Length - 1);
-                        _Poly.JohnsonPolyType = (PolyHydra.JohnsonPolyTypes)idx;
+                    case ShapeCategories.Prisms:
+                        _ShapeIndex += direction;
+                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Uniform.Prismatic.Length - 1);
+                        _Poly.UniformPolyType = (PolyTypes)Uniform.Prismatic[_ShapeIndex].Index - 1;
                         break;
-                    case PolyHydra.ShapeTypes.Grid:
-                        idx = (int) _Poly.GridType;
-                        idx += direction;
-                        idx = Mathf.Clamp(idx, 0, Enum.GetNames(typeof(PolyHydra.GridTypes)).Length - 1);
-                        _Poly.GridType = (PolyHydra.GridTypes)idx;
+                    case ShapeCategories.Archimedean:
+                        _ShapeIndex += direction;
+                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Uniform.Archimedean.Length - 1);
+                        _Poly.UniformPolyType = (PolyTypes)Uniform.Archimedean[_ShapeIndex].Index - 1;
                         break;
-                    case PolyHydra.ShapeTypes.Other:
-                        idx = (int) _Poly.OtherPolyType;
-                        idx += direction;
-                        idx = Mathf.Clamp(idx, 0, Enum.GetNames(typeof(PolyHydra.OtherPolyTypes)).Length - 1);
-                        _Poly.OtherPolyType = (PolyHydra.OtherPolyTypes)idx;
+                    case ShapeCategories.UniformConvex:
+                        _ShapeIndex += direction;
+                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Uniform.Convex.Length - 1);
+                        _Poly.UniformPolyType = (PolyTypes)Uniform.Convex[_ShapeIndex].Index - 1;
+                        break;
+                    case ShapeCategories.KeplerPoinsot:
+                        _ShapeIndex += direction;
+                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Uniform.KeplerPoinsot.Length - 1);
+                        _Poly.UniformPolyType = (PolyTypes)Uniform.KeplerPoinsot[_ShapeIndex].Index - 1;
+                        break;
+                    case ShapeCategories.UniformStar:
+                        _ShapeIndex += direction;
+                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Uniform.Star.Length - 1);
+                        _Poly.UniformPolyType = (PolyTypes)Uniform.Star[_ShapeIndex].Index - 1;
+                        break;
+                    case ShapeCategories.Johnson:
+                        _ShapeIndex += direction;
+                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Enum.GetNames(typeof(PolyHydra.JohnsonPolyTypes)).Length - 1);
+                        _Poly.JohnsonPolyType = (PolyHydra.JohnsonPolyTypes)_ShapeIndex;
+                        break;
+                    case ShapeCategories.Grids:
+                        _ShapeIndex += direction;
+                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Enum.GetNames(typeof(PolyHydra.GridTypes)).Length - 1);
+                        _Poly.GridType = (PolyHydra.GridTypes)_ShapeIndex;
+                        break;
+                    case ShapeCategories.Other:
+                        _ShapeIndex += direction;
+                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Enum.GetNames(typeof(PolyHydra.OtherPolyTypes)).Length - 1);
+                        _Poly.OtherPolyType = (PolyHydra.OtherPolyTypes)_ShapeIndex;
                         break;
                 }
                 break;
@@ -534,13 +654,9 @@ public class FastUi : MonoBehaviour
             switch (widgetIndex)
             {
                 case 0:
-                    label = $"{_Poly.ShapeType}"
-                        .Replace("Uniform", "Wythoff Poly")
-                        .Replace("Johnson", "Johnson Poly")
-                        .Replace("Grid", "Grid")
-                        .Replace("Other", "Other Poly");
+                    label = $"{Enum.GetNames(typeof(ShapeCategories))[_ShapeCategoryIndex]}";
                     break;
-                    buttonType = ButtonType.ShapeType;
+                    buttonType = ButtonType.ShapeCategory;
                 case 1:
                     switch (_Poly.ShapeType)
                     {

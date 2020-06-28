@@ -792,7 +792,7 @@ namespace Wythoff {
             Uniforms[5],
         };
 
-        public static Uniform[] Convex = Uniforms.Where(x => !x.Wythoff.Contains("/")).ToArray();
+        public static Uniform[] Convex = Uniforms.Where(x => !x.Wythoff.Contains("/")).Skip(1).ToArray();
         public static Uniform[] Star = Uniforms.Where(x => x.Wythoff.Contains("/")).ToArray();
 
     }

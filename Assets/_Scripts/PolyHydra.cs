@@ -555,7 +555,7 @@ public class PolyHydra : MonoBehaviour
 				new OpConfig
 				{
 					usesFaces = true,
-					amountDefault = 0.1f,
+					amountDefault = 0.3f,
 					amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.499f,
 					usesRandomize = true
 				}
@@ -792,7 +792,7 @@ public class PolyHydra : MonoBehaviour
 				{
 					usesFaces = true,
 					amountDefault = 0.1f,
-					amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
+					amountMin = -12, amountMax = 12, amountSafeMin = -6f, amountSafeMax = 6f,
 					usesRandomize = true
 				}
 			},
@@ -871,7 +871,7 @@ public class PolyHydra : MonoBehaviour
 				{
 					usesFaces = true,
 					amountDefault = 45f,
-					amountMin = -180, amountMax = 180, amountSafeMin = -180, amountSafeMax = 180,
+					amountMin = -3, amountMax = 3, amountSafeMin = -1, amountSafeMax = 1,
 					usesRandomize = true
 				}
 			},
