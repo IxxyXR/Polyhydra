@@ -134,8 +134,7 @@ namespace Conway
 				{
 					v[i] = Vertices[face.points[i]];
 				}
-
-				FaceRoles.Add(Roles.Existing);
+				FaceRoles.Add((Roles)((int)face.configuration % 5));
 
 						
 				if (!Faces.Add(v))
@@ -3987,6 +3986,7 @@ namespace Conway
 		public static ConwayPoly MakeUnitileGrid(int pattern, int gridShape, int rows = 5, int cols = 5, bool weld=false)
 		{
 			var ut = new Unitile(pattern, rows, cols, true);
+
 			switch (gridShape)
 			{
 				case 0:
@@ -4030,7 +4030,93 @@ namespace Conway
 					break;
 			}
 			var vertexRoles = Enumerable.Repeat(Roles.New, ut.raw_verts.Count);
-			var faceRoles = Enumerable.Repeat(Roles.New, ut.raw_faces.Count);
+
+			var faceRoles = new List<Roles>();
+			int foo, isEven, width, height, coloringOffset;
+
+			for (int i = 0; i < ut.raw_faces.Count; i++)
+			{
+				switch (pattern)
+				{
+					case 1:
+						isEven = cols % 2==0 ? (Mathf.FloorToInt(i / (float) cols)) % 2 : 0;
+						foo = ((i + isEven) % 2) + 2;
+						faceRoles.Add((Roles)foo);
+						break;
+					case 2:
+						// int width = Mathf.CeilToInt((rows / Mathf.Sqrt(3))) * 2 + 1;
+						// int height = ut.raw_faces.Count / width;
+						// isEven = 0;
+						// foo = ((i/4/width) + isEven) % 2;
+						foo = i < ut.raw_faces.Count / 2 ? 2 : 3;
+						faceRoles.Add((Roles)foo);
+						break;
+					case 3:
+						width = Mathf.CeilToInt((rows / Mathf.Sqrt(3)));
+						height = ut.raw_faces.Count / width;
+						coloringOffset = i < ut.raw_faces.Count / 2 ? 0 : 1;
+						foo = i / (height / 2);
+						if (coloringOffset==1 && width % 3 == 0) coloringOffset += 1;
+						if (coloringOffset==1 && width % 3 == 2) coloringOffset += 2;
+						foo += coloringOffset;
+						foo = (foo % 3) + 2;
+						faceRoles.Add((Roles)foo);
+						break;
+					case 4:
+						foo = ut.raw_faces[i].Count == 3 ? 2 : 3;
+						faceRoles.Add((Roles)foo);
+						break;
+					case 5:  // TODO
+						width = rows;
+						height = (Mathf.FloorToInt(cols / 4) + 1) * 4;
+						Debug.Log($"{width} {height}");
+						foo = i < ut.raw_faces.Count / 2 ? 2 : 3;
+						faceRoles.Add((Roles)foo);
+						break;
+					case 6:  // TODO
+						foo = ut.raw_faces[i].Count == 3 ? 2 : 3;
+						faceRoles.Add((Roles)foo);
+						break;
+					// case 7:
+					// 	foo = i < ut.raw_faces.Count / 2 ? 0 : 1;
+					// 	faceRoles.Add((Roles)foo);
+					// 	break;
+					case 8:  // TODO
+						foo = ut.raw_faces[i].Count == 3 ? 2 : 3;
+						faceRoles.Add((Roles)foo);
+						break;
+					case 9:  // TODO
+						foo = ut.raw_faces[i].Count == 8 ? 2 : 3;
+						faceRoles.Add((Roles)foo);
+						break;
+					case 10:
+						switch (ut.raw_faces[i].Count)
+						{
+							case 3: foo = 2; break;
+							case 4: foo = 3; break;
+							case 6: foo = 4; break;
+							default: foo = 5; break;
+						};
+						faceRoles.Add((Roles)foo);
+						break;
+					case 11:
+						switch (ut.raw_faces[i].Count)
+						{
+							case 4: foo = 2; break;
+							case 6: foo = 3; break;
+							case 12: foo = 4; break;
+							default: foo = 5; break;
+						};
+						faceRoles.Add((Roles)foo);
+						break;
+					default:
+						faceRoles.Add((Roles)((i % 2) + 2));
+						break;
+				}
+
+
+			}
+
 			for (var i = 0; i < ut.raw_faces[0].Count; i++)
 			{
 				var idx = ut.raw_faces[0][i];
@@ -4244,6 +4330,8 @@ namespace Conway
 			var vertexPoints = new List<Vector3>();
 			var faceIndices = new List<List<int>>();
 
+			var faceRoles = new List<Roles>();
+
 			float theta = Mathf.PI * 2 / sides;
 
 			int start, end, inc;
@@ -4267,6 +4355,7 @@ namespace Conway
 			for (int i = 0; i < sides; i++)
 			{
 				faceIndices.Add(new List<int>{0, (i + 1) % sides + 1, i + 1});
+				faceRoles.Add(i % 2 == 0 ? Roles.New: Roles.NewAlt);
 			}
 
 			for (int d = 0; d < divisions - 1; d++)
@@ -4282,10 +4371,10 @@ namespace Conway
 						nextRowStart + (i + 1) % sides,
 						nextRowStart + i
 					});
+					faceRoles.Add((i + d % 2) % 2 == 0 ? Roles.New: Roles.NewAlt);
 				}
 			}
 
-			var faceRoles = Enumerable.Repeat(Roles.New, faceIndices.Count);
 			var vertexRoles = Enumerable.Repeat(Roles.New, vertexPoints.Count);
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles);
 

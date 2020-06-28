@@ -29,20 +29,22 @@ public class FastUi : MonoBehaviour
     public Transform TextButtonPrefab;
     public Transform ValueButtonPrefab;
     public Transform ImagePanelPrefab;
+    public TextMeshProUGUI TipsText;
     public TextMeshProUGUI DebugText;
 
     private List<PolyPreset> Presets;
     private List<PolyHydra.ConwayOperator> _Stack;
     private List<List<Transform>> Widgets;
+    private List<List<ButtonType>> ButtonTypeMapping;
+    private int _MainMenuCount;
+    private int _CurrentMainMenuIndex;
+
     private enum ButtonType {
         ShapeType, GridType, UniformType, JohnsonType, OtherType,
         PolyTypeCategory, GridShape, PolyP, PolyQ,
         OpType, Amount, Amount2, FaceSelection, Tags,
         Unknown
     }
-    private List<List<ButtonType>> ButtonTypeMapping;
-    private int _MainMenuCount;
-    private int _CurrentMainMenuIndex = 0;
 
     void Start()
     {
@@ -51,7 +53,13 @@ public class FastUi : MonoBehaviour
         _MainMenuCount = MainMenuContainer.childCount;
 
         UpdateUI();
+        UpdateTips();
         StartCoroutine(GetPresets("http://polyhydra.org.uk/api/presets/"));
+    }
+
+    private void UpdateTips()
+    {
+        PlayerPrefs.GetInt("currentTip");
     }
 
     IEnumerator GetPresets(string uri)
@@ -153,6 +161,7 @@ public class FastUi : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.P))
         {
             var preset = Presets[Random.Range(0, Presets.Count)];
+            preset.Ops = preset.Ops.Where(i => !i.Disabled && i.OpType!=PolyHydra.Ops.Identity).ToArray();
             preset.ApplyToPoly(_Poly);
             _Stack = _Poly.ConwayOperators;
             uiDirty = true;

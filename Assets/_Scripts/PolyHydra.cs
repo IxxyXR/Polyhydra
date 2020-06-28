@@ -2340,6 +2340,8 @@ public class PolyHydra : MonoBehaviour
 				// 	label = "";
 				// }
 				label = f.ToString();  // Face index
+				//label = faceVerts.Count.ToString();  // Face verts
+				// label = ((int)_conwayPoly.FaceRoles[f]).ToString();  // Face Role
 				Handles.Label(Vector3.Scale(face.Centroid, transform.lossyScale) + new Vector3(0, .03f, 0), label);
 			}
 		}

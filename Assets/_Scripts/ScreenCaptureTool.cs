@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using Conway;
 using UnityEngine;
-using Wythoff;
 
 
 [ExecuteInEditMode]
@@ -27,10 +28,22 @@ public class ScreenCaptureTool : MonoBehaviour
         TakeShotNow();
     }
 
-    [ContextMenu("Take All Poly Screenshots")]
-    public void TakeAllPolyScreenshots()
+    [ContextMenu("Take All Wythoff Screenshots")]
+    public void TakeAllWythoffScreenshots()
     {
-        StartCoroutine(nameof(DoTakeAllPolyScreenshots));
+        StartCoroutine(nameof(DoTakeAllWythoffScreenshots));
+    }
+
+    [ContextMenu("Take All Johnson Screenshots")]
+    public void TakeAllJohnsonScreenshots()
+    {
+        StartCoroutine(nameof(DoTakeAllJohnsonScreenshots));
+    }
+
+    [ContextMenu("Take All Grid Screenshots")]
+    public void TakeAllGridScreenshots()
+    {
+        StartCoroutine(nameof(DoTakeAllGridScreenshots));
     }
 
     [ContextMenu("Take All Preset Screenshots")]
@@ -39,24 +52,23 @@ public class ScreenCaptureTool : MonoBehaviour
         StartCoroutine(nameof(DoTakeAllPresetScreenshots));
     }
 
-    IEnumerator DoTakeAllPolyScreenshots()
+    IEnumerator DoTakeAllGridScreenshots()
     {
+        Camera.main.clearFlags = CameraClearFlags.Nothing;
+        Camera.main.backgroundColor = Color.white;
+        var gridNames = Enum.GetNames(typeof(PolyHydra.GridTypes));
         var poly = FindObjectOfType<PolyHydra>();
+        poly.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
+        poly.transform.parent.rotation = Quaternion.Euler(30, 0, 0);
         poly.enableThreading = false;
         poly.ConwayOperators.Clear();
-        foreach(var uniform in Uniform.Uniforms)
+        poly.ShapeType = PolyHydra.ShapeTypes.Grid;
+        poly.PrismP = 4;
+        poly.PrismQ = 4;
+        for (var index = 0; index < gridNames.Length; index++)
         {
-            string wythoffSymbol;
-            Debug.Log($"{uniform.Index} {uniform.Name} {uniform.Wythoff}");
-            if (uniform.Index == 0 ) {continue;}
-            else if (uniform.Index < 6) {wythoffSymbol = uniform.Wythoff.Replace("p", "5");}
-            else {wythoffSymbol = uniform.Name;}
-            Debug.Log($"Building {wythoffSymbol}");
-            filename = PolyScreenShotName(uniform.Name);
-            Debug.Log(wythoffSymbol);
-            var wythoff = new WythoffPoly(wythoffSymbol);
-            wythoff.BuildFaces();
-            poly.WythoffPoly = wythoff;
+            filename = PolyScreenShotName($"grid_{gridNames[index]}");
+            poly.GridType = (PolyHydra.GridTypes)index;
             poly.Rebuild();
             yield return new WaitForSeconds(0.5f);
             poly._conwayPoly.Recenter();
@@ -66,6 +78,65 @@ public class ScreenCaptureTool : MonoBehaviour
             takeShot = true;
             yield return true;
         }
+        poly.enableThreading = true;
+    }
+
+    IEnumerator DoTakeAllJohnsonScreenshots()
+    {
+        Camera.main.clearFlags = CameraClearFlags.Nothing;
+        Camera.main.backgroundColor = Color.white;
+        var johnsonNames = Enum.GetNames(typeof(PolyHydra.JohnsonPolyTypes));
+        var poly = FindObjectOfType<PolyHydra>();
+        poly.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
+        poly.transform.parent.rotation = Quaternion.identity;
+        poly.enableThreading = false;
+        poly.ConwayOperators.Clear();
+        poly.ShapeType = PolyHydra.ShapeTypes.Johnson;
+        poly.PrismP = 5;
+        poly.PrismQ = 2;
+        for (var index = 0; index < johnsonNames.Length; index++)
+        {
+            filename = PolyScreenShotName($"johnson_{johnsonNames[index]}");
+            poly.JohnsonPolyType = (PolyHydra.JohnsonPolyTypes)index;
+            poly.Rebuild();
+            yield return new WaitForSeconds(0.5f);
+            poly._conwayPoly.Recenter();
+            Vector3 target = poly._conwayPoly.GetCentroid();
+            camera.transform.LookAt(target);
+            yield return new WaitForSeconds(0.5f);
+            takeShot = true;
+            yield return true;
+        }
+        poly.enableThreading = true;
+    }
+
+    IEnumerator DoTakeAllWythoffScreenshots()
+    {
+        Camera.main.clearFlags = CameraClearFlags.Nothing;
+        Camera.main.backgroundColor = Color.white;
+        var uniformNames = Enum.GetNames(typeof(PolyTypes));
+        var poly = FindObjectOfType<PolyHydra>();
+        poly.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
+        poly.transform.parent.rotation = Quaternion.Euler(0, 90, 0);
+        poly.enableThreading = false;
+        poly.ConwayOperators.Clear();
+        poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+        poly.PrismP = 5;
+        poly.PrismQ = 2;
+        for (var index = 0; index < uniformNames.Length; index++)
+        {
+            filename = PolyScreenShotName($"uniform_{uniformNames[index]}");
+            poly.UniformPolyType = (PolyTypes)index;
+            poly.Rebuild();
+            yield return new WaitForSeconds(0.5f);
+            poly._conwayPoly.Recenter();
+            Vector3 target = poly._conwayPoly.GetCentroid();
+            camera.transform.LookAt(target);
+            yield return new WaitForSeconds(0.5f);
+            takeShot = true;
+            yield return true;
+        }
+
         poly.enableThreading = true;
     }
 
@@ -97,7 +168,7 @@ public class ScreenCaptureTool : MonoBehaviour
 
     public static string PolyScreenShotName(string polyName)
     {
-        return string.Format("{0}/poly_{1}.png",
+        return string.Format("{0}/poly_{1}.jpg",
             Application.persistentDataPath,
             polyName
         );
@@ -105,14 +176,14 @@ public class ScreenCaptureTool : MonoBehaviour
 
     public static string PresetScreenShotName(string presetName)
     {
-        return string.Format("{0}/preset_{1}.png",
+        return string.Format("{0}/preset_{1}.jpg",
             Application.persistentDataPath,
             presetName
         );
     }
 
     public static string ScreenShotName(int width, int height) {
-        return string.Format("{0}/screenshot_{1}x{2}_{3}.png",
+        return string.Format("{0}/screenshot_{1}x{2}_{3}.jpg",
             Application.persistentDataPath,
             width, height,
             System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss"));
@@ -152,7 +223,8 @@ public class ScreenCaptureTool : MonoBehaviour
         {
             DestroyImmediate(rt);
         }
-        byte[] bytes = screenShot.EncodeToPNG();
+        byte[] bytes = screenShot.EncodeToJPG(90);
         System.IO.File.WriteAllBytes(filename, bytes);
+        Debug.Log($"Saving shot to {filename}");
     }
 }
