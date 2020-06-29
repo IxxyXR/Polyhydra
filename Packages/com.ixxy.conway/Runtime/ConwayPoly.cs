@@ -4356,8 +4356,15 @@ namespace Conway
 			for (int i = 0; i < sides; i++)
 			{
 				faceIndices.Add(new List<int>{0, (i + 1) % sides + 1, i + 1});
-				int colorMod = 2 + (sides % 2);
-				faceRoles.Add((Roles)((i % colorMod) + 2));
+				if (sides % 2 == 0) // Even sides
+				{
+					faceRoles.Add((Roles)(i % 2) + 2);
+				}
+				else
+				{
+					int lastCellMod = (i == sides - 1 && sides % 3 == 1) ? 1 : 0;  //  Fudge the last cell to stop clashes in some cases
+					faceRoles.Add((Roles)((i + lastCellMod) % 3) + 2);
+				}
 			}
 
 			for (int d = 0; d < divisions - 1; d++)
@@ -4373,8 +4380,15 @@ namespace Conway
 						nextRowStart + (i + 1) % sides,
 						nextRowStart + i
 					});
-					int colorMod = d % 2 == 1 ? 2 : 2 + (sides % 2);
-					faceRoles.Add((Roles)(((i + ((d + 1) % 2)) % colorMod) + 2));
+					if (sides % 2 == 0) // Even sides
+					{
+						faceRoles.Add((Roles)((i + d) % 2) + 2);
+					}
+					else
+					{
+						int lastCellMod = (i == sides - 1 && sides % 3 == 1) ? 1 : 0;  //  Fudge the last cell to stop clashes in some cases
+						faceRoles.Add((Roles)((i + d + lastCellMod + 1) % 3) + 2);
+					}
 				}
 			}
 
