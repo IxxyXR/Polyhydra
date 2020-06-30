@@ -2,11 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using System.Runtime.Serialization.Json;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Analytics;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using Wythoff;
@@ -49,8 +48,8 @@ public class FastUi : MonoBehaviour
         Platonic,
         Prisms,
         Archimedean,
-        KeplerPoinsot,
         UniformConvex,
+        KeplerPoinsot,
         UniformStar,
         Johnson,
         Grids,
@@ -170,7 +169,42 @@ public class FastUi : MonoBehaviour
 
         bool uiDirty = false;
         bool polyDirty = false;
-        if (Input.GetKeyDown(KeyCode.R))
+
+        if (IsNumberKeyDown())
+        {
+            int numKey = -1;
+            if (Input.GetKeyDown(KeyCode.Alpha0)) numKey = 0;
+            else if (Input.GetKeyDown(KeyCode.Alpha1)) numKey = 1;
+            else if (Input.GetKeyDown(KeyCode.Alpha2)) numKey = 2;
+            else if (Input.GetKeyDown(KeyCode.Alpha3)) numKey = 3;
+            else if (Input.GetKeyDown(KeyCode.Alpha4)) numKey = 4;
+            else if (Input.GetKeyDown(KeyCode.Alpha5)) numKey = 5;
+            else if (Input.GetKeyDown(KeyCode.Alpha6)) numKey = 6;
+            else if (Input.GetKeyDown(KeyCode.Alpha7)) numKey = 7;
+            else if (Input.GetKeyDown(KeyCode.Alpha8)) numKey = 8;
+            else if (Input.GetKeyDown(KeyCode.Alpha9)) numKey = 9;
+
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            {
+                var preset = new PolyPreset();
+                preset.CreateFromPoly($"quicksave_{numKey}", _Poly);
+                PlayerPrefs.SetString(preset.Name, preset.ToJson());
+                PlayerPrefs.Save();
+            }
+            else
+            {
+                string json = PlayerPrefs.GetString($"quicksave_{numKey}", "");
+                if (json != "")
+                {
+                    var preset = JsonConvert.DeserializeObject<PolyPreset>(json);
+                    preset.ApplyToPoly(_Poly);
+                    _Stack = _Poly.ConwayOperators;
+                    uiDirty = true;
+                    polyDirty = true;
+                }
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.R))
         {
             var rb = _Poly.transform.parent.GetComponent<Rigidbody>();
             rb.angularVelocity = new Vector3(Random.value, Random.value, Random.value);
@@ -299,7 +333,11 @@ public class FastUi : MonoBehaviour
             }
             else
             {
-                _Stack.Insert(stackIndex + 1, new PolyHydra.ConwayOperator());
+                _Stack.Insert(stackIndex + 1, new PolyHydra.ConwayOperator
+                {
+                    opType = PolyHydra.Ops.Kis,
+                    amount = 0.1f
+                });
                 _PanelIndex += 1;
                 _PanelWidgetIndex = 0;
                 polyDirty = true;
@@ -364,6 +402,21 @@ public class FastUi : MonoBehaviour
                (Mathf.Abs(Input.GetAxis("Horizontal")) < 0.5f && Mathf.Abs(Input.GetAxis("Vertical")) < 0.5f);
     }
 
+    private bool IsNumberKeyDown()
+    {
+        return (
+            Input.GetKeyDown(KeyCode.Alpha1) ||
+            Input.GetKeyDown(KeyCode.Alpha2) ||
+            Input.GetKeyDown(KeyCode.Alpha3) ||
+            Input.GetKeyDown(KeyCode.Alpha4) ||
+            Input.GetKeyDown(KeyCode.Alpha5) ||
+            Input.GetKeyDown(KeyCode.Alpha6) ||
+            Input.GetKeyDown(KeyCode.Alpha7) ||
+            Input.GetKeyDown(KeyCode.Alpha8) ||
+            Input.GetKeyDown(KeyCode.Alpha9) ||
+            Input.GetKeyDown(KeyCode.Alpha0)
+        );
+    }
 
     private void ChangeValueOnOpPanel(int direction)
     {
@@ -379,6 +432,7 @@ public class FastUi : MonoBehaviour
                 // GetKey brought us here but we only want GetKeyDown in this case
                 if (IsKeyDownValid()) return;
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeOpType(direction);
+                opConfig = _Poly.opconfigs[_Stack[stackIndex].opType];
                 _Stack[stackIndex] = _Stack[stackIndex].SetDefaultValues(opConfig);
                 break;
             case ButtonType.Amount:

@@ -139,10 +139,14 @@ public class PolyPreset {
 		}
 	}
 
+	public string ToJson()
+	{
+		return JsonConvert.SerializeObject(this, Formatting.Indented);
+	}
+
 	public void Save()
 	{
 		var fileName = Path.Combine(Application.persistentDataPath, PresetFileNamePrefix + Name + ".json");
-        var polyJson = JsonConvert.SerializeObject(this, Formatting.Indented);
-        File.WriteAllText(fileName, polyJson);
+		File.WriteAllText(fileName, ToJson());
 	}
 }

@@ -156,7 +156,6 @@ public class PolyHydra : MonoBehaviour
 	public enum Ops {
 
 		Identity,
-		Dual,
 		Kis,
 		Ambo,
 		Zip,
@@ -168,6 +167,8 @@ public class PolyHydra : MonoBehaviour
 		Ortho,
 		Meta,
 		Truncate,
+
+		Dual,
 
 		Gyro,
 		Snub,
@@ -200,24 +201,23 @@ public class PolyHydra : MonoBehaviour
 		Extrude,
 		Shell,
 		Skeleton,
+
 		VertexScale,
 		VertexRotate,
-		FaceSlide,
 		VertexFlex,
+
 		FaceOffset,
 		FaceScale,
 		FaceRotate,
+		FaceSlide,
+		// PolarOffset,   TODO
+		Hinge,
+
 //		Ribbon,
 //		FaceTranslate,
 //		FaceRotateX,
 //		FaceRotateY,
-		FaceRemove,
-		FaceKeep,
-		VertexRemove,
-		VertexKeep,
-		FillHoles,
-		FaceMerge,
-		Hinge,
+
 		AddDual,
 		AddCopyX,
 		AddCopyY,
@@ -225,20 +225,32 @@ public class PolyHydra : MonoBehaviour
 		AddMirrorX,
 		AddMirrorY,
 		AddMirrorZ,
+
+		FaceRemove,
+		FaceKeep,
+		VertexRemove,
+		VertexKeep,
+		FillHoles,
+		FaceMerge,
+		Weld,
+
+		Recenter,
+		SitLevel,
+		Stretch,
+		Slice,
+
+		Spherize,
+		Canonicalize,
+
+		Stack,
+		Layer,
+
 		Stash,
 		Unstash,
 		UnstashToVerts,
 		UnstashToFaces,
 		TagFaces,
-		Stack,
-		Layer,
-		Canonicalize,
-		Spherize,
-		Recenter,
-		SitLevel,
-		Stretch,
-		Slice,
-		Weld,
+
 	}
 
 	public readonly int[] NonOrientablePolyTypes = {
@@ -374,7 +386,7 @@ public class PolyHydra : MonoBehaviour
 		{
 			opType += val;
 			opType = (Ops) Mathf.Clamp(
-				(int) opType, 0, Enum.GetNames(typeof(Ops)).Length - 1
+				(int) opType, 1, Enum.GetNames(typeof(Ops)).Length - 1
 			);
 			return this;
 		}
@@ -834,18 +846,6 @@ public class PolyHydra : MonoBehaviour
 				}
 			},
 			{
-				Ops.FaceSlide,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = -1, amountSafeMax = 1,
-					usesAmount2 = true,
-					amount2Min = -3f, amount2Max = 3f, amount2SafeMin = -1f, amount2SafeMax = 1f,
-					usesRandomize = true
-				}
-			},
-			{
 				Ops.VertexFlex,
 				new OpConfig
 				{
@@ -872,6 +872,27 @@ public class PolyHydra : MonoBehaviour
 					usesFaces = true,
 					amountDefault = 45f,
 					amountMin = -3, amountMax = 3, amountSafeMin = -1, amountSafeMax = 1,
+					usesRandomize = true
+				}
+			},
+			// {
+			// 	Ops.PolarOffset,
+			// 	new OpConfig
+			// 	{
+			// 		usesFaces = true,
+			// 		amountDefault = 0.5f,
+			// 		amountMin = -4, amountMax = 4, amountSafeMin = -1, amountSafeMax = 1,
+			// 	}
+			// },
+			{
+				Ops.FaceSlide,
+				new OpConfig
+				{
+					usesFaces = true,
+					amountDefault = 0.5f,
+					amountMin = -4, amountMax = 4, amountSafeMin = -1, amountSafeMax = 1,
+					usesAmount2 = true,
+					amount2Min = -3f, amount2Max = 3f, amount2SafeMin = -1f, amount2SafeMax = 1f,
 					usesRandomize = true
 				}
 			},
@@ -1158,8 +1179,8 @@ public class PolyHydra : MonoBehaviour
 				conway = ConwayPoly.MakePolarGrid(PrismP, PrismQ);
 				break;
 		}
-		// Welding only seems to work reliably on simpler shapres
-		if (gridShape != GridShapes.Plane) conway = conway.Weld(0.0001f);
+		// Welding only seems to work reliably on simpler shapes
+		if (gridShape != GridShapes.Plane) conway = conway.Weld(0.001f);
 
 		return conway;
 	}
@@ -1272,7 +1293,7 @@ public class PolyHydra : MonoBehaviour
 				ConwayPoly zPair = conway.Rotate(Vector3.left, 90);
 				conway.Append(xPair);
 				conway.Append(zPair);
-				conway = conway.Weld(0.0001f);
+				conway = conway.Weld(0.001f);
 				return conway;
 			default:
 				Debug.LogError("Unknown Other Poly Type");
