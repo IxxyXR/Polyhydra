@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization.Json;
+using System.Runtime.InteropServices; // Don't remove
+using System.Text; // Don't remove
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
@@ -15,8 +16,6 @@ using Random = UnityEngine.Random;
 
 public class FastUi : MonoBehaviour
 {
-
-
     private int _PanelIndex;
     private int _ShapeCategoryIndex;
     private int _ShapeIndex;
@@ -63,9 +62,15 @@ public class FastUi : MonoBehaviour
         Unknown
     }
 
+    #if UNITY_WEBGL && !UNITY_EDITOR
+        [DllImport("__Internal")]
+        private static extern void TextDownloader(string stringData, string filename);
+    #endif
+
     void Start()
     {
         _Poly = FindObjectOfType<PolyHydra>();
+        _Poly.GenerateSubmeshes = true;
         _Stack = _Poly.ConwayOperators;
         _MainMenuCount = MainMenuContainer.childCount;
 
@@ -202,6 +207,17 @@ public class FastUi : MonoBehaviour
                     uiDirty = true;
                     polyDirty = true;
                 }
+                else
+                {
+                    // Load a random preset and quick save it
+                    LoadRandomPreset();
+                    var preset = new PolyPreset();
+                    preset.CreateFromPoly($"quicksave_{numKey}", _Poly);
+                    PlayerPrefs.SetString(preset.Name, preset.ToJson());
+                    PlayerPrefs.Save();
+                    uiDirty = true;
+                    polyDirty = true;
+                }
             }
         }
         else if (Input.GetKeyDown(KeyCode.R))
@@ -212,59 +228,29 @@ public class FastUi : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.P))
         {
-            var preset = Presets[Random.Range(0, Presets.Count)];
-            preset.Ops = preset.Ops.Where(i => !i.Disabled && i.OpType!=PolyHydra.Ops.Identity).ToArray();
-            preset.ApplyToPoly(_Poly);
-            if (_Poly.ShapeType == PolyHydra.ShapeTypes.Uniform)
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
-
-                // Find the first matching category
-
-                int matchIndex = -1;
-                int catIndex = -1;
-
-                var lists = new List<Uniform[]>
-                {
-                    Uniform.Platonic,
-                    Uniform.Prismatic,
-                    Uniform.Archimedean,
-                    Uniform.Convex,
-                    Uniform.KeplerPoinsot,
-                    Uniform.Star,
-                };
-                for (var i = 0; i < lists.Count; i++)
-                {
-                    var list = lists[i];
-                    var match = list.FirstOrDefault(x => x.Index == (int) _Poly.UniformPolyType);
-                    if (match != null)
-                    {
-                        matchIndex = match.Index;
-                        catIndex = i;
-                        break;
-                    }
-                }
-                _ShapeCategoryIndex = catIndex;
-                _ShapeIndex = matchIndex;
+                // TODO Random appearance
             }
-            else if (_Poly.ShapeType == PolyHydra.ShapeTypes.Johnson)
+            else
             {
-                _ShapeCategoryIndex = 6;
-                _ShapeIndex = (int) _Poly.JohnsonPolyType;
-            }
-            else if (_Poly.ShapeType == PolyHydra.ShapeTypes.Grid)
-            {
-                _ShapeCategoryIndex = 7;
-                _ShapeIndex = (int) _Poly.GridType;
-            }
-            else if (_Poly.ShapeType == PolyHydra.ShapeTypes.Other)
-            {
-                _ShapeCategoryIndex = 8;
-                _ShapeIndex = (int) _Poly.OtherPolyType;
+                LoadRandomPreset();
+                uiDirty = true;
+                polyDirty = true;
             }
 
-            _Stack = _Poly.ConwayOperators;
-            uiDirty = true;
-            polyDirty = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            string fname = "polyhydra_export";
+            #if UNITY_WEBGL && !UNITY_EDITOR
+                string stringData = ObjExport.GenerateObjData(_Poly.gameObject, fname, true).ToString();
+                TextDownloader(stringData, fname + ".obj");
+                stringData = ObjExport.GenerateMtlData().ToString();
+                TextDownloader(stringData, fname + ".mtl");
+            #else
+                ObjExport.ExportMesh(_Poly.gameObject, Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fname, true);
+            #endif
         }
         else if (Input.GetKeyDown(KeyCode.M))
         {
@@ -381,6 +367,60 @@ public class FastUi : MonoBehaviour
         }
     }
 
+    public void LoadRandomPreset()
+    {
+        var preset = Presets[Random.Range(0, Presets.Count)];
+        preset.Ops = preset.Ops.Where(i => !i.Disabled && i.OpType != PolyHydra.Ops.Identity).ToArray();
+        preset.ApplyToPoly(_Poly);
+        if (_Poly.ShapeType == PolyHydra.ShapeTypes.Uniform)
+        {
+            // Find the first matching category
+
+            int matchIndex = -1;
+            int catIndex = -1;
+
+            var lists = new List<Uniform[]>
+            {
+                Uniform.Platonic,
+                Uniform.Prismatic,
+                Uniform.Archimedean,
+                Uniform.Convex,
+                Uniform.KeplerPoinsot,
+                Uniform.Star,
+            };
+            for (var i = 0; i < lists.Count; i++)
+            {
+                var list = lists[i];
+                var match = list.FirstOrDefault(x => x.Index == (int) _Poly.UniformPolyType);
+                if (match != null)
+                {
+                    matchIndex = match.Index;
+                    catIndex = i;
+                    break;
+                }
+            }
+
+            _ShapeCategoryIndex = catIndex;
+            _ShapeIndex = matchIndex;
+        }
+        else if (_Poly.ShapeType == PolyHydra.ShapeTypes.Johnson)
+        {
+            _ShapeCategoryIndex = 6;
+            _ShapeIndex = (int) _Poly.JohnsonPolyType;
+        }
+        else if (_Poly.ShapeType == PolyHydra.ShapeTypes.Grid)
+        {
+            _ShapeCategoryIndex = 7;
+            _ShapeIndex = (int) _Poly.GridType;
+        }
+        else if (_Poly.ShapeType == PolyHydra.ShapeTypes.Other)
+        {
+            _ShapeCategoryIndex = 8;
+            _ShapeIndex = (int) _Poly.OtherPolyType;
+        }
+        _Stack = _Poly.ConwayOperators;
+    }
+
     private void ChangeValue(int direction)
     {
         if (_PanelIndex == 0)
@@ -393,9 +433,9 @@ public class FastUi : MonoBehaviour
         }
     }
 
-    private bool IsKeyDownValid()
+    private bool ValueKeyPressedThisFrame()
     {
-        return !(Input.GetKeyDown(KeyCode.A) ||
+        return (Input.GetKeyDown(KeyCode.A) ||
                  Input.GetKeyDown(KeyCode.D) ||
                  Input.GetKeyDown(KeyCode.W) ||
                  Input.GetKeyDown(KeyCode.S)) &&
@@ -430,29 +470,33 @@ public class FastUi : MonoBehaviour
         {
             case ButtonType.OpType:
                 // GetKey brought us here but we only want GetKeyDown in this case
-                if (IsKeyDownValid()) return;
+                if (!ValueKeyPressedThisFrame()) return;
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeOpType(direction);
                 opConfig = _Poly.opconfigs[_Stack[stackIndex].opType];
                 _Stack[stackIndex] = _Stack[stackIndex].SetDefaultValues(opConfig);
                 break;
             case ButtonType.Amount:
-                if (Time.frameCount % FrameSkip == 0) return;  // Rate limit
-                _Stack[stackIndex] = _Stack[stackIndex].ChangeAmount(direction * 0.05f);
-                _Stack[stackIndex] = _Stack[stackIndex].ClampAmount(opConfig, true);
+                if (Time.frameCount % FrameSkip == 0 || ValueKeyPressedThisFrame()) // Rate limit but always allows single key presses
+                {
+                    _Stack[stackIndex] = _Stack[stackIndex].ChangeAmount(direction * 0.025f);
+                    _Stack[stackIndex] = _Stack[stackIndex].ClampAmount(opConfig, true);
+                }
                 break;
             case ButtonType.Amount2:
-                if (Time.frameCount % FrameSkip == 0) return;  // Rate limit
-                _Stack[stackIndex] = _Stack[stackIndex].ChangeAmount2(direction * 0.05f);
-                _Stack[stackIndex] = _Stack[stackIndex].ClampAmount2(opConfig, true);
+                if (Time.frameCount % FrameSkip == 0 || ValueKeyPressedThisFrame()) // Rate limit but always allows single key presses
+                {
+                    _Stack[stackIndex] = _Stack[stackIndex].ChangeAmount2(direction * 0.025f);
+                    _Stack[stackIndex] = _Stack[stackIndex].ClampAmount2(opConfig, true);
+                }
                 break;
             case ButtonType.FaceSelection:
                 // GetKey brought us here but we only want GetKeyDown in this case
-                if (IsKeyDownValid()) return;
+                if (!ValueKeyPressedThisFrame()) return;
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeFaceSelection(direction);
                 break;
             case ButtonType.Tags:
                 // GetKey brought us here but we only want GetKeyDown in this case
-                if (IsKeyDownValid()) return;
+                if (!ValueKeyPressedThisFrame()) return;
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeTags(direction);
                 break;
         }
@@ -461,8 +505,7 @@ public class FastUi : MonoBehaviour
     void ChangeValueOnPolyPanel(int direction)
     {
         // GetKey brought us here but we only want GetKeyDown in this case
-        if (IsKeyDownValid()) return;
-        int idx;
+        if (!ValueKeyPressedThisFrame()) return;
         switch (_PanelWidgetIndex)
         {
             case 0:
