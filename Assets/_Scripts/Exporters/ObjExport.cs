@@ -43,7 +43,7 @@ public class ObjExport
 		{
 			sb.Append("\n");
 			sb.Append("usemtl ").Append($"material{material}").Append("\n");
-			sb.Append("usemap ").Append($"material{material}").Append("\n");
+			//sb.Append("usemap ").Append($"material{material}").Append("\n");
  
 			int[] triangles = m.GetTriangles(material);
 			for (int i=0;i<triangles.Length;i+=3) {
@@ -70,55 +70,21 @@ public class ObjExport
 
 	public static StringBuilder GenerateMtlData()
 	{
+		var colors = PolyHydra.DefaultFaceColors;
 		StringBuilder mtlString = new StringBuilder();
-		mtlString.Append(@"newmtl material0
-Ka  0.1986  0.0000  0.0000
-Kd  0.5922  0.0166  0.0000
-Ks  0.5974  0.2084  0.2084
+		for (var i = 0; i < colors.Length; i++)
+		{
+			var color = colors[i];
+			mtlString.Append($@"newmtl material{i}
+Ka  0.0000  0.0000  0.0000
+Kd  {color.r}  {color.g}  {color.b}
+Ks  1.0000  1.0000  1.0000
 illum 2
-Ns 100.2237
+Ns 100
 
-newmtl material1
-Ka  0.1986  0.5922  0.5922
-Kd  0.000   1.000   0.000 
-Ks  0.5974  0.2084  0.2084
-illum 2
-Ns 100.2237
+");
+		}
 
-newmtl material2
-Ka  0.1986  0.5922  0.5922
-Kd  1.000   1.000   0.000 
-Ks  0.5974  0.2084  0.2084
-illum 2
-Ns 100.2237
-
-newmtl material3
-Ka  0.1986  0.5922  0.5922
-Kd  1.000   0.000   1.000 
-Ks  0.5974  0.2084  0.2084
-illum 2
-Ns 100.2237
-
-newmtl material4
-Ka  0.1986  0.5922  0.5922
-Kd  0.000   1.000   1.000 
-Ks  0.5974  0.2084  0.2084
-illum 2
-Ns 100.2237
-
-newmtl material5
-Ka  0.1986  0.5922  0.5922
-Kd  1.000   1.000   1.000 
-Ks  0.5974  0.2084  0.2084
-illum 2
-Ns 100.2237
-
-newmtl material6
-Ka  0.1986  0.5922  0.5922
-Kd  1.000   1.000   1.000 
-Ks  0.5974  0.2084  0.2084
-illum 2
-Ns 100.2237");
 		return mtlString;
 	}
 

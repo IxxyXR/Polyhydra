@@ -37,7 +37,7 @@ public class PolyFDD : MonoBehaviour
         AlphaTarget = 0f;
         VelocityDecay = 0.6f;
 
-        var nodeMap = new Dictionary<string, Node>();
+        var nodeMap = new Dictionary<Guid, Node>();
 
         foreach (var vertex in poly._conwayPoly.Vertices)
         {

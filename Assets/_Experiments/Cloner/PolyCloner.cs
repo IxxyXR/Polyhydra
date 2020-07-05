@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Conway;
 using Unity.Mathematics;
@@ -77,7 +78,7 @@ namespace Cloner
 					normals = new Vector3[PointCount];
 					int boundaryEdgeCount = 0;
 					int pairedEdgeCount = 0;
-					var seenEdges = new HashSet<string>();
+					var seenEdges = new HashSet<(Guid, Guid)?>();
 					int i = 0;
 					foreach (var edge in target._conwayPoly.Halfedges)
 					{

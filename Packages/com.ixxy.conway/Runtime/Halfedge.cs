@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 
@@ -30,25 +30,59 @@ namespace Conway {
             public Halfedge Next { get; set; }
             public Halfedge Prev { get; set; }
             public Halfedge Pair { get; set; }
-            public Vertex Vertex { get; set; }
+            public Vertex Vertex { get; private set; }
             public Face Face { get; set; }
+
+            private string _cachedName;
+            private string _cachedPairedName;
+
+            private static string _StringJoin(string s1, string s2)
+            {
+                var sb = new StringBuilder();
+                sb.Append(s1).Append(s2);
+                return sb.ToString();
+            }
     
-            public String Name {
-                get {
-                    if (Vertex == null || Prev == null || Prev.Vertex == null) return null;
-                    return Vertex.Name + Prev.Vertex.Name;
+            public (Guid, Guid)? Name {
+                get
+                {
+                    (Guid, Guid)? name;
+                    if (Vertex == null || Prev == null || Prev.Vertex == null)
+                    {
+                        name = null;
+                    }
+                    else
+                    {
+                        name = (Vertex.Name, Prev.Vertex.Name);
+                    }
+                    return name;
                 }
             }
         
-            public String PairedName {
+            public (Guid, Guid)? PairedName {
                 // A unique name for the half-edge pair
+                // A half-edge will have the same PairedName as it's pair
                 get
                 {
-                    if (Vertex == null || Prev == null || Prev.Vertex == null) return null;
-                    var names = new List<string> {Vertex.Name, Prev.Vertex.Name};
-                    names.Sort();
-                    return String.Join(",", names);
-            }
+                    (Guid, Guid)? pairedName = null;
+                    if (Vertex == null || Prev == null || Prev.Vertex == null)
+                    {
+                        _cachedPairedName = null;
+                    }
+                    else
+                    {
+                        // Return a joining of the names with consistent ordering
+                        if (Vertex.Name.CompareTo(Prev.Vertex.Name) > 0)
+                        {
+                            pairedName = (Prev.Vertex.Name, Vertex.Name);
+                        }
+                        else
+                        {
+                            pairedName = (Vertex.Name, Prev.Vertex.Name);
+                        }
+                    }
+                    return pairedName;
+                }
             }
     
             public Vector3 Midpoint {
@@ -74,9 +108,11 @@ namespace Conway {
 
         #endregion
 
-        public string[] getEnds()
+        public void SetVertex(Vertex newVertex)
         {
-            return new string[2] { Vertex.Name, Pair.Vertex.Name};
+            Vertex = newVertex;
+            _cachedName = null;
+            _cachedPairedName = null;
         }
     }
 }

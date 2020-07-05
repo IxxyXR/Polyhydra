@@ -36,6 +36,7 @@ namespace Conway {
         /// <param name="vertices">the vertices which define the face, given in anticlockwise order</param>
         /// <returns>true on success, false on failure</returns>
         private Boolean _AddOrInsert(IEnumerable<Vertex> vertices, bool insert, int index=-1) {
+
             Vertex[] array = vertices.ToArray();
 
             if (array.Length < 3) {
@@ -59,15 +60,24 @@ namespace Conway {
                 newEdges[i].Face = newFace;
                 newEdges[i].Next = newEdges[(i + 1) % n];
                 newEdges[i].Prev = newEdges[(i + n - 1) % n];
-                if (_mConwayPoly.Halfedges.Contains(newEdges[i].Name)) {
-                    return false;
-                }
+                // Remove check for performance reasons
+                // TODO hmmmmm...
+                // if (_mConwayPoly.Halfedges.Contains(newEdges[i].Name)) {
+                //     return false;
+                // }
             }
 
             // add halfedges to mesh
             for (int j = 0; j < n; j++) {
                 array[j].Halfedge = array[j].Halfedge ?? newEdges[j];
-                _mConwayPoly.Halfedges.Add(newEdges[j]);
+                try
+                {
+                    _mConwayPoly.Halfedges.Add(newEdges[j]);
+                }
+                catch (ArgumentException e)
+                {
+                    return false;
+                }
             }
 
             // add face to mesh
@@ -98,7 +108,9 @@ namespace Conway {
                 edge = edge.Next;
             } while (edge != item.Halfedge);
 
-            foreach (Halfedge e in edges) {
+            for (var edgeIndex = 0; edgeIndex < edges.Count; edgeIndex++)
+            {
+                Halfedge e = edges[edgeIndex];
                 if (e.Pair != null)
                 {
                     e.Pair.Pair = null;
@@ -106,17 +118,21 @@ namespace Conway {
                 }
 
                 // if halfedge's vertex references halfedge, point it to another
-                if (e.Vertex.Halfedge == e) {
+                if (e.Vertex.Halfedge == e)
+                {
                     if (e.Pair != null)
                         e.Vertex.Halfedge = e.Pair.Prev;
                     else if (e.Next.Pair != null)
                         e.Vertex.Halfedge = e.Next.Pair;
-                    else {
+                    else
+                    {
                         // if all else fails, try searching through all of the halfedges for one which points to this vertex
-                        try {
+                        try
+                        {
                             e.Vertex.Halfedge = _mConwayPoly.Halfedges.First(i => i.Vertex == e.Vertex);
                         }
-                        catch (InvalidOperationException) {
+                        catch (InvalidOperationException)
+                        {
                             // nothing found, remove the vertex
                             _mConwayPoly.Vertices.Remove(e.Vertex);
                         }

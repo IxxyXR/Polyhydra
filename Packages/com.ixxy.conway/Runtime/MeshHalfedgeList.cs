@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
+
 namespace Conway {
     /// <summary>
     /// A collection of mesh halfedges
     /// </summary>
-    public class MeshHalfedgeList : KeyedCollection<string, Halfedge> {
+    public class MeshHalfedgeList : KeyedCollection<(Guid, Guid)?, Halfedge> {
+
         private ConwayPoly _mConwayPoly;
 
         /// <summary>
@@ -25,9 +27,15 @@ namespace Conway {
             _mConwayPoly = null;
         }
 
-        protected override string GetKeyForItem(Halfedge edge) {
+        protected override (Guid, Guid)? GetKeyForItem(Halfedge edge)
+        {
             return edge.Name;
         }
+
+        // protected override  GetKeyForItem(Halfedge edge)
+        // {
+        //     return edge.Name.To;
+        // }
 
         #region add methods
 
@@ -53,14 +61,14 @@ namespace Conway {
         /// <returns>true on success, false if changing the vertex of this halfedge would cause it to duplicate an existing halfedge</returns>
         public Boolean SetVertex(Halfedge he, Vertex newVertex) {
             try {
-                ChangeItemKey(he, newVertex.Name + he.Prev.Vertex.Name);
-                ChangeItemKey(he.Next, he.Next.Vertex.Name + newVertex.Name);
+                ChangeItemKey(he, (newVertex.Name, he.Prev.Vertex.Name));
+                ChangeItemKey(he.Next, (he.Next.Vertex.Name, newVertex.Name));
             }
             catch (ArgumentException) {
                 return false;
             }
 
-            he.Vertex = newVertex;
+            he.SetVertex(newVertex);
             // TODO: what if the old vertex was point to this halfedge? (see MeshFaceList.Remove)
             return true;
         }
@@ -68,10 +76,12 @@ namespace Conway {
         /// <summary>
         /// Searches through the mesh and pairs opposing halfedges
         /// </summary>
-        public void MatchPairs() {
-            foreach (Halfedge edge in this) {
-                String rname = edge.Prev.Vertex.Name + edge.Vertex.Name;
-
+        public void MatchPairs()
+        {
+            for (var i = 0; i < this.Count; i++)
+            {
+                Halfedge edge = this[i];
+                var rname = (edge.Prev.Vertex.Name, edge.Vertex.Name);
                 edge.Pair = Contains(rname) ? this[rname] : null;
             }
         }
@@ -85,20 +95,26 @@ namespace Conway {
             MeshHalfedgeList marker = new MeshHalfedgeList();
             List<Halfedge> unique = new List<Halfedge>();
 
-            foreach (Halfedge halfedge in this) {
+            for (var i = 0; i < this.Count; i++)
+            {
+                Halfedge halfedge = this[i];
                 // do not add halfedge to unique list if its pair has already been added
-                if (marker.Contains(halfedge.Name)) {
+                if (marker.Contains(halfedge.Name))
+                {
                     continue;
                 }
 
                 // otherwise, add it to the unique list and 'mark' its pair
                 unique.Add(halfedge);
 
-                if (halfedge.Pair != null) {
-                    try {
+                if (halfedge.Pair != null)
+                {
+                    try
+                    {
                         marker.Add(this[halfedge.Pair.Name]);
                     }
-                    catch (KeyNotFoundException) {
+                    catch (KeyNotFoundException)
+                    {
                     } // do nothing, halfedge is already unique to 'this' list
                 }
             }
@@ -121,12 +137,15 @@ namespace Conway {
                 var temp = edge.Next;
                 edge.Next = edge.Prev;
                 edge.Prev = temp;
-                edge.Vertex = vertices[i];
+                edge.SetVertex(vertices[i]);
             }
 
-            foreach (Halfedge edge in edges) {
+            for (var i = 0; i < edges.Length; i++)
+            {
+                Halfedge edge = edges[i];
                 Add(edge);
             }
         }
+
     }
 }

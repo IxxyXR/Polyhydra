@@ -26,6 +26,8 @@ namespace Conway {
 
             public Halfedge Halfedge { get; set; }
             public String Name { get; private set; }
+            private Vector3 _cachedNormal;
+            // private bool _hasCachedNormal;
 
             public float GetArea()
             {
@@ -59,15 +61,18 @@ namespace Conway {
                 get {
                     Vector3 avg = new Vector3();
                     List<Vertex> vertices = GetVertices();
-                    foreach (Vertex v in vertices) {
+                    var vcount = vertices.Count;
+                    for (var i = 0; i < vcount; i++)
+                    {
+                        Vertex v = vertices[i];
                         avg.x += v.Position.x;
                         avg.y += v.Position.y;
                         avg.z += v.Position.z;
                     }
-    
-                    avg.x /= vertices.Count;
-                    avg.y /= vertices.Count;
-                    avg.z /= vertices.Count;
+
+                    avg.x /= vcount;
+                    avg.y /= vcount;
+                    avg.z /= vcount;
     
                     return avg;
                 }
@@ -78,14 +83,22 @@ namespace Conway {
             /// </summary>
             public Vector3 Normal {
                 get {
-                    Vector normal = new Vector(0, 0, 0);
-                    Halfedge edge = Halfedge;
-                    do {
-                        Vector3 crossTmp = Vector3.Cross(edge.Vector - Centroid, edge.Next.Vector - Centroid);
-                        normal = normal.sum(new Vector(crossTmp.x, crossTmp.y, crossTmp.z));
-                        edge = edge.Next;  // move on to next halfedge
-                    } while (edge != Halfedge);
-                    return new Vector3((float)normal.x, (float)normal.y, (float)normal.z).normalized;
+                    // TODO cache normals
+                    // if (!_hasCachedNormal)
+                    // {
+                        Vector normal = new Vector(0, 0, 0);
+                        var centroid = Centroid;
+                        Halfedge edge = Halfedge;
+                        do
+                        {
+                            Vector3 crossTmp = Vector3.Cross(edge.Vector - centroid, edge.Next.Vector - centroid);
+                            normal = normal.sum(new Vector(crossTmp.x, crossTmp.y, crossTmp.z));
+                            edge = edge.Next;  // move on to next halfedge
+                        } while (edge != Halfedge);
+                        _cachedNormal = new Vector3((float) normal.x, (float) normal.y, (float) normal.z).normalized;
+                        // _hasCachedNormal = true;
+                    // }
+                    return _cachedNormal;
                 }
             }
     

@@ -98,8 +98,9 @@ public class Unitile
                 if (y < -Mathf.Epsilon) continue;
                 var cent = new Vector3(x, 0, y);
                 var tile = new List<Vector3>();
-                foreach (var k in poly)
+                for (var polyIndex = 0; polyIndex < poly.Count; polyIndex++)
                 {
+                    var k = poly[polyIndex];
                     tile.Add(k + cent);
                 }
 

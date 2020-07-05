@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Conway;
@@ -169,8 +170,8 @@ public class Unfolder : MonoBehaviour
 			
 			var constructedFaces = new List<string>(); // Faces which have been constructed already
 			var alreadyRotated = new Dictionary<string, int>(); // Faces which have been rotated already
-			var alteredEdges = new Dictionary<string, List<Vector3>>(); // Edges that have been moved due to rotations
-			string alteredEdgeName = "";
+			var alteredEdges = new Dictionary<(Guid, Guid)?, List<Vector3>>(); // Edges that have been moved due to rotations
+			(Guid, Guid)? alteredEdgeName;
 		
 			// Loops through all of the branched edges to unfold the polyhedron
 			for (var i = 0; (i < branchedEdges.Count); i++)
@@ -212,7 +213,7 @@ public class Unfolder : MonoBehaviour
 					}
 					
 					// Sets the axis of the rotation as the vector of the halfedge
-					string edgeName = ufEdge.Halfedge2.Name;
+					var edgeName = ufEdge.Halfedge2.Name;
 					Vector3 axis = alteredEdges.ContainsKey(edgeName) ? alteredEdges[edgeName][2] : ufEdge.Halfedge2.Vector;
 					// Two rotations are available to compensate for different directions of vectors
 					Quaternion rotationq1 = Quaternion.AngleAxis(angle, axis);
@@ -315,7 +316,7 @@ public class Unfolder : MonoBehaviour
 								if (rotationStage3) newVertices[vertIndex] = RotatePoint(newVertices[vertIndex], (negative ? rotationq2 : rotationq1), alteredEdges[alteredEdgeName][0]);
 
 								// checks for altered edges to set the origin and axis
-								foreach (KeyValuePair<string, List<Vector3>> kvp in alteredEdges)
+								foreach (KeyValuePair<(Guid, Guid)?, List<Vector3>> kvp in alteredEdges)
 								{
 									if (kvp.Value[0] != originalPosition) continue;
 									Vector3 prevVertexPosition = kvp.Value[1];
@@ -519,7 +520,7 @@ public class Unfolder : MonoBehaviour
 					
 				do {
 					if (edge.Vertex == v) {
-						edge.Vertex = new Vertex(v.Position);
+						edge.SetVertex(new Vertex(v.Position));
 						break;
 					}
 					edge = edge.Next;

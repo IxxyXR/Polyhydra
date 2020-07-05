@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Wythoff;
 using UnityEngine;
 
 namespace Conway {
@@ -11,7 +10,7 @@ namespace Conway {
 
         public Vertex(Vector3 point) {
             Position = point;
-            Name = Guid.NewGuid().ToString("N").Substring(0, 12);
+            Name = Guid.NewGuid();
         }
 
         public Vertex(Vector3 point, Halfedge edge)
@@ -34,16 +33,19 @@ namespace Conway {
         /// </summary>
         public Halfedge Halfedge { get; set; }
 
-        public string Name { get; private set; }
+        public Guid Name { get; private set; }
 
         public Vector3 Normal {
             get {
-                Vector normal = new Vector(0, 0, 0);
-                foreach (Face f in GetVertexFaces()) {
-                    normal = normal.sum(new Vector(f.Normal.x, f.Normal.y, f.Normal.z));
+                Vector3 normal = new Vector3(0, 0, 0);
+                var fs = GetVertexFaces();
+                for (var i = 0; i < fs.Count; i++)
+                {
+                    Face f = fs[i];
+                    normal += new Vector3(f.Normal.x, f.Normal.y, f.Normal.z);
                 }
 
-                return new Vector3((float) normal.x, (float) normal.y, (float) normal.z).normalized;
+                return new Vector3(normal.x, normal.y, normal.z).normalized;
             }
         }
 

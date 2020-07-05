@@ -119,24 +119,27 @@ namespace Conway
 
 			// Add vertices
 			Vertices.Capacity = source.VertexCount;
-			foreach (Vector p in source.Vertices)
+			for (var i = 0; i < source.Vertices.Length; i++)
 			{
+				Vector p = source.Vertices[i];
 				Vertices.Add(new Vertex(p.getVector3()));
 				VertexRoles.Add(Roles.Existing);
 			}
 
 			// Add faces (and construct halfedges and store in hash table)
-			foreach (var face in source.faces)
+			for (var faceIndex = 0; faceIndex < source.faces.Count; faceIndex++)
 			{
+				var face = source.faces[faceIndex];
 				var v = new Vertex[face.points.Count];
-				
+
 				for (int i = 0; i < face.points.Count; i++)
 				{
 					v[i] = Vertices[face.points[i]];
 				}
-				FaceRoles.Add((Roles)((int)face.configuration % 5));
 
-						
+				FaceRoles.Add((Roles) ((int) face.configuration % 5));
+
+
 				if (!Faces.Add(v))
 				{
 					// Failed. Let's try flipping the face
@@ -244,19 +247,21 @@ namespace Conway
 
 			// Create vertices from faces
 			var vertexPoints = new List<Vector3>(Faces.Count);
-			foreach (var f in Faces)
+			for (var faceIndex = 0; faceIndex < Faces.Count; faceIndex++)
 			{
+				var f = Faces[faceIndex];
 				vertexPoints.Add(f.Centroid);
 				vertexRoles.Add(Roles.New);
 			}
 
 			// Create sublist of non-boundary vertices
-			var naked = new Dictionary<string, bool>(Vertices.Count); // vertices (name, boundary?)
+			var naked = new Dictionary<Guid, bool>(Vertices.Count); // vertices (name, boundary?)
 			// boundary halfedges (name, index of point in new mesh)
-			var hlookup = new Dictionary<string, int>(Halfedges.Count); 
+			var hlookup = new Dictionary<(Guid, Guid)?, int>(Halfedges.Count);
 
-			foreach (var he in Halfedges)
+			for (var i = 0; i < Halfedges.Count; i++)
 			{
+				var he = Halfedges[i];
 				if (!naked.ContainsKey(he.Vertex.Name))
 				{
 					// if not in dict, add (boundary == true)
@@ -410,7 +415,7 @@ namespace Conway
 
 			// Create points at midpoint of unique halfedges (edges to vertices) and create lookup table
 			var vertexPoints = new List<Vector3>(); // vertices as points
-			var newInnerVerts = new Dictionary<string, int>();
+			var newInnerVerts = new Dictionary<(Guid, Guid)?, int>();
 			int count = 0;
 
 			var faceIndices = new List<IEnumerable<int>>(); // faces as vertex indices
@@ -433,8 +438,9 @@ namespace Conway
 			}
 
 			// vertices to faces
-			foreach (var vertex in Vertices)
+			for (var vertIndex = 0; vertIndex < Vertices.Count; vertIndex++)
 			{
+				var vertex = Vertices[vertIndex];
 				var halfedges = vertex.Halfedges;
 				if (halfedges.Count < 3) continue;
 				var newVertexFace = new List<int>();
@@ -457,10 +463,14 @@ namespace Conway
 				faceRoles.Add(Roles.New);
 
 				var vertexFaceIndices = vertex.GetVertexFaces().Select(f => Faces.IndexOf(f));
-				var existingTagSets = vertexFaceIndices.Select(fi => FaceTags[fi].Where(t=>t.Item2==TagType.Extrovert));
-				var newFaceTagSet = existingTagSets.Aggregate(new HashSet<Tuple<string, TagType>>(), (rs, i) => {rs.UnionWith(i); return rs;});
+				var existingTagSets =
+					vertexFaceIndices.Select(fi => FaceTags[fi].Where(t => t.Item2 == TagType.Extrovert));
+				var newFaceTagSet = existingTagSets.Aggregate(new HashSet<Tuple<string, TagType>>(), (rs, i) =>
+				{
+					rs.UnionWith(i);
+					return rs;
+				});
 				newFaceTags.Add(newFaceTagSet);
-
 			}
 
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles, newFaceTags);
@@ -479,7 +489,7 @@ namespace Conway
 
 			// Create points at midpoint of unique halfedges (edges to vertices) and create lookup table
 			var vertexPoints = new List<Vector3>(); // vertices as points
-			var hlookup = new Dictionary<string, int>();
+			var hlookup = new Dictionary<(Guid, Guid)?, int>();
 			int count = 0;
 
 			foreach (var edge in Halfedges)
@@ -510,25 +520,31 @@ namespace Conway
 			}
 
 			// vertices to faces
-			foreach (var vertex in Vertices)
+			for (var vertIndex = 0; vertIndex < Vertices.Count; vertIndex++)
 			{
+				var vertex = Vertices[vertIndex];
 				var halfedges = vertex.Halfedges;
 				if (halfedges.Count == 0) continue; // no halfedges (naked vertex, ignore)
-				var list = halfedges.Select(edge => hlookup[edge.Name]); // halfedge indices for vertex-loop
+				var newHalfedges = halfedges.Select(edge => hlookup[edge.Name]); // halfedge indices for vertex-loop
 				if (halfedges[0].Next.Pair == null)
 				{
 					// Handle boundary vertex, add itself and missing boundary halfedge
-					list = list.Concat(new[] {vertexPoints.Count, hlookup[halfedges[0].Next.Name]});
+					newHalfedges = newHalfedges.Concat(new[] {vertexPoints.Count, hlookup[halfedges[0].Next.Name]});
 					vertexPoints.Add(vertex.Position);
 					vertexRoles.Add(Roles.NewAlt);
 				}
 
-				faceIndices.Add(list);
+				faceIndices.Add(newHalfedges);
 				faceRoles.Add(Roles.New);
 
 				var vertexFaceIndices = vertex.GetVertexFaces().Select(f => Faces.IndexOf(f));
-				var existingTagSets = vertexFaceIndices.Select(fi => FaceTags[fi].Where(t=>t.Item2==TagType.Extrovert));
-				var newFaceTagSet = existingTagSets.Aggregate(new HashSet<Tuple<string, TagType>>(), (rs, i) => {rs.UnionWith(i); return rs;});
+				var existingTagSets =
+					vertexFaceIndices.Select(fi => FaceTags[fi].Where(t => t.Item2 == TagType.Extrovert));
+				var newFaceTagSet = existingTagSets.Aggregate(new HashSet<Tuple<string, TagType>>(), (rs, i) =>
+				{
+					rs.UnionWith(i);
+					return rs;
+				});
 				newFaceTags.Add(newFaceTagSet);
 			}
 
@@ -554,7 +570,7 @@ namespace Conway
 			var vertexRoles = new List<Roles>();
 
 			var vertexPoints = new List<Vector3>(); // vertices as points
-			var ignoredVerts = new Dictionary<string, int>();
+			var ignoredVerts = new Dictionary<Guid, int>();
 			var newVerts = new Dictionary<Vector3, int>();
 			int count = 0;
 
@@ -636,15 +652,17 @@ namespace Conway
 			}
 
 			// vertices to faces
-			foreach (var vertex in Vertices)
+			for (var vertIndex = 0; vertIndex < Vertices.Count; vertIndex++)
 			{
+				var vertex = Vertices[vertIndex];
 				if (!IncludeVertex(GetVertID(vertex), vertexsel)) continue;
 				bool boundary = false;
 				var edges = vertex.Halfedges;
 
 				var vertexFace = new List<int>();
-				foreach (var edge in edges)
+				for (var i = 0; i < edges.Count; i++)
 				{
+					var edge = edges[i];
 					Vector3 pos;
 					if (edge.Pair != null)
 					{
@@ -667,8 +685,13 @@ namespace Conway
 					faceRoles.Add(Roles.New);
 
 					var vertexFaceIndices = vertex.GetVertexFaces().Select(f => Faces.IndexOf(f));
-					var existingTagSets = vertexFaceIndices.Select(fi => FaceTags[fi].Where(t=>t.Item2==TagType.Extrovert));
-					var newFaceTagSet = existingTagSets.Aggregate(new HashSet<Tuple<string, TagType>>(), (rs, i) => {rs.UnionWith(i); return rs;});
+					var existingTagSets =
+						vertexFaceIndices.Select(fi => FaceTags[fi].Where(t => t.Item2 == TagType.Extrovert));
+					var newFaceTagSet = existingTagSets.Aggregate(new HashSet<Tuple<string, TagType>>(), (rs, i) =>
+					{
+						rs.UnionWith(i);
+						return rs;
+					});
 					newFaceTags.Add(newFaceTagSet);
 				}
 			}
@@ -690,13 +713,13 @@ namespace Conway
 			var vertexRoles = new List<Roles>();
 
 			var newVertexPoints = new List<Vector3>();
-			var newInnerVertsL = new Dictionary<string, int>();
-			var newInnerVertsR = new Dictionary<string, int>();
+			var newInnerVertsL = new Dictionary<(Guid, Guid)?, int>();
+			var newInnerVertsR = new Dictionary<(Guid, Guid)?, int>();
 
 			foreach (var face in Faces)
 			{
 				var centroid = face.Centroid;
-				
+
 				foreach (var edge in face.GetHalfedges())
 				{
 					if (randomize)
@@ -740,10 +763,10 @@ namespace Conway
 				newFaceTags.Add(new HashSet<Tuple<string, TagType>>(prevFaceTagSet));
 			}
 
-			foreach (var vertex in Vertices)
+			for (var vertIndex = 0; vertIndex < Vertices.Count; vertIndex++)
 			{
 				bool skip = false;
-				var edges = vertex.Halfedges;
+				var edges = Vertices[vertIndex].Halfedges;
 				var list = new List<int>();
 				foreach (var edge in edges)
 				{
@@ -752,6 +775,7 @@ namespace Conway
 						skip = true;
 						break;
 					}
+
 					list.Add(newInnerVertsL[edge.Name]);
 					list.Add(newInnerVertsR[edge.Pair.Name]);
 				}
@@ -761,13 +785,17 @@ namespace Conway
 				faceIndices.Add(list);
 				faceRoles.Add(Roles.New);
 
-				var vertexFaceIndices = vertex.GetVertexFaces().Select(f => Faces.IndexOf(f));
-				var existingTagSets = vertexFaceIndices.Select(fi => FaceTags[fi].Where(t=>t.Item2==TagType.Extrovert));
-				var newFaceTagSet = existingTagSets.Aggregate(new HashSet<Tuple<string, TagType>>(), (rs, i) => {rs.UnionWith(i); return rs;});
+				var vertexFaceIndices = Vertices[vertIndex].GetVertexFaces().Select(f => Faces.IndexOf(f));
+				var existingTagSets = vertexFaceIndices.Select(fi => FaceTags[fi].Where(t => t.Item2 == TagType.Extrovert));
+				var newFaceTagSet = existingTagSets.Aggregate(new HashSet<Tuple<string, TagType>>(), (rs, i) =>
+				{
+					rs.UnionWith(i);
+					return rs;
+				});
 				newFaceTags.Add(newFaceTagSet);
 			}
 
-			var edgeFlags = new HashSet<string>();
+			var edgeFlags = new HashSet<(Guid, Guid)?>();
 			foreach (var edge in Halfedges)
 			{
 				if (edge.Pair == null) continue;
@@ -828,7 +856,7 @@ namespace Conway
 					var edges = oldFace.GetHalfedges();
 
 					var seedVertex = edges[j].Vertex;
-					keyName = seedVertex.Name;
+					keyName = seedVertex.Name.ToString();
 					if (existingVerts.ContainsKey(keyName))
 					{
 						seedVertexIndex = existingVerts[keyName];
@@ -845,7 +873,7 @@ namespace Conway
 					
 					
 					var midpointVertex = edges[j].Midpoint;
-					keyName = edges[j].PairedName;
+					keyName = edges[j].PairedName.ToString();
 					if (newVerts.ContainsKey(keyName))
 					{
 						midpointIndex = newVerts[keyName];
@@ -862,7 +890,7 @@ namespace Conway
 					
 					
 					var prevMidpointVertex = edges[j].Next.Midpoint;
-					keyName = edges[j].Next.PairedName;
+					keyName = edges[j].Next.PairedName.ToString();
 
 					if (newVerts.ContainsKey(keyName))
 					{
@@ -899,8 +927,8 @@ namespace Conway
 
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
-			var newVertices = new Dictionary<string, int>();
-			var edgeFaceFlags = new Dictionary<string, bool>();
+			var newVertices = new Dictionary<(Guid, Guid)?, int>();
+			var edgeFaceFlags = new Dictionary<(Guid, Guid)?, bool>();
 
 			var faceRoles = new List<Roles>();
 			var vertexRoles = new List<Roles>();
@@ -994,8 +1022,8 @@ namespace Conway
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
-			var newVertices = new Dictionary<string, int>();
-			var edgeFaceFlags = new Dictionary<string, bool>();
+			var newVertices = new Dictionary<(Guid, Guid)?, int>();
+			var edgeFaceFlags = new Dictionary<(Guid, Guid)?, bool>();
 		
 			var faceRoles = new List<Roles>();
 			var vertexRoles = new List<Roles>();
@@ -1066,7 +1094,7 @@ namespace Conway
 			
 			// Planarize new edge faces
 			// TODO not perfect - we need an iterative algorithm
-			edgeFaceFlags = new Dictionary<string, bool>();
+			edgeFaceFlags = new Dictionary<(Guid, Guid)?, bool>();
 			foreach (var edge in Halfedges)
 			{
 				if (edge.Pair==null) continue;
@@ -1106,7 +1134,7 @@ namespace Conway
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
 			var newCentroidVertices = new Dictionary<string, int>();
-			var rhombusFlags = new Dictionary<string, bool>(); // Track if we've created a face for joined edges
+			var rhombusFlags = new Dictionary<(Guid, Guid)?, bool>(); // Track if we've created a face for joined edges
 
 			var faceRoles = new List<Roles>();
 			var vertexRoles = new List<Roles>();
@@ -1167,7 +1195,7 @@ namespace Conway
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
 			var newCentroidVertices = new Dictionary<string, int>();
-			var rhombusFlags = new Dictionary<string, bool>(); // Track if we've created a face for joined edges
+			var rhombusFlags = new Dictionary<(Guid, Guid)?, bool>(); // Track if we've created a face for joined edges
 
 			var faceRoles = new List<Roles>();
 			var vertexRoles = new List<Roles>();
@@ -1241,7 +1269,7 @@ namespace Conway
 			var faceRoles = new List<Roles>();
 
 			// vertex lookup
-			var vlookup = new Dictionary<string, int>();
+			var vlookup = new Dictionary<Guid, int>();
 			int n = Vertices.Count;
 			for (int i = 0; i < n; i++)
 			{
@@ -1323,7 +1351,7 @@ namespace Conway
 					var edges = oldFace.GetHalfedges();
 
 					var seedVertex = edges[j].Vertex;
-					keyName = seedVertex.Name;
+					keyName = seedVertex.Name.ToString();
 					if (existingVerts.ContainsKey(keyName))
 					{
 						seedVertexIndex = existingVerts[keyName];
@@ -1337,7 +1365,7 @@ namespace Conway
 					}
 
 					var OneThirdVertex = edges[j].PointAlongEdge(ratio);
-					keyName = edges[j].Name;
+					keyName = edges[j].Name.ToString();
 					if (newVerts.ContainsKey(keyName))
 					{
 						OneThirdIndex = newVerts[keyName];
@@ -1354,7 +1382,7 @@ namespace Conway
 					if (edges[j].Next.Pair != null)
 					{
 						PrevThirdVertex = edges[j].Next.Pair.PointAlongEdge(ratio);
-						keyName = edges[j].Next.Pair.Name;						
+						keyName = edges[j].Next.Pair.Name.ToString();
 					}
 					else
 					{
@@ -1377,7 +1405,7 @@ namespace Conway
 					if (edges[j].Pair != null)
 					{
 						PairOneThird = edges[j].Pair.PointAlongEdge(ratio);
-						keyName = edges[j].Pair.Name;
+						keyName = edges[j].Pair.Name.ToString();
 					}
 					else
 					{
@@ -1432,7 +1460,7 @@ namespace Conway
 
 			// Create new vertices, one at the midpoint of each edge
 
-			var newVertices = new Dictionary<string, int>();
+			var newVertices = new Dictionary<(Guid, Guid)?, int>();
 			int vertexIndex = vertexPoints.Count();
 
 			foreach (var edge in Halfedges)
@@ -1496,7 +1524,7 @@ namespace Conway
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
-			var newVertices = new Dictionary<string, int>();
+			var newVertices = new Dictionary<(Guid, Guid)?, int>();
 
 			var faceRoles = new List<Roles>();
 			var vertexRoles = new List<Roles>();
@@ -1583,7 +1611,7 @@ namespace Conway
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
-			var newVertices = new Dictionary<string, int>();
+			var newVertices = new Dictionary<(Guid, Guid)?, int>();
 
 			var faceRoles = new List<Roles>();
 			var vertexRoles = new List<Roles>();
@@ -1688,8 +1716,8 @@ namespace Conway
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
-			var newEdgeVertices = new Dictionary<string, int>();
-			var newInnerVertices = new Dictionary<string, int>();
+			var newEdgeVertices = new Dictionary<(Guid, Guid)?, int>();
+			var newInnerVertices = new Dictionary<(Guid, Guid)?, int>();
 
 			var faceRoles = new List<Roles>();
 			var vertexRoles = new List<Roles>();
@@ -1821,8 +1849,8 @@ namespace Conway
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
-			var newInnerVertices = new Dictionary<string, int>();
-			var rhombusFlags = new Dictionary<string, bool>(); // Track if we've created a face for joined edges
+			var newInnerVertices = new Dictionary<(Guid, Guid)?, int>();
+			var rhombusFlags = new Dictionary<(Guid, Guid)?, bool>(); // Track if we've created a face for joined edges
 
 			var faceRoles = new List<Roles>();
 			var vertexRoles = new List<Roles>();
@@ -1995,7 +2023,7 @@ namespace Conway
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
-			var newInnerVertices = new Dictionary<string, int>();
+			var newInnerVertices = new Dictionary<(Guid, Guid)?, int>();
 			var newCentroidVertices = new Dictionary<string, int>();
 
 			var faceRoles = new List<Roles>();
@@ -2091,7 +2119,7 @@ namespace Conway
 
  			if (join)
 			{
-				var edgeFlags = new  HashSet<string>();
+				var edgeFlags = new  HashSet<(Guid, Guid)?>();
 				foreach (var edge in Halfedges)
 				{
 					if (edge.Pair == null) continue;
@@ -2127,9 +2155,9 @@ namespace Conway
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
-			var newInnerVertices = new Dictionary<string, int>();
+			var newInnerVertices = new Dictionary<(Guid, Guid)?, int>();
 			var newCentroidVertices = new Dictionary<string, int>();
-			var rhombusFlags = new Dictionary<string, bool>(); // Track if we've created a face for joined edges
+			var rhombusFlags = new Dictionary<(Guid, Guid)?, bool>(); // Track if we've created a face for joined edges
 
 			var faceRoles = new List<Roles>();
 			var vertexRoles = new List<Roles>();
@@ -2248,7 +2276,7 @@ namespace Conway
 			var faceIndices = new List<int[]>();
 			var vertexPoints = new List<Vector3>();
 			var existingVertices = new Dictionary<Vector3, int>();
-			var newEdgeVertices = new Dictionary<string, int[]>();
+			var newEdgeVertices = new Dictionary<(Guid, Guid)?, int[]>();
 			var newCentroidVertices = new Dictionary<string, int>();
 			var faceRoles = new List<Roles>();
 			var vertexRoles = new List<Roles>();
@@ -2287,8 +2315,10 @@ namespace Conway
 					}
 				}
 
-				foreach (var edge in face.GetHalfedges())
+				var halfedges = face.GetHalfedges();
+				for (var i = 0; i < halfedges.Count; i++)
 				{
+					var edge = halfedges[i];
 					var currNewVerts = newEdgeVertices[edge.PairedName];
 
 					//Figure out which point is nearest to our existing vert.
@@ -2365,7 +2395,7 @@ namespace Conway
 						int edgeNextVertIndex;
 
 						// Flip new vertex array if this isn't the primary edge
-						if (edge.PairedName.StartsWith(edge.Vertex.Name))
+						if (edge.PairedName.Value.Item1==edge.Vertex.Name)
 						{
 							edgeVertIndex = j;
 							edgeNextVertIndex = j + 1;
@@ -2546,22 +2576,24 @@ namespace Conway
 			int vertexIndex = vertexPoints.Count();
 
 			// Create new edge vertices
-			foreach (var edge in Halfedges)
+			for (var i = 0; i < Halfedges.Count; i++)
 			{
+				var edge = Halfedges[i];
 				vertexPoints.Add(edge.PointAlongEdge(ratio));
-				newEdgeVertices[edge.Name] = vertexIndex++;
+				newEdgeVertices[edge.Name.ToString()] = vertexIndex++;
 				vertexRoles.Add(Roles.New);
 
 				if (edge.Pair != null)
 				{
 					vertexPoints.Add(edge.Pair.PointAlongEdge(ratio));
-					newEdgeVertices[edge.Pair.Name] = vertexIndex++;
+					newEdgeVertices[edge.Pair.Name.ToString()] = vertexIndex++;
 				}
 				else
 				{
 					vertexPoints.Add(edge.PointAlongEdge(1 - ratio));
-					newEdgeVertices[edge.Name + "-Pair"] = vertexIndex++;
+					newEdgeVertices[edge.Name.ToString() + "-Pair"] = vertexIndex++;
 				}
+
 				vertexRoles.Add(Roles.New);
 			}
 
@@ -2579,7 +2611,7 @@ namespace Conway
 					string edgePairName;
 					if (edge.Pair != null)
 					{
-						edgePairName = edge.Pair.Name;
+						edgePairName = edge.Pair.Name.ToString();
 					}
 					else
 					{
@@ -2589,16 +2621,16 @@ namespace Conway
 					string edgeNextPairName;
 					if (edge.Next.Pair != null)
 					{
-						edgeNextPairName = edge.Next.Pair.Name;
+						edgeNextPairName = edge.Next.Pair.Name.ToString();
 					}
 					else
 					{
-						edgeNextPairName = edge.Next.Name + "-Pair";
+						edgeNextPairName = edge.Next.Name.ToString() + "-Pair";
 					}
 
 					var quad = new[]
 					{
-						newEdgeVertices[edge.Next.Name],
+						newEdgeVertices[edge.Next.Name.ToString()],
 						newEdgeVertices[edgeNextPairName],
 						newEdgeVertices[edgePairName],
 						existingVertices[edge.Vertex.Position],
@@ -2650,21 +2682,23 @@ namespace Conway
 
 			int vertexIndex = vertexPoints.Count();
 
-			foreach (var edge in Halfedges)
+			for (var i = 0; i < Halfedges.Count; i++)
 			{
+				var edge = Halfedges[i];
 				vertexPoints.Add(edge.PointAlongEdge(ratio));
 				vertexRoles.Add(Roles.New);
-				newEdgeVertices[edge.Name] = vertexIndex++;
+				newEdgeVertices[edge.Name.ToString()] = vertexIndex++;
 				if (edge.Pair != null)
 				{
-					vertexPoints.Add(edge.Pair.PointAlongEdge(ratio));				
-					newEdgeVertices[edge.Pair.Name] = vertexIndex++;
+					vertexPoints.Add(edge.Pair.PointAlongEdge(ratio));
+					newEdgeVertices[edge.Pair.Name.ToString()] = vertexIndex++;
 				}
 				else
 				{
-					vertexPoints.Add(edge.PointAlongEdge(1 - ratio));	
-					newEdgeVertices[edge.Name + "-Pair"] = vertexIndex++;
+					vertexPoints.Add(edge.PointAlongEdge(1 - ratio));
+					newEdgeVertices[edge.Name.ToString() + "-Pair"] = vertexIndex++;
 				}
+
 				vertexRoles.Add(Roles.New);
 			}
 
@@ -2675,10 +2709,10 @@ namespace Conway
 				{
 					var edge = edges[i];
 					var direction = (face.Centroid - edge.Midpoint) * 2;
-					var pointOnEdge = vertexPoints[newEdgeVertices[edge.Name]];
+					var pointOnEdge = vertexPoints[newEdgeVertices[edge.Name.ToString()]];
 					vertexPoints.Add(Vector3.LerpUnclamped(pointOnEdge, pointOnEdge + direction, ratio));
 					vertexRoles.Add(Roles.NewAlt);
-					newInnerVertices[edge.Name] = vertexIndex++;
+					newInnerVertices[edge.Name.ToString()] = vertexIndex++;
 				}
 			}
 
@@ -2695,7 +2729,7 @@ namespace Conway
 					string edgeNextPairName;
 					if (edge.Next.Pair != null)
 					{
-						edgeNextPairName = edge.Next.Pair.Name;
+						edgeNextPairName = edge.Next.Pair.Name.ToString();
 					}
 					else
 					{
@@ -2706,10 +2740,10 @@ namespace Conway
 					{
 						existingVertices[edge.Vertex.Position],
 						newEdgeVertices[edgeNextPairName],
-						newEdgeVertices[edge.Next.Name],
-						newInnerVertices[edge.Next.Name],
-						newInnerVertices[edge.Name],
-						newEdgeVertices[edge.Name],
+						newEdgeVertices[edge.Next.Name.ToString()],
+						newInnerVertices[edge.Next.Name.ToString()],
+						newInnerVertices[edge.Name.ToString()],
+						newEdgeVertices[edge.Name.ToString()],
 					};
 					faceIndices.Add(hexagon);
 
@@ -2725,7 +2759,7 @@ namespace Conway
 
 					newFaceTags.Add(new HashSet<Tuple<string, TagType>>(prevFaceTagSet));
 
-					centralFace[i] = newInnerVertices[edge.Name];
+					centralFace[i] = newInnerVertices[edge.Name.ToString()];
 					edge = edge.Next;
 				}
 
@@ -2749,7 +2783,7 @@ namespace Conway
 			var vertexPoints = new List<Vector3>();
 			var faceIndices = new List<IEnumerable<int>>();
 			var existingVertices = new Dictionary<Vector3, int>();
-			var newEdgeVertices = new Dictionary<string, int>();
+			var newEdgeVertices = new Dictionary<(Guid, Guid)?, int>();
 			var newCenterVertices = new Dictionary<string, int>();
 
 			var faceRoles = new List<Roles>();
@@ -2827,8 +2861,8 @@ namespace Conway
 			var vertexPoints = new List<Vector3>();
 			var faceIndices = new List<IEnumerable<int>>();
 			var existingVertices = new Dictionary<Vector3, int>();
-			var newEdgeVertices = new Dictionary<string, int>();
-			var newInnerVertices = new Dictionary<string, int>();
+			var newEdgeVertices = new Dictionary<(Guid, Guid)?, int>();
+			var newInnerVertices = new Dictionary<(Guid, Guid)?, int>();
 			var newCentroidVertices = new Dictionary<string, int>();
 
 			var faceRoles = new List<Roles>();
@@ -2916,7 +2950,7 @@ namespace Conway
 			var vertexPoints = new List<Vector3>();
 			var faceIndices = new List<IEnumerable<int>>();
 			var existingVertices = new Dictionary<Vector3, int>();
-			var newEdgeVertices = new Dictionary<string, int>();
+			var newEdgeVertices = new Dictionary<(Guid, Guid)?, int>();
 			var newInnerVertices = new Dictionary<string, int>();
 
 			var faceRoles = new List<Roles>();
@@ -2999,22 +3033,28 @@ namespace Conway
 
 			if (join)
 			{
-				foreach (var vertex in Vertices)
+				for (var vertIndex = 0; vertIndex < Vertices.Count; vertIndex++)
 				{
+					var vertex = Vertices[vertIndex];
 					var vertexFace = new List<int>();
 					for (int j = vertex.Halfedges.Count - 1; j >= 0; j--)
-					// for (int j = 0; j < v.Halfedges.Count; j++)
 					{
 						var edge = vertex.Halfedges[j];
 						vertexFace.Add(newEdgeVertices[edge.PairedName]);
 						vertexFace.Add(newInnerVertices[edge.Face.Name + vertex.Name]);
 					}
+
 					faceIndices.Add(vertexFace);
 					faceRoles.Add(Roles.NewAlt);
 
 					var vertexFaceIndices = vertex.GetVertexFaces().Select(f => Faces.IndexOf(f));
-					var existingTagSets = vertexFaceIndices.Select(fi => FaceTags[fi].Where(t=>t.Item2==TagType.Extrovert));
-					var newFaceTagSet = existingTagSets.Aggregate(new HashSet<Tuple<string, TagType>>(), (rs, i) => {rs.UnionWith(i); return rs;});
+					var existingTagSets = vertexFaceIndices.Select(fi => FaceTags[fi]
+						.Where(t => t.Item2 == TagType.Extrovert));
+					var newFaceTagSet = existingTagSets.Aggregate(new HashSet<Tuple<string, TagType>>(), (rs, i) =>
+					{
+						rs.UnionWith(i);
+						return rs;
+					});
 					newFaceTags.Add(newFaceTagSet);
 				}
 			}
@@ -3039,12 +3079,14 @@ namespace Conway
 		public void Mirror(Vector3 axis, float offset)
 		{
 			Vector3 offsetVector = offset * axis;
-			foreach (var v in Vertices)
+			for (var i = 0; i < Vertices.Count; i++)
 			{
-				v.Position -= offsetVector;
+				Vertices[i].Position -= offsetVector;
 			}
-			foreach (var v in Vertices)
+
+			for (var i = 0; i < Vertices.Count; i++)
 			{
+				var v = Vertices[i];
 				v.Position = Vector3.Reflect(v.Position, axis);
 			}
 		}
@@ -3083,8 +3125,9 @@ namespace Conway
 		public ConwayPoly Rotate(Vector3 axis, float amount)
 		{
 			var copy = Duplicate();
-			foreach (var v in copy.Vertices)
+			for (var i = 0; i < copy.Vertices.Count; i++)
 			{
+				var v = copy.Vertices[i];
 				v.Position = Quaternion.AngleAxis(amount, axis) * v.Position;
 			}
 			return copy;
@@ -3105,9 +3148,9 @@ namespace Conway
 		public void Recenter()
 		{
 			Vector3 newCenter = GetCentroid();
-			foreach (var v in Vertices)
+			for (var i = 0; i < Vertices.Count; i++)
 			{
-				v.Position -= newCenter;
+				Vertices[i].Position -= newCenter;
 			}
 		}
 
@@ -3369,8 +3412,9 @@ namespace Conway
 			{
 				var oldFaceIndices = faces[i];
 				var newFaceIndices = new List<int>();
-				foreach (var vertexIndex in oldFaceIndices)
+				for (var idx = 0; idx < oldFaceIndices.Count; idx++)
 				{
+					var vertexIndex = oldFaceIndices[idx];
 					bool keep = IncludeVertex(vertexIndex, vertexsel);
 					keep = invertLogic ? !keep : keep;
 					if (!keep)
@@ -3453,10 +3497,10 @@ namespace Conway
 				else
 				{
 					existingFaceRoles[face.Centroid] = FaceRoles[faceIndex];
-					var list = face.GetVertices();
-					for (var vertIndex = 0; vertIndex < list.Count; vertIndex++)
+					var verts = face.GetVertices();
+					for (var vertIndex = 0; vertIndex < verts.Count; vertIndex++)
 					{
-						var vert = list[vertIndex];
+						var vert = verts[vertIndex];
 						existingVertexRoles[vert.Position] = VertexRoles[faceIndices[faceIndex][vertIndex]];
 					}
 				}
@@ -3480,11 +3524,13 @@ namespace Conway
 			}
 
 			newPoly.FaceRoles = faceRoles;
-			
-			foreach (var vert in newPoly.Vertices)
+
+			for (var i = 0; i < newPoly.Vertices.Count; i++)
 			{
+				var vert = newPoly.Vertices[i];
 				vertexRoles.Add(existingVertexRoles[vert.Position]);
 			}
+
 			newPoly.VertexRoles = vertexRoles;
 
 			return newPoly;
@@ -3513,7 +3559,7 @@ namespace Conway
 			{
 				if (randomize) _offset = random.NextDouble() * (float)offset;
 				var vertexOffset = IncludeFace(faceIndex, facesel, tagList) ? _offset : 0;
-				foreach (var vertex in Faces[faceIndex].GetVertices())
+				for (var i = 0; i < Faces[faceIndex].GetVertices().Count; i++)
 				{
 					offsetList.Add(vertexOffset);
 				}
@@ -3570,194 +3616,194 @@ namespace Conway
 		/// <param name="offset">Distance to offset edges in plane of adjacent faces</param>
 		/// <param name="boundaries">If true, attempt to ribbon boundary edges</param>
 		/// <returns>The ribbon mesh</returns>
-		public ConwayPoly Ribbon(float offset, Boolean boundaries, float smooth)
-		{
-
-			ConwayPoly ribbon = Duplicate();
-			var orig_faces = ribbon.Faces.ToArray();
-
-			List<List<Halfedge>> incidentEdges = ribbon.Vertices.Select(v => v.Halfedges).ToList();
-
-			// create new "vertex" faces
-			List<List<Vertex>> all_new_vertices = new List<List<Vertex>>();
-			for (int k = 0; k < Vertices.Count; k++)
-			{
-				Vertex v = ribbon.Vertices[k];
-				List<Vertex> new_vertices = new List<Vertex>();
-				List<Halfedge> halfedges = incidentEdges[k];
-				Boolean boundary = halfedges[0].Next.Pair != halfedges[halfedges.Count - 1];
-
-				// if the edge loop around this vertex is open, close it with 'temporary edges'
-				if (boundaries && boundary)
-				{
-					Halfedge a, b;
-					a = halfedges[0].Next;
-					b = halfedges[halfedges.Count - 1];
-					if (a.Pair == null)
-					{
-						a.Pair = new Halfedge(a.Prev.Vertex) {Pair = a};
-					}
-
-					if (b.Pair == null)
-					{
-						b.Pair = new Halfedge(b.Prev.Vertex) {Pair = b};
-					}
-
-					a.Pair.Next = b.Pair;
-					b.Pair.Prev = a.Pair;
-					a.Pair.Prev = a.Pair.Prev ?? a; // temporary - to allow access to a.Pair's start/end vertices
-					halfedges.Add(a.Pair);
-				}
-
-				foreach (Halfedge edge in halfedges)
-				{
-					if (halfedges.Count < 2)
-					{
-						continue;
-					}
-
-					Vector3 normal = edge.Face != null ? edge.Face.Normal : Vertices[k].Normal;
-					Halfedge edge2 = edge.Next;
-
-					var o1 = new Vertex(Vector3.Cross(normal, edge.Vector).normalized * offset);
-					var o2 = new Vertex(Vector3.Cross(normal, edge2.Vector).normalized * offset);
-
-					if (edge.Face == null)
-					{
-						// boundary condition: create two new vertices in the plane defined by the vertex normal
-						Vertex v1 = new Vertex(v.Position + (edge.Vector * (1 / edge.Vector.magnitude) * -offset) +
-						                       o1.Position);
-						Vertex v2 = new Vertex(v.Position + (edge2.Vector * (1 / edge2.Vector.magnitude) * offset) +
-						                       o2.Position);
-						ribbon.Vertices.Add(v2);
-						ribbon.Vertices.Add(v1);
-						new_vertices.Add(v2);
-						new_vertices.Add(v1);
-						Halfedge c = new Halfedge(v2, edge2, edge, null);
-						edge.Next = c;
-						edge2.Prev = c;
-					}
-					else
-					{
-						// internal condition: offset each edge in the plane of the shared face and create a new vertex where they intersect eachother
-						
-						Vector3 start1 = edge.Vertex.Position + o1.Position;
-						Vector3 end1 = edge.Prev.Vertex.Position + o1.Position;
-						Line l1 = new Line(start1, end1);
-						
-						Vector3 start2 = edge2.Vertex.Position + o2.Position;
-						Vector3 end2 = edge2.Prev.Vertex.Position + o2.Position;
-						Line l2 = new Line(start2, end2);
-						
-						Vector3 intersection;
-						l1.Intersect(out intersection, l2);
-						ribbon.Vertices.Add(new Vertex(intersection));
-						new_vertices.Add(new Vertex(intersection));
-					}
-				}
-
-				if ((!boundaries && boundary) == false) // only draw boundary node-faces in 'boundaries' mode
-					ribbon.Faces.Add(new_vertices);
-				all_new_vertices.Add(new_vertices);
-			}
-
-			// change edges to reference new vertices
-			for (int k = 0; k < Vertices.Count; k++)
-			{
-				Vertex v = ribbon.Vertices[k];
-				if (all_new_vertices[k].Count < 1)
-				{
-					continue;
-				}
-
-				int c = 0;
-				foreach (Halfedge edge in incidentEdges[k])
-				{
-					if (!ribbon.Halfedges.SetVertex(edge, all_new_vertices[k][c++]))
-						edge.Vertex = all_new_vertices[k][c];
-				}
-
-				//v.Halfedge = null; // unlink from halfedge as no longer in use (culled later)
-				// note: new vertices don't link to any halfedges in the mesh until later
-			}
-
-			// cull old vertices
-			ribbon.Vertices.RemoveRange(0, Vertices.Count);
-
-			// use existing edges to create 'ribbon' faces
-			MeshHalfedgeList temp = new MeshHalfedgeList();
-			for (int i = 0; i < Halfedges.Count; i++)
-			{
-				temp.Add(ribbon.Halfedges[i]);
-			}
-
-			List<Halfedge> items = temp.GetUnique();
-
-			foreach (Halfedge halfedge in items)
-			{
-				if (halfedge.Pair != null)
-				{
-					// insert extra vertices close to the new 'vertex' vertices to preserve shape when subdividing
-					if (smooth > 0.0)
-					{
-						if (smooth > 0.5)
-						{
-							smooth = 0.5f;
-						}
-
-						Vertex[] newVertices = new Vertex[]
-						{
-							new Vertex(halfedge.Vertex.Position + (-smooth * halfedge.Vector)),
-							new Vertex(halfedge.Prev.Vertex.Position + (smooth * halfedge.Vector)),
-							new Vertex(halfedge.Pair.Vertex.Position + (-smooth * halfedge.Pair.Vector)),
-							new Vertex(halfedge.Pair.Prev.Vertex.Position + (smooth * halfedge.Pair.Vector))
-						};
-						ribbon.Vertices.AddRange(newVertices);
-						Vertex[] new_vertices1 = new Vertex[]
-						{
-							halfedge.Vertex,
-							newVertices[0],
-							newVertices[3],
-							halfedge.Pair.Prev.Vertex
-						};
-						Vertex[] new_vertices2 = new Vertex[]
-						{
-							newVertices[1],
-							halfedge.Prev.Vertex,
-							halfedge.Pair.Vertex,
-							newVertices[2]
-						};
-						ribbon.Faces.Add(newVertices);
-						ribbon.Faces.Add(new_vertices1);
-						ribbon.Faces.Add(new_vertices2);
-					}
-					else
-					{
-						Vertex[] newVertices = new Vertex[]
-						{
-							halfedge.Vertex,
-							halfedge.Prev.Vertex,
-							halfedge.Pair.Vertex,
-							halfedge.Pair.Prev.Vertex
-						};
-
-						ribbon.Faces.Add(newVertices);
-					}
-				}
-			}
-
-			// remove original faces, leaving just the ribbon
-			//var orig_faces = Enumerable.Range(0, Faces.Count).Select(i => ribbon.Faces[i]);
-			foreach (Face item in orig_faces)
-			{
-				ribbon.Faces.Remove(item);
-			}
-
-			// search and link pairs
-			ribbon.Halfedges.MatchPairs();
-
-			return ribbon;
-		}
+		// public ConwayPoly Ribbon(float offset, Boolean boundaries, float smooth)
+		// {
+		//
+		// 	ConwayPoly ribbon = Duplicate();
+		// 	var orig_faces = ribbon.Faces.ToArray();
+		//
+		// 	List<List<Halfedge>> incidentEdges = ribbon.Vertices.Select(v => v.Halfedges).ToList();
+		//
+		// 	// create new "vertex" faces
+		// 	List<List<Vertex>> all_new_vertices = new List<List<Vertex>>();
+		// 	for (int k = 0; k < Vertices.Count; k++)
+		// 	{
+		// 		Vertex v = ribbon.Vertices[k];
+		// 		List<Vertex> new_vertices = new List<Vertex>();
+		// 		List<Halfedge> halfedges = incidentEdges[k];
+		// 		Boolean boundary = halfedges[0].Next.Pair != halfedges[halfedges.Count - 1];
+		//
+		// 		// if the edge loop around this vertex is open, close it with 'temporary edges'
+		// 		if (boundaries && boundary)
+		// 		{
+		// 			Halfedge a, b;
+		// 			a = halfedges[0].Next;
+		// 			b = halfedges[halfedges.Count - 1];
+		// 			if (a.Pair == null)
+		// 			{
+		// 				a.Pair = new Halfedge(a.Prev.Vertex) {Pair = a};
+		// 			}
+		//
+		// 			if (b.Pair == null)
+		// 			{
+		// 				b.Pair = new Halfedge(b.Prev.Vertex) {Pair = b};
+		// 			}
+		//
+		// 			a.Pair.Next = b.Pair;
+		// 			b.Pair.Prev = a.Pair;
+		// 			a.Pair.Prev = a.Pair.Prev ?? a; // temporary - to allow access to a.Pair's start/end vertices
+		// 			halfedges.Add(a.Pair);
+		// 		}
+		//
+		// 		foreach (Halfedge edge in halfedges)
+		// 		{
+		// 			if (halfedges.Count < 2)
+		// 			{
+		// 				continue;
+		// 			}
+		//
+		// 			Vector3 normal = edge.Face != null ? edge.Face.Normal : Vertices[k].Normal;
+		// 			Halfedge edge2 = edge.Next;
+		//
+		// 			var o1 = new Vertex(Vector3.Cross(normal, edge.Vector).normalized * offset);
+		// 			var o2 = new Vertex(Vector3.Cross(normal, edge2.Vector).normalized * offset);
+		//
+		// 			if (edge.Face == null)
+		// 			{
+		// 				// boundary condition: create two new vertices in the plane defined by the vertex normal
+		// 				Vertex v1 = new Vertex(v.Position + (edge.Vector * (1 / edge.Vector.magnitude) * -offset) +
+		// 				                       o1.Position);
+		// 				Vertex v2 = new Vertex(v.Position + (edge2.Vector * (1 / edge2.Vector.magnitude) * offset) +
+		// 				                       o2.Position);
+		// 				ribbon.Vertices.Add(v2);
+		// 				ribbon.Vertices.Add(v1);
+		// 				new_vertices.Add(v2);
+		// 				new_vertices.Add(v1);
+		// 				Halfedge c = new Halfedge(v2, edge2, edge, null);
+		// 				edge.Next = c;
+		// 				edge2.Prev = c;
+		// 			}
+		// 			else
+		// 			{
+		// 				// internal condition: offset each edge in the plane of the shared face and create a new vertex where they intersect eachother
+		//
+		// 				Vector3 start1 = edge.Vertex.Position + o1.Position;
+		// 				Vector3 end1 = edge.Prev.Vertex.Position + o1.Position;
+		// 				Line l1 = new Line(start1, end1);
+		//
+		// 				Vector3 start2 = edge2.Vertex.Position + o2.Position;
+		// 				Vector3 end2 = edge2.Prev.Vertex.Position + o2.Position;
+		// 				Line l2 = new Line(start2, end2);
+		//
+		// 				Vector3 intersection;
+		// 				l1.Intersect(out intersection, l2);
+		// 				ribbon.Vertices.Add(new Vertex(intersection));
+		// 				new_vertices.Add(new Vertex(intersection));
+		// 			}
+		// 		}
+		//
+		// 		if ((!boundaries && boundary) == false) // only draw boundary node-faces in 'boundaries' mode
+		// 			ribbon.Faces.Add(new_vertices);
+		// 		all_new_vertices.Add(new_vertices);
+		// 	}
+		//
+		// 	// change edges to reference new vertices
+		// 	for (int k = 0; k < Vertices.Count; k++)
+		// 	{
+		// 		Vertex v = ribbon.Vertices[k];
+		// 		if (all_new_vertices[k].Count < 1)
+		// 		{
+		// 			continue;
+		// 		}
+		//
+		// 		int c = 0;
+		// 		foreach (Halfedge edge in incidentEdges[k])
+		// 		{
+		// 			if (!ribbon.Halfedges.SetVertex(edge, all_new_vertices[k][c++]))
+		// 				edge.Vertex = all_new_vertices[k][c];
+		// 		}
+		//
+		// 		//v.Halfedge = null; // unlink from halfedge as no longer in use (culled later)
+		// 		// note: new vertices don't link to any halfedges in the mesh until later
+		// 	}
+		//
+		// 	// cull old vertices
+		// 	ribbon.Vertices.RemoveRange(0, Vertices.Count);
+		//
+		// 	// use existing edges to create 'ribbon' faces
+		// 	MeshHalfedgeList temp = new MeshHalfedgeList();
+		// 	for (int i = 0; i < Halfedges.Count; i++)
+		// 	{
+		// 		temp.Add(ribbon.Halfedges[i]);
+		// 	}
+		//
+		// 	List<Halfedge> items = temp.GetUnique();
+		//
+		// 	foreach (Halfedge halfedge in items)
+		// 	{
+		// 		if (halfedge.Pair != null)
+		// 		{
+		// 			// insert extra vertices close to the new 'vertex' vertices to preserve shape when subdividing
+		// 			if (smooth > 0.0)
+		// 			{
+		// 				if (smooth > 0.5)
+		// 				{
+		// 					smooth = 0.5f;
+		// 				}
+		//
+		// 				Vertex[] newVertices = new Vertex[]
+		// 				{
+		// 					new Vertex(halfedge.Vertex.Position + (-smooth * halfedge.Vector)),
+		// 					new Vertex(halfedge.Prev.Vertex.Position + (smooth * halfedge.Vector)),
+		// 					new Vertex(halfedge.Pair.Vertex.Position + (-smooth * halfedge.Pair.Vector)),
+		// 					new Vertex(halfedge.Pair.Prev.Vertex.Position + (smooth * halfedge.Pair.Vector))
+		// 				};
+		// 				ribbon.Vertices.AddRange(newVertices);
+		// 				Vertex[] new_vertices1 = new Vertex[]
+		// 				{
+		// 					halfedge.Vertex,
+		// 					newVertices[0],
+		// 					newVertices[3],
+		// 					halfedge.Pair.Prev.Vertex
+		// 				};
+		// 				Vertex[] new_vertices2 = new Vertex[]
+		// 				{
+		// 					newVertices[1],
+		// 					halfedge.Prev.Vertex,
+		// 					halfedge.Pair.Vertex,
+		// 					newVertices[2]
+		// 				};
+		// 				ribbon.Faces.Add(newVertices);
+		// 				ribbon.Faces.Add(new_vertices1);
+		// 				ribbon.Faces.Add(new_vertices2);
+		// 			}
+		// 			else
+		// 			{
+		// 				Vertex[] newVertices = new Vertex[]
+		// 				{
+		// 					halfedge.Vertex,
+		// 					halfedge.Prev.Vertex,
+		// 					halfedge.Pair.Vertex,
+		// 					halfedge.Pair.Prev.Vertex
+		// 				};
+		//
+		// 				ribbon.Faces.Add(newVertices);
+		// 			}
+		// 		}
+		// 	}
+		//
+		// 	// remove original faces, leaving just the ribbon
+		// 	//var orig_faces = Enumerable.Range(0, Faces.Count).Select(i => ribbon.Faces[i]);
+		// 	foreach (Face item in orig_faces)
+		// 	{
+		// 		ribbon.Faces.Remove(item);
+		// 	}
+		//
+		// 	// search and link pairs
+		// 	ribbon.Halfedges.MatchPairs();
+		//
+		// 	return ribbon;
+		// }
 
 		/// <summary>
 		/// Gives thickness to mesh faces by offsetting the mesh and connecting naked edges with new faces.
@@ -3953,15 +3999,12 @@ namespace Conway
 
 			if (Vertices.Count > 0)
 			{
-
 				// Find the furthest vertex
-				Vertex max = Vertices.OrderByDescending(x => x.Position.magnitude).FirstOrDefault();
+				Vertex max = Vertices.OrderByDescending(x => x.Position.sqrMagnitude).FirstOrDefault();
 				float unitScale = 1.0f / max.Position.magnitude;
-
-				// TODO Ideal use case for Linq if I could get my head round the type-wrangling needed
-				foreach (Vertex v in Vertices)
+				for (var i = 0; i < Vertices.Count; i++)
 				{
-					v.Position = v.Position * unitScale * scale;
+					Vertices[i].Position *= unitScale * scale;
 				}
 			}
 
@@ -4069,7 +4112,6 @@ namespace Conway
 					case 5:  // TODO
 						width = rows;
 						height = (Mathf.FloorToInt(cols / 4) + 1) * 4;
-						Debug.Log($"{width} {height}");
 						foo = i < ut.raw_faces.Count / 2 ? 2 : 3;
 						faceRoles.Add((Roles)foo);
 						break;
@@ -4437,9 +4479,9 @@ namespace Conway
 				var lastlastVertex = faceVertices[faceVertices.Count - 2];
 				var lastVertex = faceVertices[faceVertices.Count - 1];
 
-				foreach (var vertex in faceVertices)
+				for (var i = 0; i < faceVertices.Count; i++)
 				{
-
+					var vertex = faceVertices[i];
 					// Compute the normal of the plane defined by this vertex and
 					// the previous two
 					var v1 = lastlastVertex.Position;
@@ -4554,9 +4596,9 @@ namespace Conway
 
 			var faceCenters = new List<Vector3>();
 
-			foreach (Face face in poly.Faces)
+			for (var i = 0; i < poly.Faces.Count; i++)
 			{
-				var newCenter = face.Centroid;
+				var newCenter = poly.Faces[i].Centroid;
 				newCenter *= 1.0f / Mathf.Pow(newCenter.magnitude, 2);
 				faceCenters.Add(newCenter);
 			}
@@ -4736,9 +4778,11 @@ namespace Conway
 				{
 					Vector3 axis = hinge.Vector;
 					Quaternion rotation = Quaternion.AngleAxis(amount, axis);
-					
-					foreach (Vertex v in f.GetVertices())
+
+					var vs = f.GetVertices();
+					for (var i = 0; i < vs.Count; i++)
 					{
+						Vertex v = vs[i];
 						// Only rotate vertices that aren't part of the hinge
 						if (v != hinge.Vertex && v != hinge.Pair.Vertex)
 						{
@@ -4898,7 +4942,7 @@ namespace Conway
 		{
 
 			var fIndex = new List<int>[Faces.Count];
-			var vlookup = new Dictionary<string, int>();
+			var vlookup = new Dictionary<Guid, int>();
 
 			for (int i = 0; i < Vertices.Count; i++)
 			{
@@ -4907,13 +4951,14 @@ namespace Conway
 
 			for (int i = 0; i < Faces.Count; i++)
 			{
-				List<int> vertIdx = new List<int>();
-				foreach (Vertex v in Faces[i].GetVertices())
+				var vertIndices = new List<int>();
+				var vs = Faces[i].GetVertices();
+				for (var vertIndex = 0; vertIndex < vs.Count; vertIndex++)
 				{
-					vertIdx.Add(vlookup[v.Name]);
+					Vertex v = vs[vertIndex];
+					vertIndices.Add(vlookup[v.Name]);
 				}
-
-				fIndex[i] = vertIdx;
+				fIndex[i] = vertIndices;
 			}
 
 			return fIndex;
@@ -4953,15 +4998,16 @@ namespace Conway
 			ConwayPoly dup = other.Duplicate(transform, rotation, scale);
 
 			Vertices.AddRange(dup.Vertices);
-			foreach (Halfedge edge in dup.Halfedges)
+			for (var i = 0; i < dup.Halfedges.Count; i++)
 			{
-				Halfedges.Add(edge);
+				Halfedges.Add(dup.Halfedges[i]);
 			}
 
-			foreach (Face face in dup.Faces)
+			for (var i = 0; i < dup.Faces.Count; i++)
 			{
-				Faces.Add(face);
+				Faces.Add(dup.Faces[i]);
 			}
+
 			FaceRoles.AddRange(dup.FaceRoles);
 			FaceTags.AddRange(dup.FaceTags);
 			VertexRoles.AddRange(dup.VertexRoles);
@@ -5146,8 +5192,9 @@ namespace Conway
 		public void InitOctree()
 		{
 			octree = new PointOctree<Vertex>(1, Vector3.zero, 32);
-			foreach (var v in Vertices)
+			for (var i = 0; i < Vertices.Count; i++)
 			{
+				var v = Vertices[i];
 				octree.Add(v, v.Position);
 			}
 		}
@@ -5215,8 +5262,7 @@ namespace Conway
 			return new ConwayPoly(vertexPoints, faceIndices, faceRoles, vertexRoles, FaceTags);
 		}
 
-		private void InitIndexed(IEnumerable<Vector3> verticesByPoints,
-			IEnumerable<IEnumerable<int>> facesByVertexIndices)
+		private void InitIndexed(IEnumerable<Vector3> verticesByPoints, IEnumerable<IEnumerable<int>> facesByVertexIndices)
 		{
 			// Add vertices
 			foreach (Vector3 p in verticesByPoints)

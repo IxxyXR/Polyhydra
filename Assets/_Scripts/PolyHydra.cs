@@ -67,7 +67,8 @@ public class PolyHydra : MonoBehaviour
 	public enum ColorMethods
 	{
 		BySides,
-		ByRole
+		ByRole,
+		ByTags
 	}
 
 	public enum ShapeTypes
@@ -448,7 +449,7 @@ public class PolyHydra : MonoBehaviour
 		Color.magenta
 	};
 
-	private static Color[] DefaultFaceColors =
+	public static Color[] DefaultFaceColors =
 		{
 			new Color(1.0f, 0.5f, 0.5f),
 			new Color(0.8f, 0.85f, 0.9f),
@@ -1929,7 +1930,7 @@ public class PolyHydra : MonoBehaviour
 		var originalFaceSides = new List<int>();
 
 		// vertex lookup
-		var vlookup = new Dictionary<string, int>();
+		var vlookup = new Dictionary<Guid, int>();
 		int n = _conwayPoly.Vertices.Count;
 		for (int i = 0; i < n; i++) {
 			vlookup.Add(_conwayPoly.Vertices[i].Name, i);
@@ -1971,13 +1972,24 @@ public class PolyHydra : MonoBehaviour
 
 	public Mesh BuildMeshFromConwayPoly()
 	{
-		return BuildMeshFromConwayPoly(_conwayPoly, GenerateSubmeshes);
+		return BuildMeshFromConwayPoly(_conwayPoly, GenerateSubmeshes, null, ColorMethod);
 	}
 
 	public static Mesh BuildMeshFromConwayPoly(
 		ConwayPoly conway, bool generateSubmeshes, Color[] colors = null,
 		ColorMethods colorMethod = ColorMethods.ByRole)
 	{
+
+		Vector2 calcUV(Vector3 point, Vector3 xAxis, Vector3 yAxis)
+		{
+			float u, v;
+			u = Vector3.Project(point, xAxis).magnitude;
+			u *= Vector3.Dot(point, xAxis) > 0 ? 1 : -1;
+			v = Vector3.Project(point, yAxis).magnitude;
+			v *= Vector3.Dot(point, yAxis) > 0  ? 1 : -1;
+			return new Vector2(u, v);
+		}
+
 		if (colors == null) colors = DefaultFaceColors;
 		var target = new Mesh();
 		var meshTriangles = new List<int>();
@@ -1990,6 +2002,9 @@ public class PolyHydra : MonoBehaviour
 		var miscUVs = new List<Vector4>();
 
 		List<ConwayPoly.Roles> uniqueRoles = null;
+		List<int> uniqueSides = null;
+		List<string> uniqueTags = null;
+
 		var submeshTriangles = new List<List<int>>();
 
 		// TODO
@@ -2004,8 +2019,21 @@ public class PolyHydra : MonoBehaviour
 
 		if (generateSubmeshes)
 		{
-			uniqueRoles = new HashSet<ConwayPoly.Roles>(conway.FaceRoles).ToList();
-			for (int i = 0; i < uniqueRoles.Count; i++) submeshTriangles.Add(new List<int>());
+			switch (colorMethod)
+			{
+				case ColorMethods.ByRole:
+					uniqueRoles = new HashSet<ConwayPoly.Roles>(conway.FaceRoles).ToList();
+					for (int i = 0; i < uniqueRoles.Count; i++) submeshTriangles.Add(new List<int>());
+					break;
+				case ColorMethods.BySides:
+					for (int i = 0; i < 16; i++) submeshTriangles.Add(new List<int>());
+					break;
+				case ColorMethods.ByTags:
+					var flattenedTags = conway.FaceTags.SelectMany(d => d.Select(i => i.Item1));
+					uniqueTags = new HashSet<string>(flattenedTags).ToList();
+					for (int i = 0; i < uniqueTags.Count + 1; i++) submeshTriangles.Add(new List<int>());
+					break;
+			}
 		}
 
 		for (var i = 0; i < faceIndices.Length; i++)
@@ -2024,35 +2052,36 @@ public class PolyHydra : MonoBehaviour
 
 			Color32 color;
 
-			// TODO why do we need to do this check?
-			if (conway.FaceRoles != null && colors != null)
+			switch (colorMethod)
 			{
-				switch (colorMethod)
-				{
-					case ColorMethods.ByRole:
-						color = colors[(int)faceRole];
-						break;
-					case ColorMethods.BySides:
-						color = colors[face.Sides % colors.Length];
-						break;
-					default:
-						color = Color.red;
-						break;
-				}
-			}
-			else
-			{
-				color = Color.white;
-			}
-
-			Vector2 calcUV(Vector3 point)
-			{
-				float u, v;
-				u = Vector3.Project(point, xAxis).magnitude;
-				u *= Vector3.Dot(point, xAxis) > 0 ? 1 : -1;
-				v = Vector3.Project(point, yAxis).magnitude;
-				v *= Vector3.Dot(point, yAxis) > 0  ? 1 : -1;
-				return new Vector2(u, v);
+				case ColorMethods.ByRole:
+					color = colors[(int)faceRole];
+					break;
+				case ColorMethods.BySides:
+					color = colors[face.Sides % colors.Length];
+					break;
+				case ColorMethods.ByTags:
+					var c = new Color();
+					if (conway.FaceTags[i].Count > 0)
+					{
+						string htmlColor = conway.FaceTags[i].First(t => t.Item1.StartsWith("#")).Item1;
+						if (!(ColorUtility.TryParseHtmlString(htmlColor, out c)))
+						{
+							if (!ColorUtility.TryParseHtmlString(htmlColor.Replace("#", ""), out c))
+							{
+								c = Color.white;
+							}
+						}
+						color = c;
+					}
+					else
+					{
+						color = Color.white;
+					}
+					break;
+				default:
+					color = Color.white;
+					break;
 			}
 
 			float faceScale = 0;
@@ -2072,19 +2101,19 @@ public class PolyHydra : MonoBehaviour
 				{
 
 					meshVertices.Add(faceCentroid);
-					meshUVs.Add(calcUV(meshVertices[index]));
+					meshUVs.Add(calcUV(meshVertices[index], xAxis, yAxis));
 					faceTris.Add(index++);
 					edgeUVs.Add(new Vector2(0, 0));
 					barycentricUVs.Add(new Vector3(0, 0, 1));
 
 					meshVertices.Add(points[faceIndex[edgeIndex]]);
-					meshUVs.Add(calcUV(meshVertices[index]));
+					meshUVs.Add(calcUV(meshVertices[index], xAxis, yAxis));
 					faceTris.Add(index++);
 					edgeUVs.Add(new Vector2(1, 1));
 					barycentricUVs.Add(new Vector3(0, 1, 0));
 
 					meshVertices.Add(points[faceIndex[(edgeIndex + 1) % face.Sides]]);
-					meshUVs.Add(calcUV(meshVertices[index]));
+					meshUVs.Add(calcUV(meshVertices[index], xAxis, yAxis));
 					faceTris.Add(index++);
 					edgeUVs.Add(new Vector2(1, 1));
 					barycentricUVs.Add(new Vector3(1, 0, 0));
@@ -2098,17 +2127,17 @@ public class PolyHydra : MonoBehaviour
 			{
 
 				meshVertices.Add(points[faceIndex[0]]);
-				meshUVs.Add(calcUV(meshVertices[index]));
+				meshUVs.Add(calcUV(meshVertices[index], xAxis, yAxis));
 				faceTris.Add(index++);
 				barycentricUVs.Add(new Vector3(0, 0, 1));
 
 				meshVertices.Add(points[faceIndex[1]]);
-				meshUVs.Add(calcUV(meshVertices[index]));
+				meshUVs.Add(calcUV(meshVertices[index], xAxis, yAxis));
 				faceTris.Add(index++);
 				barycentricUVs.Add(new Vector3(0, 1, 0));
 
 				meshVertices.Add(points[faceIndex[2]]);
-				meshUVs.Add(calcUV(meshVertices[index]));
+				meshUVs.Add(calcUV(meshVertices[index], xAxis, yAxis));
 				faceTris.Add(index++);
 				barycentricUVs.Add(new Vector3(1, 0, 0));
 
@@ -2120,9 +2149,30 @@ public class PolyHydra : MonoBehaviour
 
 			if (generateSubmeshes)
 			{
-				int uniqueRoleIndex = uniqueRoles.IndexOf(faceRole);
-				submeshTriangles[uniqueRoleIndex].AddRange(faceTris);
-				Debug.Log($"Face {i}. Adding {faceTris.Count} to submesh {uniqueRoleIndex} which now has {submeshTriangles[uniqueRoleIndex].Count}");
+				switch (colorMethod)
+				{
+					case ColorMethods.ByRole:
+						int uniqueRoleIndex = uniqueRoles.IndexOf(faceRole);
+						submeshTriangles[uniqueRoleIndex].AddRange(faceTris);
+						break;
+					case ColorMethods.BySides:
+						submeshTriangles[face.Sides].AddRange(faceTris);
+						break;
+					case ColorMethods.ByTags:
+						if (conway.FaceTags[i].Count > 0)
+						{
+							string htmlColor = conway.FaceTags[i].First(t => t.Item1.StartsWith("#")).Item1;
+							int uniqueTagIndex = uniqueTags.IndexOf(htmlColor);
+							submeshTriangles[uniqueTagIndex + 1].AddRange(faceTris);
+						}
+						else
+						{
+							submeshTriangles[0].AddRange(faceTris);
+
+						}
+						break;
+				}
+
 			}
 			else
 			{
@@ -2178,7 +2228,7 @@ public class PolyHydra : MonoBehaviour
 		}
 		catch (Exception e)
 		{
-			Debug.LogWarning($"opType: {opType} opconfigs count: {opconfigs.Count}");
+			Debug.LogWarning($"opType: {opType} opconfigs count: {opconfigs.Count} Exception: {e}");
 			throw;
 		}
 
@@ -2193,9 +2243,9 @@ public class PolyHydra : MonoBehaviour
 				faceSelection = (FaceSelections) Random.Range(1, maxFaceSel);
 			}
 		}
-		catch (InvalidOperationException r)
+		catch (InvalidOperationException e)
 		{
-			Debug.LogWarning("Failed to pick a random FaceSel as the Wythoff to Conway conversion failed");
+			Debug.LogWarning($"Failed to pick a random FaceSel as the Wythoff to Conway conversion failed ({e})");
 			faceSelection = FaceSelections.All;
 		}
 
@@ -2219,8 +2269,6 @@ public class PolyHydra : MonoBehaviour
 
 		// I had to make too many fields on Kaleido public to do this
 		// Need some sensible public methods to give me sensible access
-
-		var transform = this.transform;
 
 		if (WythoffPoly != null)
 		{

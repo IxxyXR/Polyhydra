@@ -230,7 +230,7 @@ public class FastUi : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
-                // TODO Random appearance
+                LoadRandomAppearancePreset();
             }
             else
             {
@@ -242,14 +242,14 @@ public class FastUi : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
-            string fname = "polyhydra_export";
+            string fname = "polyhydra_" + PolyUtils.UniqueID();
             #if UNITY_WEBGL && !UNITY_EDITOR
                 string stringData = ObjExport.GenerateObjData(_Poly.gameObject, fname, true).ToString();
                 TextDownloader(stringData, fname + ".obj");
                 stringData = ObjExport.GenerateMtlData().ToString();
                 TextDownloader(stringData, fname + ".mtl");
             #else
-                ObjExport.ExportMesh(_Poly.gameObject, Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fname, true);
+                ObjExport.ExportMesh(_Poly.gameObject, Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fname, true);
             #endif
         }
         else if (Input.GetKeyDown(KeyCode.M))
@@ -419,6 +419,13 @@ public class FastUi : MonoBehaviour
             _ShapeIndex = (int) _Poly.OtherPolyType;
         }
         _Stack = _Poly.ConwayOperators;
+    }
+
+    public void LoadRandomAppearancePreset()
+    {
+        var aPresets = FindObjectOfType<AppearancePresets>();
+        var apreset = aPresets.Items[Random.Range(0, aPresets.Items.Count)];
+        aPresets.ApplyPresetToPoly(apreset);
     }
 
     private void ChangeValue(int direction)
