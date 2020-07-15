@@ -46,7 +46,7 @@ public class BuildingGenerator : MonoBehaviour
 
         building.Append(roof, new Vector3(0, height, 0), Quaternion.Euler(0, 0, 0), 1f);
 
-        var mesh = PolyHydra.BuildMeshFromConwayPoly(building, false);
+        var mesh = PolyMeshBuilder.BuildMeshFromConwayPoly(building, false);
         if (generateLightmapUVs)
         {
             var unwrapSettings = new UnwrapParam();

@@ -70,7 +70,7 @@ public class ObjExport
 
 	public static StringBuilder GenerateMtlData()
 	{
-		var colors = PolyHydra.DefaultFaceColors;
+		var colors = PolyMeshBuilder.DefaultFaceColors;
 		StringBuilder mtlString = new StringBuilder();
 		for (var i = 0; i < colors.Length; i++)
 		{

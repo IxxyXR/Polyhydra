@@ -397,7 +397,7 @@ public class Unfolder : MonoBehaviour
 				var faceRoles = Enumerable.Repeat(ConwayPoly.Roles.New, newFaceIndices.Count);
 				var vertexRoles = Enumerable.Repeat(ConwayPoly.Roles.New, newVertices.Count);
 				var unfoldedPoly = new ConwayPoly(newVertices, newFaceIndices, faceRoles, vertexRoles);
-				var mesh = PolyHydra.BuildMeshFromConwayPoly(unfoldedPoly, false);
+				var mesh = PolyMeshBuilder.BuildMeshFromConwayPoly(unfoldedPoly, false);
 				originalPoly.AssignFinishedMesh(mesh);
 			}
 			else {

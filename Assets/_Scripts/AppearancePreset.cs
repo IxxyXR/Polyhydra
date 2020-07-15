@@ -11,7 +11,7 @@ public class AppearancePreset
     public string Name;
     public Material PolyhedronMaterialHDRP;
     public Material PolyhedronMaterialURP;
-    public PolyHydra.ColorMethods PolyhedronColorMethod;
+    public PolyHydraEnums.ColorMethods PolyhedronColorMethod;
     public List<GameObject> ActiveProps;
     public Transform LightingPrefabHDRP;
     public Transform LightingPrefabURP;

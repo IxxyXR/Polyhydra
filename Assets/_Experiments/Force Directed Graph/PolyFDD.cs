@@ -89,7 +89,7 @@ public class PolyFDD : MonoBehaviour
                     var v = Nodes[i];
                     newPoly.Vertices[i].Position = v.Position;
                 }
-                poly.AssignFinishedMesh(PolyHydra.BuildMeshFromConwayPoly(newPoly, false));
+                poly.AssignFinishedMesh(PolyMeshBuilder.BuildMeshFromConwayPoly(newPoly, false));
                 Built = true;
             }
             return;

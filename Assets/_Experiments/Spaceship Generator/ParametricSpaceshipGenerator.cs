@@ -144,7 +144,7 @@ public class ParametricSpaceshipGenerator : MonoBehaviour
         wings = wings.Loft(0.1f, 0.025f);
         spaceship.Append(wings);
 
-        var mesh = PolyHydra.BuildMeshFromConwayPoly(spaceship, false);
+        var mesh = PolyMeshBuilder.BuildMeshFromConwayPoly(spaceship, false);
         GetComponent<MeshFilter>().mesh = mesh;
         GetComponent<MeshRenderer>().material = material;
     }

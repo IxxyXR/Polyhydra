@@ -18,7 +18,7 @@ public class ContinuousAnimationController : MonoBehaviour
     {
         if (RebuildNeeded)
         {
-            poly.ColorMethod = PolyHydra.ColorMethods.BySides;  // Needed to stop color jumps
+            poly.ColorMethod = PolyHydraEnums.ColorMethods.BySides;  // Needed to stop color jumps
             poly.Rebuild();
             RebuildNeeded = false;
         }
