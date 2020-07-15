@@ -231,6 +231,15 @@ public class FastUi : MonoBehaviour
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
                 LoadRandomAppearancePreset();
+                var mr = _Poly.GetComponent<MeshRenderer>();
+                var mat = mr.material;
+                var mats = mr.materials;
+                for (var i = 0; i < mr.materials.Length; i++)
+                {
+                    mats[i] = mat;
+                }
+
+                mr.materials = mats;
             }
             else
             {
