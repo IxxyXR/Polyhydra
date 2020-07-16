@@ -4,6 +4,10 @@
 
 Procedural generation of geometric forms in Unity.
 
+Try it on the web (experimental and a bit buggy): http://www.polyhydra.org.uk/media/fastui/ NOTE! - keyboard controls only (I'll explain later)
+
+
+
 You start by choosing a uniform polyhedron: https://en.wikipedia.org/wiki/Uniform_polyhedron - these are generated using the Wythoff construction.
 
 You can then stack up Conway Operators on top to create much more complex shapes: https://en.wikipedia.org/wiki/Conway_polyhedron_notation
