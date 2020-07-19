@@ -112,13 +112,13 @@ public class PolyMatching : MonoBehaviour
             copy.transform.localScale = Vector3.one * scale;
             var copyPoly = copy.GetComponent<PolyHydra>();
             copyPoly.PolyFromJson(polyJson, false);
-            var opType = (PolyHydra.Ops) i;
+            var opType = (PolyHydraEnums.Ops) i;
             var newOp = new PolyHydra.ConwayOperator
             {
                 opType = opType,
                 faceSelections = FaceSelections.All,
                 randomize = false,
-                amount = copyPoly.opconfigs[opType].amountDefault,
+                amount = PolyHydraEnums.OpConfigs[opType].amountDefault,
                 disabled = false
             };
             copyPoly.ConwayOperators.Add(newOp);

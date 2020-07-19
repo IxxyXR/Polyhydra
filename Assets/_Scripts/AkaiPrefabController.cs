@@ -103,7 +103,7 @@ public class AkaiPrefabController : MonoBehaviour
         SetButtonColor(ColumnButtons[column], colorIndex);
     }
 
-    public void SetGridButtonIcon(int column, int row, PolyHydra.Ops opType)
+    public void SetGridButtonIcon(int column, int row, PolyHydraEnums.Ops opType)
     {
         var btn = MainButtons[column * 8 + row];
         var img = btn.GetComponentInChildren<Image>();

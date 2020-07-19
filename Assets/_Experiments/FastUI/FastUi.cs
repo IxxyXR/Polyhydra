@@ -330,7 +330,7 @@ public class FastUi : MonoBehaviour
             {
                 _Stack.Insert(stackIndex + 1, new PolyHydra.ConwayOperator
                 {
-                    opType = PolyHydra.Ops.Kis,
+                    opType = PolyHydraEnums.Ops.Kis,
                     amount = 0.1f
                 });
                 _PanelIndex += 1;
@@ -379,9 +379,9 @@ public class FastUi : MonoBehaviour
     public void LoadRandomPreset()
     {
         var preset = Presets[Random.Range(0, Presets.Count)];
-        preset.Ops = preset.Ops.Where(i => !i.Disabled && i.OpType != PolyHydra.Ops.Identity).ToArray();
+        preset.Ops = preset.Ops.Where(i => !i.Disabled && i.OpType != PolyHydraEnums.Ops.Identity).ToArray();
         preset.ApplyToPoly(_Poly);
-        if (_Poly.ShapeType == PolyHydra.ShapeTypes.Uniform)
+        if (_Poly.ShapeType == PolyHydraEnums.ShapeTypes.Uniform)
         {
             // Find the first matching category
 
@@ -412,17 +412,17 @@ public class FastUi : MonoBehaviour
             _ShapeCategoryIndex = catIndex;
             _ShapeIndex = matchIndex;
         }
-        else if (_Poly.ShapeType == PolyHydra.ShapeTypes.Johnson)
+        else if (_Poly.ShapeType == PolyHydraEnums.ShapeTypes.Johnson)
         {
             _ShapeCategoryIndex = 6;
             _ShapeIndex = (int) _Poly.JohnsonPolyType;
         }
-        else if (_Poly.ShapeType == PolyHydra.ShapeTypes.Grid)
+        else if (_Poly.ShapeType == PolyHydraEnums.ShapeTypes.Grid)
         {
             _ShapeCategoryIndex = 7;
             _ShapeIndex = (int) _Poly.GridType;
         }
-        else if (_Poly.ShapeType == PolyHydra.ShapeTypes.Other)
+        else if (_Poly.ShapeType == PolyHydraEnums.ShapeTypes.Other)
         {
             _ShapeCategoryIndex = 8;
             _ShapeIndex = (int) _Poly.OtherPolyType;
@@ -478,7 +478,7 @@ public class FastUi : MonoBehaviour
     {
 
         int stackIndex = _PanelIndex - 1;
-        var opConfig = _Poly.opconfigs[_Stack[stackIndex].opType];
+        var opConfig = PolyHydraEnums.OpConfigs[_Stack[stackIndex].opType];
 
 
         ButtonType buttonType = ButtonTypeMapping[_PanelIndex][_PanelWidgetIndex];
@@ -488,7 +488,7 @@ public class FastUi : MonoBehaviour
                 // GetKey brought us here but we only want GetKeyDown in this case
                 if (!ValueKeyPressedThisFrame()) return;
                 _Stack[stackIndex] = _Stack[stackIndex].ChangeOpType(direction);
-                opConfig = _Poly.opconfigs[_Stack[stackIndex].opType];
+                opConfig = PolyHydraEnums.OpConfigs[_Stack[stackIndex].opType];
                 _Stack[stackIndex] = _Stack[stackIndex].SetDefaultValues(opConfig);
                 break;
             case ButtonType.Amount:
@@ -529,37 +529,37 @@ public class FastUi : MonoBehaviour
                 switch ((ShapeCategories)_ShapeCategoryIndex)
                 {
                     case ShapeCategories.Platonic:
-                        _Poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+                        _Poly.ShapeType = PolyHydraEnums.ShapeTypes.Uniform;
                         _Poly.UniformPolyType = (PolyTypes)Uniform.Platonic[0].Index - 1;
                         break;
                     case ShapeCategories.Prisms:
-                        _Poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+                        _Poly.ShapeType = PolyHydraEnums.ShapeTypes.Uniform;
                         _Poly.UniformPolyType = (PolyTypes)Uniform.Prismatic[0].Index - 1;
                         break;
                     case ShapeCategories.Archimedean:
-                        _Poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+                        _Poly.ShapeType = PolyHydraEnums.ShapeTypes.Uniform;
                         _Poly.UniformPolyType = (PolyTypes)Uniform.Archimedean[0].Index - 1;
                         break;
                     case ShapeCategories.UniformConvex:
-                        _Poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+                        _Poly.ShapeType = PolyHydraEnums.ShapeTypes.Uniform;
                         _Poly.UniformPolyType = (PolyTypes)Uniform.Convex[0].Index - 1;
                         break;
                     case ShapeCategories.KeplerPoinsot:
-                        _Poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+                        _Poly.ShapeType = PolyHydraEnums.ShapeTypes.Uniform;
                         _Poly.UniformPolyType = (PolyTypes)Uniform.KeplerPoinsot[0].Index - 1;
                         break;
                     case ShapeCategories.UniformStar:
-                        _Poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+                        _Poly.ShapeType = PolyHydraEnums.ShapeTypes.Uniform;
                         _Poly.UniformPolyType = (PolyTypes)Uniform.Star[0].Index - 1;
                         break;
                     case ShapeCategories.Johnson:
-                        _Poly.ShapeType = PolyHydra.ShapeTypes.Johnson;
+                        _Poly.ShapeType = PolyHydraEnums.ShapeTypes.Johnson;
                         break;
                     case ShapeCategories.Grids:
-                        _Poly.ShapeType = PolyHydra.ShapeTypes.Grid;
+                        _Poly.ShapeType = PolyHydraEnums.ShapeTypes.Grid;
                         break;
                     case ShapeCategories.Other:
-                        _Poly.ShapeType = PolyHydra.ShapeTypes.Other;
+                        _Poly.ShapeType = PolyHydraEnums.ShapeTypes.Other;
                         break;
                 }
                 _ShapeIndex = 0;
@@ -599,18 +599,18 @@ public class FastUi : MonoBehaviour
                         break;
                     case ShapeCategories.Johnson:
                         _ShapeIndex += direction;
-                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Enum.GetNames(typeof(PolyHydra.JohnsonPolyTypes)).Length - 1);
-                        _Poly.JohnsonPolyType = (PolyHydra.JohnsonPolyTypes)_ShapeIndex;
+                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Enum.GetNames(typeof(PolyHydraEnums.JohnsonPolyTypes)).Length - 1);
+                        _Poly.JohnsonPolyType = (PolyHydraEnums.JohnsonPolyTypes)_ShapeIndex;
                         break;
                     case ShapeCategories.Grids:
                         _ShapeIndex += direction;
-                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Enum.GetNames(typeof(PolyHydra.GridTypes)).Length - 1);
-                        _Poly.GridType = (PolyHydra.GridTypes)_ShapeIndex;
+                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Enum.GetNames(typeof(PolyHydraEnums.GridTypes)).Length - 1);
+                        _Poly.GridType = (PolyHydraEnums.GridTypes)_ShapeIndex;
                         break;
                     case ShapeCategories.Other:
                         _ShapeIndex += direction;
-                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Enum.GetNames(typeof(PolyHydra.OtherPolyTypes)).Length - 1);
-                        _Poly.OtherPolyType = (PolyHydra.OtherPolyTypes)_ShapeIndex;
+                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Enum.GetNames(typeof(PolyHydraEnums.OtherPolyTypes)).Length - 1);
+                        _Poly.OtherPolyType = (PolyHydraEnums.OtherPolyTypes)_ShapeIndex;
                         break;
                 }
                 break;
@@ -669,17 +669,17 @@ public class FastUi : MonoBehaviour
         }
 
         if (
-            (_Poly.ShapeType==PolyHydra.ShapeTypes.Uniform && (int)_Poly.UniformPolyType < 5) ||
-            (_Poly.ShapeType==PolyHydra.ShapeTypes.Other && (int)_Poly.OtherPolyType == 0) ||
-            (_Poly.ShapeType==PolyHydra.ShapeTypes.Johnson)
+            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Uniform && (int)_Poly.UniformPolyType < 5) ||
+            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Other && (int)_Poly.OtherPolyType == 0) ||
+            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Johnson)
             )
         {
             polyBtnCount = 3;
         }
         else if (
-            (_Poly.ShapeType==PolyHydra.ShapeTypes.Uniform && (int)_Poly.UniformPolyType < 5) ||
-            (_Poly.ShapeType==PolyHydra.ShapeTypes.Other && (int)_Poly.OtherPolyType < 4) ||
-            (_Poly.ShapeType==PolyHydra.ShapeTypes.Grid)
+            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Uniform && (int)_Poly.UniformPolyType < 5) ||
+            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Other && (int)_Poly.OtherPolyType < 4) ||
+            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Grid)
         )
         {
             polyBtnCount = 4;
@@ -695,16 +695,16 @@ public class FastUi : MonoBehaviour
                 string shapeName = "";
                 switch (_Poly.ShapeType)
                 {
-                    case PolyHydra.ShapeTypes.Uniform:
+                    case PolyHydraEnums.ShapeTypes.Uniform:
                         shapeName = $"uniform_{_Poly.UniformPolyType}";
                         break;
-                    case PolyHydra.ShapeTypes.Johnson:
+                    case PolyHydraEnums.ShapeTypes.Johnson:
                         shapeName = $"johnson_{_Poly.JohnsonPolyType}";
                         break;
-                    case PolyHydra.ShapeTypes.Grid:
+                    case PolyHydraEnums.ShapeTypes.Grid:
                         shapeName = $"grid_{_Poly.GridType}";
                         break;
-                    case PolyHydra.ShapeTypes.Other:
+                    case PolyHydraEnums.ShapeTypes.Other:
                         shapeName = $"other_{_Poly.OtherPolyType}";
                         break;
                 }
@@ -773,18 +773,18 @@ public class FastUi : MonoBehaviour
                 case 1:
                     switch (_Poly.ShapeType)
                     {
-                        case PolyHydra.ShapeTypes.Uniform:
+                        case PolyHydraEnums.ShapeTypes.Uniform:
                             string uniformName = _Poly.UniformPolyType.ToString().Replace("_", " ");
 
                             label = $"{uniformName}"; break;
                             buttonType = ButtonType.UniformType;
-                        case PolyHydra.ShapeTypes.Grid:
+                        case PolyHydraEnums.ShapeTypes.Grid:
                             label = $"{_Poly.GridType}"; break;
                             buttonType = ButtonType.GridType;
-                        case PolyHydra.ShapeTypes.Johnson:
+                        case PolyHydraEnums.ShapeTypes.Johnson:
                             label = $"{_Poly.JohnsonPolyType}"; break;
                             buttonType = ButtonType.JohnsonType;
-                        case PolyHydra.ShapeTypes.Other:
+                        case PolyHydraEnums.ShapeTypes.Other:
                             label = $"{_Poly.OtherPolyType}"; break;
                             buttonType = ButtonType.OtherType;
 
@@ -801,7 +801,7 @@ public class FastUi : MonoBehaviour
 
             int stackIndex = currentPanelIndex - 1;
 
-            var opConfig = _Poly.opconfigs[_Stack[stackIndex].opType];
+            var opConfig = PolyHydraEnums.OpConfigs[_Stack[stackIndex].opType];
 
             var lookup = (opConfig.usesAmount, opConfig.usesAmount2, opConfig.usesFaces, col: widgetIndex);
 
@@ -846,7 +846,7 @@ public class FastUi : MonoBehaviour
             }
             else
             {
-                if (_Stack[stackIndex].opType == PolyHydra.Ops.TagFaces)  // Special case
+                if (_Stack[stackIndex].opType == PolyHydraEnums.Ops.TagFaces)  // Special case
                 {
                     switch (widgetIndex)
                     {
@@ -884,7 +884,7 @@ public class FastUi : MonoBehaviour
 
     private (float, float) GetNormalisedAmountValues(PolyHydra.ConwayOperator conwayOperator)
     {
-        var config = _Poly.opconfigs[conwayOperator.opType];
+        var config = PolyHydraEnums.OpConfigs[conwayOperator.opType];
 
         float rawVal = conwayOperator.amount;
         float minVal = config.amountSafeMin;

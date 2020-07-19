@@ -183,35 +183,35 @@ public class FastUiPrev : MonoBehaviour
             case 0:
                 idx = (int) _Poly.ShapeType;
                 idx += direction;
-                idx = Mathf.Clamp(idx, 0, Enum.GetNames(typeof(PolyHydra.ShapeTypes)).Length - 1);
-                _Poly.ShapeType = (PolyHydra.ShapeTypes)idx;
+                idx = Mathf.Clamp(idx, 0, Enum.GetNames(typeof(PolyHydraEnums.ShapeTypes)).Length - 1);
+                _Poly.ShapeType = (PolyHydraEnums.ShapeTypes)idx;
                 break;
             case 1:
                 switch (_Poly.ShapeType)
                 {
-                    case PolyHydra.ShapeTypes.Uniform:
+                    case PolyHydraEnums.ShapeTypes.Uniform:
                         idx = (int) _Poly.UniformPolyType;
                         idx += direction;
                         idx = Mathf.Clamp(idx, 0, Enum.GetNames(typeof(PolyTypes)).Length - 1);
                         _Poly.UniformPolyType = (PolyTypes)idx;
                         break;
-                    case PolyHydra.ShapeTypes.Johnson:
+                    case PolyHydraEnums.ShapeTypes.Johnson:
                         idx = (int) _Poly.JohnsonPolyType;
                         idx += direction;
-                        idx = Mathf.Clamp(idx, 0, Enum.GetNames(typeof(PolyHydra.JohnsonPolyTypes)).Length - 1);
-                        _Poly.JohnsonPolyType = (PolyHydra.JohnsonPolyTypes)idx;
+                        idx = Mathf.Clamp(idx, 0, Enum.GetNames(typeof(PolyHydraEnums.JohnsonPolyTypes)).Length - 1);
+                        _Poly.JohnsonPolyType = (PolyHydraEnums.JohnsonPolyTypes)idx;
                         break;
-                    case PolyHydra.ShapeTypes.Grid:
+                    case PolyHydraEnums.ShapeTypes.Grid:
                         idx = (int) _Poly.GridType;
                         idx += direction;
-                        idx = Mathf.Clamp(idx, 0, Enum.GetNames(typeof(PolyHydra.GridTypes)).Length - 1);
-                        _Poly.GridType = (PolyHydra.GridTypes)idx;
+                        idx = Mathf.Clamp(idx, 0, Enum.GetNames(typeof(PolyHydraEnums.GridTypes)).Length - 1);
+                        _Poly.GridType = (PolyHydraEnums.GridTypes)idx;
                         break;
-                    case PolyHydra.ShapeTypes.Other:
+                    case PolyHydraEnums.ShapeTypes.Other:
                         idx = (int) _Poly.OtherPolyType;
                         idx += direction;
-                        idx = Mathf.Clamp(idx, 0, Enum.GetNames(typeof(PolyHydra.OtherPolyTypes)).Length - 1);
-                        _Poly.OtherPolyType = (PolyHydra.OtherPolyTypes)idx;
+                        idx = Mathf.Clamp(idx, 0, Enum.GetNames(typeof(PolyHydraEnums.OtherPolyTypes)).Length - 1);
+                        _Poly.OtherPolyType = (PolyHydraEnums.OtherPolyTypes)idx;
                         break;
                 }
                 break;
@@ -251,17 +251,17 @@ public class FastUiPrev : MonoBehaviour
         int polyBtnCount = 2;
 
         if (
-            (_Poly.ShapeType==PolyHydra.ShapeTypes.Uniform && (int)_Poly.UniformPolyType < 5) ||
-            (_Poly.ShapeType==PolyHydra.ShapeTypes.Other && (int)_Poly.OtherPolyType == 0) ||
-            (_Poly.ShapeType==PolyHydra.ShapeTypes.Johnson)
+            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Uniform && (int)_Poly.UniformPolyType < 5) ||
+            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Other && (int)_Poly.OtherPolyType == 0) ||
+            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Johnson)
             )
         {
             polyBtnCount = 3;
         }
         else if (
-            (_Poly.ShapeType==PolyHydra.ShapeTypes.Uniform && (int)_Poly.UniformPolyType < 5) ||
-            (_Poly.ShapeType==PolyHydra.ShapeTypes.Other && (int)_Poly.OtherPolyType < 4) ||
-            (_Poly.ShapeType==PolyHydra.ShapeTypes.Grid)
+            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Uniform && (int)_Poly.UniformPolyType < 5) ||
+            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Other && (int)_Poly.OtherPolyType < 4) ||
+            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Grid)
         )
         {
             polyBtnCount = 4;
@@ -335,16 +335,16 @@ public class FastUiPrev : MonoBehaviour
                 case 1:
                     switch (_Poly.ShapeType)
                     {
-                        case PolyHydra.ShapeTypes.Uniform:
+                        case PolyHydraEnums.ShapeTypes.Uniform:
                             label = $"{_Poly.UniformPolyType}".Replace("_", " "); break;
                             buttonType = ButtonType.UniformType;
-                        case PolyHydra.ShapeTypes.Grid:
+                        case PolyHydraEnums.ShapeTypes.Grid:
                             label = $"{_Poly.GridType}"; break;
                             buttonType = ButtonType.GridType;
-                        case PolyHydra.ShapeTypes.Johnson:
+                        case PolyHydraEnums.ShapeTypes.Johnson:
                             label = $"{_Poly.JohnsonPolyType}"; break;
                             buttonType = ButtonType.JohnsonType;
-                        case PolyHydra.ShapeTypes.Other:
+                        case PolyHydraEnums.ShapeTypes.Other:
                             label = $"{_Poly.OtherPolyType}"; break;
                             buttonType = ButtonType.OtherType;
 
@@ -361,7 +361,7 @@ public class FastUiPrev : MonoBehaviour
 
             int stackIndex = currentRowIndex - 1;
 
-            var opConfig = _Poly.opconfigs[_Stack[stackIndex].opType];
+            var opConfig = PolyHydraEnums.OpConfigs[_Stack[stackIndex].opType];
 
             var lookup = (opConfig.usesAmount, opConfig.usesAmount2, opConfig.usesFaces, col);
 
@@ -406,7 +406,7 @@ public class FastUiPrev : MonoBehaviour
             }
             else
             {
-                if (_Stack[stackIndex].opType == PolyHydra.Ops.TagFaces)  // Special case
+                if (_Stack[stackIndex].opType == PolyHydraEnums.Ops.TagFaces)  // Special case
                 {
                     switch (col)
                     {

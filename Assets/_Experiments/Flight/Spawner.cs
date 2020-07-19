@@ -61,7 +61,7 @@ public class Spawner : MonoBehaviour
 
 
 
-        preset.ShapeType = PolyHydra.ShapeTypes.Uniform;
+        preset.ShapeType = PolyHydraEnums.ShapeTypes.Uniform;
 
         preset.PolyType = (PolyTypes)Random.Range(5,39);
         preset.BypassOps = false;
@@ -71,7 +71,7 @@ public class Spawner : MonoBehaviour
 
         preset.Ops[0] = new PolyPreset.Op
         {
-            OpType = PolyHydra.Ops.SitLevel,
+            OpType = PolyHydraEnums.Ops.SitLevel,
             FaceSelections = FaceSelections.All,
             Amount = 0f,
             Randomize = false,
@@ -79,7 +79,7 @@ public class Spawner : MonoBehaviour
         };
         preset.Ops[1] = new PolyPreset.Op
         {
-            OpType = PolyHydra.Ops.Stretch,
+            OpType = PolyHydraEnums.Ops.Stretch,
             FaceSelections = FaceSelections.ExceptFirst,
             Amount = height,
             Randomize = false,
@@ -90,7 +90,7 @@ public class Spawner : MonoBehaviour
             case 0:
                 preset.Ops[2] = new PolyPreset.Op
                 {
-                    OpType = PolyHydra.Ops.Kis,
+                    OpType = PolyHydraEnums.Ops.Kis,
                     FaceSelections = FaceSelections.FacingUp,
                     Amount = Random.Range(0f, .5f),
                     Randomize = false,
@@ -100,7 +100,7 @@ public class Spawner : MonoBehaviour
             case 1:
                 preset.Ops[2] = new PolyPreset.Op
                 {
-                    OpType = PolyHydra.Ops.Extrude,
+                    OpType = PolyHydraEnums.Ops.Extrude,
                     FaceSelections = FaceSelections.FacingUp,
                     Amount = Random.Range(0f, .5f),
                     Randomize = false,

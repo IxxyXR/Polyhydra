@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PolyDataItem 
 {
-    public PolyHydra.Ops OpName;
+    public PolyHydraEnums.Ops OpName;
     public int Faces;
     public int Vertices;
 }
@@ -28,7 +28,7 @@ public class ConwayOpInfo
 
 public class PolyAnalyse : MonoBehaviour
 {
-    private PolyHydra.Ops currentOpType;
+    private PolyHydraEnums.Ops currentOpType;
     private PolyTypes currentPolyType;
     private PolyHydra poly;
     [Multiline]
@@ -62,7 +62,7 @@ public class PolyAnalyse : MonoBehaviour
     public void NewOp()
     {
         //poly.PolyType = currentPolyType;
-        var defaults = poly.opconfigs[currentOpType];
+        var defaults = PolyHydraEnums.OpConfigs[currentOpType];
         poly.ConwayOperators = new List<PolyHydra.ConwayOperator>();
         poly.ConwayOperators.Add(new PolyHydra.ConwayOperator()
         {
@@ -90,7 +90,7 @@ public class PolyAnalyse : MonoBehaviour
         }
         
         currentOpType++;
-        if (currentOpType == PolyHydra.Ops.Extrude)
+        if (currentOpType == PolyHydraEnums.Ops.Extrude)
         {
             CancelInvoke();
         }

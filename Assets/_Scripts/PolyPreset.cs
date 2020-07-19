@@ -16,13 +16,13 @@ public class PolyPreset {
 
 	public string Name;
 
-	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydra.ShapeTypes ShapeType;
-	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydra.PolyTypeCategories PolyTypeCategory;
+	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydraEnums.ShapeTypes ShapeType;
+	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydraEnums.PolyTypeCategories PolyTypeCategory;
 	[JsonConverter(typeof(MyStringEnumConverter))] public PolyTypes PolyType;
-	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydra.JohnsonPolyTypes JohnsonPolyType;
-	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydra.OtherPolyTypes OtherPolyType;
-	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydra.GridTypes GridType;
-	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydra.GridShapes GridShape;
+	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydraEnums.JohnsonPolyTypes JohnsonPolyType;
+	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydraEnums.OtherPolyTypes OtherPolyType;
+	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydraEnums.GridTypes GridType;
+	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydraEnums.GridShapes GridShape;
 	public bool BypassOps;
 	public bool SafeLimits;
 	public int PrismP;
@@ -31,7 +31,7 @@ public class PolyPreset {
 	
 	[Serializable]
 	public struct Op {
-		[JsonConverter(typeof(StringEnumConverter))] public PolyHydra.Ops OpType;
+		[JsonConverter(typeof(StringEnumConverter))] public PolyHydraEnums.Ops OpType;
 		[JsonConverter(typeof(StringEnumConverter))] public FaceSelections FaceSelections;
 		public float Amount;
 		public float Amount2;

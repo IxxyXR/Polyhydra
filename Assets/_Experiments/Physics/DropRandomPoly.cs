@@ -24,12 +24,12 @@ public class DropRandomPoly : MonoBehaviour
         if (polyRandomValue < 0.00000025)
         {
             // Johnson
-            poly.ShapeType = PolyHydra.ShapeTypes.Johnson;
+            poly.ShapeType = PolyHydraEnums.ShapeTypes.Johnson;
         }
         else if (true || polyRandomValue >= 0.25 && polyRandomValue < 0.5f)
         {
             // Platonic
-            poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+            poly.ShapeType = PolyHydraEnums.ShapeTypes.Uniform;
             var foo = Uniform.Platonic.ToArray();
             poly.WythoffSymbol = foo.RandomElement().Wythoff;
             probabilityOfAddingOp = 0.1f;
@@ -37,14 +37,14 @@ public class DropRandomPoly : MonoBehaviour
         else if (polyRandomValue >= 0.5 && polyRandomValue < 0.75f)
         {
             // Archimedean
-            poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+            poly.ShapeType = PolyHydraEnums.ShapeTypes.Uniform;
             poly.WythoffSymbol = Uniform.Archimedean.RandomElement().Wythoff;
             probabilityOfAddingOp = 0.1f;
         }
         else
         {
             // Any Uniform except prisms
-            poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+            poly.ShapeType = PolyHydraEnums.ShapeTypes.Uniform;
             polyTypeIndex = (int)(Random.value * 74) + 5;
             poly.UniformPolyType = (PolyTypes) (polyTypeIndex);
             probabilityOfAddingOp = 0.1f;

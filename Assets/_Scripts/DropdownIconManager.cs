@@ -17,7 +17,7 @@ public class DropdownIconManager : MonoBehaviour
         }
     }
 
-    public void SetIcon(PolyHydra.Ops opType)
+    public void SetIcon(PolyHydraEnums.Ops opType)
     {
         SetIcon(opType.ToString());
     }

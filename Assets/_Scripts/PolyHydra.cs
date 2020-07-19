@@ -28,14 +28,14 @@ public class PolyHydra : MonoBehaviour
 	private int _faceCount;
 	private int _vertexCount;
 
-	public ShapeTypes ShapeType;
+	public PolyHydraEnums.ShapeTypes ShapeType;
 	public PolyTypes UniformPolyType;
-	public PolyTypeCategories UniformPolyTypeCategory;
+	public PolyHydraEnums.PolyTypeCategories UniformPolyTypeCategory;
 	public PolyHydraEnums.ColorMethods ColorMethod;
-	public JohnsonPolyTypes JohnsonPolyType;
-	public OtherPolyTypes OtherPolyType;
-	public GridTypes GridType;
-	public GridShapes GridShape;
+	public PolyHydraEnums.JohnsonPolyTypes JohnsonPolyType;
+	public PolyHydraEnums.OtherPolyTypes OtherPolyType;
+	public PolyHydraEnums.GridTypes GridType;
+	public PolyHydraEnums.GridShapes GridShape;
 	public string WythoffSymbol;
 	public string PresetName;
 	public string APresetName;
@@ -51,202 +51,6 @@ public class PolyHydra : MonoBehaviour
 	public int PrismQ = 2;
 
 	private ConwayPoly stashed;
-
-	public enum PolyTypeCategories
-	{
-		All,
-		Platonic,
-		Prismatic,
-		Archimedean,
-		KeplerPoinsot,
-		Convex,
-		Star,
-	}
-
-
-	public enum ShapeTypes
-	{
-		Uniform,
-		Grid,
-		Johnson,
-		Other
-	}
-
-	public enum GridShapes
-	{
-		Plane,
-		Torus,
-		Cylinder,
-		Cone,
-//		Conic_Frustum,
-//		Mobius,
-//		Torus_Trefoil,
-//		Klein,
-//		Klein2,
-//		Roman,
-//		Roman_Boy,
-//		Cross_Cap,
-//		Cross_Cap2,
-	}
-
-	public enum GridTypes
-	{
-		Square,
-		Isometric,
-		Hex,
-		Polar,
-
-		U_3_6_3_6,
-		U_3_3_3_4_4,
-		U_3_3_4_3_4,
-//		U_3_3_3_3_6, TODO Fix
-		U_3_12_12,
-		U_4_8_8,
-		U_3_4_6_4,
-		U_4_6_12,
-	}
-
-	public enum JohnsonPolyTypes
-	{
-		Prism,
-		Antiprism,
-
-		Pyramid,
-		ElongatedPyramid,
-		GyroelongatedPyramid,
-
-		Dipyramid,
-		ElongatedDipyramid,
-		GyroelongatedDipyramid,
-
-		Cupola,
-		ElongatedCupola,
-		GyroelongatedCupola,
-
-		OrthoBicupola,
-		GyroBicupola,
-		ElongatedOrthoBicupola,
-		ElongatedGyroBicupola,
-		GyroelongatedBicupola,
-
-		Rotunda,
-		ElongatedRotunda,
-		GyroelongatedRotunda,
-		GyroelongatedBirotunda,
-	}
-
-	public enum OtherPolyTypes
-	{
-		Polygon,
-		UvSphere,
-		UvHemisphere,
-		GriddedCube,
-
-		C_Shape,
-		L_Shape,
-		L_Alt_Shape,
-		H_Shape,
-	}
-
-	public enum Ops {
-
-		Identity,
-		Kis,
-		Ambo,
-		Zip,
-		Expand,
-
-		Bevel,
-		Join,
-		Needle,
-		Ortho,
-		Meta,
-		Truncate,
-
-		Dual,
-
-		Gyro,
-		Snub,
-		Subdivide,
-		Loft,
-		Chamfer,
-		Quinto,
-
-		Lace,
-		JoinedLace,
-		OppositeLace,
-		JoinKisKis,
-		Stake,
-		JoinStake,
-		Medial,
-		EdgeMedial,
-//		JoinedMedial,
-
-		Propeller,
-		Whirl,
-		Volute,
-		Exalt,
-		Yank,
-
-		Squall,
-		JoinSquall,
-
-		Cross,
-
-		Extrude,
-		Shell,
-		Skeleton,
-
-		VertexScale,
-		VertexRotate,
-		VertexFlex,
-
-		FaceOffset,
-		FaceScale,
-		FaceRotate,
-		FaceSlide,
-		// PolarOffset,   TODO
-		Hinge,
-
-//		Ribbon,
-//		FaceTranslate,
-//		FaceRotateX,
-//		FaceRotateY,
-
-		AddDual,
-		AddCopyX,
-		AddCopyY,
-		AddCopyZ,
-		AddMirrorX,
-		AddMirrorY,
-		AddMirrorZ,
-
-		FaceRemove,
-		FaceKeep,
-		VertexRemove,
-		VertexKeep,
-		FillHoles,
-		FaceMerge,
-		Weld,
-
-		Recenter,
-		SitLevel,
-		Stretch,
-		Slice,
-
-		Spherize,
-		Canonicalize,
-
-		Stack,
-		Layer,
-
-		Stash,
-		Unstash,
-		UnstashToVerts,
-		UnstashToFaces,
-		TagFaces,
-
-	}
 
 	public readonly int[] NonOrientablePolyTypes = {
 		(int)PolyTypes.Tetrahemihexahedron,
@@ -307,36 +111,14 @@ public class PolyHydra : MonoBehaviour
 		enableThreading = false;
 	}
 
-	public class OpConfig
-	{
-		public bool usesAmount = true;
-		public float amountDefault = 0;
-		public float amountMin = -20;
-		public float amountMax = 20;
-		public float amountSafeMin = -10;
-		public float amountSafeMax = 0.999f;
-		public bool usesAmount2 = false;
-		public float amount2Default = 0;
-		public float amount2Min = -20;
-		public float amount2Max = 20;
-		public float amount2SafeMin = -10;
-		public float amount2SafeMax = 0.999f;
-		public bool usesFaces = false;
-		public bool usesRandomize = false;
-		public bool usesTags = false;
-		public FaceSelections faceSelection = FaceSelections.All;
-	}
-
 	public ConwayPoly GetConwayPoly()
 	{
 		return _conwayPoly;
 	}
 
-	public Dictionary<Ops, OpConfig> opconfigs;
-
 	[Serializable]
 	public struct ConwayOperator {
-		public Ops opType;
+		public PolyHydraEnums.Ops opType;
 		public FaceSelections faceSelections;
 		public bool randomize;
 		public float amount;
@@ -351,7 +133,7 @@ public class PolyHydra : MonoBehaviour
 		public float audioHighAmount;
 		public string Tags;
 
-		public ConwayOperator ClampAmount(OpConfig config, bool safe=false)
+		public ConwayOperator ClampAmount(PolyHydraEnums.OpConfig config, bool safe=false)
 		{
 			float min = safe ? config.amountSafeMin : config.amountMin;
 			float max = safe ? config.amountSafeMax : config.amountMax;
@@ -359,7 +141,7 @@ public class PolyHydra : MonoBehaviour
 			return this;
 		}
 
-		public ConwayOperator ClampAmount2(OpConfig config, bool safe=false)
+		public ConwayOperator ClampAmount2(PolyHydraEnums.OpConfig config, bool safe=false)
 		{
 			float min = safe ? config.amount2SafeMin : config.amount2Min;
 			float max = safe ? config.amount2SafeMax : config.amount2Max;
@@ -380,8 +162,8 @@ public class PolyHydra : MonoBehaviour
 		public ConwayOperator ChangeOpType(int val)
 		{
 			opType += val;
-			opType = (Ops) Mathf.Clamp(
-				(int) opType, 1, Enum.GetNames(typeof(Ops)).Length - 1
+			opType = (PolyHydraEnums.Ops) Mathf.Clamp(
+				(int) opType, 1, Enum.GetNames(typeof(PolyHydraEnums.Ops)).Length - 1
 			);
 			return this;
 		}
@@ -399,7 +181,7 @@ public class PolyHydra : MonoBehaviour
 			throw new NotImplementedException();
 		}
 
-		public ConwayOperator SetDefaultValues(OpConfig config)
+		public ConwayOperator SetDefaultValues(PolyHydraEnums.OpConfig config)
 		{
 			amount = config.amountDefault;
 			amount2 = config.amount2Default;
@@ -442,631 +224,8 @@ public class PolyHydra : MonoBehaviour
 		Color.magenta
 	};
 
-
-
-		void InitConfigs()
-	{
-
-		// TODO this has become unweidly now we have so many params
-		opconfigs = new Dictionary<Ops, OpConfig>
-		{
-			{Ops.Identity, new OpConfig {usesAmount = false}},
-			{
-				Ops.Kis,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.1f,
-					amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 0.999f,
-					usesRandomize = true
-				}
-			},
-			{Ops.Dual, new OpConfig {usesAmount = false}},
-			{Ops.Ambo, new OpConfig {usesAmount = false}},
-			{
-				Ops.Zip,
-				new OpConfig
-				{
-					amountDefault = 0.5f,
-					amountMin = -2f, amountMax = 2f, amountSafeMin = 0.0001f, amountSafeMax = .999f,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.Expand,
-				new OpConfig
-				{
-					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f
-				}
-			},
-			{
-				Ops.Bevel,
-				new OpConfig
-				{
-					amountDefault = 0.25f,
-					amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.4999f,
-					usesAmount2 = true,
-					amount2Default = 0.25f,
-					amount2Min = -6, amount2Max = 6, amount2SafeMin = 0.001f, amount2SafeMax = 0.4999f,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.Join,
-				new OpConfig
-				{
-					amountDefault = 0.5f,
-					amountMin = -1f, amountMax = 2f, amountSafeMin = -0.5f, amountSafeMax = 0.999f
-				}
-			},
-			{ // TODO Support random
-				Ops.Needle,
-				new OpConfig
-				{
-					amountDefault = 0f,
-					amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 0.5f,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.Ortho,
-				new OpConfig
-				{
-					amountDefault = 0.1f,
-					amountMin = -6, amountMax = 6, amountSafeMin = -0.5f, amountSafeMax = 0.999f,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.Meta,
-				new OpConfig
-				{
-					amountDefault = 0f,
-					amountMin = -6, amountMax = 6, amountSafeMin = -0.333f, amountSafeMax = 0.666f,
-					usesAmount2 = true,
-					amount2Default = 0f,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 0.99f,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.Truncate,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.3f,
-					amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.499f,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.Gyro,
-				new OpConfig
-				{
-					amountDefault = 0.33f,
-					amountMin = -.5f, amountMax = 0.5f, amountSafeMin = 0.001f, amountSafeMax = 0.499f,
-					usesAmount2 = true,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1
-				}
-			},
-			{
-				Ops.Snub,
-				new OpConfig
-				{
-					amountDefault = 0.5f,
-					amountMin = -1f, amountMax = 1f, amountSafeMin = 0.001f, amountSafeMax = 0.999f
-				}
-			},
-			{Ops.Subdivide, new OpConfig
-			{
-				amountDefault = 0,
-				amountMin = -3, amountMax = 3, amountSafeMin = -0.5f, amountSafeMax = 1,
-			}},
-			{
-				Ops.Loft,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
-					usesAmount2 = true,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -1, amount2SafeMax = 1,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.Chamfer,
-				new OpConfig
-				{
-					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f
-				}
-			},
-			{
-				Ops.Quinto,
-				new OpConfig
-				{
-					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
-					usesAmount2 = true,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.Lace,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
-					usesAmount2 = true,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.JoinedLace,
-				new OpConfig
-				{
-					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
-					usesAmount2 = true,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.OppositeLace,
-				new OpConfig
-				{
-					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
-					usesAmount2 = true,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.JoinKisKis,
-				new OpConfig
-				{
-					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
-					usesAmount2 = true,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
-				}
-			},
-			{
-				Ops.Stake,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.5f, amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f
-				}
-			},
-			{
-				Ops.JoinStake,
-				new OpConfig
-				{
-					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f
-				}
-			},
-			{
-				Ops.Medial,
-				new OpConfig
-				{
-					amountDefault = 2f,
-					amountMin = 2, amountMax = 8, amountSafeMin = 1, amountSafeMax = 6,
-					usesAmount2 = true,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
-				}
-			},
-			{
-				Ops.EdgeMedial,
-				new OpConfig
-				{
-					amountDefault = 2f,
-					amountMin = 2, amountMax = 8, amountSafeMin = 1, amountSafeMax = 6,
-					usesAmount2 = true,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
-				}
-			},
-			// {
-			// 	Ops.JoinedMedial,
-			// 	new OpConfig
-			// 	{
-			// 		amountDefault=2f,
-			// 		amountMin=2, amountMax=8, amountSafeMin=1, amountSafeMax=4,
-			// 		usesAmount2 = true,
-			// 		amount2Min = -3, amount2Max = 3, amount2SafeMin = -0.5f, amount2SafeMax = 1,
-			// 	}
-			// },
-			{
-				Ops.Propeller,
-				new OpConfig
-				{
-					amountDefault = 0.25f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0f, amountSafeMax = 0.5f
-				}
-			},
-			{
-				Ops.Whirl,
-				new OpConfig
-				{
-					amountDefault = 0.25f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.5f
-				}
-			},
-			{
-				Ops.Volute,
-				new OpConfig
-				{
-					amountDefault = 0.33f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f
-				}
-			},
-			{
-				Ops.Exalt,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.1f,
-					amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.Yank,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.33f,
-					amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.999f,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.Cross,
-				new OpConfig
-				{
-					amountDefault = 0.5f,
-					amountMin = -1, amountMax = 1, amountSafeMin = -1, amountSafeMax = 0.999f,
-					usesRandomize = true
-				}
-			},
-
-			{
-				Ops.Squall,
-				new OpConfig
-				{
-					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f
-				}
-			},
-			{
-				Ops.JoinSquall,
-				new OpConfig
-				{
-					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = 0.001f, amountSafeMax = 0.999f
-				}
-			},
-
-			{
-				Ops.FaceOffset,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.1f,
-					amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 0.999f,
-					usesRandomize = true
-				}
-			},
-			//{Ops.Ribbon, new OpConfig{}},
-			{
-				Ops.Extrude,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.1f,
-					amountMin = -12, amountMax = 12, amountSafeMin = -6f, amountSafeMax = 6f,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.Shell,
-				new OpConfig
-				{
-					amountDefault = 0.1f,
-					amountMin = -6, amountMax = 6, amountSafeMin = 0.001f, amountSafeMax = 0.999f
-				}
-			},
-			{
-				Ops.Skeleton,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.1f,
-					amountMin = -6, amountSafeMin = 0.001f, amountSafeMax = 0.999f, amountMax = 6
-				}
-			},
-			{
-				Ops.VertexScale,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.5f,
-					amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 0.999f,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.VertexRotate,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = -1, amountSafeMax = 1,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.VertexFlex,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.1f, amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 0.999f,
-					usesRandomize = true
-				}
-			},
-			//{Ops.FaceTranslate, new OpConfig{usesFaces=true, amountDefault=0.1f, amountMin=-6, amountMax=6}},
-			{
-				Ops.FaceScale,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = -0.5f,
-					amountMin = -6, amountMax = 6, amountSafeMin = -1, amountSafeMax = 0,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.FaceRotate,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 45f,
-					amountMin = -3, amountMax = 3, amountSafeMin = -1, amountSafeMax = 1,
-					usesRandomize = true
-				}
-			},
-			// {
-			// 	Ops.PolarOffset,
-			// 	new OpConfig
-			// 	{
-			// 		usesFaces = true,
-			// 		amountDefault = 0.5f,
-			// 		amountMin = -4, amountMax = 4, amountSafeMin = -1, amountSafeMax = 1,
-			// 	}
-			// },
-			{
-				Ops.FaceSlide,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.5f,
-					amountMin = -4, amountMax = 4, amountSafeMin = -1, amountSafeMax = 1,
-					usesAmount2 = true,
-					amount2Min = -3f, amount2Max = 3f, amount2SafeMin = -1f, amount2SafeMax = 1f,
-					usesRandomize = true
-				}
-			},
-//			{Ops.FaceRotateX, new OpConfig{usesFaces=true, amountDefault=0.1f, amountMin=-180, amountMax=180}},
-//			{Ops.FaceRotateY, new OpConfig{usesFaces=true, amountDefault=0.1f, amountMin=-180, amountMax=180}},
-			{Ops.FaceRemove, new OpConfig {usesFaces = true, usesAmount = false}},
-			{Ops.FillHoles, new OpConfig {usesAmount = false}},
-			{Ops.FaceMerge, new OpConfig {usesFaces = true, usesAmount = false}},
-			{Ops.FaceKeep, new OpConfig {usesFaces = true, usesAmount = false}},
-			{Ops.VertexRemove, new OpConfig {usesFaces = true, usesAmount = false}},
-			{Ops.VertexKeep, new OpConfig {usesFaces = true, usesAmount = false}},
-			{
-				Ops.Layer,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.1f,
-					amountMin = -2f, amountMax = 2f, amountSafeMin = -2f, amountSafeMax = 2f,
-					usesAmount2 = true,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -1, amount2SafeMax = 1,
-					usesRandomize = true
-				}
-			},
-			{
-				Ops.Hinge,
-				new OpConfig
-					{
-						amountDefault = 15f,
-						amountMin = -180, amountMax = 180, amountSafeMin = 0, amountSafeMax = 180
-					}
-			},
-			{
-				Ops.AddDual,
-				new OpConfig
-				{
-					amountDefault = 1f,
-					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2
-				}
-			},
-			{
-				Ops.AddCopyX,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0,
-					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2
-				}
-			},
-			{
-				Ops.AddCopyY,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0,
-					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2
-				}
-			},
-			{
-				Ops.AddCopyZ,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0,
-					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2
-				}
-			},
-			{
-				Ops.AddMirrorX,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0,
-					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2
-				}
-			},
-			{
-				Ops.AddMirrorY,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0,
-					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2
-				}
-			},
-			{
-				Ops.AddMirrorZ,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0,
-					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2
-				}
-			},
-			{Ops.Stash, new OpConfig
-				{
-					usesFaces = true,
-					usesAmount = false
-				}
-			},
-			{
-				Ops.Unstash,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0,
-					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2,
-					usesAmount2 = true,
-					amount2Min = -6, amount2Max = 6, amount2SafeMin = -2, amount2SafeMax = 2
-				}
-			},
-			{
-				Ops.UnstashToFaces,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0,
-					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2,
-					usesAmount2 = true,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -1, amount2SafeMax = 1
-				}
-			},
-			{
-				Ops.UnstashToVerts,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0,
-					amountMin = -6, amountMax = 6, amountSafeMin = -2, amountSafeMax = 2,
-					usesAmount2 = true,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -1, amount2SafeMax = 1
-				}
-			},
-			{Ops.TagFaces, new OpConfig
-				{
-					usesFaces = true,
-					usesTags = true
-				}
-			},
-			{
-				Ops.Stack,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 0.5f,
-					amountMin = -2f, amountMax = 2f, amountSafeMin = -2f, amountSafeMax = 2f,
-					usesAmount2 = true,
-					amount2Default =  0.8f,
-					amount2Min = 0.1f, amount2Max = .9f, amount2SafeMin = .01f, amount2SafeMax = .99f
-				}
-			},
-			{
-				Ops.Canonicalize,
-				new OpConfig
-				{
-					usesAmount = false,
-				}
-			},
-			{
-				Ops.Spherize,
-				new OpConfig
-				{
-					usesFaces = true,
-					amountDefault = 1.0f, amountMin = -2, amountMax = 2, amountSafeMin = -2,
-					amountSafeMax = 2f
-				}
-			},
-			{
-				Ops.Stretch,
-				new OpConfig
-					{
-						amountDefault = 1.0f,
-						amountMin = -6f, amountMax = 6f, amountSafeMin = -3f, amountSafeMax = 3f
-					}
-			},
-			{
-				Ops.Slice,
-				new OpConfig
-				{
-					amountDefault = 0.5f,
-					amountMin = 0f, amountMax = 1f, amountSafeMin = 0f, amountSafeMax = 1f,
-					usesAmount2 = true,
-					amount2Min = -3, amount2Max = 3, amount2SafeMin = -1, amount2SafeMax = 1
-				}
-			},
-			{Ops.Recenter, new OpConfig {usesAmount = false}},
-			{Ops.SitLevel, new OpConfig
-			{
-				amountDefault = 0,
-				amountMin = 0f, amountMax = 1f, amountSafeMin = 0f, amountSafeMax = 1f,
-			}},
-			{
-				Ops.Weld,
-				new OpConfig
-				{
-					amountDefault = 0.001f,
-					amountMin = 0, amountMax = .25f, amountSafeMin = 0.001f, amountSafeMax = 0.1f
-				}
-			}
-		};
-	}
-
 	void Init()
 	{
-		InitConfigs();
-
-
 		Debug.unityLogger.logEnabled = EnableLogging;
 		InitCacheIfNeeded();
 		meshFilter = gameObject.GetComponent<MeshFilter>();
@@ -1092,7 +251,7 @@ public class PolyHydra : MonoBehaviour
 		}
 	}
 
-	public ConwayPoly MakeGrid(GridTypes gridType, GridShapes gridShape)
+	public ConwayPoly MakeGrid(PolyHydraEnums.GridTypes gridType, PolyHydraEnums.GridShapes gridShape)
 	{
 		ConwayPoly conway = null;
 
@@ -1108,103 +267,103 @@ public class PolyHydra : MonoBehaviour
 //				conway = ConwayPoly.MakeHexGrid(PrismP, PrismQ);
 //				break;
 
-			case GridTypes.Square:
+			case PolyHydraEnums.GridTypes.Square:
 				conway = ConwayPoly.MakeUnitileGrid(1, (int)gridShape, PrismP, PrismQ);
 				break;
-			case GridTypes.Isometric:
+			case PolyHydraEnums.GridTypes.Isometric:
 				conway = ConwayPoly.MakeUnitileGrid(2, (int)gridShape, PrismP, PrismQ);
 				break;
-			case GridTypes.Hex:
+			case PolyHydraEnums.GridTypes.Hex:
 				conway = ConwayPoly.MakeUnitileGrid(3, (int)gridShape, PrismP, PrismQ);
 				break;
 
-			case GridTypes.U_3_6_3_6:
+			case PolyHydraEnums.GridTypes.U_3_6_3_6:
 				conway = ConwayPoly.MakeUnitileGrid(4, (int)gridShape, PrismP, PrismQ);
 				break;
-			case GridTypes.U_3_3_3_4_4:
+			case PolyHydraEnums.GridTypes.U_3_3_3_4_4:
 				conway = ConwayPoly.MakeUnitileGrid(5, (int)gridShape, PrismP, PrismQ);
 				break;
-			case GridTypes.U_3_3_4_3_4:
+			case PolyHydraEnums.GridTypes.U_3_3_4_3_4:
 				conway = ConwayPoly.MakeUnitileGrid(6, (int)gridShape, PrismP, PrismQ);
 				break;
 //			case GridTypes.U_3_3_3_3_6:
 //				conway = ConwayPoly.MakeUnitileGrid(7, (int)gridShape, PrismP, PrismQ);
 //				break;
-			case GridTypes.U_3_12_12:
+			case PolyHydraEnums.GridTypes.U_3_12_12:
 				conway = ConwayPoly.MakeUnitileGrid(8, (int)gridShape, PrismP, PrismQ);
 				break;
-			case GridTypes.U_4_8_8:
+			case PolyHydraEnums.GridTypes.U_4_8_8:
 				conway = ConwayPoly.MakeUnitileGrid(9, (int)gridShape, PrismP, PrismQ);
 				break;
-			case GridTypes.U_3_4_6_4:
+			case PolyHydraEnums.GridTypes.U_3_4_6_4:
 				conway = ConwayPoly.MakeUnitileGrid(10, (int)gridShape, PrismP, PrismQ);
 				break;
-			case GridTypes.U_4_6_12:
+			case PolyHydraEnums.GridTypes.U_4_6_12:
 				conway = ConwayPoly.MakeUnitileGrid(11, (int)gridShape, PrismP, PrismQ);
 				break;
 
-			case GridTypes.Polar:
+			case PolyHydraEnums.GridTypes.Polar:
 				conway = ConwayPoly.MakePolarGrid(PrismP, PrismQ);
 				break;
 		}
 		// Welding only seems to work reliably on simpler shapes
-		if (gridShape != GridShapes.Plane) conway = conway.Weld(0.001f);
+		if (gridShape != PolyHydraEnums.GridShapes.Plane) conway = conway.Weld(0.001f);
 
 		return conway;
 	}
 
-	public ConwayPoly MakeJohnsonPoly(JohnsonPolyTypes johnsonPolyType)
+	public ConwayPoly MakeJohnsonPoly(PolyHydraEnums.JohnsonPolyTypes johnsonPolyType)
 	{
 		ConwayPoly poly;
 
 		switch (johnsonPolyType)
 		{
-			case JohnsonPolyTypes.Prism:
+			case PolyHydraEnums.JohnsonPolyTypes.Prism:
 				poly = JohnsonPoly.Prism(PrismP<3?3:PrismP);
 				break;
-			case JohnsonPolyTypes.Antiprism:
+			case PolyHydraEnums.JohnsonPolyTypes.Antiprism:
 				poly = JohnsonPoly.Antiprism(PrismP<3?3:PrismP);
 				break;
-			case JohnsonPolyTypes.Pyramid:
+			case PolyHydraEnums.JohnsonPolyTypes.Pyramid:
 				poly = JohnsonPoly.Pyramid(PrismP<3?3:PrismP);
 				break;
-			case JohnsonPolyTypes.ElongatedPyramid:
+			case PolyHydraEnums.JohnsonPolyTypes.ElongatedPyramid:
 				poly = JohnsonPoly.ElongatedPyramid(PrismP<3?3:PrismP);
 				break;
-			case JohnsonPolyTypes.GyroelongatedPyramid:
+			case PolyHydraEnums.JohnsonPolyTypes.GyroelongatedPyramid:
 				poly = JohnsonPoly.GyroelongatedPyramid(PrismP<3?3:PrismP);
 				break;
-			case JohnsonPolyTypes.Dipyramid:
+			case PolyHydraEnums.JohnsonPolyTypes.Dipyramid:
 				poly = JohnsonPoly.Dipyramid(PrismP<3?3:PrismP);
 				break;
-			case JohnsonPolyTypes.ElongatedDipyramid:
+			case PolyHydraEnums.JohnsonPolyTypes.ElongatedDipyramid:
 				poly = JohnsonPoly.ElongatedBipyramid(PrismP<3?3:PrismP);
 				break;
-			case JohnsonPolyTypes.GyroelongatedDipyramid:
+			case PolyHydraEnums.JohnsonPolyTypes.GyroelongatedDipyramid:
 				poly = JohnsonPoly.GyroelongatedBipyramid(PrismP<3?3:PrismP);
 				break;
-			case JohnsonPolyTypes.Cupola:
+			case PolyHydraEnums.JohnsonPolyTypes.Cupola:
 				poly = JohnsonPoly.Cupola(PrismP<3?3:PrismP);
 				break;
-			case JohnsonPolyTypes.ElongatedCupola:
+			case PolyHydraEnums.JohnsonPolyTypes.ElongatedCupola:
 				poly = JohnsonPoly.ElongatedCupola(PrismP<3?3:PrismP);
 				break;
-			case JohnsonPolyTypes.GyroelongatedCupola:
+			case PolyHydraEnums.JohnsonPolyTypes.GyroelongatedCupola:
 				poly = JohnsonPoly.GyroelongatedCupola(PrismP<3?3:PrismP);
 				break;
-			case JohnsonPolyTypes.OrthoBicupola:
+			case PolyHydraEnums.JohnsonPolyTypes.OrthoBicupola:
 				poly = JohnsonPoly.OrthoBicupola(PrismP<3?3:PrismP);
 				break;
-			case JohnsonPolyTypes.GyroBicupola:
+			case PolyHydraEnums.JohnsonPolyTypes.GyroBicupola:
 				poly = JohnsonPoly.GyroBicupola(PrismP<3?3:PrismP);
 				break;
-			case JohnsonPolyTypes.ElongatedOrthoBicupola:
+			case PolyHydraEnums.JohnsonPolyTypes.ElongatedOrthoBicupola:
 				poly = JohnsonPoly.ElongatedBicupola(PrismP<3?3:PrismP, false);
 				break;
-			case JohnsonPolyTypes.ElongatedGyroBicupola:
+			case PolyHydraEnums.JohnsonPolyTypes.ElongatedGyroBicupola:
 				poly = JohnsonPoly.ElongatedBicupola(PrismP<3?3:PrismP, true);
 				break;
-			case JohnsonPolyTypes.GyroelongatedBicupola:
+			case PolyHydraEnums.JohnsonPolyTypes.GyroelongatedBicupola:
 				poly = JohnsonPoly.GyroelongatedBicupola(PrismP<3?3:PrismP, false);
 				break;
 			// The distinction between these two is simply one of chirality
@@ -1214,16 +373,16 @@ public class PolyHydra : MonoBehaviour
 			// case JohnsonPolyTypes.GyroelongatedGyroBicupola:
 			// 	poly = JohnsonPoly.GyroElongatedBicupola(PrismP<3?3:PrismP, true);
 			// 	break;
-			case JohnsonPolyTypes.Rotunda:
+			case PolyHydraEnums.JohnsonPolyTypes.Rotunda:
 				poly = JohnsonPoly.Rotunda();
 				break;
-			case JohnsonPolyTypes.ElongatedRotunda:
+			case PolyHydraEnums.JohnsonPolyTypes.ElongatedRotunda:
 				poly = JohnsonPoly.ElongatedRotunda();
 				break;
-			case JohnsonPolyTypes.GyroelongatedRotunda:
+			case PolyHydraEnums.JohnsonPolyTypes.GyroelongatedRotunda:
 				poly = JohnsonPoly.GyroelongatedRotunda();
 				break;
-			case JohnsonPolyTypes.GyroelongatedBirotunda:
+			case PolyHydraEnums.JohnsonPolyTypes.GyroelongatedBirotunda:
 				poly = JohnsonPoly.GyroelongatedBirotunda();
 				break;
 			default:
@@ -1235,25 +394,25 @@ public class PolyHydra : MonoBehaviour
 		return poly;
 	}
 
-	public ConwayPoly MakeOtherPoly(OtherPolyTypes otherPolyType)
+	public ConwayPoly MakeOtherPoly(PolyHydraEnums.OtherPolyTypes otherPolyType)
 	{
 		switch (otherPolyType)
 		{
-			case OtherPolyTypes.UvSphere:
+			case PolyHydraEnums.OtherPolyTypes.UvSphere:
 				return JohnsonPoly.UvSphere(PrismP, PrismQ);
-			case OtherPolyTypes.UvHemisphere:
+			case PolyHydraEnums.OtherPolyTypes.UvHemisphere:
 				return JohnsonPoly.UvHemisphere(PrismP, PrismQ);
-			case OtherPolyTypes.L_Shape:
+			case PolyHydraEnums.OtherPolyTypes.L_Shape:
 				return JohnsonPoly.L_Shape();
-			case OtherPolyTypes.L_Alt_Shape:
+			case PolyHydraEnums.OtherPolyTypes.L_Alt_Shape:
 				return JohnsonPoly.L_Alt_Shape();
-			case OtherPolyTypes.C_Shape:
+			case PolyHydraEnums.OtherPolyTypes.C_Shape:
 				return JohnsonPoly.C_Shape();
-			case OtherPolyTypes.H_Shape:
+			case PolyHydraEnums.OtherPolyTypes.H_Shape:
 				return JohnsonPoly.H_Shape();
-			case OtherPolyTypes.Polygon:
+			case PolyHydraEnums.OtherPolyTypes.Polygon:
 				return JohnsonPoly.Polygon(PrismP);
-			case OtherPolyTypes.GriddedCube:
+			case PolyHydraEnums.OtherPolyTypes.GriddedCube:
 				var conway = ConwayPoly.MakeUnitileGrid(1, 0, PrismP, PrismP);
 				conway = conway.AddMirrored(Vector3.up, PrismP);
 				conway.Recenter();
@@ -1271,7 +430,7 @@ public class PolyHydra : MonoBehaviour
 
 	private void MakePolyhedron(bool disableThreading=false)
 	{
-		if (ShapeType == ShapeTypes.Uniform)
+		if (ShapeType == PolyHydraEnums.ShapeTypes.Uniform)
 		{
 			MakeWythoff();
 			try
@@ -1284,17 +443,17 @@ public class PolyHydra : MonoBehaviour
 				throw;
 			}
 		}
-		else if (ShapeType == ShapeTypes.Grid)
+		else if (ShapeType == PolyHydraEnums.ShapeTypes.Grid)
 		{
 			_conwayPoly = MakeGrid(GridType, GridShape);
 		}
 
-		else if (ShapeType == ShapeTypes.Johnson)
+		else if (ShapeType == PolyHydraEnums.ShapeTypes.Johnson)
 		{
 			_conwayPoly = MakeJohnsonPoly(JohnsonPolyType);
 		}
 
-		else if (ShapeType == ShapeTypes.Other)
+		else if (ShapeType == PolyHydraEnums.ShapeTypes.Other)
 		{
 			_conwayPoly = MakeOtherPoly(OtherPolyType);
 		}
@@ -1337,7 +496,7 @@ public class PolyHydra : MonoBehaviour
 
 	public void Validate()
 	{
-		if (ShapeType == ShapeTypes.Uniform)
+		if (ShapeType == PolyHydraEnums.ShapeTypes.Uniform)
 		{
 			if (PrismP < 3) {PrismP = 3;}
 			if (PrismP > 16) PrismP = 16;
@@ -1348,9 +507,9 @@ public class PolyHydra : MonoBehaviour
 		// Control the amount variables to some degree
 		for (var i = 0; i < ConwayOperators.Count; i++)
 		{
-			if (opconfigs == null) continue;
+			if (PolyHydraEnums.OpConfigs == null) continue;
 			var op = ConwayOperators[i];
-			if (opconfigs[op.opType].usesAmount)
+			if (PolyHydraEnums.OpConfigs[op.opType].usesAmount)
 			{
 				op.amount = Mathf.Round(op.amount * 1000) / 1000f;
 				op.amount2 = Mathf.Round(op.amount2 * 1000) / 1000f;
@@ -1358,13 +517,13 @@ public class PolyHydra : MonoBehaviour
 				float opMin, opMax;
 				if (SafeLimits)
 				{
-					opMin = opconfigs[op.opType].amountSafeMin;
-					opMax = opconfigs[op.opType].amountSafeMax;
+					opMin = PolyHydraEnums.OpConfigs[op.opType].amountSafeMin;
+					opMax = PolyHydraEnums.OpConfigs[op.opType].amountSafeMax;
 				}
 				else
 				{
-					opMin = opconfigs[op.opType].amountMin;
-					opMax = opconfigs[op.opType].amountMax;
+					opMin = PolyHydraEnums.OpConfigs[op.opType].amountMin;
+					opMax = PolyHydraEnums.OpConfigs[op.opType].amountMax;
 				}
 				if (op.amount < opMin) op.amount = opMin;
 				if (op.amount > opMax) op.amount = opMax;
@@ -1527,49 +686,49 @@ public class PolyHydra : MonoBehaviour
 
 		switch (op.opType)
 		{
-			case Ops.Identity:
+			case PolyHydraEnums.Ops.Identity:
 				break;
-			case Ops.Kis:
+			case PolyHydraEnums.Ops.Kis:
 				conway = conway.Kis(amount, op.faceSelections, op.Tags, op.randomize);
 				break;
-			case Ops.Dual:
+			case PolyHydraEnums.Ops.Dual:
 				conway = conway.Dual();
 				break;
-			case Ops.Ambo:
+			case PolyHydraEnums.Ops.Ambo:
 				conway = conway.Ambo();
 				break;
-			case Ops.Zip:
+			case PolyHydraEnums.Ops.Zip:
 				conway = conway.Zip(amount);
 				break;
-			case Ops.Expand:
+			case PolyHydraEnums.Ops.Expand:
 				conway = conway.Expand(amount);
 				break;
-			case Ops.Bevel:
+			case PolyHydraEnums.Ops.Bevel:
 				conway = conway.Bevel(amount, op.amount2);
 				break;
-			case Ops.Join:
+			case PolyHydraEnums.Ops.Join:
 				conway = conway.Join(amount);
 				break;
-			case Ops.Needle:
+			case PolyHydraEnums.Ops.Needle:
 				conway = conway.Needle(amount, op.randomize);
 				break;
-			case Ops.Ortho:
+			case PolyHydraEnums.Ops.Ortho:
 				conway = conway.Ortho(amount, op.randomize);
 				break;
-			case Ops.Meta:
+			case PolyHydraEnums.Ops.Meta:
 				conway = conway.Meta(amount, op.amount2, op.randomize);
 				break;
-			case Ops.Truncate:
+			case PolyHydraEnums.Ops.Truncate:
 				conway = conway.Truncate(amount, op.faceSelections, op.randomize);
 				break;
-			case Ops.Gyro:
+			case PolyHydraEnums.Ops.Gyro:
 				conway = conway.Gyro(amount, op.amount2);
 				break;
-			case Ops.Snub:
+			case PolyHydraEnums.Ops.Snub:
 				conway = conway.Gyro(amount);
 				conway = conway.Dual();
 				break;
-			case Ops.Exalt:
+			case PolyHydraEnums.Ops.Exalt:
 				// TODO return a correct VertexRole array
 				// I suspect the last vertices map to the original shape verts
 				conway = conway.Dual();
@@ -1577,76 +736,76 @@ public class PolyHydra : MonoBehaviour
 				conway = conway.Dual();
 				conway = conway.Kis(amount, op.faceSelections, op.Tags, op.randomize);
 				break;
-			case Ops.Yank:
+			case PolyHydraEnums.Ops.Yank:
 				conway = conway.Kis(amount, op.faceSelections, op.Tags, op.randomize);
 				conway = conway.Dual();
 				conway = conway.Kis(amount, op.faceSelections, op.Tags, op.randomize);
 				conway = conway.Dual();
 				break;
-			case Ops.Subdivide:
+			case PolyHydraEnums.Ops.Subdivide:
 				conway = conway.Subdivide(amount);
 				break;
-			case Ops.Loft:
+			case PolyHydraEnums.Ops.Loft:
 				conway = conway.Loft(amount, op.amount2, op.faceSelections, op.Tags, op.randomize);
 				break;
-			case Ops.Chamfer:
+			case PolyHydraEnums.Ops.Chamfer:
 				conway = conway.Chamfer(amount);
 				break;
-			case Ops.Quinto:
+			case PolyHydraEnums.Ops.Quinto:
 				conway = conway.Quinto(amount, op.amount2, op.randomize);
 				break;
-			case Ops.JoinedLace:
+			case PolyHydraEnums.Ops.JoinedLace:
 				conway = conway.JoinedLace(amount, op.amount2, op.randomize);
 				break;
-			case Ops.OppositeLace:
+			case PolyHydraEnums.Ops.OppositeLace:
 				conway = conway.OppositeLace(amount, op.amount2, op.randomize);
 				break;
-			case Ops.Lace:
+			case PolyHydraEnums.Ops.Lace:
 				conway = conway.Lace(amount, op.faceSelections, op.Tags, op.amount2, op.randomize);
 				break;
-			case Ops.JoinKisKis:
+			case PolyHydraEnums.Ops.JoinKisKis:
 				conway = conway.JoinKisKis(amount, op.amount2);
 				break;
-			case Ops.Stake:
+			case PolyHydraEnums.Ops.Stake:
 				conway = conway.Stake(amount, op.faceSelections, op.Tags);
 				break;
-			case Ops.JoinStake:
+			case PolyHydraEnums.Ops.JoinStake:
 				conway = conway.Stake(amount, op.faceSelections, op.Tags, true);
 				break;
-			case Ops.Medial:
+			case PolyHydraEnums.Ops.Medial:
 				conway = conway.Medial((int)amount, op.amount2);
 				break;
-			case Ops.EdgeMedial:
+			case PolyHydraEnums.Ops.EdgeMedial:
 				conway = conway.EdgeMedial((int)amount, op.amount2);
 				break;
 			// case Ops.JoinedMedial:
 			// 	conway = conway.JoinedMedial((int)amount, op.amount2);
 			// 	break;
-			case Ops.Propeller:
+			case PolyHydraEnums.Ops.Propeller:
 				conway = conway.Propeller(amount);
 				break;
-			case Ops.Whirl:
+			case PolyHydraEnums.Ops.Whirl:
 				conway = conway.Whirl(amount);
 				break;
-			case Ops.Volute:
+			case PolyHydraEnums.Ops.Volute:
 				conway = conway.Volute(amount);
 				break;
-			case Ops.Cross:
+			case PolyHydraEnums.Ops.Cross:
 				conway = conway.Cross(amount);
 				break;
-			case Ops.Squall:
+			case PolyHydraEnums.Ops.Squall:
 				conway = conway.Squall(amount, false);
 				break;
-			case Ops.JoinSquall:
+			case PolyHydraEnums.Ops.JoinSquall:
 				conway = conway.Squall(amount, true);
 				break;
-			case Ops.Shell:
+			case PolyHydraEnums.Ops.Shell:
 				// TODO do this properly with shared edges/vertices
 				conway = conway.Extrude(amount, false, op.randomize);
 				break;
-			case Ops.Skeleton:
+			case PolyHydraEnums.Ops.Skeleton:
 				conway = conway.FaceRemove(op.faceSelections, op.Tags);
-				if ((op.faceSelections==FaceSelections.New || op.faceSelections==FaceSelections.NewAlt) && op.opType == Ops.Skeleton)
+				if ((op.faceSelections==FaceSelections.New || op.faceSelections==FaceSelections.NewAlt) && op.opType == PolyHydraEnums.Ops.Skeleton)
 				{
 					// Nasty hack until I fix extrude
 					// Produces better results specific for PolyMidi
@@ -1654,25 +813,25 @@ public class PolyHydra : MonoBehaviour
 				}
 				conway = conway.Extrude(amount, false, op.randomize);
 				break;
-			case Ops.Extrude:
+			case PolyHydraEnums.Ops.Extrude:
 				conway = conway.Loft(0, amount, op.faceSelections, op.Tags, op.randomize);
 				break;
-			case Ops.VertexScale:
+			case PolyHydraEnums.Ops.VertexScale:
 				conway = conway.VertexScale(amount, op.faceSelections, op.randomize);
 				break;
-			case Ops.FaceSlide:
+			case PolyHydraEnums.Ops.FaceSlide:
 				conway = conway.FaceSlide(amount, op.amount2, op.faceSelections, op.Tags, op.randomize);
 				break;
-			case Ops.FaceMerge:
+			case PolyHydraEnums.Ops.FaceMerge:
 				conway = conway.FaceMerge(op.faceSelections);
 				break;
-			case Ops.VertexRotate:
+			case PolyHydraEnums.Ops.VertexRotate:
 				conway = conway.VertexRotate(amount, op.faceSelections, op.Tags, op.randomize);
 				break;
-			case Ops.VertexFlex:
+			case PolyHydraEnums.Ops.VertexFlex:
 				conway = conway.VertexFlex(amount, op.faceSelections, op.Tags, op.randomize);
 				break;
-			case Ops.FaceOffset:
+			case PolyHydraEnums.Ops.FaceOffset:
 				// TODO Faceroles ignored. Vertex Roles
 				// Split faces
 				var origRoles = conway.FaceRoles;
@@ -1680,10 +839,10 @@ public class PolyHydra : MonoBehaviour
 				conway.FaceRoles = origRoles;
 				conway = conway.Offset(amount, op.faceSelections, op.Tags, op.randomize);
 				break;
-			case Ops.FaceScale:
+			case PolyHydraEnums.Ops.FaceScale:
 				conway = conway.FaceScale(amount, op.faceSelections, op.Tags, op.randomize);
 				break;
-			case Ops.FaceRotate:
+			case PolyHydraEnums.Ops.FaceRotate:
 				conway = conway.FaceRotate(amount, op.faceSelections, op.Tags, 0, op.randomize);
 				break;
 //					case Ops.Ribbon:
@@ -1698,93 +857,93 @@ public class PolyHydra : MonoBehaviour
 //					case Ops.FaceRotateY:
 //						conway = conway.FaceRotate(amount, op.faceSelections, 2);
 //						break;
-			case Ops.FaceRemove:
+			case PolyHydraEnums.Ops.FaceRemove:
 				conway = conway.FaceRemove(op.faceSelections, op.Tags);
 				break;
-			case Ops.FaceKeep:
+			case PolyHydraEnums.Ops.FaceKeep:
 				conway = conway.FaceKeep(op.faceSelections, op.Tags);
 				break;
-			case Ops.VertexRemove:
+			case PolyHydraEnums.Ops.VertexRemove:
 				conway = conway.VertexRemove(op.faceSelections, false);
 				break;
-			case Ops.VertexKeep:
+			case PolyHydraEnums.Ops.VertexKeep:
 				conway = conway.VertexRemove(op.faceSelections, true);
 				break;
-			case Ops.FillHoles:
+			case PolyHydraEnums.Ops.FillHoles:
 				conway.FillHoles();
 				break;
-			case Ops.Hinge:
+			case PolyHydraEnums.Ops.Hinge:
 				conway = conway.Hinge(amount);
 				break;
-			case Ops.AddDual:
+			case PolyHydraEnums.Ops.AddDual:
 				conway = conway.AddDual(amount);
 				break;
-			case Ops.AddCopyX:
+			case PolyHydraEnums.Ops.AddCopyX:
 				conway = conway.AddCopy(Vector3.right, amount, op.faceSelections, op.Tags);
 				break;
-			case Ops.AddCopyY:
+			case PolyHydraEnums.Ops.AddCopyY:
 				conway = conway.AddCopy(Vector3.up, amount, op.faceSelections, op.Tags);
 				break;
-			case Ops.AddCopyZ:
+			case PolyHydraEnums.Ops.AddCopyZ:
 				conway = conway.AddCopy(Vector3.forward, amount, op.faceSelections, op.Tags);
 				break;
-			case Ops.AddMirrorX:
+			case PolyHydraEnums.Ops.AddMirrorX:
 				conway = conway.AddMirrored(Vector3.right, amount, op.faceSelections, op.Tags);
 				break;
-			case Ops.AddMirrorY:
+			case PolyHydraEnums.Ops.AddMirrorY:
 				conway = conway.AddMirrored(Vector3.up, amount, op.faceSelections, op.Tags);
 				break;
-			case Ops.AddMirrorZ:
+			case PolyHydraEnums.Ops.AddMirrorZ:
 				conway = conway.AddMirrored(Vector3.forward, amount, op.faceSelections, op.Tags);
 				break;
-			case Ops.Stash:
+			case PolyHydraEnums.Ops.Stash:
 				stash = conway.Duplicate();
 				stash = stash.FaceKeep(op.faceSelections);
 				break;
-			case Ops.Unstash:
+			case PolyHydraEnums.Ops.Unstash:
 				if (stash == null) return conway;
 				var dup = conway.Duplicate();
 				var offset = Vector3.up * op.amount2;
 				dup.Append(stash.FaceKeep(op.faceSelections, op.Tags), offset, Quaternion.identity, amount);
 				conway = dup;
 				break;
-			case Ops.UnstashToFaces:
+			case PolyHydraEnums.Ops.UnstashToFaces:
 				if (stash == null) return conway;
 				conway = conway.AppendMany(stash, op.faceSelections, op.Tags, amount, 0, op.amount2, true);
 				break;
-			case Ops.UnstashToVerts:
+			case PolyHydraEnums.Ops.UnstashToVerts:
 				if (stash == null) return conway;
 				conway = conway.AppendMany(stash, op.faceSelections, op.Tags, amount, 0, op.amount2, false);
 				break;
-			case Ops.TagFaces:
+			case PolyHydraEnums.Ops.TagFaces:
 				conway.TagFaces(op.Tags, op.faceSelections);
 				break;
-			case Ops.Layer:
+			case PolyHydraEnums.Ops.Layer:
 				conway = conway.Layer(4, 1f - amount, amount / 10f, op.faceSelections, op.Tags);
 				break;
-			case Ops.Canonicalize:
+			case PolyHydraEnums.Ops.Canonicalize:
 				conway = conway.Canonicalize(0.1f, 0.1f);
 				break;
-			case Ops.Spherize:
+			case PolyHydraEnums.Ops.Spherize:
 				conway = conway.Spherize(amount, op.faceSelections);
 				break;
-			case Ops.Recenter:
+			case PolyHydraEnums.Ops.Recenter:
 				conway.Recenter();
 				break;
-			case Ops.SitLevel:
+			case PolyHydraEnums.Ops.SitLevel:
 				conway = conway.SitLevel(amount);
 				break;
-			case Ops.Stretch:
+			case PolyHydraEnums.Ops.Stretch:
 				conway = conway.Stretch(amount);
 				break;
-			case Ops.Slice:
+			case PolyHydraEnums.Ops.Slice:
 				conway = conway.Slice(amount, op.amount2);
 				break;
-			case Ops.Stack:
+			case PolyHydraEnums.Ops.Stack:
 				conway = conway.Stack(Vector3.up, amount, op.amount2, 0.1f, op.faceSelections, op.Tags);
 				conway.Recenter();
 				break;
-			case Ops.Weld:
+			case PolyHydraEnums.Ops.Weld:
 				conway = conway.Weld(amount);
 				break;
 		}
@@ -1801,9 +960,9 @@ public class PolyHydra : MonoBehaviour
 
 		foreach (var op in ConwayOperators.ToList())
 		{
-			if (op.disabled || op.opType==Ops.Identity) continue;
+			if (op.disabled || op.opType==PolyHydraEnums.Ops.Identity) continue;
 
-			if (enableCaching && op.opType!=Ops.Stash) // The cache contain the stash so we can't cache it
+			if (enableCaching && op.opType!=PolyHydraEnums.Ops.Stash) // The cache contain the stash so we can't cache it
 			{
 				cacheKeySource += JsonConvert.SerializeObject(op);
 				int key = cacheKeySource.GetHashCode();
@@ -1896,17 +1055,17 @@ public class PolyHydra : MonoBehaviour
 
 	public ConwayOperator AddRandomOp()
 	{
-		int maxOpIndex = Enum.GetValues(typeof(Ops)).Length;
+		int maxOpIndex = Enum.GetValues(typeof(PolyHydraEnums.Ops)).Length;
 		int opTypeIndex = Random.Range(1, maxOpIndex - 2); // No canonicalize as it's pretty rough at the moment
-		var opType = (Ops) opTypeIndex;
-		OpConfig opConfig;
+		var opType = (PolyHydraEnums.Ops) opTypeIndex;
+		PolyHydraEnums.OpConfig opConfig;
 		try
 		{
-			opConfig = opconfigs[opType];
+			opConfig = PolyHydraEnums.OpConfigs[opType];
 		}
 		catch (Exception e)
 		{
-			Debug.LogWarning($"opType: {opType} opconfigs count: {opconfigs.Count} Exception: {e}");
+			Debug.LogWarning($"opType: {opType} PolyHydraEnums.OpConfigs count: {PolyHydraEnums.OpConfigs.Count} Exception: {e}");
 			throw;
 		}
 

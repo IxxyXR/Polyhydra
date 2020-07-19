@@ -36,11 +36,11 @@ public class ContinuousAnimation : MonoBehaviour
 
     public struct Junction
     {
-        public PolyHydra.Ops Op;
+        public PolyHydraEnums.Ops Op;
         public float FinalAmount;
         public State FinalState;
         
-        public Junction(PolyHydra.Ops o, float a, State s) {Op = o; FinalAmount = a; FinalState = s; }
+        public Junction(PolyHydraEnums.Ops o, float a, State s) {Op = o; FinalAmount = a; FinalState = s; }
     }
 
     public Dictionary<State, List<Junction>> Transitions;
@@ -56,41 +56,41 @@ public class ContinuousAnimation : MonoBehaviour
         
         Transitions[State.Seed] = new List<Junction>
         {
-            new Junction(PolyHydra.Ops.Expand, 1, State.Dual),
-            new Junction(PolyHydra.Ops.Propeller, 0.5f, State.Subdivide),
-            new Junction(PolyHydra.Ops.Truncate, 0.5f, State.Ambo),
-            new Junction(PolyHydra.Ops.Loft, 0.5f, State.Kis),
-            new Junction(PolyHydra.Ops.Whirl, 0.5f, State.Ortho),
+            new Junction(PolyHydraEnums.Ops.Expand, 1, State.Dual),
+            new Junction(PolyHydraEnums.Ops.Propeller, 0.5f, State.Subdivide),
+            new Junction(PolyHydraEnums.Ops.Truncate, 0.5f, State.Ambo),
+            new Junction(PolyHydraEnums.Ops.Loft, 0.5f, State.Kis),
+            new Junction(PolyHydraEnums.Ops.Whirl, 0.5f, State.Ortho),
         };
         Transitions[State.Ambo] = new List<Junction>
         {
-            new Junction(PolyHydra.Ops.Zip, 1, State.Dual),
-            new Junction(PolyHydra.Ops.Truncate, 0, State.Seed),
+            new Junction(PolyHydraEnums.Ops.Zip, 1, State.Dual),
+            new Junction(PolyHydraEnums.Ops.Truncate, 0, State.Seed),
         };
         Transitions[State.Dual] = new List<Junction>
         {
-            new Junction(PolyHydra.Ops.Zip, 0, State.Ambo),
-            new Junction(PolyHydra.Ops.Expand, 0, State.Seed),
+            new Junction(PolyHydraEnums.Ops.Zip, 0, State.Ambo),
+            new Junction(PolyHydraEnums.Ops.Expand, 0, State.Seed),
         };
         Transitions[State.Ortho] = new List<Junction>
         {
-            new Junction(PolyHydra.Ops.Stake, 1, State.Kis),
-            new Junction(PolyHydra.Ops.Gyro, 0f, State.Kis),
-            new Junction(PolyHydra.Ops.Quinto, 0, State.Subdivide),
-            new Junction(PolyHydra.Ops.Whirl, 0f, State.Seed),
+            new Junction(PolyHydraEnums.Ops.Stake, 1, State.Kis),
+            new Junction(PolyHydraEnums.Ops.Gyro, 0f, State.Kis),
+            new Junction(PolyHydraEnums.Ops.Quinto, 0, State.Subdivide),
+            new Junction(PolyHydraEnums.Ops.Whirl, 0f, State.Seed),
         };
         Transitions[State.Kis] = new List<Junction>
         {
-            new Junction(PolyHydra.Ops.Loft, 0, State.Seed),
-            new Junction(PolyHydra.Ops.Stake, 0, State.Ortho),
-            new Junction(PolyHydra.Ops.Lace, 0, State.Subdivide),
-            new Junction(PolyHydra.Ops.Gyro, 0.5f, State.Ortho),
+            new Junction(PolyHydraEnums.Ops.Loft, 0, State.Seed),
+            new Junction(PolyHydraEnums.Ops.Stake, 0, State.Ortho),
+            new Junction(PolyHydraEnums.Ops.Lace, 0, State.Subdivide),
+            new Junction(PolyHydraEnums.Ops.Gyro, 0.5f, State.Ortho),
         };
         Transitions[State.Subdivide] = new List<Junction>
         {
-            new Junction(PolyHydra.Ops.Propeller, 0, State.Seed),
-            new Junction(PolyHydra.Ops.Lace, 1, State.Kis),
-            new Junction(PolyHydra.Ops.Quinto, 1, State.Ortho),
+            new Junction(PolyHydraEnums.Ops.Propeller, 0, State.Seed),
+            new Junction(PolyHydraEnums.Ops.Lace, 1, State.Kis),
+            new Junction(PolyHydraEnums.Ops.Quinto, 1, State.Ortho),
         };
         junctionCount = Transitions.Values.Sum(x => x.Count);
 
@@ -153,7 +153,7 @@ public class ContinuousAnimation : MonoBehaviour
             op = poly.ConwayOperators[ControlledOpIndex];
         }
 
-        var config = poly.opconfigs[op.opType];
+        var config = PolyHydraEnums.OpConfigs[op.opType];
         if (amountDecreasing)
         {
             op.amount = Mathf.Lerp(config.amountSafeMax, config.amountSafeMin, amount);

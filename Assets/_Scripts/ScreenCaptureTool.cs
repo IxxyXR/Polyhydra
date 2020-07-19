@@ -62,31 +62,31 @@ public class ScreenCaptureTool : MonoBehaviour
     {
         Camera.main.clearFlags = CameraClearFlags.Nothing;
         Camera.main.backgroundColor = Color.white;
-        var otherNames = Enum.GetNames(typeof(PolyHydra.OtherPolyTypes));
+        var otherNames = Enum.GetNames(typeof(PolyHydraEnums.OtherPolyTypes));
         var poly = FindObjectOfType<PolyHydra>();
         poly.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
         poly.transform.parent.rotation = Quaternion.identity;
         poly.enableThreading = false;
         poly.ConwayOperators.Clear();
-        poly.ShapeType = PolyHydra.ShapeTypes.Other;
+        poly.ShapeType = PolyHydraEnums.ShapeTypes.Other;
         for (var index = 0; index < otherNames.Length; index++)
         {
             filename = PolyScreenShotName($"other_{otherNames[index]}");
-            poly.OtherPolyType = (PolyHydra.OtherPolyTypes)index;
+            poly.OtherPolyType = (PolyHydraEnums.OtherPolyTypes)index;
             switch (poly.OtherPolyType)
             {
-                case PolyHydra.OtherPolyTypes.Polygon:
+                case PolyHydraEnums.OtherPolyTypes.Polygon:
                     poly.PrismP = 5;
                     break;
-                case PolyHydra.OtherPolyTypes.GriddedCube:
+                case PolyHydraEnums.OtherPolyTypes.GriddedCube:
                     poly.PrismP = 4;
                     poly.PrismQ = 4;
                     break;
-                case PolyHydra.OtherPolyTypes.UvHemisphere:
+                case PolyHydraEnums.OtherPolyTypes.UvHemisphere:
                     poly.PrismP = 12;
                     poly.PrismQ = 12;
                     break;
-                case PolyHydra.OtherPolyTypes.UvSphere:
+                case PolyHydraEnums.OtherPolyTypes.UvSphere:
                     poly.PrismP = 12;
                     poly.PrismQ = 12;
                     break;
@@ -107,19 +107,19 @@ public class ScreenCaptureTool : MonoBehaviour
     {
         Camera.main.clearFlags = CameraClearFlags.Nothing;
         Camera.main.backgroundColor = Color.white;
-        var gridNames = Enum.GetNames(typeof(PolyHydra.GridTypes));
+        var gridNames = Enum.GetNames(typeof(PolyHydraEnums.GridTypes));
         var poly = FindObjectOfType<PolyHydra>();
         poly.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
         poly.transform.parent.rotation = Quaternion.Euler(30, 0, 0);
         poly.enableThreading = false;
         poly.ConwayOperators.Clear();
-        poly.ShapeType = PolyHydra.ShapeTypes.Grid;
+        poly.ShapeType = PolyHydraEnums.ShapeTypes.Grid;
         poly.PrismP = 4;
         poly.PrismQ = 4;
         for (var index = 0; index < gridNames.Length; index++)
         {
             filename = PolyScreenShotName($"grid_{gridNames[index]}");
-            poly.GridType = (PolyHydra.GridTypes)index;
+            poly.GridType = (PolyHydraEnums.GridTypes)index;
             poly.Rebuild();
             yield return new WaitForSeconds(0.5f);
             poly._conwayPoly.Recenter();
@@ -136,19 +136,19 @@ public class ScreenCaptureTool : MonoBehaviour
     {
         Camera.main.clearFlags = CameraClearFlags.Nothing;
         Camera.main.backgroundColor = Color.white;
-        var johnsonNames = Enum.GetNames(typeof(PolyHydra.JohnsonPolyTypes));
+        var johnsonNames = Enum.GetNames(typeof(PolyHydraEnums.JohnsonPolyTypes));
         var poly = FindObjectOfType<PolyHydra>();
         poly.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
         poly.transform.parent.rotation = Quaternion.identity;
         poly.enableThreading = false;
         poly.ConwayOperators.Clear();
-        poly.ShapeType = PolyHydra.ShapeTypes.Johnson;
+        poly.ShapeType = PolyHydraEnums.ShapeTypes.Johnson;
         poly.PrismP = 5;
         poly.PrismQ = 2;
         for (var index = 0; index < johnsonNames.Length; index++)
         {
             filename = PolyScreenShotName($"johnson_{johnsonNames[index]}");
-            poly.JohnsonPolyType = (PolyHydra.JohnsonPolyTypes)index;
+            poly.JohnsonPolyType = (PolyHydraEnums.JohnsonPolyTypes)index;
             poly.Rebuild();
             yield return new WaitForSeconds(0.5f);
             poly._conwayPoly.Recenter();
@@ -171,7 +171,7 @@ public class ScreenCaptureTool : MonoBehaviour
         poly.transform.parent.rotation = Quaternion.Euler(0, 90, 0);
         poly.enableThreading = false;
         poly.ConwayOperators.Clear();
-        poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+        poly.ShapeType = PolyHydraEnums.ShapeTypes.Uniform;
         poly.PrismP = 5;
         poly.PrismQ = 2;
         for (var index = 0; index < uniformNames.Length; index++)

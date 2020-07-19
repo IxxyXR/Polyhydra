@@ -26,7 +26,7 @@ public class QuickPolyAnimate : MonoBehaviour
             var op = _poly.ConwayOperators[i];
             if (!op.animate) continue;
             if (op.disabled) continue;
-            if (!_poly.opconfigs[op.opType].usesAmount) continue;
+            if (!PolyHydraEnums.OpConfigs[op.opType].usesAmount) continue;
             isAnimating = true;
             var amplitude = op.animationAmount;
             var rate = op.animationRate;

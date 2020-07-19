@@ -48,7 +48,7 @@ public class EndlessTrackGenerator : MonoBehaviour
             piecePoly.ConwayOperators.Add(Greebles[Random.Range(0, Greebles.Count)]);
             piecePoly.ConwayOperators.Add(Greebles[Random.Range(0, Greebles.Count)]);
             piecePoly.ConwayOperators.Add(new PolyHydra.ConwayOperator{
-                opType=PolyHydra.Ops.Extrude,
+                opType=PolyHydraEnums.Ops.Extrude,
                 faceSelections=FaceSelections.All,
                 amount=ExtrudeProbability.Evaluate(Random.value) * ExtrudeScale,
                 randomize=true,

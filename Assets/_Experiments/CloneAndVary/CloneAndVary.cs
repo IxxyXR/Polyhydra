@@ -20,7 +20,7 @@ public class CloneAndVary : MonoBehaviour
     public float maxHeight = 15f;
     public float timeHeight = 0.0005f;
     public Transform[,] clones;
-    public List<PolyHydra.Ops> ops;
+    public List<PolyHydraEnums.Ops> ops;
     public int currentOp = 0;
     public AnimationCurve fadeCurve;
 

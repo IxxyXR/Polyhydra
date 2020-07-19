@@ -49,14 +49,14 @@ public class Orbits : MonoBehaviour
             copy.transform.localScale = Vector3.one / 2f;
             var copyPoly = copy.GetComponent<PolyHydra>();
             //copyPoly.ConwayOperators.Clear();
-            var opType = (PolyHydra.Ops) i;
+            var opType = (PolyHydraEnums.Ops) i;
 
             var newOp = new PolyHydra.ConwayOperator()
             {
                 opType = opType,
                 faceSelections = FaceSelections.All,
                 randomize = false,
-                amount = copyPoly.opconfigs[opType].amountDefault,
+                amount = PolyHydraEnums.OpConfigs[opType].amountDefault,
                 disabled = false
             };
             copyPoly.ConwayOperators.Add(newOp);

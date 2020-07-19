@@ -42,106 +42,106 @@ public class PolyMidi : MonoBehaviour
 
    private controlBanks currentControlBank;
 
-   private List<(int, PolyHydra.JohnsonPolyTypes)> Johnsons = new List<(int, PolyHydra.JohnsonPolyTypes)>
+   private List<(int, PolyHydraEnums.JohnsonPolyTypes)> Johnsons = new List<(int, PolyHydraEnums.JohnsonPolyTypes)>
    {
-      (3, PolyHydra.JohnsonPolyTypes.Prism),
-      (5, PolyHydra.JohnsonPolyTypes.Prism),
-      (6, PolyHydra.JohnsonPolyTypes.Prism),
-//      (7, PolyHydra.JohnsonPolyTypes.Prism),
-      (8, PolyHydra.JohnsonPolyTypes.Prism),
+      (3, PolyHydraEnums.JohnsonPolyTypes.Prism),
+      (5, PolyHydraEnums.JohnsonPolyTypes.Prism),
+      (6, PolyHydraEnums.JohnsonPolyTypes.Prism),
+//      (7, PolyHydraEnums.JohnsonPolyTypes.Prism),
+      (8, PolyHydraEnums.JohnsonPolyTypes.Prism),
 
-//      (3, PolyHydra.JohnsonPolyTypes.Antiprism),
-      (4, PolyHydra.JohnsonPolyTypes.Antiprism),
-      (5, PolyHydra.JohnsonPolyTypes.Antiprism),
-      (6, PolyHydra.JohnsonPolyTypes.Antiprism),
-//      (7, PolyHydra.JohnsonPolyTypes.Antiprism),
-//      (8, PolyHydra.JohnsonPolyTypes.Antiprism),
+//      (3, PolyHydraEnums.JohnsonPolyTypes.Antiprism),
+      (4, PolyHydraEnums.JohnsonPolyTypes.Antiprism),
+      (5, PolyHydraEnums.JohnsonPolyTypes.Antiprism),
+      (6, PolyHydraEnums.JohnsonPolyTypes.Antiprism),
+//      (7, PolyHydraEnums.JohnsonPolyTypes.Antiprism),
+//      (8, PolyHydraEnums.JohnsonPolyTypes.Antiprism),
 
-//      (4, PolyHydra.JohnsonPolyTypes.Pyramid),
-//      (5, PolyHydra.JohnsonPolyTypes.Pyramid),
-//      (6, PolyHydra.JohnsonPolyTypes.Pyramid),
-////      (7, PolyHydra.JohnsonPolyTypes.Pyramid),
-//      (8, PolyHydra.JohnsonPolyTypes.Pyramid),
+//      (4, PolyHydraEnums.JohnsonPolyTypes.Pyramid),
+//      (5, PolyHydraEnums.JohnsonPolyTypes.Pyramid),
+//      (6, PolyHydraEnums.JohnsonPolyTypes.Pyramid),
+////      (7, PolyHydraEnums.JohnsonPolyTypes.Pyramid),
+//      (8, PolyHydraEnums.JohnsonPolyTypes.Pyramid),
 
-//      (3, PolyHydra.JohnsonPolyTypes.ElongatedPyramid),
-//      (4, PolyHydra.JohnsonPolyTypes.ElongatedPyramid),
-//      (5, PolyHydra.JohnsonPolyTypes.ElongatedPyramid),
-//      (6, PolyHydra.JohnsonPolyTypes.ElongatedPyramid),
-//      (7, PolyHydra.JohnsonPolyTypes.ElongatedPyramid),
-//      (8, PolyHydra.JohnsonPolyTypes.ElongatedPyramid),
+//      (3, PolyHydraEnums.JohnsonPolyTypes.ElongatedPyramid),
+//      (4, PolyHydraEnums.JohnsonPolyTypes.ElongatedPyramid),
+//      (5, PolyHydraEnums.JohnsonPolyTypes.ElongatedPyramid),
+//      (6, PolyHydraEnums.JohnsonPolyTypes.ElongatedPyramid),
+//      (7, PolyHydraEnums.JohnsonPolyTypes.ElongatedPyramid),
+//      (8, PolyHydraEnums.JohnsonPolyTypes.ElongatedPyramid),
 
-//      (3, PolyHydra.JohnsonPolyTypes.GyroelongatedPyramid),
-//      (4, PolyHydra.JohnsonPolyTypes.GyroelongatedPyramid),
-//      (5, PolyHydra.JohnsonPolyTypes.GyroelongatedPyramid),
-//      (6, PolyHydra.JohnsonPolyTypes.GyroelongatedPyramid),
-//      (7, PolyHydra.JohnsonPolyTypes.GyroelongatedPyramid),
-//      (8, PolyHydra.JohnsonPolyTypes.GyroelongatedPyramid),
+//      (3, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedPyramid),
+//      (4, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedPyramid),
+//      (5, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedPyramid),
+//      (6, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedPyramid),
+//      (7, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedPyramid),
+//      (8, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedPyramid),
 
-      (3, PolyHydra.JohnsonPolyTypes.Dipyramid),
-      (5, PolyHydra.JohnsonPolyTypes.Dipyramid),
-      (6, PolyHydra.JohnsonPolyTypes.Dipyramid),
-//      (7, PolyHydra.JohnsonPolyTypes.Dipyramid),
-//      (8, PolyHydra.JohnsonPolyTypes.Dipyramid),
+      (3, PolyHydraEnums.JohnsonPolyTypes.Dipyramid),
+      (5, PolyHydraEnums.JohnsonPolyTypes.Dipyramid),
+      (6, PolyHydraEnums.JohnsonPolyTypes.Dipyramid),
+//      (7, PolyHydraEnums.JohnsonPolyTypes.Dipyramid),
+//      (8, PolyHydraEnums.JohnsonPolyTypes.Dipyramid),
 
-      (3, PolyHydra.JohnsonPolyTypes.ElongatedDipyramid),
-      (4, PolyHydra.JohnsonPolyTypes.ElongatedDipyramid),
-      (5, PolyHydra.JohnsonPolyTypes.ElongatedDipyramid),
-      (6, PolyHydra.JohnsonPolyTypes.ElongatedDipyramid),
-//      (7, PolyHydra.JohnsonPolyTypes.ElongatedDipyramid),
-//      (8, PolyHydra.JohnsonPolyTypes.ElongatedDipyramid),
+      (3, PolyHydraEnums.JohnsonPolyTypes.ElongatedDipyramid),
+      (4, PolyHydraEnums.JohnsonPolyTypes.ElongatedDipyramid),
+      (5, PolyHydraEnums.JohnsonPolyTypes.ElongatedDipyramid),
+      (6, PolyHydraEnums.JohnsonPolyTypes.ElongatedDipyramid),
+//      (7, PolyHydraEnums.JohnsonPolyTypes.ElongatedDipyramid),
+//      (8, PolyHydraEnums.JohnsonPolyTypes.ElongatedDipyramid),
 
-      (3, PolyHydra.JohnsonPolyTypes.GyroelongatedDipyramid),
-      (4, PolyHydra.JohnsonPolyTypes.GyroelongatedDipyramid),
-//      (5, PolyHydra.JohnsonPolyTypes.GyroelongatedDipyramid),
-      (6, PolyHydra.JohnsonPolyTypes.GyroelongatedDipyramid),
-//      (7, PolyHydra.JohnsonPolyTypes.GyroelongatedDipyramid),
-//      (8, PolyHydra.JohnsonPolyTypes.GyroelongatedDipyramid),
+      (3, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedDipyramid),
+      (4, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedDipyramid),
+//      (5, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedDipyramid),
+      (6, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedDipyramid),
+//      (7, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedDipyramid),
+//      (8, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedDipyramid),
 
-//      (3, PolyHydra.JohnsonPolyTypes.Cupola),
-//      (4, PolyHydra.JohnsonPolyTypes.Cupola),
-//      (5, PolyHydra.JohnsonPolyTypes.Cupola),
-//      (6, PolyHydra.JohnsonPolyTypes.Cupola),
-//      (7, PolyHydra.JohnsonPolyTypes.Cupola),
-//      (8, PolyHydra.JohnsonPolyTypes.Cupola),
+//      (3, PolyHydraEnums.JohnsonPolyTypes.Cupola),
+//      (4, PolyHydraEnums.JohnsonPolyTypes.Cupola),
+//      (5, PolyHydraEnums.JohnsonPolyTypes.Cupola),
+//      (6, PolyHydraEnums.JohnsonPolyTypes.Cupola),
+//      (7, PolyHydraEnums.JohnsonPolyTypes.Cupola),
+//      (8, PolyHydraEnums.JohnsonPolyTypes.Cupola),
 
-//      (3, PolyHydra.JohnsonPolyTypes.ElongatedCupola),
-//      (4, PolyHydra.JohnsonPolyTypes.ElongatedCupola),
-//      (5, PolyHydra.JohnsonPolyTypes.ElongatedCupola),
-//      (6, PolyHydra.JohnsonPolyTypes.ElongatedCupola),
-//      (7, PolyHydra.JohnsonPolyTypes.ElongatedCupola),
-//      (8, PolyHydra.JohnsonPolyTypes.ElongatedCupola),
+//      (3, PolyHydraEnums.JohnsonPolyTypes.ElongatedCupola),
+//      (4, PolyHydraEnums.JohnsonPolyTypes.ElongatedCupola),
+//      (5, PolyHydraEnums.JohnsonPolyTypes.ElongatedCupola),
+//      (6, PolyHydraEnums.JohnsonPolyTypes.ElongatedCupola),
+//      (7, PolyHydraEnums.JohnsonPolyTypes.ElongatedCupola),
+//      (8, PolyHydraEnums.JohnsonPolyTypes.ElongatedCupola),
 //
-//      (3, PolyHydra.JohnsonPolyTypes.GyroelongatedCupola),
-//      (4, PolyHydra.JohnsonPolyTypes.GyroelongatedCupola),
-//      (5, PolyHydra.JohnsonPolyTypes.GyroelongatedCupola),
-//      (6, PolyHydra.JohnsonPolyTypes.GyroelongatedCupola),
-//      (7, PolyHydra.JohnsonPolyTypes.GyroelongatedCupola),
-//      (8, PolyHydra.JohnsonPolyTypes.GyroelongatedCupola),
+//      (3, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedCupola),
+//      (4, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedCupola),
+//      (5, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedCupola),
+//      (6, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedCupola),
+//      (7, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedCupola),
+//      (8, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedCupola),
 
-      (3, PolyHydra.JohnsonPolyTypes.OrthoBicupola),
-      (4, PolyHydra.JohnsonPolyTypes.OrthoBicupola),
-      (3, PolyHydra.JohnsonPolyTypes.GyroBicupola),
-      (4, PolyHydra.JohnsonPolyTypes.GyroBicupola),
-//      (5, PolyHydra.JohnsonPolyTypes.Bicupola),
-//      (6, PolyHydra.JohnsonPolyTypes.Bicupola),
-//      (7, PolyHydra.JohnsonPolyTypes.Bicupola),
-//      (8, PolyHydra.JohnsonPolyTypes.Bicupola),
+      (3, PolyHydraEnums.JohnsonPolyTypes.OrthoBicupola),
+      (4, PolyHydraEnums.JohnsonPolyTypes.OrthoBicupola),
+      (3, PolyHydraEnums.JohnsonPolyTypes.GyroBicupola),
+      (4, PolyHydraEnums.JohnsonPolyTypes.GyroBicupola),
+//      (5, PolyHydraEnums.JohnsonPolyTypes.Bicupola),
+//      (6, PolyHydraEnums.JohnsonPolyTypes.Bicupola),
+//      (7, PolyHydraEnums.JohnsonPolyTypes.Bicupola),
+//      (8, PolyHydraEnums.JohnsonPolyTypes.Bicupola),
 
-//      (3, PolyHydra.JohnsonPolyTypes.ElongatedBicupola),
-//      (4, PolyHydra.JohnsonPolyTypes.ElongatedBicupola),
-//      (5, PolyHydra.JohnsonPolyTypes.ElongatedBicupola),
-//      (6, PolyHydra.JohnsonPolyTypes.ElongatedBicupola),
-//      (7, PolyHydra.JohnsonPolyTypes.ElongatedBicupola),
-//      (8, PolyHydra.JohnsonPolyTypes.ElongatedBicupola),
+//      (3, PolyHydraEnums.JohnsonPolyTypes.ElongatedBicupola),
+//      (4, PolyHydraEnums.JohnsonPolyTypes.ElongatedBicupola),
+//      (5, PolyHydraEnums.JohnsonPolyTypes.ElongatedBicupola),
+//      (6, PolyHydraEnums.JohnsonPolyTypes.ElongatedBicupola),
+//      (7, PolyHydraEnums.JohnsonPolyTypes.ElongatedBicupola),
+//      (8, PolyHydraEnums.JohnsonPolyTypes.ElongatedBicupola),
 
-//      (3, PolyHydra.JohnsonPolyTypes.GyroelongatedBicupola),
-//      (4, PolyHydra.JohnsonPolyTypes.GyroelongatedBicupola),
-//      (5, PolyHydra.JohnsonPolyTypes.GyroelongatedBicupola),
-//      (6, PolyHydra.JohnsonPolyTypes.GyroelongatedBicupola),
-//      (7, PolyHydra.JohnsonPolyTypes.GyroelongatedBicupola),
-//      (8, PolyHydra.JohnsonPolyTypes.GyroelongatedBicupola),
+//      (3, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedBicupola),
+//      (4, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedBicupola),
+//      (5, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedBicupola),
+//      (6, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedBicupola),
+//      (7, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedBicupola),
+//      (8, PolyHydraEnums.JohnsonPolyTypes.GyroelongatedBicupola),
 
-      (3, PolyHydra.JohnsonPolyTypes.Rotunda),
+      (3, PolyHydraEnums.JohnsonPolyTypes.Rotunda),
    };
 
    private PolyTypes[] Polys =
@@ -166,93 +166,93 @@ public class PolyMidi : MonoBehaviour
    };
 
    // If an op supports "Existing" face selection mode use it, otherwise use "Alternate"
-   private PolyHydra.Ops[] OpsWithExistingFaceMode =
+   private PolyHydraEnums.Ops[] OpsWithExistingFaceMode =
    {
-//      PolyHydra.Ops.Kis,
-      PolyHydra.Ops.Zip,
-      PolyHydra.Ops.Expand,
-//      PolyHydra.Ops.Join,
-//      PolyHydra.Ops.Needle,
-//      PolyHydra.Ops.Meta,
-      PolyHydra.Ops.Truncate,
-//      PolyHydra.Ops.Gyro,
-      PolyHydra.Ops.Loft,
-      PolyHydra.Ops.Chamfer,
-      PolyHydra.Ops.Quinto,
-      PolyHydra.Ops.Lace,
-      PolyHydra.Ops.OppositeLace,
-      PolyHydra.Ops.Stake,
-      PolyHydra.Ops.Propeller,
-      PolyHydra.Ops.Whirl,
+//      PolyHydraEnums.Ops.Kis,
+      PolyHydraEnums.Ops.Zip,
+      PolyHydraEnums.Ops.Expand,
+//      PolyHydraEnums.Ops.Join,
+//      PolyHydraEnums.Ops.Needle,
+//      PolyHydraEnums.Ops.Meta,
+      PolyHydraEnums.Ops.Truncate,
+//      PolyHydraEnums.Ops.Gyro,
+      PolyHydraEnums.Ops.Loft,
+      PolyHydraEnums.Ops.Chamfer,
+      PolyHydraEnums.Ops.Quinto,
+      PolyHydraEnums.Ops.Lace,
+      PolyHydraEnums.Ops.OppositeLace,
+      PolyHydraEnums.Ops.Stake,
+      PolyHydraEnums.Ops.Propeller,
+      PolyHydraEnums.Ops.Whirl,
    };
 
-   private PolyHydra.Ops[] Ops =
+   private PolyHydraEnums.Ops[] Ops =
    {
       // Bank 0
-      PolyHydra.Ops.Kis,
-      PolyHydra.Ops.Expand,
-      PolyHydra.Ops.Chamfer,
-      PolyHydra.Ops.Loft,
-      PolyHydra.Ops.EdgeMedial,
-      PolyHydra.Ops.Lace,
-      PolyHydra.Ops.Quinto,
-      PolyHydra.Ops.Gyro,
+      PolyHydraEnums.Ops.Kis,
+      PolyHydraEnums.Ops.Expand,
+      PolyHydraEnums.Ops.Chamfer,
+      PolyHydraEnums.Ops.Loft,
+      PolyHydraEnums.Ops.EdgeMedial,
+      PolyHydraEnums.Ops.Lace,
+      PolyHydraEnums.Ops.Quinto,
+      PolyHydraEnums.Ops.Gyro,
 
       // Bank 1
-      PolyHydra.Ops.Meta,
-      PolyHydra.Ops.Truncate,
-      PolyHydra.Ops.Zip,
-      PolyHydra.Ops.Stake,
-      PolyHydra.Ops.Cross,
-      PolyHydra.Ops.OppositeLace,
-      PolyHydra.Ops.Whirl,
-      PolyHydra.Ops.Propeller,
+      PolyHydraEnums.Ops.Meta,
+      PolyHydraEnums.Ops.Truncate,
+      PolyHydraEnums.Ops.Zip,
+      PolyHydraEnums.Ops.Stake,
+      PolyHydraEnums.Ops.Cross,
+      PolyHydraEnums.Ops.OppositeLace,
+      PolyHydraEnums.Ops.Whirl,
+      PolyHydraEnums.Ops.Propeller,
 
       // New Ops Bank
-      // PolyHydra.Ops.JoinKisKis,
-      // PolyHydra.Ops.JoinStake,
-      // PolyHydra.Ops.Squall,
-      // PolyHydra.Ops.JoinSquall,
-      // PolyHydra.Ops.Spherize,
-      // PolyHydra.Ops.Canonicalize,
-      // PolyHydra.Ops.Stretch,
-      // PolyHydra.Ops.VertexRotate,
+      // PolyHydraEnums.Ops.JoinKisKis,
+      // PolyHydraEnums.Ops.JoinStake,
+      // PolyHydraEnums.Ops.Squall,
+      // PolyHydraEnums.Ops.JoinSquall,
+      // PolyHydraEnums.Ops.Spherize,
+      // PolyHydraEnums.Ops.Canonicalize,
+      // PolyHydraEnums.Ops.Stretch,
+      // PolyHydraEnums.Ops.VertexRotate,
 
 
 
 
    };
    
-   private PolyHydra.Ops[] SecondaryOps =
+   private PolyHydraEnums.Ops[] SecondaryOps =
    {
-      PolyHydra.Ops.FaceScale,
-//      PolyHydra.Ops.FaceOffset,
-      PolyHydra.Ops.Extrude,
-      PolyHydra.Ops.Skeleton,
+      PolyHydraEnums.Ops.FaceScale,
+//      PolyHydraEnums.Ops.FaceOffset,
+      PolyHydraEnums.Ops.Extrude,
+      PolyHydraEnums.Ops.Skeleton,
 
-//      PolyHydra.Ops.Shell,
+//      PolyHydraEnums.Ops.Shell,
 
-      PolyHydra.Ops.VertexScale,
-//      PolyHydra.Ops.VertexRotate,
-//      PolyHydra.Ops.VertexFlex,
-//      PolyHydra.Ops.FaceRotate,
+      PolyHydraEnums.Ops.VertexScale,
+//      PolyHydraEnums.Ops.VertexRotate,
+//      PolyHydraEnums.Ops.VertexFlex,
+//      PolyHydraEnums.Ops.FaceRotate,
 
-//      PolyHydra.Ops.FaceKeep,
-//      PolyHydra.Ops.FaceRemove,
+//      PolyHydraEnums.Ops.FaceKeep,
+//      PolyHydraEnums.Ops.FaceRemove,
 
-////      PolyHydra.Ops.FillHoles,
-////      PolyHydra.Ops.Hinge,
+////      PolyHydraEnums.Ops.FillHoles,
+////      PolyHydraEnums.Ops.Hinge,
 
-//      PolyHydra.Ops.AddDual,
-//      PolyHydra.Ops.AddMirrorX,
-////      PolyHydra.Ops.AddMirrorY,
-////      PolyHydra.Ops.AddMirrorZ,
-//////      PolyHydra.Ops.Canonicalize,
-//      PolyHydra.Ops.Spherize,
-//////      PolyHydra.Ops.Recenter,
-//////      PolyHydra.Ops.SitLevel,
-//      PolyHydra.Ops.Stretch,
-//////      PolyHydra.Ops.Weld
+//      PolyHydraEnums.Ops.AddDual,
+//      PolyHydraEnums.Ops.AddMirrorX,
+////      PolyHydraEnums.Ops.AddMirrorY,
+////      PolyHydraEnums.Ops.AddMirrorZ,
+//////      PolyHydraEnums.Ops.Canonicalize,
+//      PolyHydraEnums.Ops.Spherize,
+//////      PolyHydraEnums.Ops.Recenter,
+//////      PolyHydraEnums.Ops.SitLevel,
+//      PolyHydraEnums.Ops.Stretch,
+//////      PolyHydraEnums.Ops.Weld
    };
 
    void Start()
@@ -288,14 +288,14 @@ public class PolyMidi : MonoBehaviour
          poly.ConwayOperators.Add(new PolyHydra.ConwayOperator
          {
             disabled = true,
-            opType = PolyHydra.Ops.Identity,
+            opType = PolyHydraEnums.Ops.Identity,
             amount = 0,
          });
       }
 
    }
 
-   private PolyHydra.Ops GetOp(int column, int row)
+   private PolyHydraEnums.Ops GetOp(int column, int row)
    {
       if (column % 2 == 1)
       {
@@ -366,7 +366,7 @@ public class PolyMidi : MonoBehaviour
                   {
                      AkaiOutPort.SendNoteOn(0, note, 0);
                      akaiPrefab.SetGridButtonLED(column, row, -1);
-                     akaiPrefab.SetGridButtonIcon(column, row, PolyHydra.Ops.Identity);
+                     akaiPrefab.SetGridButtonIcon(column, row, PolyHydraEnums.Ops.Identity);
 
                   }
 
@@ -383,7 +383,7 @@ public class PolyMidi : MonoBehaviour
             {
                AkaiOutPort.SendNoteOn(0, note, 0);
                akaiPrefab.SetGridButtonLED(column, row, -1);
-               akaiPrefab.SetGridButtonIcon(column, row, PolyHydra.Ops.Identity);
+               akaiPrefab.SetGridButtonIcon(column, row, PolyHydraEnums.Ops.Identity);
             }
          }
       }
@@ -406,7 +406,7 @@ public class PolyMidi : MonoBehaviour
    {
 //      poly.ConwayOperators.Add(new PolyHydra.ConwayOperator()
 //      {
-//         opType = PolyHydra.Ops.Spherize,
+//         opType = PolyHydraEnums.Ops.Spherize,
 //         amount = 0.25f
 //      });
       poly.Rebuild();
@@ -509,7 +509,7 @@ public class PolyMidi : MonoBehaviour
          // Main Column buttons
          column = note - 64;
          var op = poly.ConwayOperators[column];
-         var opconfig = poly.opconfigs[op.opType];
+         var opconfig = PolyHydraEnums.OpConfigs[op.opType];
          op.disabled = !op.disabled;
          op.amount = opconfig.amountDefault;
          poly.ConwayOperators[column] = op;
@@ -528,15 +528,15 @@ public class PolyMidi : MonoBehaviour
       }
    }
 
-   private float UpdateDefault(float opAmount, PolyHydra.Ops opType, PolyHydra.Ops prevOpType)
+   private float UpdateDefault(float opAmount, PolyHydraEnums.Ops opType, PolyHydraEnums.Ops prevOpType)
    {
       // Remaps slider value from previous to new
       return Remap(
          opAmount,
-         poly.opconfigs[prevOpType].amountSafeMin,
-         poly.opconfigs[prevOpType].amountSafeMax,
-         poly.opconfigs[opType].amountSafeMin,
-         poly.opconfigs[opType].amountSafeMax
+         PolyHydraEnums.OpConfigs[prevOpType].amountSafeMin,
+         PolyHydraEnums.OpConfigs[prevOpType].amountSafeMax,
+         PolyHydraEnums.OpConfigs[opType].amountSafeMin,
+         PolyHydraEnums.OpConfigs[opType].amountSafeMax
       );
    }
 
@@ -666,7 +666,7 @@ public class PolyMidi : MonoBehaviour
          {
             if (currentControl >= poly.ConwayOperators.Count) return;
             var op = poly.ConwayOperators[currentControl];
-            var opconfig = poly.opconfigs[op.opType];
+            var opconfig = PolyHydraEnums.OpConfigs[op.opType];
             op.amount = Mathf.Lerp(opconfig.amountSafeMin, opconfig.amountSafeMax, currentControlValue);
             poly.ConwayOperators[currentControl] = op;
             FinalisePoly();
@@ -686,7 +686,7 @@ public class PolyMidi : MonoBehaviour
          {
             if (currentControl >= poly.ConwayOperators.Count) return;
             var op = poly.ConwayOperators[currentControl];
-            var opconfig = poly.opconfigs[op.opType];
+            var opconfig = PolyHydraEnums.OpConfigs[op.opType];
             var currentState = novationPrefab.WideButtonStates[currentControl + 8];
             if (currentState == 5)
             {
@@ -744,8 +744,8 @@ public class PolyMidi : MonoBehaviour
       {
          if (currentControl >= poly.ConwayOperators.Count) return;
          var op = poly.ConwayOperators[currentControl];
-         op.opType = (PolyHydra.Ops) (currentControlValue * (Enum.GetNames(typeof(PolyHydra.Ops)).Length - 5));
-         op.amount2 = poly.opconfigs[op.opType].amount2Default;
+         op.opType = (PolyHydraEnums.Ops) (currentControlValue * (Enum.GetNames(typeof(PolyHydraEnums.Ops)).Length - 5));
+         op.amount2 = PolyHydraEnums.OpConfigs[op.opType].amount2Default;
          op.disabled = false;
          poly.ConwayOperators[currentControl] = op;
          FinalisePoly();
@@ -764,13 +764,13 @@ public class PolyMidi : MonoBehaviour
             int shapeIndex = Mathf.FloorToInt(currentControlValue * TotalShapeCount());
             if (shapeIndex < Polys.Length)
             {
-               poly.ShapeType = PolyHydra.ShapeTypes.Uniform;
+               poly.ShapeType = PolyHydraEnums.ShapeTypes.Uniform;
                var polyType = Polys[shapeIndex];
                poly.UniformPolyType = polyType;
             }
             else
             {
-               poly.ShapeType = PolyHydra.ShapeTypes.Johnson;
+               poly.ShapeType = PolyHydraEnums.ShapeTypes.Johnson;
                int johnsonIndex = shapeIndex - Polys.Length;
                var johnsonType = Johnsons[johnsonIndex];
                poly.JohnsonPolyType = johnsonType.Item2;
