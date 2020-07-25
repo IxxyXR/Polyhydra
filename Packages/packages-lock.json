@@ -10,23 +10,12 @@
       },
       "hash": "c8fa347077eaa92234939ebfec0856c87e044423"
     },
-    "com.ixxy.conway": {
-      "version": "file:com.ixxy.conway",
+    "com.ixxy.polyhydra": {
+      "version": "https://github.com/IxxyXR/polyhydra-upm.git#upm",
       "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
-    "com.ixxy.wythoff": {
-      "version": "file:com.ixxy.wythoff",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
-    "com.nition.unityoctree": {
-      "version": "file:com.nition.unityoctree",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
+      "source": "git",
+      "dependencies": {},
+      "hash": "7252b49d50bf053ea6e138a0050815f5e6451fa9"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
