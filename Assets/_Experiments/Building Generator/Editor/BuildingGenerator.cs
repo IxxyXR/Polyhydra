@@ -35,12 +35,12 @@ public class BuildingGenerator : MonoBehaviour
     [ContextMenu("Generate")]
     public void Generate()
     {
-        var building = ConwayPoly.MakeGrid(1, 1, aspect, 1f);
+        var building = Grids.Grids.MakeGrid(1, 1, aspect, 1f);
         building = building.Loft(wallThickness);
         building = building.Loft(0, height, FaceSelections.AllNew);
 
         float roofScale = 1f - wallThickness;
-        var roof = ConwayPoly.MakeGrid(numSkylights, numSkylightRows, (aspect/numSkylights) * roofScale, (aspect/numSkylightRows) * (1f / aspect) * roofScale);
+        var roof = Grids.Grids.MakeGrid(numSkylights, numSkylightRows, (aspect/numSkylights) * roofScale, (aspect/numSkylightRows) * (1f / aspect) * roofScale);
         roof = roof.Loft(skylightSize);
         roof = roof.FaceRemove(FaceSelections.Existing);
 

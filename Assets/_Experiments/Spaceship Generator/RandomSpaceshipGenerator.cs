@@ -41,7 +41,7 @@ public class RandomSpaceshipGenerator : MonoBehaviour
     public void Generate()
     {
         int numSides = Random.Range(4, 8);
-        var spaceship = JohnsonPoly.Prism(numSides);
+        var spaceship = Johnson.JohnsonPoly.Prism(numSides);
         var wings = new ConwayPoly();
         float angleCorrection = 180f / numSides;
         if (numSides % 2 != 0) angleCorrection /= 2f;

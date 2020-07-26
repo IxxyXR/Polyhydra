@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Conway;
+using Johnson;
 using Newtonsoft.Json;
 using Wythoff;
 using UnityEditor;
@@ -268,42 +269,42 @@ public class PolyHydra : MonoBehaviour
 //				break;
 
 			case PolyHydraEnums.GridTypes.Square:
-				conway = ConwayPoly.MakeUnitileGrid(1, (int)gridShape, PrismP, PrismQ);
+				conway = Grids.Grids.MakeUnitileGrid(1, (int)gridShape, PrismP, PrismQ);
 				break;
 			case PolyHydraEnums.GridTypes.Isometric:
-				conway = ConwayPoly.MakeUnitileGrid(2, (int)gridShape, PrismP, PrismQ);
+				conway = Grids.Grids.MakeUnitileGrid(2, (int)gridShape, PrismP, PrismQ);
 				break;
 			case PolyHydraEnums.GridTypes.Hex:
-				conway = ConwayPoly.MakeUnitileGrid(3, (int)gridShape, PrismP, PrismQ);
+				conway = Grids.Grids.MakeUnitileGrid(3, (int)gridShape, PrismP, PrismQ);
 				break;
 
 			case PolyHydraEnums.GridTypes.U_3_6_3_6:
-				conway = ConwayPoly.MakeUnitileGrid(4, (int)gridShape, PrismP, PrismQ);
+				conway = Grids.Grids.MakeUnitileGrid(4, (int)gridShape, PrismP, PrismQ);
 				break;
 			case PolyHydraEnums.GridTypes.U_3_3_3_4_4:
-				conway = ConwayPoly.MakeUnitileGrid(5, (int)gridShape, PrismP, PrismQ);
+				conway = Grids.Grids.MakeUnitileGrid(5, (int)gridShape, PrismP, PrismQ);
 				break;
 			case PolyHydraEnums.GridTypes.U_3_3_4_3_4:
-				conway = ConwayPoly.MakeUnitileGrid(6, (int)gridShape, PrismP, PrismQ);
+				conway = Grids.Grids.MakeUnitileGrid(6, (int)gridShape, PrismP, PrismQ);
 				break;
 //			case GridTypes.U_3_3_3_3_6:
-//				conway = ConwayPoly.MakeUnitileGrid(7, (int)gridShape, PrismP, PrismQ);
+//				conway = Grids.Grids.MakeUnitileGrid(7, (int)gridShape, PrismP, PrismQ);
 //				break;
 			case PolyHydraEnums.GridTypes.U_3_12_12:
-				conway = ConwayPoly.MakeUnitileGrid(8, (int)gridShape, PrismP, PrismQ);
+				conway = Grids.Grids.MakeUnitileGrid(8, (int)gridShape, PrismP, PrismQ);
 				break;
 			case PolyHydraEnums.GridTypes.U_4_8_8:
-				conway = ConwayPoly.MakeUnitileGrid(9, (int)gridShape, PrismP, PrismQ);
+				conway = Grids.Grids.MakeUnitileGrid(9, (int)gridShape, PrismP, PrismQ);
 				break;
 			case PolyHydraEnums.GridTypes.U_3_4_6_4:
-				conway = ConwayPoly.MakeUnitileGrid(10, (int)gridShape, PrismP, PrismQ);
+				conway = Grids.Grids.MakeUnitileGrid(10, (int)gridShape, PrismP, PrismQ);
 				break;
 			case PolyHydraEnums.GridTypes.U_4_6_12:
-				conway = ConwayPoly.MakeUnitileGrid(11, (int)gridShape, PrismP, PrismQ);
+				conway = Grids.Grids.MakeUnitileGrid(11, (int)gridShape, PrismP, PrismQ);
 				break;
 
 			case PolyHydraEnums.GridTypes.Polar:
-				conway = ConwayPoly.MakePolarGrid(PrismP, PrismQ);
+				conway = Grids.Grids.MakePolarGrid(PrismP, PrismQ);
 				break;
 		}
 		// Welding only seems to work reliably on simpler shapes
@@ -413,7 +414,7 @@ public class PolyHydra : MonoBehaviour
 			case PolyHydraEnums.OtherPolyTypes.Polygon:
 				return JohnsonPoly.Polygon(PrismP);
 			case PolyHydraEnums.OtherPolyTypes.GriddedCube:
-				var conway = ConwayPoly.MakeUnitileGrid(1, 0, PrismP, PrismP);
+				var conway = Grids.Grids.MakeUnitileGrid(1, 0, PrismP, PrismP);
 				conway = conway.AddMirrored(Vector3.up, PrismP);
 				conway.Recenter();
 				ConwayPoly xPair = conway.Rotate(Vector3.forward, 90);
