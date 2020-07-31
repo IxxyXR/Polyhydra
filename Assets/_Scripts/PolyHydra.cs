@@ -25,6 +25,8 @@ public class PolyHydra : MonoBehaviour
 
 	public bool enableThreading = true;
 	public bool enableCaching = true;
+	public float generationTimeout = 0.1f;
+	[NonSerialized] public bool generationAborted = false;
 
 	private int _faceCount;
 	private int _vertexCount;
@@ -236,6 +238,14 @@ public class PolyHydra : MonoBehaviour
 	void Start()
 	{
 		Init();
+	}
+
+	void Update()
+	{
+		if (generationAborted)
+		{
+			Rebuild();
+		}
 	}
 
 	void OnEnable()
@@ -598,6 +608,8 @@ public class PolyHydra : MonoBehaviour
 
 	public void FinishedApplyOps()
 	{
+		if (generationAborted) return;
+
 		_faceCount = _conwayPoly.Faces.Count;
 		_vertexCount = _conwayPoly.Vertices.Count;
 
@@ -955,6 +967,9 @@ public class PolyHydra : MonoBehaviour
 	public void ApplyOps()
 	{
 
+		var startTime = Time.realtimeSinceStartup;
+		generationAborted = false;
+
 		var cacheKeySource = $"{ShapeType} {OtherPolyType} {JohnsonPolyType} {UniformPolyType} {PrismP} {PrismQ} {GridType} {GridShape}";
 
 		stashed = null;
@@ -985,8 +1000,15 @@ public class PolyHydra : MonoBehaviour
 				P = PrismP,
 				Q = PrismQ
 			};
-
+			var elapsedTime = Time.realtimeSinceStartup - startTime;
+			if (elapsedTime > generationTimeout)
+			{
+				generationAborted = true;
+				break;
+			}
+			//Debug.Log($"{op.opType}: {elapsedTime}");
 		}
+		//Debug.Log($"generation aborted?: {generationAborted}");
 	}
 
 	// Essentially Kis only on non-triangular faces
