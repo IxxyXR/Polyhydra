@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Collections.Generic;
 using Conway;
-using UnityEditor;
 using UnityEngine;
+
 
 public class EndlessTrackGenerator : MonoBehaviour
 {
@@ -48,7 +46,7 @@ public class EndlessTrackGenerator : MonoBehaviour
             piecePoly.ConwayOperators.Add(Greebles[Random.Range(0, Greebles.Count)]);
             piecePoly.ConwayOperators.Add(Greebles[Random.Range(0, Greebles.Count)]);
             piecePoly.ConwayOperators.Add(new PolyHydra.ConwayOperator{
-                opType=PolyHydraEnums.Ops.Extrude,
+                opType=Ops.Extrude,
                 faceSelections=FaceSelections.All,
                 amount=ExtrudeProbability.Evaluate(Random.value) * ExtrudeScale,
                 randomize=true,

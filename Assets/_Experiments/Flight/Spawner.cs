@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Collections.Generic;
 using Conway;
-using UnityEditor.Rendering;
 using UnityEngine;
+
 
 public class Spawner : MonoBehaviour
 {
@@ -71,7 +69,7 @@ public class Spawner : MonoBehaviour
 
         preset.Ops[0] = new PolyPreset.Op
         {
-            OpType = PolyHydraEnums.Ops.SitLevel,
+            OpType = Ops.SitLevel,
             FaceSelections = FaceSelections.All,
             Amount = 0f,
             Randomize = false,
@@ -79,7 +77,7 @@ public class Spawner : MonoBehaviour
         };
         preset.Ops[1] = new PolyPreset.Op
         {
-            OpType = PolyHydraEnums.Ops.Stretch,
+            OpType = Ops.Stretch,
             FaceSelections = FaceSelections.ExceptFirst,
             Amount = height,
             Randomize = false,
@@ -90,7 +88,7 @@ public class Spawner : MonoBehaviour
             case 0:
                 preset.Ops[2] = new PolyPreset.Op
                 {
-                    OpType = PolyHydraEnums.Ops.Kis,
+                    OpType = Ops.Kis,
                     FaceSelections = FaceSelections.FacingUp,
                     Amount = Random.Range(0f, .5f),
                     Randomize = false,
@@ -100,7 +98,7 @@ public class Spawner : MonoBehaviour
             case 1:
                 preset.Ops[2] = new PolyPreset.Op
                 {
-                    OpType = PolyHydraEnums.Ops.Extrude,
+                    OpType = Ops.Extrude,
                     FaceSelections = FaceSelections.FacingUp,
                     Amount = Random.Range(0f, .5f),
                     Randomize = false,

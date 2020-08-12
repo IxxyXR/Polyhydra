@@ -16,8 +16,8 @@
     }
   ],
   "dependencies": {
-	"com.ixxy.polyhydra": "https://github.com/IxxyXR/polyhydra-upm.git#upm",
     "com.beans.deform": "https://github.com/keenanwoodall/Deform.git",
+    "com.ixxy.polyhydra": "https://github.com/IxxyXR/polyhydra-upm.git#upm",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.burst": "1.2.3",
@@ -38,7 +38,7 @@
     "com.unity.render-pipelines.high-definition": "7.3.1",
     "com.unity.render-pipelines.high-definition-config": "7.3.1",
     "com.unity.render-pipelines.universal": "7.3.1",
-    "com.unity.settings-manager": "1.0.2",
+    "com.unity.settings-manager": "1.0.3",
     "com.unity.shadergraph": "7.3.1",
     "com.unity.test-framework": "1.1.14",
     "com.unity.textmeshpro": "2.0.1",

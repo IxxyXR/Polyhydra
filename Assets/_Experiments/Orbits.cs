@@ -4,6 +4,7 @@ using Conway;
 using UnityEngine;
 using Wythoff;
 
+
 public class Orbits : MonoBehaviour
 {
     public PolyHydra MainPoly;
@@ -49,7 +50,7 @@ public class Orbits : MonoBehaviour
             copy.transform.localScale = Vector3.one / 2f;
             var copyPoly = copy.GetComponent<PolyHydra>();
             //copyPoly.ConwayOperators.Clear();
-            var opType = (PolyHydraEnums.Ops) i;
+            var opType = (Ops) i;
 
             var newOp = new PolyHydra.ConwayOperator()
             {

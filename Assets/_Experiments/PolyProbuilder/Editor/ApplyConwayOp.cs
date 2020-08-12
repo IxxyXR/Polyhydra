@@ -165,7 +165,7 @@ sealed class ApplyConwayOp : MenuAction
 
         var conway = new ConwayPoly(vertexPoints, faceIndices.ToArray(), faceRoles, vertexRoles);
         //conway2 = conway2.FaceScale(-0.2f, ConwayPoly.FaceSelections.All, false);
-        conway = conway.Loft(0.25f);
+        conway = conway.Loft(new OpParams{valueA = .25f});
 
         var verts = new List<Vector3>();
         var faces = new List<Face>();

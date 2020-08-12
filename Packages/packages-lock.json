@@ -15,7 +15,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "e3f07fc12e907a864155c7390a706879a3b77fb3"
+      "hash": "02296480d55c2e1d7d1a57c30acdbabe3881fc1a"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -190,7 +190,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.settings-manager": {
-      "version": "1.0.2",
+      "version": "1.0.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {},

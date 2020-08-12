@@ -166,93 +166,93 @@ public class PolyMidi : MonoBehaviour
    };
 
    // If an op supports "Existing" face selection mode use it, otherwise use "Alternate"
-   private PolyHydraEnums.Ops[] OpsWithExistingFaceMode =
+   private Ops[] OpsWithExistingFaceMode =
    {
-//      PolyHydraEnums.Ops.Kis,
-      PolyHydraEnums.Ops.Zip,
-      PolyHydraEnums.Ops.Expand,
-//      PolyHydraEnums.Ops.Join,
-//      PolyHydraEnums.Ops.Needle,
-//      PolyHydraEnums.Ops.Meta,
-      PolyHydraEnums.Ops.Truncate,
-//      PolyHydraEnums.Ops.Gyro,
-      PolyHydraEnums.Ops.Loft,
-      PolyHydraEnums.Ops.Chamfer,
-      PolyHydraEnums.Ops.Quinto,
-      PolyHydraEnums.Ops.Lace,
-      PolyHydraEnums.Ops.OppositeLace,
-      PolyHydraEnums.Ops.Stake,
-      PolyHydraEnums.Ops.Propeller,
-      PolyHydraEnums.Ops.Whirl,
+//      Ops.Kis,
+      Ops.Zip,
+      Ops.Expand,
+//      Ops.Join,
+//      Ops.Needle,
+//      Ops.Meta,
+      Ops.Truncate,
+//      Ops.Gyro,
+      Ops.Loft,
+      Ops.Chamfer,
+      Ops.Quinto,
+      Ops.Lace,
+      Ops.OppositeLace,
+      Ops.Stake,
+      Ops.Propeller,
+      Ops.Whirl,
    };
 
-   private PolyHydraEnums.Ops[] Ops =
+   private Ops[] MidiOps =
    {
       // Bank 0
-      PolyHydraEnums.Ops.Kis,
-      PolyHydraEnums.Ops.Expand,
-      PolyHydraEnums.Ops.Chamfer,
-      PolyHydraEnums.Ops.Loft,
-      PolyHydraEnums.Ops.EdgeMedial,
-      PolyHydraEnums.Ops.Lace,
-      PolyHydraEnums.Ops.Quinto,
-      PolyHydraEnums.Ops.Gyro,
+      Ops.Kis,
+      Ops.Expand,
+      Ops.Chamfer,
+      Ops.Loft,
+      Ops.EdgeMedial,
+      Ops.Lace,
+      Ops.Quinto,
+      Ops.Gyro,
 
       // Bank 1
-      PolyHydraEnums.Ops.Meta,
-      PolyHydraEnums.Ops.Truncate,
-      PolyHydraEnums.Ops.Zip,
-      PolyHydraEnums.Ops.Stake,
-      PolyHydraEnums.Ops.Cross,
-      PolyHydraEnums.Ops.OppositeLace,
-      PolyHydraEnums.Ops.Whirl,
-      PolyHydraEnums.Ops.Propeller,
+      Ops.Meta,
+      Ops.Truncate,
+      Ops.Zip,
+      Ops.Stake,
+      Ops.Cross,
+      Ops.OppositeLace,
+      Ops.Whirl,
+      Ops.Propeller,
 
       // New Ops Bank
-      // PolyHydraEnums.Ops.JoinKisKis,
-      // PolyHydraEnums.Ops.JoinStake,
-      // PolyHydraEnums.Ops.Squall,
-      // PolyHydraEnums.Ops.JoinSquall,
-      // PolyHydraEnums.Ops.Spherize,
-      // PolyHydraEnums.Ops.Canonicalize,
-      // PolyHydraEnums.Ops.Stretch,
-      // PolyHydraEnums.Ops.VertexRotate,
+      // Ops.JoinKisKis,
+      // Ops.JoinStake,
+      // Ops.Squall,
+      // Ops.JoinSquall,
+      // Ops.Spherize,
+      // Ops.Canonicalize,
+      // Ops.Stretch,
+      // Ops.VertexRotate,
 
 
 
 
    };
    
-   private PolyHydraEnums.Ops[] SecondaryOps =
+   private Ops[] SecondaryOps =
    {
-      PolyHydraEnums.Ops.FaceScale,
-//      PolyHydraEnums.Ops.FaceOffset,
-      PolyHydraEnums.Ops.Extrude,
-      PolyHydraEnums.Ops.Skeleton,
+      Ops.FaceScale,
+//      Ops.FaceOffset,
+      Ops.Extrude,
+      Ops.Skeleton,
 
-//      PolyHydraEnums.Ops.Shell,
+//      Ops.Shell,
 
-      PolyHydraEnums.Ops.VertexScale,
-//      PolyHydraEnums.Ops.VertexRotate,
-//      PolyHydraEnums.Ops.VertexFlex,
-//      PolyHydraEnums.Ops.FaceRotate,
+      Ops.VertexScale,
+//      Ops.VertexRotate,
+//      Ops.VertexFlex,
+//      Ops.FaceRotate,
 
-//      PolyHydraEnums.Ops.FaceKeep,
-//      PolyHydraEnums.Ops.FaceRemove,
+//      Ops.FaceKeep,
+//      Ops.FaceRemove,
 
-////      PolyHydraEnums.Ops.FillHoles,
-////      PolyHydraEnums.Ops.Hinge,
+////      Ops.FillHoles,
+////      Ops.Hinge,
 
-//      PolyHydraEnums.Ops.AddDual,
-//      PolyHydraEnums.Ops.AddMirrorX,
-////      PolyHydraEnums.Ops.AddMirrorY,
-////      PolyHydraEnums.Ops.AddMirrorZ,
-//////      PolyHydraEnums.Ops.Canonicalize,
-//      PolyHydraEnums.Ops.Spherize,
-//////      PolyHydraEnums.Ops.Recenter,
-//////      PolyHydraEnums.Ops.SitLevel,
-//      PolyHydraEnums.Ops.Stretch,
-//////      PolyHydraEnums.Ops.Weld
+//      Ops.AddDual,
+//      Ops.AddMirrorX,
+////      Ops.AddMirrorY,
+////      Ops.AddMirrorZ,
+//////      Ops.Canonicalize,
+//      Ops.Spherize,
+//////      Ops.Recenter,
+//////      Ops.SitLevel,
+//      Ops.Stretch,
+//////      Ops.Weld
    };
 
    void Start()
@@ -288,14 +288,14 @@ public class PolyMidi : MonoBehaviour
          poly.ConwayOperators.Add(new PolyHydra.ConwayOperator
          {
             disabled = true,
-            opType = PolyHydraEnums.Ops.Identity,
+            opType = Ops.Identity,
             amount = 0,
          });
       }
 
    }
 
-   private PolyHydraEnums.Ops GetOp(int column, int row)
+   private Ops GetOp(int column, int row)
    {
       if (column % 2 == 1)
       {
@@ -304,7 +304,7 @@ public class PolyMidi : MonoBehaviour
       }
       else
       {
-         return Ops[row];
+         return MidiOps[row];
       }
    }
 
@@ -341,7 +341,7 @@ public class PolyMidi : MonoBehaviour
          {
             int note = ButtonPosToNote(column, row);
             var op = poly.ConwayOperators[column];
-            int nextOpBankNumber = (op.disabled || Array.IndexOf(Ops, op.opType)>=8) ? 0 : 1;
+            int nextOpBankNumber = (op.disabled || Array.IndexOf(MidiOps, op.opType)>=8) ? 0 : 1;
 
 
             if (!op.disabled && (op.opType==GetOp(column, row) || (column % 2 == 0 && op.opType==GetOp(column, row + 8))))
@@ -366,7 +366,7 @@ public class PolyMidi : MonoBehaviour
                   {
                      AkaiOutPort.SendNoteOn(0, note, 0);
                      akaiPrefab.SetGridButtonLED(column, row, -1);
-                     akaiPrefab.SetGridButtonIcon(column, row, PolyHydraEnums.Ops.Identity);
+                     akaiPrefab.SetGridButtonIcon(column, row, Ops.Identity);
 
                   }
 
@@ -383,7 +383,7 @@ public class PolyMidi : MonoBehaviour
             {
                AkaiOutPort.SendNoteOn(0, note, 0);
                akaiPrefab.SetGridButtonLED(column, row, -1);
-               akaiPrefab.SetGridButtonIcon(column, row, PolyHydraEnums.Ops.Identity);
+               akaiPrefab.SetGridButtonIcon(column, row, Ops.Identity);
             }
          }
       }
@@ -406,7 +406,7 @@ public class PolyMidi : MonoBehaviour
    {
 //      poly.ConwayOperators.Add(new PolyHydra.ConwayOperator()
 //      {
-//         opType = PolyHydraEnums.Ops.Spherize,
+//         opType = Ops.Spherize,
 //         amount = 0.25f
 //      });
       poly.Rebuild();
@@ -469,7 +469,7 @@ public class PolyMidi : MonoBehaviour
          if (column % 2 == 0)
          {
             // Odd rows - main ops
-            int currentRow = Array.IndexOf(Ops, op.opType);
+            int currentRow = Array.IndexOf(MidiOps, op.opType);
             int bankOffset =  (currentRow < 8 && row==currentRow) ? 8 : 0;  // Toggle
             op.opType = GetOp(column, row + bankOffset);
          }
@@ -528,7 +528,7 @@ public class PolyMidi : MonoBehaviour
       }
    }
 
-   private float UpdateDefault(float opAmount, PolyHydraEnums.Ops opType, PolyHydraEnums.Ops prevOpType)
+   private float UpdateDefault(float opAmount, Ops opType, Ops prevOpType)
    {
       // Remaps slider value from previous to new
       return Remap(
@@ -744,7 +744,7 @@ public class PolyMidi : MonoBehaviour
       {
          if (currentControl >= poly.ConwayOperators.Count) return;
          var op = poly.ConwayOperators[currentControl];
-         op.opType = (PolyHydraEnums.Ops) (currentControlValue * (Enum.GetNames(typeof(PolyHydraEnums.Ops)).Length - 5));
+         op.opType = (Ops) (currentControlValue * (Enum.GetNames(typeof(Ops)).Length - 5));
          op.amount2 = PolyHydraEnums.OpConfigs[op.opType].amount2Default;
          op.disabled = false;
          poly.ConwayOperators[currentControl] = op;

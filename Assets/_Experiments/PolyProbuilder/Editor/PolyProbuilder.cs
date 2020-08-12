@@ -51,7 +51,7 @@ public class PolyProbuilder : MonoBehaviour
 
         var conway2 = new ConwayPoly(vertexPoints, faceIndices.ToArray(), faceRoles, vertexRoles);
         //conway2 = conway2.FaceScale(-0.2f, ConwayPoly.FaceSelections.All, false);
-        conway2 = conway2.Loft(0.25f);
+        conway2 = conway2.Loft(new OpParams{valueA = .25f});
 
         var verts2 = new List<Vector3>();
         var faces2 = new List<Face>();

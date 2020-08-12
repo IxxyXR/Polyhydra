@@ -358,7 +358,7 @@ public class PolyUI : MonoBehaviour {
     void ConfigureOpControls(OpPrefabManager opPrefabManager)
     {
 
-        var opType = (PolyHydraEnums.Ops)opPrefabManager.OpTypeDropdown.value;
+        var opType = (Ops)opPrefabManager.OpTypeDropdown.value;
         opPrefabManager.OpTypeDropdown.GetComponentInChildren<DropdownIconManager>().SetIcon(opType);
         var opConfig = PolyHydraEnums.OpConfigs[opType];
         
@@ -404,7 +404,7 @@ public class PolyUI : MonoBehaviour {
         var opPrefabManager = opPrefab.GetComponent<OpPrefabManager>();
         
         opPrefab.name = op.opType.ToString();
-        foreach (PolyHydraEnums.Ops item in Enum.GetValues(typeof(PolyHydraEnums.Ops))) {
+        foreach (Ops item in Enum.GetValues(typeof(Ops))) {
             var label = new Dropdown.OptionData(CamelCaseSpaces(item.ToString()));
             opPrefabManager.OpTypeDropdown.options.Add(label);
         }
@@ -542,7 +542,7 @@ public class PolyUI : MonoBehaviour {
             
             var op = poly.ConwayOperators[index];
             
-            op.opType = (PolyHydraEnums.Ops)opPrefabManager.OpTypeDropdown.value;
+            op.opType = (Ops)opPrefabManager.OpTypeDropdown.value;
             op.faceSelections = (FaceSelections) opPrefabManager.FaceSelectionDropdown.value;
             op.disabled = opPrefabManager.DisabledToggle.isOn;
             op.amount = opPrefabManager.AmountSlider.value;

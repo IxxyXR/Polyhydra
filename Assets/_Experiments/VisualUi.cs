@@ -157,7 +157,7 @@ public class VisualUi : MonoBehaviour
             copy.transform.localScale = Vector3.one * scale;
             var copyPoly = copy.GetComponent<PolyHydra>();
             copyPoly.PolyFromJson(polyJson, false);
-            var opType = (PolyHydraEnums.Ops) i;
+            var opType = (Ops) i;
             var newOp = new PolyHydra.ConwayOperator
             {
                 opType = opType,

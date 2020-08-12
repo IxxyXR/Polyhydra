@@ -6,6 +6,7 @@ using Conway;
 using UnityEditor;
 using UnityEngine;
 
+
 public class PolyMatching : MonoBehaviour
 {
     public PolyHydra PolyPrefab;
@@ -112,7 +113,7 @@ public class PolyMatching : MonoBehaviour
             copy.transform.localScale = Vector3.one * scale;
             var copyPoly = copy.GetComponent<PolyHydra>();
             copyPoly.PolyFromJson(polyJson, false);
-            var opType = (PolyHydraEnums.Ops) i;
+            var opType = (Ops) i;
             var newOp = new PolyHydra.ConwayOperator
             {
                 opType = opType,
@@ -174,8 +175,9 @@ public class PolyMatching : MonoBehaviour
         if (tally.ContainsKey(key))
         {
             string msg = $"{tally[key][0].PolyType} : {preset.PolyType}  ";
-            if (tally[key][0].Ops.Length > 0) msg += $"{tally[key][0].Ops.Last().OpType} : ";
-            if (preset.Ops.Length > 0) msg += $"{preset.Ops.Last().OpType}";
+            // TODO fix after refactoring enum
+            // if (tally[key][0].Ops.Length > 0) msg += $"{tally[key][0].Ops.Last().OpType} : ";
+            // if (preset.Ops.Length > 0) msg += $"{preset.Ops.Last().OpType}";
             Debug.Log(msg);
             Debug.Log("--------------");
         }

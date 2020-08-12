@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Conway;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +18,7 @@ public class DropdownIconManager : MonoBehaviour
         }
     }
 
-    public void SetIcon(PolyHydraEnums.Ops opType)
+    public void SetIcon(Ops opType)
     {
         SetIcon(opType.ToString());
     }

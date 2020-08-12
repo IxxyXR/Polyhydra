@@ -4,9 +4,7 @@ using System.IO;
 using Conway;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 [Serializable]
@@ -31,7 +29,7 @@ public class PolyPreset {
 	
 	[Serializable]
 	public struct Op {
-		[JsonConverter(typeof(StringEnumConverter))] public PolyHydraEnums.Ops OpType;
+		[JsonConverter(typeof(StringEnumConverter))] public Ops OpType;
 		[JsonConverter(typeof(StringEnumConverter))] public FaceSelections FaceSelections;
 		public float Amount;
 		public float Amount2;

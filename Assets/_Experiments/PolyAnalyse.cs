@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Conway;
 using UnityEngine;
 
 public class PolyDataItem 
 {
-    public PolyHydraEnums.Ops OpName;
+    public Ops OpName;
     public int Faces;
     public int Vertices;
 }
@@ -28,7 +29,7 @@ public class ConwayOpInfo
 
 public class PolyAnalyse : MonoBehaviour
 {
-    private PolyHydraEnums.Ops currentOpType;
+    private Ops currentOpType;
     private PolyTypes currentPolyType;
     private PolyHydra poly;
     [Multiline]
@@ -90,7 +91,7 @@ public class PolyAnalyse : MonoBehaviour
         }
         
         currentOpType++;
-        if (currentOpType == PolyHydraEnums.Ops.Extrude)
+        if (currentOpType == Ops.Extrude)
         {
             CancelInvoke();
         }

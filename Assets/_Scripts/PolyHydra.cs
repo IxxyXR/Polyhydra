@@ -121,7 +121,7 @@ public class PolyHydra : MonoBehaviour
 
 	[Serializable]
 	public struct ConwayOperator {
-		public PolyHydraEnums.Ops opType;
+		public Ops opType;
 		public FaceSelections faceSelections;
 		public bool randomize;
 		public float amount;
@@ -165,8 +165,8 @@ public class PolyHydra : MonoBehaviour
 		public ConwayOperator ChangeOpType(int val)
 		{
 			opType += val;
-			opType = (PolyHydraEnums.Ops) Mathf.Clamp(
-				(int) opType, 1, Enum.GetNames(typeof(PolyHydraEnums.Ops)).Length - 1
+			opType = (Ops) Mathf.Clamp(
+				(int) opType, 1, Enum.GetNames(typeof(Ops)).Length - 1
 			);
 			return this;
 		}
@@ -424,15 +424,7 @@ public class PolyHydra : MonoBehaviour
 			case PolyHydraEnums.OtherPolyTypes.Polygon:
 				return JohnsonPoly.Polygon(PrismP);
 			case PolyHydraEnums.OtherPolyTypes.GriddedCube:
-				var conway = Grids.Grids.MakeUnitileGrid(1, 0, PrismP, PrismP);
-				conway = conway.AddMirrored(Vector3.up, PrismP);
-				conway.Recenter();
-				ConwayPoly xPair = conway.Rotate(Vector3.forward, 90);
-				ConwayPoly zPair = conway.Rotate(Vector3.left, 90);
-				conway.Append(xPair);
-				conway.Append(zPair);
-				conway = conway.Weld(0.001f);
-				return conway;
+				return JohnsonPoly.GriddedCube(PrismP, PrismQ);
 			default:
 				Debug.LogError("Unknown Other Poly Type");
 				return null;
@@ -697,269 +689,15 @@ public class PolyHydra : MonoBehaviour
 
 		float amount = op.animate ? op.animatedAmount : op.amount;
 
-		switch (op.opType)
+		var opParams = new OpParams
 		{
-			case PolyHydraEnums.Ops.Identity:
-				break;
-			case PolyHydraEnums.Ops.Kis:
-				conway = conway.Kis(amount, op.faceSelections, op.Tags, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.Dual:
-				conway = conway.Dual();
-				break;
-			case PolyHydraEnums.Ops.Ambo:
-				conway = conway.Ambo();
-				break;
-			case PolyHydraEnums.Ops.Zip:
-				conway = conway.Zip(amount);
-				break;
-			case PolyHydraEnums.Ops.Expand:
-				conway = conway.Expand(amount);
-				break;
-			case PolyHydraEnums.Ops.Bevel:
-				conway = conway.Bevel(amount, op.amount2);
-				break;
-			case PolyHydraEnums.Ops.Join:
-				conway = conway.Join(amount);
-				break;
-			case PolyHydraEnums.Ops.Needle:
-				conway = conway.Needle(amount, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.Ortho:
-				conway = conway.Ortho(amount, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.Meta:
-				conway = conway.Meta(amount, op.amount2, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.Truncate:
-				conway = conway.Truncate(amount, op.faceSelections, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.Gyro:
-				conway = conway.Gyro(amount, op.amount2);
-				break;
-			case PolyHydraEnums.Ops.Snub:
-				conway = conway.Gyro(amount);
-				conway = conway.Dual();
-				break;
-			case PolyHydraEnums.Ops.Exalt:
-				// TODO return a correct VertexRole array
-				// I suspect the last vertices map to the original shape verts
-				conway = conway.Dual();
-				conway = conway.Kis(amount, op.faceSelections, op.Tags, op.randomize);
-				conway = conway.Dual();
-				conway = conway.Kis(amount, op.faceSelections, op.Tags, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.Yank:
-				conway = conway.Kis(amount, op.faceSelections, op.Tags, op.randomize);
-				conway = conway.Dual();
-				conway = conway.Kis(amount, op.faceSelections, op.Tags, op.randomize);
-				conway = conway.Dual();
-				break;
-			case PolyHydraEnums.Ops.Subdivide:
-				conway = conway.Subdivide(amount);
-				break;
-			case PolyHydraEnums.Ops.Loft:
-				conway = conway.Loft(amount, op.amount2, op.faceSelections, op.Tags, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.Chamfer:
-				conway = conway.Chamfer(amount);
-				break;
-			case PolyHydraEnums.Ops.Quinto:
-				conway = conway.Quinto(amount, op.amount2, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.JoinedLace:
-				conway = conway.JoinedLace(amount, op.amount2, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.OppositeLace:
-				conway = conway.OppositeLace(amount, op.amount2, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.Lace:
-				conway = conway.Lace(amount, op.faceSelections, op.Tags, op.amount2, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.JoinKisKis:
-				conway = conway.JoinKisKis(amount, op.amount2);
-				break;
-			case PolyHydraEnums.Ops.Stake:
-				conway = conway.Stake(amount, op.faceSelections, op.Tags);
-				break;
-			case PolyHydraEnums.Ops.JoinStake:
-				conway = conway.Stake(amount, op.faceSelections, op.Tags, true);
-				break;
-			case PolyHydraEnums.Ops.Medial:
-				conway = conway.Medial((int)amount, op.amount2);
-				break;
-			case PolyHydraEnums.Ops.EdgeMedial:
-				conway = conway.EdgeMedial((int)amount, op.amount2);
-				break;
-			// case Ops.JoinedMedial:
-			// 	conway = conway.JoinedMedial((int)amount, op.amount2);
-			// 	break;
-			case PolyHydraEnums.Ops.Propeller:
-				conway = conway.Propeller(amount);
-				break;
-			case PolyHydraEnums.Ops.Whirl:
-				conway = conway.Whirl(amount);
-				break;
-			case PolyHydraEnums.Ops.Volute:
-				conway = conway.Volute(amount);
-				break;
-			case PolyHydraEnums.Ops.Cross:
-				conway = conway.Cross(amount);
-				break;
-			case PolyHydraEnums.Ops.Squall:
-				conway = conway.Squall(amount, false);
-				break;
-			case PolyHydraEnums.Ops.JoinSquall:
-				conway = conway.Squall(amount, true);
-				break;
-			case PolyHydraEnums.Ops.Shell:
-				// TODO do this properly with shared edges/vertices
-				conway = conway.Extrude(amount, false, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.Skeleton:
-				conway = conway.FaceRemove(op.faceSelections, op.Tags);
-				if ((op.faceSelections==FaceSelections.New || op.faceSelections==FaceSelections.NewAlt) && op.opType == PolyHydraEnums.Ops.Skeleton)
-				{
-					// Nasty hack until I fix extrude
-					// Produces better results specific for PolyMidi
-					conway = conway.FaceScale(0f, FaceSelections.All);
-				}
-				conway = conway.Extrude(amount, false, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.Extrude:
-				conway = conway.Loft(0, amount, op.faceSelections, op.Tags, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.VertexScale:
-				conway = conway.VertexScale(amount, op.faceSelections, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.FaceSlide:
-				conway = conway.FaceSlide(amount, op.amount2, op.faceSelections, op.Tags, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.FaceMerge:
-				conway = conway.FaceMerge(op.faceSelections);
-				break;
-			case PolyHydraEnums.Ops.VertexRotate:
-				conway = conway.VertexRotate(amount, op.faceSelections, op.Tags, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.VertexFlex:
-				conway = conway.VertexFlex(amount, op.faceSelections, op.Tags, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.FaceOffset:
-				// TODO Faceroles ignored. Vertex Roles
-				// Split faces
-				var origRoles = conway.FaceRoles;
-				conway = conway.FaceScale(0, FaceSelections.All, op.Tags, false);
-				conway.FaceRoles = origRoles;
-				conway = conway.Offset(amount, op.faceSelections, op.Tags, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.FaceScale:
-				conway = conway.FaceScale(amount, op.faceSelections, op.Tags, op.randomize);
-				break;
-			case PolyHydraEnums.Ops.FaceRotate:
-				conway = conway.FaceRotate(amount, op.faceSelections, op.Tags, 0, op.randomize);
-				break;
-//					case Ops.Ribbon:
-//						conway = conway.Ribbon(amount, false, 0.1f);
-//						break;
-//					case Ops.FaceTranslate:
-//						conway = conway.FaceTranslate(amount, op.faceSelections);
-//						break;
-//					case Ops.FaceRotateX:
-//						conway = conway.FaceRotate(amount, op.faceSelections, 1);
-//						break;
-//					case Ops.FaceRotateY:
-//						conway = conway.FaceRotate(amount, op.faceSelections, 2);
-//						break;
-			case PolyHydraEnums.Ops.FaceRemove:
-				conway = conway.FaceRemove(op.faceSelections, op.Tags);
-				break;
-			case PolyHydraEnums.Ops.FaceKeep:
-				conway = conway.FaceKeep(op.faceSelections, op.Tags);
-				break;
-			case PolyHydraEnums.Ops.VertexRemove:
-				conway = conway.VertexRemove(op.faceSelections, false);
-				break;
-			case PolyHydraEnums.Ops.VertexKeep:
-				conway = conway.VertexRemove(op.faceSelections, true);
-				break;
-			case PolyHydraEnums.Ops.FillHoles:
-				conway.FillHoles();
-				break;
-			case PolyHydraEnums.Ops.Hinge:
-				conway = conway.Hinge(amount);
-				break;
-			case PolyHydraEnums.Ops.AddDual:
-				conway = conway.AddDual(amount);
-				break;
-			case PolyHydraEnums.Ops.AddCopyX:
-				conway = conway.AddCopy(Vector3.right, amount, op.faceSelections, op.Tags);
-				break;
-			case PolyHydraEnums.Ops.AddCopyY:
-				conway = conway.AddCopy(Vector3.up, amount, op.faceSelections, op.Tags);
-				break;
-			case PolyHydraEnums.Ops.AddCopyZ:
-				conway = conway.AddCopy(Vector3.forward, amount, op.faceSelections, op.Tags);
-				break;
-			case PolyHydraEnums.Ops.AddMirrorX:
-				conway = conway.AddMirrored(Vector3.right, amount, op.faceSelections, op.Tags);
-				break;
-			case PolyHydraEnums.Ops.AddMirrorY:
-				conway = conway.AddMirrored(Vector3.up, amount, op.faceSelections, op.Tags);
-				break;
-			case PolyHydraEnums.Ops.AddMirrorZ:
-				conway = conway.AddMirrored(Vector3.forward, amount, op.faceSelections, op.Tags);
-				break;
-			case PolyHydraEnums.Ops.Stash:
-				stash = conway.Duplicate();
-				stash = stash.FaceKeep(op.faceSelections);
-				break;
-			case PolyHydraEnums.Ops.Unstash:
-				if (stash == null) return conway;
-				var dup = conway.Duplicate();
-				var offset = Vector3.up * op.amount2;
-				dup.Append(stash.FaceKeep(op.faceSelections, op.Tags), offset, Quaternion.identity, amount);
-				conway = dup;
-				break;
-			case PolyHydraEnums.Ops.UnstashToFaces:
-				if (stash == null) return conway;
-				conway = conway.AppendMany(stash, op.faceSelections, op.Tags, amount, 0, op.amount2, true);
-				break;
-			case PolyHydraEnums.Ops.UnstashToVerts:
-				if (stash == null) return conway;
-				conway = conway.AppendMany(stash, op.faceSelections, op.Tags, amount, 0, op.amount2, false);
-				break;
-			case PolyHydraEnums.Ops.TagFaces:
-				conway.TagFaces(op.Tags, op.faceSelections);
-				break;
-			case PolyHydraEnums.Ops.Layer:
-				conway = conway.Layer(4, 1f - amount, amount / 10f, op.faceSelections, op.Tags);
-				break;
-			case PolyHydraEnums.Ops.Canonicalize:
-				conway = conway.Canonicalize(0.1f, 0.1f);
-				break;
-			case PolyHydraEnums.Ops.Spherize:
-				conway = conway.Spherize(amount, op.faceSelections);
-				break;
-			case PolyHydraEnums.Ops.Recenter:
-				conway.Recenter();
-				break;
-			case PolyHydraEnums.Ops.SitLevel:
-				conway = conway.SitLevel(amount);
-				break;
-			case PolyHydraEnums.Ops.Stretch:
-				conway = conway.Stretch(amount);
-				break;
-			case PolyHydraEnums.Ops.Slice:
-				conway = conway.Slice(amount, op.amount2);
-				break;
-			case PolyHydraEnums.Ops.Stack:
-				conway = conway.Stack(Vector3.up, amount, op.amount2, 0.1f, op.faceSelections, op.Tags);
-				conway.Recenter();
-				break;
-			case PolyHydraEnums.Ops.Weld:
-				conway = conway.Weld(amount);
-				break;
-		}
+			valueA = amount,
+			valueB = op.amount2,
+			randomize = op.randomize,
+			facesel = op.faceSelections,
+			tags = op.Tags,
+		};
+		conway = conway.ApplyOp(op.opType, opParams);
 
 		return conway;
 	}
@@ -976,9 +714,9 @@ public class PolyHydra : MonoBehaviour
 
 		foreach (var op in ConwayOperators.ToList())
 		{
-			if (op.disabled || op.opType==PolyHydraEnums.Ops.Identity) continue;
+			if (op.disabled || op.opType==Ops.Identity) continue;
 
-			if (enableCaching && op.opType!=PolyHydraEnums.Ops.Stash) // The cache contain the stash so we can't cache it
+			if (enableCaching && op.opType!=Ops.Stash) // The cache contain the stash so we can't cache it
 			{
 				cacheKeySource += JsonConvert.SerializeObject(op);
 				int key = cacheKeySource.GetHashCode();
@@ -1006,9 +744,7 @@ public class PolyHydra : MonoBehaviour
 				generationAborted = true;
 				break;
 			}
-			//Debug.Log($"{op.opType}: {elapsedTime}");
 		}
-		//Debug.Log($"generation aborted?: {generationAborted}");
 	}
 
 	// Essentially Kis only on non-triangular faces
@@ -1078,9 +814,9 @@ public class PolyHydra : MonoBehaviour
 
 	public ConwayOperator AddRandomOp()
 	{
-		int maxOpIndex = Enum.GetValues(typeof(PolyHydraEnums.Ops)).Length;
+		int maxOpIndex = Enum.GetValues(typeof(Ops)).Length;
 		int opTypeIndex = Random.Range(1, maxOpIndex - 2); // No canonicalize as it's pretty rough at the moment
-		var opType = (PolyHydraEnums.Ops) opTypeIndex;
+		var opType = (Ops) opTypeIndex;
 		PolyHydraEnums.OpConfig opConfig;
 		try
 		{

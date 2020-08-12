@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Conway;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ public class CloneAndVary : MonoBehaviour
     public float maxHeight = 15f;
     public float timeHeight = 0.0005f;
     public Transform[,] clones;
-    public List<PolyHydraEnums.Ops> ops;
+    public List<Ops> ops;
     public int currentOp = 0;
     public AnimationCurve fadeCurve;
 

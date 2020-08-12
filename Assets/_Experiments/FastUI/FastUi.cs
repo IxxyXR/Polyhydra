@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices; // Don't remove
-using System.Text; // Don't remove
+using System.Text;
+using Conway; // Don't remove
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
@@ -330,7 +331,7 @@ public class FastUi : MonoBehaviour
             {
                 _Stack.Insert(stackIndex + 1, new PolyHydra.ConwayOperator
                 {
-                    opType = PolyHydraEnums.Ops.Kis,
+                    opType = Ops.Kis,
                     amount = 0.1f
                 });
                 _PanelIndex += 1;
@@ -379,7 +380,7 @@ public class FastUi : MonoBehaviour
     public void LoadRandomPreset()
     {
         var preset = Presets[Random.Range(0, Presets.Count)];
-        preset.Ops = preset.Ops.Where(i => !i.Disabled && i.OpType != PolyHydraEnums.Ops.Identity).ToArray();
+        preset.Ops = preset.Ops.Where(i => !i.Disabled && i.OpType != Ops.Identity).ToArray();
         preset.ApplyToPoly(_Poly);
         if (_Poly.ShapeType == PolyHydraEnums.ShapeTypes.Uniform)
         {
@@ -846,7 +847,7 @@ public class FastUi : MonoBehaviour
             }
             else
             {
-                if (_Stack[stackIndex].opType == PolyHydraEnums.Ops.TagFaces)  // Special case
+                if (_Stack[stackIndex].opType == Ops.TagFaces)  // Special case
                 {
                     switch (widgetIndex)
                     {

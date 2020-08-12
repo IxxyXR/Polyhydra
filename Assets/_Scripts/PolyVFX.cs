@@ -113,7 +113,7 @@ public class PolyVFX : MonoBehaviour
         
         if (polyhydra._conwayPoly == null || polyhydra.ConwayOperators.Count < 1)
         {
-            polyhydra.ConwayOperators.Add(new PolyHydra.ConwayOperator(){opType = PolyHydraEnums.Ops.Identity});
+            polyhydra.ConwayOperators.Add(new PolyHydra.ConwayOperator(){opType = Ops.Identity});
             polyhydra.Rebuild();
         }
 

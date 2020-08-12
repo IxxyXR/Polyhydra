@@ -36,13 +36,13 @@ public class BuildingGenerator : MonoBehaviour
     public void Generate()
     {
         var building = Grids.Grids.MakeGrid(1, 1, aspect, 1f);
-        building = building.Loft(wallThickness);
-        building = building.Loft(0, height, FaceSelections.AllNew);
+        building = building.Loft(new OpParams{valueA = wallThickness});
+        building = building.Loft(new OpParams{valueA = 0, valueB = height, facesel = FaceSelections.AllNew});
 
         float roofScale = 1f - wallThickness;
         var roof = Grids.Grids.MakeGrid(numSkylights, numSkylightRows, (aspect/numSkylights) * roofScale, (aspect/numSkylightRows) * (1f / aspect) * roofScale);
-        roof = roof.Loft(skylightSize);
-        roof = roof.FaceRemove(FaceSelections.Existing);
+        roof = roof.Loft(new OpParams{valueA = skylightSize});
+        roof = roof.FaceRemove(new OpParams{facesel = FaceSelections.Existing});
 
         building.Append(roof, new Vector3(0, height, 0), Quaternion.Euler(0, 0, 0), 1f);
 
@@ -65,10 +65,10 @@ public class BuildingGenerator : MonoBehaviour
         float ribDepth = Random.Range(0.02f, 0.2f);
         for (int i=0; i<numRibs; i++)
         {
-            poly = poly.Loft(ribDepth, translateForwardsPerRib * 0.25f, FaceSelections.FacingStraightForward);
-            poly = poly.Loft(0, translateForwardsPerRib * 0.5f, FaceSelections.FacingStraightForward);
-            poly = poly.Loft(-ribDepth, translateForwardsPerRib * 0.25f, FaceSelections.FacingStraightForward);
-            poly = poly.Loft(0, translateForwardsPerRib * 0.25f, FaceSelections.FacingStraightForward);
+            poly = poly.Loft(new OpParams{valueA = ribDepth, valueB = translateForwardsPerRib * 0.25f, facesel = FaceSelections.FacingStraightForward});
+            poly = poly.Loft(new OpParams{valueA = 0, valueB = translateForwardsPerRib * 0.5f, facesel = FaceSelections.FacingStraightForward});
+            poly = poly.Loft(new OpParams{valueA = -ribDepth, valueB = translateForwardsPerRib * 0.25f, facesel = FaceSelections.FacingStraightForward});
+            poly = poly.Loft(new OpParams{valueA = 0, valueB = translateForwardsPerRib * 0.25f, facesel = FaceSelections.FacingStraightForward});
         }
 
         return poly;

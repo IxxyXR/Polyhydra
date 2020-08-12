@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Conway;
 using RtMidi.LowLevel;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -103,7 +104,7 @@ public class AkaiPrefabController : MonoBehaviour
         SetButtonColor(ColumnButtons[column], colorIndex);
     }
 
-    public void SetGridButtonIcon(int column, int row, PolyHydraEnums.Ops opType)
+    public void SetGridButtonIcon(int column, int row, Ops opType)
     {
         var btn = MainButtons[column * 8 + row];
         var img = btn.GetComponentInChildren<Image>();

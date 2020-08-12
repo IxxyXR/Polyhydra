@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
+using Conway;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -36,11 +34,11 @@ public class ContinuousAnimation : MonoBehaviour
 
     public struct Junction
     {
-        public PolyHydraEnums.Ops Op;
+        public Ops Op;
         public float FinalAmount;
         public State FinalState;
         
-        public Junction(PolyHydraEnums.Ops o, float a, State s) {Op = o; FinalAmount = a; FinalState = s; }
+        public Junction(Ops o, float a, State s) {Op = o; FinalAmount = a; FinalState = s; }
     }
 
     public Dictionary<State, List<Junction>> Transitions;
@@ -56,41 +54,41 @@ public class ContinuousAnimation : MonoBehaviour
         
         Transitions[State.Seed] = new List<Junction>
         {
-            new Junction(PolyHydraEnums.Ops.Expand, 1, State.Dual),
-            new Junction(PolyHydraEnums.Ops.Propeller, 0.5f, State.Subdivide),
-            new Junction(PolyHydraEnums.Ops.Truncate, 0.5f, State.Ambo),
-            new Junction(PolyHydraEnums.Ops.Loft, 0.5f, State.Kis),
-            new Junction(PolyHydraEnums.Ops.Whirl, 0.5f, State.Ortho),
+            new Junction(Ops.Expand, 1, State.Dual),
+            new Junction(Ops.Propeller, 0.5f, State.Subdivide),
+            new Junction(Ops.Truncate, 0.5f, State.Ambo),
+            new Junction(Ops.Loft, 0.5f, State.Kis),
+            new Junction(Ops.Whirl, 0.5f, State.Ortho),
         };
         Transitions[State.Ambo] = new List<Junction>
         {
-            new Junction(PolyHydraEnums.Ops.Zip, 1, State.Dual),
-            new Junction(PolyHydraEnums.Ops.Truncate, 0, State.Seed),
+            new Junction(Ops.Zip, 1, State.Dual),
+            new Junction(Ops.Truncate, 0, State.Seed),
         };
         Transitions[State.Dual] = new List<Junction>
         {
-            new Junction(PolyHydraEnums.Ops.Zip, 0, State.Ambo),
-            new Junction(PolyHydraEnums.Ops.Expand, 0, State.Seed),
+            new Junction(Ops.Zip, 0, State.Ambo),
+            new Junction(Ops.Expand, 0, State.Seed),
         };
         Transitions[State.Ortho] = new List<Junction>
         {
-            new Junction(PolyHydraEnums.Ops.Stake, 1, State.Kis),
-            new Junction(PolyHydraEnums.Ops.Gyro, 0f, State.Kis),
-            new Junction(PolyHydraEnums.Ops.Quinto, 0, State.Subdivide),
-            new Junction(PolyHydraEnums.Ops.Whirl, 0f, State.Seed),
+            new Junction(Ops.Stake, 1, State.Kis),
+            new Junction(Ops.Gyro, 0f, State.Kis),
+            new Junction(Ops.Quinto, 0, State.Subdivide),
+            new Junction(Ops.Whirl, 0f, State.Seed),
         };
         Transitions[State.Kis] = new List<Junction>
         {
-            new Junction(PolyHydraEnums.Ops.Loft, 0, State.Seed),
-            new Junction(PolyHydraEnums.Ops.Stake, 0, State.Ortho),
-            new Junction(PolyHydraEnums.Ops.Lace, 0, State.Subdivide),
-            new Junction(PolyHydraEnums.Ops.Gyro, 0.5f, State.Ortho),
+            new Junction(Ops.Loft, 0, State.Seed),
+            new Junction(Ops.Stake, 0, State.Ortho),
+            new Junction(Ops.Lace, 0, State.Subdivide),
+            new Junction(Ops.Gyro, 0.5f, State.Ortho),
         };
         Transitions[State.Subdivide] = new List<Junction>
         {
-            new Junction(PolyHydraEnums.Ops.Propeller, 0, State.Seed),
-            new Junction(PolyHydraEnums.Ops.Lace, 1, State.Kis),
-            new Junction(PolyHydraEnums.Ops.Quinto, 1, State.Ortho),
+            new Junction(Ops.Propeller, 0, State.Seed),
+            new Junction(Ops.Lace, 1, State.Kis),
+            new Junction(Ops.Quinto, 1, State.Ortho),
         };
         junctionCount = Transitions.Values.Sum(x => x.Count);
 
