@@ -16,7 +16,7 @@
     {
       "OpType": "Kis",
       "FaceSelections": "All",
-      "Amount": -4.75,
+      "Amount": 4.7,
       "Amount2": 0.0,
       "AnimatedAmount": 0.0,
       "Randomize": false,
@@ -27,7 +27,7 @@
       "AudioLowAmount": 0.0,
       "AudioMidAmount": 0.0,
       "AudioHighAmount": 0.0,
-      "Tags": null
+      "Tags": ""
     },
     {
       "OpType": "Kis",

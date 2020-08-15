@@ -25,7 +25,7 @@ public class PolyHydra : MonoBehaviour
 
 	public bool enableThreading = true;
 	public bool enableCaching = true;
-	public float generationTimeout = 0.1f;
+	public float generationTimeout = 1f;
 	[NonSerialized] public bool generationAborted = false;
 
 	private int _faceCount;
@@ -348,10 +348,10 @@ public class PolyHydra : MonoBehaviour
 				poly = JohnsonPoly.Dipyramid(PrismP<3?3:PrismP);
 				break;
 			case PolyHydraEnums.JohnsonPolyTypes.ElongatedDipyramid:
-				poly = JohnsonPoly.ElongatedBipyramid(PrismP<3?3:PrismP);
+				poly = JohnsonPoly.ElongatedDipyramid(PrismP<3?3:PrismP);
 				break;
 			case PolyHydraEnums.JohnsonPolyTypes.GyroelongatedDipyramid:
-				poly = JohnsonPoly.GyroelongatedBipyramid(PrismP<3?3:PrismP);
+				poly = JohnsonPoly.GyroelongatedDipyramid(PrismP<3?3:PrismP);
 				break;
 			case PolyHydraEnums.JohnsonPolyTypes.Cupola:
 				poly = JohnsonPoly.Cupola(PrismP<3?3:PrismP);
@@ -697,7 +697,34 @@ public class PolyHydra : MonoBehaviour
 			facesel = op.faceSelections,
 			tags = op.Tags,
 		};
-		conway = conway.ApplyOp(op.opType, opParams);
+
+		if (op.opType == Ops.Stash)
+		{
+			stash = conway.Duplicate();
+			stash = stash.FaceKeep(new OpParams{facesel = op.faceSelections});
+		}
+		else if (op.opType == Ops.Unstash)
+		{
+			if (stash == null) return conway;
+			var dup = conway.Duplicate();
+			var offset = Vector3.up * op.amount2;
+			dup.Append(stash.FaceKeep(op.faceSelections, op.Tags), offset, Quaternion.identity, amount);
+			conway = dup;
+		}
+		else if (op.opType == Ops.UnstashToFaces)
+		{
+			if (stash == null) return conway;
+			conway = conway.AppendMany(stash, op.faceSelections, op.Tags, amount, 0, op.amount2, true);
+		}
+		else if (op.opType == Ops.UnstashToVerts)
+		{
+			if (stash == null) return conway;
+			conway = conway.AppendMany(stash, op.faceSelections, op.Tags, amount, 0, op.amount2, false);
+		}
+		else
+		{
+			conway = conway.ApplyOp(op.opType, opParams);
+		}
 
 		return conway;
 	}
@@ -705,7 +732,7 @@ public class PolyHydra : MonoBehaviour
 	public void ApplyOps()
 	{
 
-		var startTime = Time.realtimeSinceStartup;
+		var startTime = DateTime.Now.Ticks;
 		generationAborted = false;
 
 		var cacheKeySource = $"{ShapeType} {OtherPolyType} {JohnsonPolyType} {UniformPolyType} {PrismP} {PrismQ} {GridType} {GridShape}";
@@ -738,8 +765,8 @@ public class PolyHydra : MonoBehaviour
 				P = PrismP,
 				Q = PrismQ
 			};
-			var elapsedTime = Time.realtimeSinceStartup - startTime;
-			if (elapsedTime > generationTimeout)
+			var elapsedTime = DateTime.Now.Ticks - startTime;
+			if (elapsedTime > (generationTimeout * 1e+07f))
 			{
 				generationAborted = true;
 				break;

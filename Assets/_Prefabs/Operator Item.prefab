@@ -3519,7 +3519,7 @@ MonoBehaviour:
   AudioLowAmountInput: {fileID: 3676138094980290677}
   AudioMidAmountInput: {fileID: 2997906125811838456}
   AudioHighAmountInput: {fileID: 7565938950493914108}
-  OpTextInput: {fileID: 7255869749961371288}
+  TagsInput: {fileID: 7255869749961371288}
 --- !u!222 &222105525516163758
 CanvasRenderer:
   m_ObjectHideFlags: 0
