@@ -424,7 +424,7 @@ public class PolyHydra : MonoBehaviour
 			case PolyHydraEnums.OtherPolyTypes.Polygon:
 				return JohnsonPoly.Polygon(PrismP);
 			case PolyHydraEnums.OtherPolyTypes.GriddedCube:
-				return JohnsonPoly.GriddedCube(PrismP, PrismQ);
+				return JohnsonPoly.GriddedCube(PrismP);
 			default:
 				Debug.LogError("Unknown Other Poly Type");
 				return null;
