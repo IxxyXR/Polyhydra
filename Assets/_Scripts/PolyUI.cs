@@ -374,7 +374,7 @@ public class PolyUI : MonoBehaviour {
 
         opPrefabManager.AmountSlider.value = opConfig.amountDefault;
         opPrefabManager.Amount2Slider.value = opConfig.amount2Default;
-        opPrefabManager.TagsInput.gameObject.SetActive(opConfig.usesTags);
+        opPrefabManager.TagsInput.gameObject.SetActive(opConfig.usesFaces);
 
         if (poly.SafeLimits)
         {
