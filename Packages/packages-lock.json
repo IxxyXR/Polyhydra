@@ -11,11 +11,10 @@
       "hash": "c8fa347077eaa92234939ebfec0856c87e044423"
     },
     "com.ixxy.polyhydra": {
-      "version": "https://github.com/IxxyXR/polyhydra-upm.git#upm",
+      "version": "file:../../polyhydra-upm/Packages/Polyhydra",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "7acbd21c63074689e046acd0ec61bf074e69dd92"
+      "source": "local",
+      "dependencies": {}
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -237,7 +236,8 @@
       "depth": 0,
       "source": "builtin",
       "dependencies": {
-        "com.unity.modules.ui": "1.0.0"
+        "com.unity.modules.ui": "1.0.0",
+        "com.unity.modules.imgui": "1.0.0"
       }
     },
     "com.unity.urp-measured-materials-car-paint": {

@@ -456,6 +456,11 @@ public class PolyHydra : MonoBehaviour
 			_conwayPoly = MakeJohnsonPoly(JohnsonPolyType);
 		}
 
+		else if (ShapeType == PolyHydraEnums.ShapeTypes.Waterman)
+		{
+			_conwayPoly = WatermanPoly.Build(1, PrismP, PrismQ, false);
+		}
+		
 		else if (ShapeType == PolyHydraEnums.ShapeTypes.Other)
 		{
 			_conwayPoly = MakeOtherPoly(OtherPolyType);

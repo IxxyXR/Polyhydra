@@ -52,12 +52,13 @@ public class FastUi : MonoBehaviour
         KeplerPoinsot,
         UniformStar,
         Johnson,
+        Waterman,
         Grids,
         Other
     }
 
     private enum ButtonType {
-        ShapeCategory, GridType, UniformType, JohnsonType, OtherType,
+        ShapeCategory, GridType, UniformType, JohnsonType, WatermanType, OtherType,
         PolyTypeCategory, GridShape, PolyP, PolyQ,
         OpType, Amount, Amount2, FaceSelection, Tags,
         Unknown
@@ -418,14 +419,19 @@ public class FastUi : MonoBehaviour
             _ShapeCategoryIndex = 6;
             _ShapeIndex = (int) _Poly.JohnsonPolyType;
         }
-        else if (_Poly.ShapeType == PolyHydraEnums.ShapeTypes.Grid)
+        else if (_Poly.ShapeType == PolyHydraEnums.ShapeTypes.Waterman)
         {
             _ShapeCategoryIndex = 7;
+            _ShapeIndex = -1;
+        }
+        else if (_Poly.ShapeType == PolyHydraEnums.ShapeTypes.Grid)
+        {
+            _ShapeCategoryIndex = 8;
             _ShapeIndex = (int) _Poly.GridType;
         }
         else if (_Poly.ShapeType == PolyHydraEnums.ShapeTypes.Other)
         {
-            _ShapeCategoryIndex = 8;
+            _ShapeCategoryIndex = 9;
             _ShapeIndex = (int) _Poly.OtherPolyType;
         }
         _Stack = _Poly.ConwayOperators;
@@ -556,6 +562,9 @@ public class FastUi : MonoBehaviour
                     case ShapeCategories.Johnson:
                         _Poly.ShapeType = PolyHydraEnums.ShapeTypes.Johnson;
                         break;
+                    case ShapeCategories.Waterman:
+                        _Poly.ShapeType = PolyHydraEnums.ShapeTypes.Waterman;
+                        break;
                     case ShapeCategories.Grids:
                         _Poly.ShapeType = PolyHydraEnums.ShapeTypes.Grid;
                         break;
@@ -680,7 +689,8 @@ public class FastUi : MonoBehaviour
         else if (
             (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Uniform && (int)_Poly.UniformPolyType < 5) ||
             (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Other && (int)_Poly.OtherPolyType < 4) ||
-            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Grid)
+            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Grid) ||
+            (_Poly.ShapeType==PolyHydraEnums.ShapeTypes.Waterman)
         )
         {
             polyBtnCount = 4;
@@ -785,6 +795,9 @@ public class FastUi : MonoBehaviour
                         case PolyHydraEnums.ShapeTypes.Johnson:
                             label = $"{_Poly.JohnsonPolyType}"; break;
                             buttonType = ButtonType.JohnsonType;
+                        case PolyHydraEnums.ShapeTypes.Waterman:
+                            label = $""; break;
+                            buttonType = ButtonType.WatermanType;
                         case PolyHydraEnums.ShapeTypes.Other:
                             label = $"{_Poly.OtherPolyType}"; break;
                             buttonType = ButtonType.OtherType;

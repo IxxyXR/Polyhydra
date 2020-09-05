@@ -228,6 +228,8 @@ public class PolyUI : MonoBehaviour {
                 JohnsonTypeDropdown.value = SaneMod(JohnsonTypeDropdown.value + direction, JohnsonTypeDropdown.options.Count);
                 JohnsonTypeDropdown.RefreshShownValue();
                 break;
+            case PolyHydraEnums.ShapeTypes.Waterman:
+                break;
             case PolyHydraEnums.ShapeTypes.Other:
                 OtherTypeDropdown.value = SaneMod(OtherTypeDropdown.value + direction, OtherTypeDropdown.options.Count);
                 OtherTypeDropdown.RefreshShownValue();
@@ -682,6 +684,10 @@ public class PolyUI : MonoBehaviour {
             case (int)PolyHydraEnums.ShapeTypes.Johnson:
                 PrismPInput.gameObject.SetActive(true);
                 JohnsonTypeDropdown.gameObject.SetActive(true);
+                break;
+            case (int)PolyHydraEnums.ShapeTypes.Waterman:
+                PrismPInput.gameObject.SetActive(true);
+                PrismQInput.gameObject.SetActive(true);
                 break;
             case (int)PolyHydraEnums.ShapeTypes.Other:
                 PrismPInput.gameObject.SetActive(true);
