@@ -448,7 +448,14 @@ public class PolyHydra : MonoBehaviour
 		}
 		else if (ShapeType == PolyHydraEnums.ShapeTypes.Grid)
 		{
-			_conwayPoly = MakeGrid(GridType, GridShape);
+			var key = $"Grid: {GridShape} {GridType} {PrismP} {PrismQ}".GetHashCode();
+			var result = enableCaching ? polyCache.GetConway(key) : null;
+			if (result == null)
+			{
+				result = MakeGrid(GridType, GridShape);
+				polyCache.SetConway(key, result);
+			}
+			_conwayPoly = result;
 		}
 
 		else if (ShapeType == PolyHydraEnums.ShapeTypes.Johnson)
@@ -458,12 +465,26 @@ public class PolyHydra : MonoBehaviour
 
 		else if (ShapeType == PolyHydraEnums.ShapeTypes.Waterman)
 		{
-			_conwayPoly = WatermanPoly.Build(1, PrismP, PrismQ, false);
+			var key = $"WatermanPoly:{PrismP} {PrismQ}".GetHashCode();
+			var result = enableCaching ? polyCache.GetConway(key) : null;
+			if (result == null)
+			{
+				result = WatermanPoly.Build(1, PrismP, PrismQ, false);
+				polyCache.SetConway(key, result);
+			}
+			_conwayPoly = result;
 		}
 		
 		else if (ShapeType == PolyHydraEnums.ShapeTypes.Other)
 		{
-			_conwayPoly = MakeOtherPoly(OtherPolyType);
+			var key = $"OtherPoly:{OtherPolyType} {PrismP} {PrismQ}".GetHashCode();
+			var result = enableCaching ? polyCache.GetConway(key) : null;
+			if (result == null)
+			{
+				result = MakeOtherPoly(OtherPolyType);
+				polyCache.SetConway(key, result);
+			}
+			_conwayPoly = result;
 		}
 
 		_conwayPoly.basePolyhedraInfo = new ConwayPoly.BasePolyhedraInfo
