@@ -469,7 +469,7 @@ public class PolyHydra : MonoBehaviour
 			var result = enableCaching ? polyCache.GetConway(key) : null;
 			if (result == null)
 			{
-				result = WatermanPoly.Build(1, PrismP, PrismQ, false);
+				result = WatermanPoly.Build(1, PrismP, PrismQ);
 				polyCache.SetConway(key, result);
 			}
 			_conwayPoly = result;
