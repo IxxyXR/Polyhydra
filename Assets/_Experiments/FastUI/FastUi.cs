@@ -624,16 +624,18 @@ public class FastUi : MonoBehaviour
                         break;
                 }
                 break;
-            case 2:
+            case 2:  // PrismP
+                int maxPrismPValue = (ShapeCategories) _ShapeCategoryIndex == ShapeCategories.Waterman ? 80 : 32;
                 int p = _Poly.PrismP;
                 p += direction;
-                p = Mathf.Clamp(p, 0, 32);
+                p = Mathf.Clamp(p, 0, maxPrismPValue);
                 _Poly.PrismP = p;
                 break;
-            case 3:
+            case 3:  // PrismQ
+                int maxPrismQValue = (ShapeCategories) _ShapeCategoryIndex == ShapeCategories.Waterman ? 7 : 32;
                 int q = _Poly.PrismQ;
                 q += direction;
-                q = Mathf.Clamp(q, 0, 32);
+                q = Mathf.Clamp(q, 0, maxPrismQValue);
                 _Poly.PrismQ = q;
                 break;
         }
