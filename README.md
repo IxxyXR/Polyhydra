@@ -4,6 +4,10 @@
 
 Procedural generation of geometric forms in Unity.
 
+# Important note about this repo
+
+This was the original repo for Polyhydra and has become a bit unweildy as it containts every experiment and alternative UI I ever tried. I moved the core code to https://github.com/IxxyXR/Polyhydra-upm which also contains some fairly concise examples. It's probably best to start there if you want to play with the procedural generation functionality and you're comfortable with a bit of light C#
+
 # Try it on the web
 
 http://www.polyhydra.org.uk/media/fastui/
