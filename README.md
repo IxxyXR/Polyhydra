@@ -10,7 +10,15 @@ I moved the core code to https://github.com/IxxyXR/Polyhydra-upm which also cont
 
 A toolkit for the procedural generation of geometric forms in Unity. The above image is from a VR piece I made using it called "Gossamer" that is currently exhibited in the Museum of Other Realities: https://www.museumor.com/artwork/gossamer
 
-YouTube playlist: https://youtube.com/playlist?list=PL94EgLgEIJyJQh_nB-CvSKbXjNU0ojNqC
+* YouTube playlist: https://youtube.com/playlist?list=PL94EgLgEIJyJQh_nB-CvSKbXjNU0ojNqC
+* Gallery: https://photos.google.com/share/AF1QipMnGjsx_xAjhpFoy7ersx7M_dAJhPf4kRXg9tPq6QGRn57trjYjPZEr6_pnC-EzeA?key=YWJqbm9tamJnajNmbGNmZ0htQldaeDlzd3NlWHpn
+
+# Getting Started
+
+1. Download or clone the repo.
+2. Open it via Unity Hub in an appropriate Unity version (same or slightly newer should be fine)
+3. Open any of the example scenes and have a play
+
 
 # Try it on the web
 
