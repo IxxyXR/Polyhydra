@@ -1,32 +1,39 @@
+# Important note about this repo
+
+Don't use it! Or rather - it's a big mess, will take a long time to open up and is full of junk. This was the original repo for Polyhydra and has become a bit unwieldy as it containts every experiment and alternative UI I ever tried.
+
+I moved the core code to https://github.com/IxxyXR/Polyhydra-upm which also contains some fairly concise examples. It's probably best to start there if you want to play with the procedural generation functionality and you're comfortable with a bit of light C#
+
 # Polyhydra
 
 ![Screenshot](https://pro2-bar-s3-cdn-cf1.myportfolio.com/1e3b6316-da77-4fd2-a111-e12070c11b10/2977d391-d8a0-4759-8f3b-fe112b8957b8_rwc_0x22x975x549x975.png?h=f2ff1682c51247d1bc76e926872686e2)
 
-Procedural generation of geometric forms in Unity.
+A toolkit for the procedural generation of geometric forms in Unity. The above image is from a VR piece I made using it called "Gossamer" that is currently exhibited in the Museum of Other Realities: https://www.museumor.com/artwork/gossamer
 
-# Important note about this repo
-
-This was the original repo for Polyhydra and has become a bit unweildy as it containts every experiment and alternative UI I ever tried. I moved the core code to https://github.com/IxxyXR/Polyhydra-upm which also contains some fairly concise examples. It's probably best to start there if you want to play with the procedural generation functionality and you're comfortable with a bit of light C#
+YouTube playlist: https://youtube.com/playlist?list=PL94EgLgEIJyJQh_nB-CvSKbXjNU0ojNqC
 
 # Try it on the web
 
-http://www.polyhydra.org.uk/media/fastui/
+This is one possible UI that I started working on: http://www.polyhydra.org.uk/media/fastui/ Only a prototype but a quick way to get an intro into one possibly application of this toolkit. Keyboard controls listed onscreen Experimental and a bit buggy. Save often...
 
-NOTE! - keyboard controls only in this particular web version.
+NOTE! - keyboard controls only in this particular web version. (It's keyboard only because it was a variation on a UI I created originally using MIDI devices which was a really nice tactile way to create - but difficult to share with people who didn't own the same MIDI controller as you - hence this version. There is a more conventional mouse+keyboard UI here: https://andybak.itch.io/polyhydra - but it's more clunky and less immediate )
 
-Keyboard controls listed onscreen
+# Features
 
-Experimental and a bit buggy. Save often...
+Basic workflow is:
 
-# Overview
+1. Start by generating a base 3d shape
+2. Apply a Conway operator or similar modifier to some or all of the faces based on some rules
+3. Repeat
+4. Gasp in wonder at the beauty of your creation.
 
-You start by choosing a uniform polyhedron: https://en.wikipedia.org/wiki/Uniform_polyhedron - these are generated using the Wythoff construction.
+* All (but one) Uniform Polyhedra using the Wythoff construction
+* Johnson(-esque) polyhedra - Prisms, pyramids, cupolae, rotundae 
+* Most Conway operations are implemented and are parameterized and chainable. Can be applied to a subset of faces based on simple filters or complex rules
+* Regular tilings of the plane with various deformations 
+* De Bruijn multigrids
+* A port of the Isohedral tilings from tactile.js
 
-You can then stack up Conway Operators on top to create much more complex shapes: https://en.wikipedia.org/wiki/Conway_polyhedron_notation
-
-# Documentation
-
-See the [Wiki](https://github.com/IxxyXR/Polyhydra/wiki)
 
 # Credits
 
@@ -42,8 +49,11 @@ Conway operator code was based on work by Will Pearson @mcneel which can be foun
 
 Again - I tried to get in touch and didn't get a response. I'm not sure what the intended licence of that code is. It seems to be a standard copyright attribution but I wonder if this is an oversight more than the real intention of the author.
 
-Multigrids is ported from https://github.com/kde/krita and is under the same licence (GPLv3)
+Multigrids is ported from work by Wolthera van Hövell tot Westerflier for https://github.com/kde/krita - they generously agreed that my version could be MIT licenced.
+
 Portions of grids.cs is from Antiprism and is MIT but should be attributed to Adrian Rossiter and Roger Kaufman: https://github.com/antiprism/antiprism/blob/master/COPYING
+
+Isohedral tilings are from tactile.js https://github.com/isohedral/tactile-js Thanks to Craig Kaplan @TriggerLoop
 
 My original inspiration was 3DS Max's Hedra plugin which kept me entertained for quite a while nearly 2 decades ago. I think credit for that is due to Tom Hudson :-)
 
