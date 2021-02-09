@@ -8,10 +8,11 @@ I moved the core code to https://github.com/IxxyXR/Polyhydra-upm which also cont
 
 ![Screenshot](https://pro2-bar-s3-cdn-cf1.myportfolio.com/1e3b6316-da77-4fd2-a111-e12070c11b10/2977d391-d8a0-4759-8f3b-fe112b8957b8_rwc_0x22x975x549x975.png?h=f2ff1682c51247d1bc76e926872686e2)
 
-A toolkit for the procedural generation of geometric forms in Unity. The above image is from a VR piece I made using it called "Gossamer" that is currently exhibited in the Museum of Other Realities: https://www.museumor.com/artwork/gossamer
+A toolkit for the procedural generation of geometric forms in Unity. The above image is from a VR piece I made using it called "Gossamer" that is currently exhibited in the Museum of Other Realities: https://andybak.net/gossamer
 
 * YouTube playlist: https://youtube.com/playlist?list=PL94EgLgEIJyJQh_nB-CvSKbXjNU0ojNqC
-* Gallery: https://photos.google.com/share/AF1QipMnGjsx_xAjhpFoy7ersx7M_dAJhPf4kRXg9tPq6QGRn57trjYjPZEr6_pnC-EzeA?key=YWJqbm9tamJnajNmbGNmZ0htQldaeDlzd3NlWHpn
+* Gallery: https://andybak.net/polyhydra
+
 
 # Getting Started
 
