@@ -91,13 +91,13 @@ sealed class CreateWythoff : MenuAction
         // extrudeMethod = (ExtrudeMethod) EditorGUILayout.EnumPopup("Extrude Method", extrudeMethod);
         // if (EditorGUI.EndChangeCheck()) EditorPrefs.SetInt("pb_CreateShadowObject_extrudeMethod", (int) extrudeMethod);
 
-        if (EditorGUI.EndChangeCheck()) DoAction();
+        if (EditorGUI.EndChangeCheck()) PerformAction();
 
         GUILayout.FlexibleSpace();
 
         if (GUILayout.Button("Create Wythoff Polyhedra"))
         {
-            DoAction();
+            PerformAction();
             SceneView.RepaintAll();
 //				MenuOption.CloseAll();
         }
@@ -150,7 +150,7 @@ sealed class CreateWythoff : MenuAction
     /// Perform the action.
     /// </summary>
     /// <returns>Return a pb_ActionResult indicating the success/failure of action.</returns>
-    public override ActionResult DoAction()
+    protected override ActionResult PerformActionImplementation()
     {
 
         //var prev = GameObject.Find("New Polyhedra");
