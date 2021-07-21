@@ -145,6 +145,7 @@ public class PolyPresets : MonoBehaviour {
 			try
 			{
 				preset = JsonConvert.DeserializeObject<PolyPreset>(rawJson);
+				Debug.Log($"{preset.Name}: {preset.Ops.Where(x=>!x.Disabled).Count()} ops");
 			}
 			catch (Exception e)
 			{
@@ -170,6 +171,7 @@ public class PolyPresets : MonoBehaviour {
 		foreach (var presetResource in initialPresets) {
 			var preset = new PolyPreset();
 			preset = JsonConvert.DeserializeObject<PolyPreset>(presetResource.ToString());
+			Debug.Log($"{preset.Name}: {preset.Ops.Where(x=>!x.Disabled).Count()} ops");
 			if (string.IsNullOrEmpty(preset.Name))
 			{
 				preset.Name = presetResource.name.Replace(PolyPreset.PresetFileNamePrefix, "").Replace(".json", "");
