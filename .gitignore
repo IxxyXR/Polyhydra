@@ -58,3 +58,5 @@ Assets/_3rdParty/SDFGallery*
 Build WebGL/*
 Old Build/*
 Build prev/*
+Logs/*
+UserSettings/*
