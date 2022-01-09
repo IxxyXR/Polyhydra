@@ -360,8 +360,11 @@ public class PolyUI : MonoBehaviour {
     void ConfigureOpControls(OpPrefabManager opPrefabManager)
     {
 
-        var opType = (Ops)opPrefabManager.OpTypeDropdown.value;
+        Ops opType = (Ops)opPrefabManager.OpTypeDropdown.value;
         opPrefabManager.OpTypeDropdown.GetComponentInChildren<DropdownIconManager>().SetIcon(opType);
+        Debug.Log($"{opType}");
+        var foo = Ops.Segment;
+        Debug.Log($"{PolyHydraEnums.OpConfigs[foo]}");
         var opConfig = PolyHydraEnums.OpConfigs[opType];
         
         opPrefabManager.FaceSelectionDropdown.gameObject.SetActive(opConfig.usesFaces);
@@ -408,6 +411,7 @@ public class PolyUI : MonoBehaviour {
         opPrefab.name = op.opType.ToString();
         foreach (Ops item in Enum.GetValues(typeof(Ops))) {
             var label = new Dropdown.OptionData(CamelCaseSpaces(item.ToString()));
+            Debug.Log(label.text);
             opPrefabManager.OpTypeDropdown.options.Add(label);
         }
         
@@ -489,6 +493,10 @@ public class PolyUI : MonoBehaviour {
 
     void AmountSliderChanged()
     {
+        // Sometimes this is triggered by just adding a listener.
+        // If so currentSelectedGameObject won't be valid so return.
+        if (EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>() == null) return;
+        
         var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountSlider;
         var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountInput;
         _AmountSliderChanged(slider, input);
@@ -833,8 +841,12 @@ public class PolyUI : MonoBehaviour {
             var opConfig = PolyHydraEnums.OpConfigs[op.opType];
             if (poly.SafeLimits)
             {
-                opSliders[0].minValue = opConfig.amountSafeMin;
-                opSliders[0].maxValue = opConfig.amountSafeMax;
+                if (opSliders.Count() > 0)
+                {
+                    opSliders[0].minValue = opConfig.amountSafeMin;
+                    opSliders[0].maxValue = opConfig.amountSafeMax;
+                }
+
                 if (opSliders.Count() > 1)
                 {
                     opSliders[1].minValue = opConfig.amount2SafeMin;
