@@ -2,7 +2,7 @@
 
 Don't use it! Or rather - it's a big mess, will take a long time to open up and is full of junk. This was the original repo for Polyhydra and has become a bit unwieldy as it containts every experiment and alternative UI I ever tried.
 
-I moved the core code to https://github.com/IxxyXR/Polyhydra-upm which also contains some fairly concise examples. It's probably best to start there if you want to play with the procedural generation functionality and you're comfortable with a bit of light C#
+I'm rewriting this with lots of cleaning up here: https://github.com/IxxyXR/polyhydra-core Prior to this I moved the core code from this to https://github.com/IxxyXR/Polyhydra-upm which also contains some fairly concise examples. The former will improve going forward but the latter has more example files to play with.
 
 # Polyhydra
 
