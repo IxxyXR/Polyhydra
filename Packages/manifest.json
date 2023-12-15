@@ -56,6 +56,8 @@
     "com.unity.urp-measured-materials-rubber": "https://github.com/Unity-Repackages/urp-measured-materials-rubber.git#bare",
     "com.unity.vectorgraphics": "2.0.0-preview.12",
     "com.unity.visualeffectgraph": "12.1.12",
+    "com.unity.xr.management": "4.4.0",
+    "com.unity.xr.openxr": "1.8.2",
     "jillejr.newtonsoft.json-for-unity": "12.0.301",
     "jillejr.newtonsoft.json-for-unity.converters": "1.0.0",
     "jp.keijiro.klak.motion": "1.0.1",
