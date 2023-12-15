@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices; // Don't remove
 using System.Text;
-using Conway; // Don't remove
+using Conway;
+using Grids; // Don't remove
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
@@ -614,8 +615,8 @@ public class FastUi : MonoBehaviour
                         break;
                     case ShapeCategories.Grids:
                         _ShapeIndex += direction;
-                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Enum.GetNames(typeof(PolyHydraEnums.GridTypes)).Length - 1);
-                        _Poly.GridType = (PolyHydraEnums.GridTypes)_ShapeIndex;
+                        _ShapeIndex = Mathf.Clamp(_ShapeIndex, 0, Enum.GetNames(typeof(GridEnums.GridTypes)).Length - 1);
+                        _Poly.GridType = (GridEnums.GridTypes)_ShapeIndex;
                         break;
                     case ShapeCategories.Other:
                         _ShapeIndex += direction;

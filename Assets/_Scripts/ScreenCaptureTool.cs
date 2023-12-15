@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Conway;
+using Grids;
 using UnityEngine;
 
 
@@ -107,7 +108,7 @@ public class ScreenCaptureTool : MonoBehaviour
     {
         Camera.main.clearFlags = CameraClearFlags.Nothing;
         Camera.main.backgroundColor = Color.white;
-        var gridNames = Enum.GetNames(typeof(PolyHydraEnums.GridTypes));
+        var gridNames = Enum.GetNames(typeof(GridEnums.GridTypes));
         var poly = FindObjectOfType<PolyHydra>();
         poly.transform.parent.GetComponent<Rigidbody>().isKinematic = true;
         poly.transform.parent.rotation = Quaternion.Euler(30, 0, 0);
@@ -119,7 +120,7 @@ public class ScreenCaptureTool : MonoBehaviour
         for (var index = 0; index < gridNames.Length; index++)
         {
             filename = PolyScreenShotName($"grid_{gridNames[index]}");
-            poly.GridType = (PolyHydraEnums.GridTypes)index;
+            poly.GridType = (GridEnums.GridTypes)index;
             poly.Rebuild();
             yield return new WaitForSeconds(0.5f);
             poly._conwayPoly.Recenter();

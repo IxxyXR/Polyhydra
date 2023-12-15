@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using UnityEngine;
+using Color = UnityEngine.Color;
 
 /*
  * Notes
@@ -9,12 +10,12 @@ using UnityEngine;
 namespace zCode.zCore
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class ColorUtil
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="color"></param>
         public static Vec3d ToVec3d(this Color color)
@@ -35,7 +36,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
@@ -60,7 +61,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
@@ -73,7 +74,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
@@ -85,7 +86,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
@@ -103,7 +104,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
@@ -126,9 +127,9 @@ namespace zCode.zCore
             return new Vec3d(Map(x) * 95.047, Map(y) * 100.00, Map(z) * 108.883);
         }
 
-       
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
@@ -154,7 +155,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
@@ -167,7 +168,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
@@ -179,7 +180,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
@@ -208,7 +209,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
@@ -234,10 +235,10 @@ namespace zCode.zCore
                 200.0 * (y - z)
                 );
         }
-       
+
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>

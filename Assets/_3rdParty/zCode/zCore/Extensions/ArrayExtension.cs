@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using System.Drawing;
 using UnityEngine;
+using Color = UnityEngine.Color;
 using Random = System.Random;
 
 /*
@@ -13,14 +14,14 @@ using Random = System.Random;
 namespace zCode.zCore
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static partial class ArrayExtension
     {
         #region T[]
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="array"></param>
@@ -31,7 +32,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="array"></param>
         /// <returns></returns>
@@ -44,7 +45,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void Set<T>(this T[] array, T value)
         {
@@ -53,7 +54,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void Set<T>(this T[] array, T[] other)
         {
@@ -77,7 +78,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="array"></param>
@@ -90,7 +91,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void SetRange<T>(this T[] array, T value, int index, int count)
         {
@@ -100,7 +101,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void SetRange<T>(this T[] array, T[] other, int count)
         {
@@ -109,7 +110,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void SetRange<T>(this T[] array, T[] other, int thisIndex, int otherIndex, int count)
         {
@@ -133,7 +134,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void SetSelection<T>(this T[] array, T value, int[] indices)
         {
@@ -143,7 +144,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void SetSelection<T>(this T[] array, T value, IEnumerable<int> indices)
         {
@@ -153,7 +154,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void SetSelection<T>(this T[] array, T[] values, int[] indices)
         {
@@ -163,7 +164,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static T[] GetRange<T>(this T[] array, int index, int count)
         {
@@ -174,7 +175,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void GetRange<T>(this T[] array, int index, int count, T[] result)
         {
@@ -183,7 +184,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static T[] GetSelection<T>(this T[] array, int[] indices)
         {
@@ -194,7 +195,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void GetSelection<T>(this T[] array, int[] indices, T[] result)
         {
@@ -204,7 +205,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -216,7 +217,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -228,7 +229,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static U[] Convert<T, U>(this T[] source, Func<T, U> converter, bool parallel = false)
         {
@@ -237,7 +238,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void Convert<T, U>(this T[] source, Func<T, U> converter, U[] result, bool parallel = false)
         {
@@ -246,7 +247,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static U[] Convert<T, U>(this T[] source, Func<T, int, U> converter, bool parallel = false)
         {
@@ -255,7 +256,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void Convert<T, U>(this T[] source, Func<T, int, U> converter, U[] result, bool parallel = false)
         {
@@ -264,7 +265,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -290,7 +291,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -322,7 +323,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static U[] ConvertRange<T, U>(this T[] source, int index, int count, Func<T, U> converter, bool parallel = false)
         {
@@ -333,7 +334,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void ConvertRange<T, U>(this T[] source, int index, int count, Func<T, U> converter, U[] result, bool parallel = false)
         {
@@ -354,7 +355,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static U[] ConvertRange<T, U>(this T[] source, int index, int count, Func<T, int, U> converter, bool parallel = false)
         {
@@ -365,7 +366,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void ConvertRange<T, U>(this T[] source, int index, int count, Func<T, int, U> converter, U[] result, bool parallel = false)
         {
@@ -392,7 +393,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void ActionSelection<T>(this T[] source, int[] indices, Action<T> action, bool parallel = false)
         {
@@ -413,7 +414,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static U[] ConvertSelection<T, U>(this T[] source, int[] indices, Func<T, U> converter, bool parallel = false)
         {
@@ -424,7 +425,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void ConvertSelection<T, U>(this T[] source, int[] indices, Func<T, U> converter, U[] result, bool parallel = false)
         {
@@ -445,7 +446,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static U[] ConvertSelection<T, U>(this T[] source, int[] indices, Func<T, int, U> converter, bool parallel = false)
         {
@@ -456,7 +457,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void ConvertSelection<T, U>(this T[] source, int[] indices, Func<T, int, U> converter, U[] result, bool parallel = false)
         {
@@ -483,7 +484,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static IEnumerable<T> TakeRange<T>(this T[] source, int index, int count)
         {
@@ -493,7 +494,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static IEnumerable<T> TakeSelection<T>(this T[] source, IEnumerable<int> indices)
         {
@@ -503,7 +504,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static IEnumerable<T> TakeEveryNth<T>(this T[] source, int n)
         {
@@ -512,7 +513,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static IEnumerable<T> TakeEveryNth<T>(this T[] source, int n, int index, int count)
         {
@@ -542,7 +543,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void Shuffle<T>(this T[] array, int seed)
         {
@@ -551,7 +552,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void Shuffle<T>(this T[] array, Random random)
         {
@@ -564,7 +565,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void Shuffle<T>(this T[] array, int index, int count)
         {
@@ -573,7 +574,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void Shuffle<T>(this T[] array, int seed, int index, int count)
         {
@@ -582,7 +583,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void Shuffle<T>(this T[] array, Random random, int index, int count)
         {
@@ -690,7 +691,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static T QuickSelect<T>(this T[] items, int n, int from, int to)
             where T : IComparable<T>
@@ -701,7 +702,7 @@ namespace zCode.zCore
             while (to - from > 1)
             {
                 int i = items.Partition(from, to);
-            
+
                 if (i > n)
                     to = i;
                 else if (i < n)
@@ -712,10 +713,10 @@ namespace zCode.zCore
 
             return items[from];
         }
-        
+
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private static int Partition<T>(this T[] items, int from, int to)
             where T : IComparable<T>
@@ -735,7 +736,7 @@ namespace zCode.zCore
                 {
                     if (++i == j) goto Break;
                 } while (pivot.CompareTo(items[i]) > 0);
-                
+
                 items.Swap(i, j);
             }
 
@@ -756,7 +757,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static T QuickSelect<T>(this T[] items, int n, IComparer<T> comparer)
         {
@@ -765,7 +766,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static T QuickSelect<T>(this T[] items, int n, int from, int to, IComparer<T> comparer)
         {
@@ -774,7 +775,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static T QuickSelect<T>(this T[] items, int n, int from, int to, Comparison<T> compare)
         {
@@ -798,7 +799,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private static int Partition<T>(this T[] items, int from, int to, Comparison<T> compare)
         {
@@ -840,7 +841,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static K QuickSelect<K, V>(this K[] keys, V[] values, int n, int from, int to)
             where K : IComparable<K>
@@ -865,7 +866,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private static int Partition<K, V>(this K[] keys, V[] values, int from, int to)
             where K : IComparable<K>
@@ -902,7 +903,7 @@ namespace zCode.zCore
         #region Color[]
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static Color Lerp(this Color[] colors, double t)
         {
@@ -923,7 +924,7 @@ namespace zCode.zCore
         #region double[]
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static double Lerp(this double[] vector, double t)
         {
@@ -944,7 +945,7 @@ namespace zCode.zCore
         #region Vec2d[]
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static Vec2d Lerp(this Vec2d[] vectors, double t)
         {
@@ -965,7 +966,7 @@ namespace zCode.zCore
         #region Vec3d[]
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static Vec3d Lerp(this Vec3d[] vectors, double t)
         {

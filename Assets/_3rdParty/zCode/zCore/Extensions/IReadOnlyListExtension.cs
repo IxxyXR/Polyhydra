@@ -5,24 +5,25 @@ using System.Threading.Tasks;
 using System.Drawing;
 using UnityEngine;
 using zCode.zData;
+using Color = UnityEngine.Color;
 
 /*
  * Notes
- * 
+ *
  * IReadonlyList extension methods are redirected to equivalent array extension methods where possible for better performance.
  */
 
 namespace zCode.zCore
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static partial class IReadOnlyListExtension
     {
         #region IReadOnlyList<T>
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static T[] GetRange<T>(this IReadOnlyList<T> list, int index, int count)
         {
@@ -36,7 +37,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void GetRange<T>(this IReadOnlyList<T> list, int index, int count, IList<T> result)
         {
@@ -48,7 +49,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private static void GetRangeImpl<T>(IReadOnlyList<T> list, int index, int count, IList<T> result)
         {
@@ -58,7 +59,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static T[] GetSelection<T>(this IReadOnlyList<T> list, IReadOnlyList<int> indices)
         {
@@ -72,7 +73,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void GetSelection<T>(this IReadOnlyList<T> list, IReadOnlyList<int> indices, IList<T> result)
         {
@@ -84,7 +85,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private static void GetSelectionImpl<T>(IReadOnlyList<T> list, IReadOnlyList<int> indices, IList<T> result)
         {
@@ -94,7 +95,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -106,7 +107,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -118,7 +119,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static U[] Convert<T, U>(this IReadOnlyList<T> source, Func<T, U> converter, bool parallel = false)
         {
@@ -127,7 +128,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void Convert<T, U>(this IReadOnlyList<T> source, Func<T, U> converter, IList<U> result, bool parallel = false)
         {
@@ -136,7 +137,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static U[] Convert<T, U>(this IReadOnlyList<T> source, Func<T, int, U> converter, bool parallel = false)
         {
@@ -145,7 +146,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void Convert<T, U>(this IReadOnlyList<T> source, Func<T, int, U> converter, IList<U> result, bool parallel = false)
         {
@@ -154,7 +155,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -186,7 +187,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -224,7 +225,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static U[] ConvertRange<T, U>(this IReadOnlyList<T> source, int index, int count, Func<T, U> converter, bool parallel = false)
         {
@@ -238,7 +239,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void ConvertRange<T, U>(this IReadOnlyList<T> source, int index, int count, Func<T, U> converter, IList<U> result, bool parallel = false)
         {
@@ -250,7 +251,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private static void ConvertRangeImpl<T,U>(IReadOnlyList<T> source, int index, int count, Func<T, U> converter, IList<U> result, bool parallel = false)
         {
@@ -271,7 +272,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static U[] ConvertRange<T, U>(this IReadOnlyList<T> source, int index, int count, Func<T, int, U> converter, bool parallel = false)
         {
@@ -285,7 +286,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void ConvertRange<T, U>(this IReadOnlyList<T> source, int index, int count, Func<T, int, U> converter, IList<U> result, bool parallel = false)
         {
@@ -297,7 +298,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private static void ConvertRangeImpl<T, U>(IReadOnlyList<T> source, int index, int count, Func<T, int, U> converter, IList<U> result, bool parallel = false)
         {
@@ -324,7 +325,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void ActionSelection<T>(IReadOnlyList<T> source, IReadOnlyList<int> indices, Action<T> action, bool parallel = false)
         {
@@ -351,7 +352,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static U[] ConvertSelection<T, U>(this IReadOnlyList<T> source, IReadOnlyList<int> indices, Func<T, U> converter, bool parallel = false)
         {
@@ -365,7 +366,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void ConvertSelection<T, U>(this IReadOnlyList<T> source, IReadOnlyList<int> indices, Func<T, U> converter, IList<U> result, bool parallel = false)
         {
@@ -377,7 +378,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private static void ConvertSelectionImpl<T, U>(IReadOnlyList<T> source, IReadOnlyList<int> indices, Func<T, U> converter, IList<U> result, bool parallel = false)
         {
@@ -398,7 +399,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static U[] ConvertSelection<T, U>(this IReadOnlyList<T> source, IReadOnlyList<int> indices, Func<T, int, U> converter, bool parallel = false)
         {
@@ -412,7 +413,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void ConvertSelection<T, U>(this IReadOnlyList<T> source, IReadOnlyList<int> indices, Func<T, int, U> converter, IList<U> result, bool parallel = false)
         {
@@ -424,7 +425,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private static void ConvertSelectionImpl<T, U>(IReadOnlyList<T> source, IReadOnlyList<int> indices, Func<T, int, U> converter, IList<U> result, bool parallel = false)
         {
@@ -448,10 +449,10 @@ namespace zCode.zCore
                 }
             }
         }
-        
+
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static IEnumerable<T> TakeRange<T>(this IReadOnlyList<T> source, int index, int count)
         {
@@ -461,7 +462,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static IEnumerable<T> TakeSelection<T>(this IReadOnlyList<T> source, IEnumerable<int> indices)
         {
@@ -471,7 +472,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static IEnumerable<T> TakeEveryNth<T>(this IReadOnlyList<T> source, int n)
         {
@@ -480,7 +481,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static IEnumerable<T> TakeEveryNth<T>(this IReadOnlyList<T> source, int n, int index, int count)
         {
@@ -494,7 +495,7 @@ namespace zCode.zCore
         #region IReadOnlyList<Color>
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static Color Lerp(this IReadOnlyList<Color> colors, double factor)
         {
@@ -515,7 +516,7 @@ namespace zCode.zCore
         #region IReadOnlyList<double>
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static double Lerp(this IReadOnlyList<double> vector, double factor)
         {
@@ -536,7 +537,7 @@ namespace zCode.zCore
         #region IReadOnlyList<Vec2d>
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static Vec2d Lerp(this IReadOnlyList<Vec2d> vectors, double factor)
         {
@@ -550,14 +551,14 @@ namespace zCode.zCore
 
             return vectors[i].LerpTo(vectors[i + 1], factor);
         }
-        
+
         #endregion
 
 
         #region IReadOnlyList<Vec3d>
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static Vec3d Lerp(this IReadOnlyList<Vec3d> vectors, double factor)
         {
@@ -578,7 +579,7 @@ namespace zCode.zCore
         #region IReadOnlyList<double[]>
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void Lerp(this IReadOnlyList<double[]> vectors, double factor, double[] result)
         {
@@ -587,7 +588,7 @@ namespace zCode.zCore
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public static void Lerp(this IReadOnlyList<double[]> vectors, double factor, int size, double[] result)
         {

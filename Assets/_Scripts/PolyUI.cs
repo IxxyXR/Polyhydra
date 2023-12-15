@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Conway;
+using Grids;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -16,7 +17,7 @@ using Debug = UnityEngine.Debug;
 
 
 public class PolyUI : MonoBehaviour {
-    
+
     public PolyHydra poly;
     public PolyPresets Presets;
     public AppearancePresets APresets;
@@ -57,21 +58,21 @@ public class PolyUI : MonoBehaviour {
     public Button PrevAPresetButton;
     public Button NextAPresetButton;
     public Button ObjExportButton;
-    public GameObject[] Tabs; 
+    public GameObject[] Tabs;
     public GameObject[] TabButtons;
 
     private List<Button> presetButtons;
     private List<Button> basePolyButtons;
     private List<Transform> opPrefabs;
     private bool _shouldReBuild = true;
-    
+
 
     void Start()
     {
         opPrefabs = new List<Transform>();
         presetButtons = new List<Button>();
         rotateObject = poly.GetComponent<RotateObject>();
-        
+
         ShapeTypesDropdown.ClearOptions();
         foreach (var shapeType in Enum.GetValues(typeof(PolyHydraEnums.ShapeTypes))) {
             var label = new Dropdown.OptionData(shapeType.ToString().Replace("_", " "));
@@ -91,14 +92,14 @@ public class PolyUI : MonoBehaviour {
             BasePolyDropdown.options.Add(label);
         }
 
-        GridTypeDropdown.ClearOptions();        
-        foreach (var gridType in Enum.GetValues(typeof(PolyHydraEnums.GridTypes))) {
+        GridTypeDropdown.ClearOptions();
+        foreach (var gridType in Enum.GetValues(typeof(GridEnums.GridTypes))) {
             var label = new Dropdown.OptionData(gridType.ToString().Replace("_", ""));
             GridTypeDropdown.options.Add(label);
         }
 
         GridShapeDropdown.ClearOptions();
-        foreach (var gridShape in Enum.GetValues(typeof(PolyHydraEnums.GridShapes))) {
+        foreach (var gridShape in Enum.GetValues(typeof(GridEnums.GridShapes))) {
             var label = new Dropdown.OptionData(gridShape.ToString().Replace("_", " "));
             GridShapeDropdown.options.Add(label);
         }
@@ -130,24 +131,24 @@ public class PolyUI : MonoBehaviour {
         BypassOpsToggle.onValueChanged.AddListener(delegate{BypassOpsToggleChanged();});
         AddOpButton.onClick.AddListener(AddOpButtonClicked);
         AddRandomOpButton.onClick.AddListener(AddRandomOpButtonClicked);
-        
+
         PresetNameInput.onValueChanged.AddListener(delegate{PresetNameChanged();});
         SavePresetButton.onClick.AddListener(SavePresetButtonClicked);
         PresetSnapshotButton.onClick.AddListener(PresetSnapshotButtonClicked);
         ResetPresetsButton.onClick.AddListener(ResetPresetsButtonClicked);
         OpenPresetsFolderButton.onClick.AddListener(OpenPersistentDataFolder);
-        
+
         PrevAPresetButton.onClick.AddListener(PrevAPresetButtonClicked);
         NextAPresetButton.onClick.AddListener(NextAPresetButtonClicked);
-        
+
         XRotateSlider.onValueChanged.AddListener(delegate{XSliderChanged();});
         YRotateSlider.onValueChanged.AddListener(delegate{YSliderChanged();});
         ZRotateSlider.onValueChanged.AddListener(delegate{ZSliderChanged();});
 
         ObjExportButton.onClick.AddListener(ObjExportButtonClicked);
-        
+
         Presets.LoadAllPresets();
-        
+
         AddMissingPresetImages();
         CreatePresetButtons();
         ShowTab(TabButtons[0].gameObject);
@@ -164,12 +165,12 @@ public class PolyUI : MonoBehaviour {
 //                var imagePath = $"Resources/InitialPresets/preset_{preset.Name}.png";
 //                var bytes = File.ReadAllBytes(imagePath);
 //                File.WriteAllBytes(filePath, bytes);
-                
+
 //                string address = $"InitialPresets/preset_{preset.Name}";
 //                byte[] byteArray = File.ReadAllBytes(@address);
-//                var pic = new Texture2D(12080,1024); 
+//                var pic = new Texture2D(12080,1024);
 //                bool check = pic.LoadImage(byteArray);
-                
+
                 Texture2D tex2d = Resources.Load<Texture2D>($"InitialPresets/preset_{preset.Name}");
                 byte[] bytes = tex2d.EncodeToPNG();
                 if (bytes != null)
@@ -248,7 +249,7 @@ public class PolyUI : MonoBehaviour {
         int val = x < 0 ? x+m : x;
         return val % m;
     }
-    
+
     private void PrevAPresetButtonClicked()
     {
         currentAPreset--;
@@ -261,10 +262,10 @@ public class PolyUI : MonoBehaviour {
     {
         currentAPreset++;
         currentAPreset = SaneMod(currentAPreset, APresets.Items.Count);
-        APresets.ApplyPresetToPoly(APresets.Items[currentAPreset]);  // TODO 
+        APresets.ApplyPresetToPoly(APresets.Items[currentAPreset]);  // TODO
         AppearancePresetNameText.text = poly.APresetName;
     }
-    
+
     public void InitPolySpecificUI()
     {
         UpdatePolyUI();
@@ -290,7 +291,7 @@ public class PolyUI : MonoBehaviour {
     {
         var newOp = poly.AddRandomOp();
         AddOpItemToUI(newOp);
-        Rebuild();        
+        Rebuild();
     }
 
     void UpdatePolyUI()
@@ -334,7 +335,7 @@ public class PolyUI : MonoBehaviour {
     void UpdateOpsUI()
     {
         BypassOpsToggle.isOn = poly.BypassOps;
-        CreateOps();        
+        CreateOps();
     }
 
     void DestroyOps()
@@ -345,7 +346,7 @@ public class PolyUI : MonoBehaviour {
         }
         opPrefabs.Clear();
     }
-    
+
     void CreateOps()
     {
         DestroyOps();
@@ -356,7 +357,7 @@ public class PolyUI : MonoBehaviour {
             AddOpItemToUI(conwayOperator);
         }
     }
-    
+
     void ConfigureOpControls(OpPrefabManager opPrefabManager)
     {
 
@@ -366,7 +367,7 @@ public class PolyUI : MonoBehaviour {
         var foo = Ops.Segment;
         Debug.Log($"{PolyHydraEnums.OpConfigs[foo]}");
         var opConfig = PolyHydraEnums.OpConfigs[opType];
-        
+
         opPrefabManager.FaceSelectionDropdown.gameObject.SetActive(opConfig.usesFaces);
         opPrefabManager.RandomizeToggle.gameObject.SetActive(opConfig.usesRandomize);
 
@@ -407,14 +408,14 @@ public class PolyUI : MonoBehaviour {
         var opPrefab = Instantiate(OpTemplate);
         opPrefab.transform.SetParent(OpContainer);
         var opPrefabManager = opPrefab.GetComponent<OpPrefabManager>();
-        
+
         opPrefab.name = op.opType.ToString();
         foreach (Ops item in Enum.GetValues(typeof(Ops))) {
             var label = new Dropdown.OptionData(CamelCaseSpaces(item.ToString()));
             Debug.Log(label.text);
             opPrefabManager.OpTypeDropdown.options.Add(label);
         }
-        
+
         foreach (var item in Enum.GetValues(typeof(FaceSelections))) {
             var label = new Dropdown.OptionData(CamelCaseSpaces(item.ToString()));
             opPrefabManager.FaceSelectionDropdown.options.Add(label);
@@ -461,7 +462,7 @@ public class PolyUI : MonoBehaviour {
         opPrefabManager.TagsInput.onValueChanged.AddListener(delegate{OpsUIToPoly();});
 
         opPrefabManager.Index = opPrefabs.Count;
-        
+
         void AnimateToggleChanged(bool value)
         {
             opPrefabManager.AnimationControls.gameObject.SetActive(value);
@@ -496,7 +497,7 @@ public class PolyUI : MonoBehaviour {
         // Sometimes this is triggered by just adding a listener.
         // If so currentSelectedGameObject won't be valid so return.
         if (EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>() == null) return;
-        
+
         var slider = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountSlider;
         var input = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>().AmountInput;
         _AmountSliderChanged(slider, input);
@@ -544,14 +545,14 @@ public class PolyUI : MonoBehaviour {
     void OpsUIToPoly()
     {
         if (opPrefabs == null) {return;}
-        
+
         for (var index = 0; index < opPrefabs.Count; index++) {
-            
+
             var opPrefab = opPrefabs[index];
             var opPrefabManager = opPrefab.GetComponent<OpPrefabManager>();
-            
+
             var op = poly.ConwayOperators[index];
-            
+
             op.opType = (Ops)opPrefabManager.OpTypeDropdown.value;
             op.faceSelections = (FaceSelections) opPrefabManager.FaceSelectionDropdown.value;
             op.disabled = opPrefabManager.DisabledToggle.isOn;
@@ -594,7 +595,7 @@ public class PolyUI : MonoBehaviour {
         CreateOps();
         Rebuild();
     }
-    
+
     void DeleteOp()
     {
         var opPrefabManager = EventSystem.current.currentSelectedGameObject.GetComponentInParent<OpPrefabManager>();
@@ -602,7 +603,7 @@ public class PolyUI : MonoBehaviour {
         CreateOps();
         Rebuild();
     }
-     
+
     void DestroyPresetButtons()
     {
         if (presetButtons == null) {return;}
@@ -633,7 +634,7 @@ public class PolyUI : MonoBehaviour {
         return presetButton;
 
     }
-    
+
     void CreatePresetButtons()
     {
         DestroyPresetButtons();
@@ -648,7 +649,7 @@ public class PolyUI : MonoBehaviour {
 //            presetButton.GetComponentInChildren<GetPresetImageForButton>().UpdateImage();
 //        }
     }
-    
+
     // Event handlers
 
     void PresetNameChanged()
@@ -772,7 +773,7 @@ public class PolyUI : MonoBehaviour {
         var polyName = ToTitleCase(change.options[change.value].text).Replace(" ", "_");
         poly.UniformPolyType = (PolyTypes)Enum.Parse(typeof(PolyTypes), polyName);
         Rebuild();
-        
+
         if (poly.WythoffPoly!=null && poly.WythoffPoly.IsOneSided)
         {
             OpsWarning.enabled = true;
@@ -784,18 +785,18 @@ public class PolyUI : MonoBehaviour {
 
         PrismPInput.gameObject.SetActive((int)poly.UniformPolyType > 0 && change.value < 6);
         PrismQInput.gameObject.SetActive((int)poly.UniformPolyType > 2 && change.value < 6);
-        
+
     }
-    
+
     void GridTypeDropdownChanged(Dropdown change)
     {
-        poly.GridType = (PolyHydraEnums.GridTypes)change.value;
-        Rebuild();        
+        poly.GridType = (GridEnums.GridTypes)change.value;
+        Rebuild();
     }
 
     void GridShapeDropdownChanged(Dropdown change)
     {
-        poly.GridShape = (PolyHydraEnums.GridShapes)change.value;
+        poly.GridShape = (GridEnums.GridShapes)change.value;
         Rebuild();
     }
 
@@ -903,7 +904,7 @@ public class PolyUI : MonoBehaviour {
         _shouldReBuild = true;
         poly.Rebuild();
     }
-    
+
     void SavePresetButtonClicked()
     {
         var cap = FindObjectOfType<ScreenCaptureTool>();
@@ -933,7 +934,7 @@ public class PolyUI : MonoBehaviour {
             }
         }
     }
-    
+
     public void HandleTabButton()
     {
         var button = EventSystem.current.currentSelectedGameObject;
@@ -947,7 +948,7 @@ public class PolyUI : MonoBehaviour {
             tab.gameObject.SetActive(false);
         }
         Tabs[button.transform.GetSiblingIndex()].gameObject.SetActive(true);
-        
+
         foreach (Transform child in button.transform.parent)
         {
             child.GetComponent<Button>().interactable = true;
@@ -960,7 +961,7 @@ public class PolyUI : MonoBehaviour {
     {
         Presets.ResetPresets();
     }
-    
+
     #if UNITY_EDITOR
         [MenuItem ("Window/Open PersistentData Folder")]
         public static void OpenPersistentDataFolder()
@@ -973,7 +974,7 @@ public class PolyUI : MonoBehaviour {
             string path = Application.persistentDataPath.TrimEnd(new[]{'\\', '/'}); // Mac doesn't like trailing slash
             // TODO
             //Process.Start(path);
-        } 
+        }
     #endif
 
 }

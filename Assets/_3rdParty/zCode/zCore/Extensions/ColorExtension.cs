@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using UnityEngine;
+using Color = UnityEngine.Color;
 
 /*
  * Notes
@@ -8,12 +9,12 @@ using UnityEngine;
 namespace zCode.zCore
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class ColorExtension
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="c"></param>
         /// <param name="other"></param>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Conway;
+using Grids;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using UnityEngine;
@@ -19,14 +20,14 @@ public class PolyPreset {
 	[JsonConverter(typeof(MyStringEnumConverter))] public PolyTypes PolyType;
 	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydraEnums.JohnsonPolyTypes JohnsonPolyType;
 	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydraEnums.OtherPolyTypes OtherPolyType;
-	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydraEnums.GridTypes GridType;
-	[JsonConverter(typeof(MyStringEnumConverter))] public PolyHydraEnums.GridShapes GridShape;
+	[JsonConverter(typeof(MyStringEnumConverter))] public GridEnums.GridTypes GridType;
+	[JsonConverter(typeof(MyStringEnumConverter))] public GridEnums.GridShapes GridShape;
 	public bool BypassOps;
 	public bool SafeLimits;
 	public int PrismP;
 	public int PrismQ;
 	public string AppearancePresetName;
-	
+
 	[Serializable]
 	public struct Op {
 		[JsonConverter(typeof(StringEnumConverter))] public Ops OpType;
@@ -44,9 +45,9 @@ public class PolyPreset {
 		public float AudioHighAmount;
 		public string Tags;
 	}
-	
+
 	public Op[] Ops;
-		
+
 	public void CreateFromPoly(string presetName, PolyHydra poly)
 	{
 		Name = presetName;
@@ -63,7 +64,7 @@ public class PolyPreset {
 		PrismQ = poly.PrismQ;
 		SafeLimits = poly.SafeLimits;
 		Ops = new Op[poly.ConwayOperators.Count];
-		
+
 		for (var index = 0; index < poly.ConwayOperators.Count; index++)
 		{
 			var polyOp = poly.ConwayOperators[index];
